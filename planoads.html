@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPQ — Cronograma de Ads (R$200/semana)</title>
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #122040;
+    --navy-light: #1a3060;
+    --blue-accent: #1d6ef5;
+    --gold: #f0a500;
+    --gold-light: #ffd060;
+    --off-white: #f4f6fb;
+    --gray-100: #e8ecf4;
+    --gray-200: #c8d0e0;
+    --gray-400: #8a96b0;
+    --text-main: #0a1628;
+    --text-muted: #4a5568;
+    --pend: #8a96b0;
+    --pend-bg: #eef0f5;
+    --andamento: #b8860b;
+    --andamento-bg: #fff7e0;
+    --pub: #1a7f4b;
+    --pub-bg: #e6f7ee;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--off-white);
+    color: var(--text-main);
+    line-height: 1.55;
+    padding-bottom: 60px;
+  }
+  .hero {
+    background: linear-gradient(135deg, #0a1628 0%, #16264f 60%, #0d2146 100%);
+    padding: 40px 28px 32px;
+    color: #fff;
+  }
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 10px;
+  }
+  .hero h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 8px; }
+  .hero p { font-size: 14px; color: rgba(255,255,255,.75); max-width: 620px; }
+  .hero-stats { display: flex; gap: 22px; margin-top: 20px; flex-wrap: wrap; }
+  .hero-stat { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 10px; padding: 10px 16px; }
+  .hero-stat b { display: block; font-size: 18px; color: var(--gold); }
+  .hero-stat span { font-size: 11px; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: .04em; }
+
+  .container { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+
+  .tabs {
+    display: flex; gap: 0; background: var(--navy); position: sticky; top: 0; z-index: 50;
+    overflow-x: auto; border-bottom: 2px solid var(--navy-light);
+  }
+  .tab-btn {
+    background: none; border: none; cursor: pointer; padding: 14px 18px; font-size: 13px;
+    font-weight: 700; color: rgba(255,255,255,.55); white-space: nowrap; border-bottom: 3px solid transparent;
+    font-family: inherit; letter-spacing: .02em;
+  }
+  .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .tab-btn:hover { color: #fff; }
+
+  .panel { display: none; padding: 32px 0 10px; }
+  .panel.active { display: block; }
+
+  .week-head { margin-bottom: 22px; }
+  .week-head .tag { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--blue-accent); margin-bottom: 6px; }
+  .week-head h2 { font-size: 21px; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+  .week-head p { font-size: 13.5px; color: var(--text-muted); max-width: 640px; }
+
+  .card {
+    background: #fff; border: 1px solid var(--gray-100); border-radius: var(--radius-md);
+    padding: 20px 22px; margin-bottom: 18px;
+  }
+  .card-dark { background: var(--navy); border-color: var(--navy-light); color: #fff; }
+  .card-dark .label { color: var(--gold); }
+  .ad-title { font-size: 15.5px; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
+  .card-dark .ad-title { color: #fff; }
+  .ad-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+  .card-dark .ad-meta { color: rgba(255,255,255,.6); }
+  .budget-pill {
+    display: inline-block; background: var(--gold); color: var(--navy); font-weight: 800;
+    font-size: 12px; padding: 3px 10px; border-radius: 999px; margin-left: 6px;
+  }
+  .label { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--blue-accent); margin: 12px 0 4px; }
+  .copy-block { font-size: 13.5px; color: var(--text-main); background: var(--off-white); border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; }
+  .card-dark .copy-block { background: rgba(255,255,255,.07); color: rgba(255,255,255,.9); }
+  .cta-tag { display: inline-block; background: var(--blue-accent); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px; }
+
+  table.checklist { width: 100%; border-collapse: collapse; margin-top: 6px; }
+  table.checklist th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--gray-400); padding: 6px 8px; border-bottom: 1px solid var(--gray-100); }
+  table.checklist td { padding: 8px 8px; font-size: 13.5px; border-bottom: 1px solid var(--gray-100); vertical-align: middle; }
+  table.checklist tr:last-child td { border-bottom: none; }
+
+  select.status {
+    font-family: inherit; font-size: 12.5px; font-weight: 700; border-radius: 999px; padding: 5px 10px;
+    border: none; cursor: pointer; appearance: none; -webkit-appearance: none; min-width: 130px; text-align: center;
+  }
+  select.status.pendente { background: var(--pend-bg); color: var(--pend); }
+  select.status.andamento { background: var(--andamento-bg); color: var(--andamento); }
+  select.status.publicado { background: var(--pub-bg); color: var(--pub); }
+
+  .progress-wrap { margin-top: 14px; }
+  .progress-bar-bg { background: var(--gray-100); border-radius: 999px; height: 8px; overflow: hidden; }
+  .progress-bar-fill { background: linear-gradient(90deg, var(--blue-accent), var(--gold)); height: 100%; width: 0%; transition: width .3s ease; }
+  .progress-label { font-size: 11.5px; color: var(--text-muted); margin-top: 6px; }
+
+  .flow-step { display: flex; gap: 12px; margin-bottom: 14px; align-items: flex-start; }
+  .flow-num { background: var(--navy); color: var(--gold); font-weight: 800; font-size: 12px; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .flow-body b { font-size: 13.5px; color: var(--navy); display: block; margin-bottom: 2px; }
+  .flow-body span { font-size: 13px; color: var(--text-muted); }
+
+  .script-box { background: var(--off-white); border-left: 3px solid var(--blue-accent); border-radius: 6px; padding: 10px 14px; font-size: 13px; color: var(--text-main); margin-top: 6px; white-space: pre-line; }
+
+  .note {
+    font-size: 12px; color: var(--gray-400); text-align: center; margin-top: 30px; padding: 0 24px;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">EPQ · Plano de Tráfego Pago</div>
+  <h1>Cronograma de Ads — R$200/semana</h1>
+  <p>Início em 13/08/2026 (quinta-feira). 4 semanas, alinhado ao funil Topo → Meio → Fundo já mapeado na análise estratégica: erro/identificação → autoridade/psicológico → prova social → conversão via WhatsApp.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><b>R$800</b><span>Investimento total (4 sem)</span></div>
+    <div class="hero-stat"><b>R$200</b><span>Por semana</span></div>
+    <div class="hero-stat"><b>13/08</b><span>Início</span></div>
+    <div class="hero-stat"><b>09/09</b><span>Fim do ciclo</span></div>
+  </div>
+</div>
+
+<div class="tabs" id="tabs">
+  <button class="tab-btn active" onclick="showPanel('s1', this)">Semana 1 · 13–19/08</button>
+  <button class="tab-btn" onclick="showPanel('s2', this)">Semana 2 · 20–26/08</button>
+  <button class="tab-btn" onclick="showPanel('s3', this)">Semana 3 · 27/08–02/09</button>
+  <button class="tab-btn" onclick="showPanel('s4', this)">Semana 4 · 03–09/09</button>
+  <button class="tab-btn" onclick="showPanel('atendimento', this)">Fluxo de Atendimento</button>
+</div>
+
+<div class="container">
+
+  <!-- SEMANA 1 -->
+  <div id="s1" class="panel active">
+    <div class="week-head">
+      <div class="tag">Semana 1 · Topo de funil</div>
+      <h2>Identificação + captura de lead qualificado</h2>
+      <p>Objetivo: atrair o candidato policial pela dor do erro de método e capturar lead com um checklist gratuito. Não vender ainda — qualificar.</p>
+    </div>
+
+    <div class="card">
+      <div class="ad-title">Criativo A — Reels "O erro que elimina 40% na 1ª fase"<span class="budget-pill">R$120</span></div>
+      <div class="ad-meta">Formato: Reels 9:16 · Objetivo: Tráfego/Engajamento · Público: candidatos PF/PRF/PC, 22–35 anos, interesses em concursos policiais</div>
+      <div class="label">Headline</div>
+      <div class="copy-block">Você pode estar cometendo esse erro agora, sem perceber.</div>
+      <div class="label">Corpo</div>
+      <div class="copy-block">9 em cada 10 candidatos que travam na 1ª fase da PF cometem o mesmo erro de estudo. Ele não tem a ver com esforço — tem a ver com método. Descubra qual é antes que o tempo jogue contra você.</div>
+      <div class="label">CTA</div>
+      <span class="cta-tag">Saiba mais</span>
+    </div>
+
+    <div class="card">
+      <div class="ad-title">Criativo B — Lead Magnet "Checklist dos 7 erros que travam sua aprovação"<span class="budget-pill">R$80</span></div>
+      <div class="ad-meta">Formato: Stories/Feed com link · Objetivo: Geração de cadastro (leads) · Público: retargeting de quem interagiu com o Criativo A + público frio similar</div>
+      <div class="label">Headline</div>
+      <div class="copy-block">Checklist gratuito: os 7 erros que travam sua aprovação na PF/PRF.</div>
+      <div class="label">Corpo</div>
+      <div class="copy-block">Baixe o checklist que mostra, passo a passo, se o seu jeito de estudar está te aproximando ou te afastando da aprovação. Leva 2 minutos para preencher.</div>
+      <div class="label">CTA</div>
+      <span class="cta-tag">Quero o checklist</span>
+    </div>
+
+    <div class="card">
+      <div class="ad-title">Checklist de execução — Semana 1</div>
+      <table class="checklist" data-week="s1">
+        <tr><th>Tarefa</th><th>Status</th></tr>
+        <tr><td>Roteiro/copy do Reels (Criativo A)</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+        <tr><td>Gravação e edição do Reels</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+        <tr><td>Montagem do checklist (PDF/lead magnet)</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+        <tr><td>Configuração das campanhas no Gerenciador de Anúncios</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+        <tr><td>Publicação dos 2 criativos</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+        <tr><td>Análise de resultados (dia 7)</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+      </table>
+      <div class="progress-wrap">
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-s1"></div></div>
+        <div class="progress-label" id="label-s1">0 de 6 concluídas</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEMANA 2 -->
+  <div id="s2" class="panel">
+    <div class="week-head">
+      <div class="tag">Semana 2 · Meio de funil</div>
+      <h2>Autoridade técnica + conexão psicológica</h2>
+      <p>Objetivo: construir autoridade com conteúdo de legislação atualizada e aprofundar a conexão emocional. Continua nutrindo os leads capturados na Semana 1.</p>
+    </div>
+
+    <div class="card">
+      <div class="ad-title">Criativo A — Carrossel "Atualização de legislação — o que muda na sua prova"<span class="budget-pill">R$110</span></div>
+      <div class="ad-meta">Formato: Carrossel Feed · Objetivo: Engajamento/Alcance · Público: interesses em concursos policiais + engajados na Semana 1</div>
+      <div class="label">Headline</div>
+      <div class="copy-block">A lei mudou — e isso cai na sua prova em 2026.</div>
+      <div class="label">Corpo</div>
+      <div class="copy-block">Enquanto você estuda pelo material antigo, a banca já atualizou o que cobra. Veja exatamente o que mudou e como isso impacta sua prova da PF/PRF.</div>
+      <div class="label">CTA</div>
+      <span class="cta-tag">Salvar</span>
+    </div>
+
+    <div class="card">
+      <div class="ad-title">Criativo B — Reels psicológico "Parar de se comparar"<span class="budget-pill">R$90</span></div>
+      <div class="ad-meta">Formato: Reels 9:16 · Objetivo: Engajamento (retargeting de leads da Semana 1 + público frio semelhante)</div>
+      <div class="label">Headline</div>
+      <div class="copy-block">Comparar sua evolução com a de outro candidato é o maior erro que você pode cometer.</div>
+      <div class="label">Corpo</div>
+      <div class="copy-block">Cada pessoa tem um ponto de partida diferente. O que importa não é estar na frente de alguém — é estar mais perto da aprovação do que você estava ontem.</div>
+      <div class="label">CTA</div>
+      <span class="cta-tag">Compartilhar</span>
+    </div>
+
+    <div class="card">
+      <div class="ad-title">Checklist de execução — Semana 2</div>
+      <table class="checklist" data-week="s2">
+        <tr><th>Tarefa</th><th>Status</th></tr>
+        <tr><td>Levantamento da atualização de legislação (fonte confiável)</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+        <tr><td>Design do carrossel (Criativo A)</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+        <tr><td>Gravação e edição do Reels psicológico (Criativo B)</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+        <tr><td>Configuração das campanhas</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+        <tr><td>Publicação dos 2 criativos</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+        <tr><td>Análise de resultados (dia 14)</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+      </table>
+      <div class="progress-wrap">
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-s2"></div></div>
+        <div class="progress-label" id="label-s2">0 de 6 concluídas</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEMANA 3 -->
+  <div id="s3" class="panel">
+    <div class="week-head">
+      <div class="tag">Semana 3 · Fundo de funil</div>
+      <h2>Prova social — a virada de chave</h2>
+      <p>Objetivo: ativar prova social forte com case real de aprovado com perfil semelhante ao ICP. É o conteúdo que mais converte lead frio em lead quente.</p>
+    </div>
+
+    <div class="card">
+      <div class="ad-title">Criativo A — Case "De vigilante a Agente da PF"<span class="budget-pill">R$130</span></div>
+      <div class="ad-meta">Formato: Carrossel narrativo (antes/depois em 5 slides) · Objetivo: Conversão (mensagens) · Público: leads capturados + retargeting de engajados</div>
+      <div class="label">Headline</div>
+      <div class="copy-block">Ele trabalhava como vigilante. Hoje é Agente da Polícia Federal.</div>
+      <div class="label">Corpo</div>
+      <div class="copy-block">Mesma rotina apertada, mesma dúvida se estava estudando certo. A diferença foi o método. Veja como ele saiu da estagnação e chegou à aprovação.</div>
+      <div class="label">CTA</div>
+      <span class="cta-tag">Quero saber como ele fez</span>
+    </div>
+
+    <div class="card">
+      <div class="ad-title">Criativo B — Quiz "Qual seu ponto mais fraco para a PF?"<span class="budget-pill">R$70</span></div>
+      <div class="ad-meta">Formato: Stories interativo (quiz) · Objetivo: Geração de lead qualificado · Público: retargeting de quem assistiu ao Criativo A</div>
+      <div class="label">Headline</div>
+      <div class="copy-block">Qual é o seu ponto mais fraco para a PF: cálculo, português ou legislação?</div>
+      <div class="label">Corpo</div>
+      <div class="copy-block">Responda em 30 segundos e receba um direcionamento personalizado de onde focar seus estudos essa semana.</div>
+      <div class="label">CTA</div>
+      <span class="cta-tag">Responder quiz</span>
+    </div>
+
+    <div class="card">
+      <div class="ad-title">Checklist de execução — Semana 3</div>
+      <table class="checklist" data-week="s3">
+        <tr><th>Tarefa</th><th>Status</th></tr>
+        <tr><td>Entrevista/coleta de depoimento do aprovado</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+        <tr><td>Design do carrossel narrativo (Criativo A)</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+        <tr><td>Montagem do quiz nos Stories (Criativo B)</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+        <tr><td>Configuração das campanhas</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+        <tr><td>Publicação dos 2 criativos</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+        <tr><td>Análise de resultados (dia 21)</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+      </table>
+      <div class="progress-wrap">
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-s3"></div></div>
+        <div class="progress-label" id="label-s3">0 de 6 concluídas</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEMANA 4 -->
+  <div id="s4" class="panel">
+    <div class="week-head">
+      <div class="tag">Semana 4 · Conversão</div>
+      <h2>Diagnóstico gratuito → WhatsApp</h2>
+      <p>Objetivo: converter os leads aquecidos nas 3 semanas anteriores em conversa qualificada no WhatsApp, usando o CTA de diagnóstico (não "fale conosco").</p>
+    </div>
+
+    <div class="card">
+      <div class="ad-title">Criativo A — "Descubra o que está errado no seu estudo"<span class="budget-pill">R$140</span></div>
+      <div class="ad-meta">Formato: Reels ou imagem estática · Objetivo: Conversão (WhatsApp) · Público: retargeting de leads das semanas 1–3 (prioridade máxima)</div>
+      <div class="label">Headline</div>
+      <div class="copy-block">Descubra o que está errado no seu estudo para a PF — diagnóstico gratuito.</div>
+      <div class="label">Corpo</div>
+      <div class="copy-block">Em uma conversa rápida no WhatsApp, mostramos exatamente onde está o gargalo do seu estudo e o que fazer para destravar. Sem compromisso.</div>
+      <div class="label">CTA</div>
+      <span class="cta-tag">Fazer diagnóstico grátis</span>
+    </div>
+
+    <div class="card">
+      <div class="ad-title">Criativo B — Reforço de prova social (repescagem)<span class="budget-pill">R$60</span></div>
+      <div class="ad-meta">Formato: Depoimento em vídeo curto · Objetivo: Conversão (WhatsApp) · Público: quem visualizou o case da Semana 3 mas não converteu</div>
+      <div class="label">Headline</div>
+      <div class="copy-block">"Eu achava que não tinha mais tempo. Eu estava errado."</div>
+      <div class="label">Corpo</div>
+      <div class="copy-block">Mais um relato de quem saiu do mesmo ponto que você está agora. Fale com a equipe e entenda se o seu caso é parecido.</div>
+      <div class="label">CTA</div>
+      <span class="cta-tag">Falar no WhatsApp</span>
+    </div>
+
+    <div class="card">
+      <div class="ad-title">Checklist de execução — Semana 4</div>
+      <table class="checklist" data-week="s4">
+        <tr><th>Tarefa</th><th>Status</th></tr>
+        <tr><td>Roteiro do criativo de diagnóstico (Criativo A)</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+        <tr><td>Seleção/edição do depoimento em vídeo (Criativo B)</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+        <tr><td>Configuração dos públicos de retargeting (semanas 1–3)</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+        <tr><td>Configuração das campanhas de conversão (WhatsApp)</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+        <tr><td>Publicação dos 2 criativos</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+        <tr><td>Análise final do ciclo (dia 28) e decisão de continuidade</td><td><select class="status pendente" onchange="setStatus(this)"><option value="pendente">Pendente</option><option value="andamento">Em andamento</option><option value="publicado">Publicado</option></select></td></tr>
+      </table>
+      <div class="progress-wrap">
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-s4"></div></div>
+        <div class="progress-label" id="label-s4">0 de 6 concluídas</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATENDIMENTO -->
+  <div id="atendimento" class="panel">
+    <div class="week-head">
+      <div class="tag">Fluxo de Atendimento</div>
+      <h2>Instagram/Anúncio → Lead → WhatsApp → Matrícula</h2>
+      <p>Fluxo válido para as 4 semanas. O objetivo é nunca deixar o lead esfriar: resposta rápida e diagnóstico antes de qualquer oferta.</p>
+    </div>
+
+    <div class="card">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <div class="flow-body"><b>Clique no anúncio</b><span>Lead vê o criativo e clica no CTA (checklist, quiz ou diagnóstico).</span></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <div class="flow-body"><b>Captura</b><span>Preenche formulário curto (nome + WhatsApp) ou é direcionado direto ao WhatsApp, dependendo do criativo.</span></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <div class="flow-body"><b>Primeiro contato (até 10 min)</b><span>Mensagem automática ou manual de boas-vindas, entregando o material prometido.</span></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">4</div>
+        <div class="flow-body"><b>Qualificação</b><span>Pergunta sobre concurso alvo, fase de preparo e principal dificuldade — sem empurrar venda ainda.</span></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">5</div>
+        <div class="flow-body"><b>Diagnóstico + oferta</b><span>Com base nas respostas, apresenta o método da EPQ como solução específica para o gargalo relatado.</span></div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">6</div>
+        <div class="flow-body"><b>Follow-up</b><span>Se não fechar na hora, retorno em 24h e depois em 4 dias, sempre agregando valor (novo conteúdo/case), nunca só "e aí, decidiu?".</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ad-title">Script — Primeira mensagem no WhatsApp</div>
+      <div class="script-box">Oi! Aqui é da EPQ 👋
+Vi que você baixou o checklist / respondeu o quiz sobre a preparação para PF/PRF.
+Antes de te enviar mais informações: você já está estudando pra algum edital específico ou ainda está na fase de organização?</div>
+    </div>
+
+    <div class="card">
+      <div class="ad-title">Script — Qualificação</div>
+      <div class="script-box">Perfeito! Me conta rapidinho:
+1) Qual concurso é o foco (PF, PRF ou PC)?
+2) Você já estuda há quanto tempo?
+3) Hoje, o que mais te trava: organização, conteúdo específico ou ansiedade com o prazo?</div>
+    </div>
+
+    <div class="card">
+      <div class="ad-title">Script — Diagnóstico + oferta</div>
+      <div class="script-box">Pelo que você me contou, seu principal gargalo é [resposta do lead]. Isso é muito comum em quem já estudou antes por conta própria — e é exatamente o que o método da EPQ resolve, porque é construído banca por banca, não genérico.
+Quer que eu te mostre como funciona e como encaixar isso na sua rotina?</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="note">Painel de trabalho — os status ficam salvos apenas durante esta sessão do navegador (sem envio a servidor).</div>
+
+<script>
+  function showPanel(id, btn) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function setStatus(select) {
+    select.className = 'status ' + select.value;
+    const table = select.closest('table');
+    updateProgress(table);
+  }
+
+  function updateProgress(table) {
+    const week = table.getAttribute('data-week');
+    const selects = table.querySelectorAll('select.status');
+    const total = selects.length;
+    const done = Array.from(selects).filter(s => s.value === 'publicado').length;
+    const pct = total ? Math.round((done / total) * 100) : 0;
+    document.getElementById('bar-' + week).style.width = pct + '%';
+    document.getElementById('label-' + week).textContent = done + ' de ' + total + ' concluídas';
+  }
+
+  document.querySelectorAll('table.checklist').forEach(updateProgress);
+</script>
+</body>
+</html>
