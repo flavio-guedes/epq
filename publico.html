@@ -1,0 +1,2089 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPQ — Análise Estratégica ICP + Auditoria de Conteúdo</title>
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #122040;
+    --navy-light: #1a3060;
+    --blue-accent: #1d6ef5;
+    --blue-glow: #3d8fff;
+    --gold: #f0a500;
+    --gold-light: #ffd060;
+    --white: #ffffff;
+    --off-white: #f4f6fb;
+    --gray-100: #e8ecf4;
+    --gray-200: #c8d0e0;
+    --gray-400: #8a96b0;
+    --gray-600: #4a5568;
+    --text-main: #0a1628;
+    --text-muted: #4a5568;
+    --red: #e53e3e;
+    --red-light: #fff5f5;
+    --yellow: #d69e2e;
+    --yellow-light: #fffff0;
+    --green: #276749;
+    --green-light: #f0fff4;
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--off-white);
+    color: var(--text-main);
+    line-height: 1.6;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    width: 100%;
+    min-height: 340px;
+    background: linear-gradient(135deg, #0a1628 0%, #1a2f5a 60%, #0d2146 100%);
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+  }
+  .hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    opacity: 0.55;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(10,22,40,0.92) 0%, rgba(10,22,40,0.5) 60%, rgba(10,22,40,0.2) 100%);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 48px 56px 44px;
+    max-width: 720px;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+  .hero-title {
+    font-size: 42px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+  }
+  .hero-title span { color: var(--gold); }
+  .hero-sub {
+    font-size: 15px;
+    color: rgba(255,255,255,0.72);
+    margin-bottom: 28px;
+    max-width: 480px;
+  }
+  .hero-badges {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .badge {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .badge-gold { background: var(--gold); color: #0a1628; }
+  .badge-outline { background: transparent; border: 1.5px solid rgba(255,255,255,0.35); color: rgba(255,255,255,0.85); }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+
+  /* ── NAV TABS ── */
+  .nav-tabs {
+    background: var(--navy);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 2px solid var(--navy-light);
+  }
+  .nav-tabs-inner {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 0 24px;
+  }
+  .nav-tabs-inner::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 16px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.2s, border-color 0.2s;
+    font-family: inherit;
+    letter-spacing: 0.03em;
+  }
+  .tab-btn:hover { color: rgba(255,255,255,0.85); }
+  .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* ── SECTIONS ── */
+  .section { padding: 56px 0 40px; display: none; }
+  .section.active { display: block; }
+
+  .section-header { margin-bottom: 36px; }
+  .section-num {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--blue-accent);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--navy);
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .section-desc { font-size: 15px; color: var(--text-muted); max-width: 640px; }
+
+  /* ── CARDS ── */
+  .card {
+    background: #fff;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--gray-100);
+    padding: 24px 28px;
+    margin-bottom: 20px;
+  }
+  .card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 12px;
+  }
+  .card-dark {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy-light);
+  }
+  .card-dark .card-title { color: var(--gold); }
+
+  /* ── GRID ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  @media (max-width: 780px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  }
+
+  /* ── RANKING TABLE ── */
+  .rank-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .rank-table th {
+    background: var(--navy);
+    color: rgba(255,255,255,0.7);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 12px 16px;
+    text-align: left;
+  }
+  .rank-table th:first-child { border-radius: var(--radius-sm) 0 0 0; }
+  .rank-table th:last-child { border-radius: 0 var(--radius-sm) 0 0; }
+  .rank-table td { padding: 12px 16px; border-bottom: 1px solid var(--gray-100); vertical-align: middle; }
+  .rank-table tr:last-child td { border-bottom: none; }
+  .rank-table tr:nth-child(even) td { background: var(--off-white); }
+  .rank-table tr.top-row td { background: #fffbec; }
+  .rank-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 50%;
+    font-weight: 700; font-size: 13px;
+    background: var(--gray-100); color: var(--navy);
+  }
+  .rank-num.gold { background: var(--gold); color: #0a1628; }
+  .rank-num.silver { background: #c0c8d8; color: #0a1628; }
+
+  /* ── SCORE BAR ── */
+  .score-bar-wrap { display: flex; align-items: center; gap: 10px; }
+  .score-bar {
+    flex: 1; height: 8px; background: var(--gray-100);
+    border-radius: 999px; overflow: hidden;
+  }
+  .score-bar-fill { height: 100%; border-radius: 999px; background: var(--blue-accent); }
+  .score-bar-fill.gold { background: var(--gold); }
+  .score-val { font-weight: 700; font-size: 13px; color: var(--navy); min-width: 28px; }
+
+  /* ── ICP HERO CARD ── */
+  .icp-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    border-radius: var(--radius-lg);
+    padding: 40px 44px;
+    color: #fff;
+    margin-bottom: 32px;
+    border: 1px solid var(--navy-light);
+    position: relative;
+    overflow: hidden;
+  }
+  .icp-hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: rgba(29,110,245,0.12);
+  }
+  .icp-hero-tag {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .icp-hero-name {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+  .icp-hero-desc { font-size: 15px; color: rgba(255,255,255,0.72); margin-bottom: 24px; }
+  .icp-attrs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .icp-attr { background: rgba(255,255,255,0.07); border-radius: var(--radius-sm); padding: 14px 16px; }
+  .icp-attr-label { font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+  .icp-attr-val { font-size: 18px; font-weight: 700; color: var(--gold); }
+  .icp-attr-sub { font-size: 12px; color: rgba(255,255,255,0.55); }
+
+  /* ── DOR CENTRAL ── */
+  .dor-central {
+    background: var(--navy);
+    border-radius: var(--radius-md);
+    padding: 32px 36px;
+    margin-bottom: 24px;
+    text-align: center;
+    color: #fff;
+  }
+  .dor-central-label { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+  .dor-central-text { font-size: 22px; font-weight: 700; line-height: 1.35; }
+
+  /* ── PILLS GROUP ── */
+  .pills-group { margin-bottom: 24px; }
+  .pills-group-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 10px;
+  }
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill {
+    padding: 6px 16px; border-radius: 999px; font-size: 13px; font-weight: 500;
+    border: 1px solid var(--gray-200); color: var(--text-main); background: #fff;
+  }
+  .pill.top { background: #fff8e6; border-color: #f0c040; color: #7a5800; font-weight: 700; }
+  .pill.blue { background: #eaf0ff; border-color: #b5c8f8; color: #1a3a8a; }
+  .pill.red { background: #fff0f0; border-color: #f8b5b5; color: #8a1a1a; }
+  .pill.green { background: #f0fff4; border-color: #b5f0c8; color: #1a6a3a; }
+
+  /* ── JTBD ── */
+  .jtbd-card {
+    background: #fff;
+    border: 2px solid var(--blue-accent);
+    border-radius: var(--radius-md);
+    padding: 28px 32px;
+    margin-bottom: 16px;
+  }
+  .jtbd-card.featured { background: var(--navy); border-color: var(--gold); }
+  .jtbd-card.featured p { color: rgba(255,255,255,0.85); }
+  .jtbd-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue-accent); margin-bottom: 10px; }
+  .jtbd-card.featured .jtbd-label { color: var(--gold); }
+  .jtbd-text { font-size: 17px; font-weight: 600; line-height: 1.5; color: var(--navy); }
+  .jtbd-card.featured .jtbd-text { color: #fff; }
+
+  /* ── AUDIT GRID ── */
+  .audit-item {
+    background: #fff;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--gray-100);
+    padding: 16px 20px;
+  }
+  .audit-label { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .audit-score {
+    font-size: 24px; font-weight: 800; color: var(--navy); margin-bottom: 6px;
+  }
+  .audit-score.low { color: var(--red); }
+  .audit-score.mid { color: var(--yellow); }
+  .audit-score.high { color: var(--green); }
+  .audit-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+  /* ── HERO SCORE ── */
+  .hero-score-big {
+    font-size: 80px; font-weight: 900; color: var(--gold);
+    line-height: 1; margin-bottom: 8px;
+  }
+
+  /* ── GAP TABLE ── */
+  .gap-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .gap-table th {
+    padding: 10px 14px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; background: var(--navy); color: rgba(255,255,255,0.7);
+    text-align: left;
+  }
+  .gap-table td { padding: 11px 14px; border-bottom: 1px solid var(--gray-100); vertical-align: top; }
+  .gap-table tr:nth-child(even) td { background: var(--off-white); }
+  .gap-table .el { font-weight: 600; color: var(--navy); }
+  .gap-table .desired { color: var(--green); }
+  .gap-table .current { color: var(--red); }
+  .gap-table .gap-val { color: var(--yellow); font-weight: 600; }
+
+  /* ── PROBLEMA TAGS ── */
+  .problema { display: flex; gap: 14px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid var(--gray-100); }
+  .problema:last-child { border-bottom: none; }
+  .prob-icon {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; flex-shrink: 0;
+  }
+  .prob-icon.red { background: var(--red-light); color: var(--red); }
+  .prob-icon.yellow { background: var(--yellow-light); color: var(--yellow); }
+  .prob-icon.green { background: var(--green-light); color: var(--green); }
+  .prob-text { font-size: 14px; color: var(--text-main); line-height: 1.5; }
+  .prob-title { font-weight: 700; margin-bottom: 2px; }
+
+  /* ── PILARES ── */
+  .pilar {
+    background: #fff;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--gray-100);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .pilar-header {
+    background: var(--navy);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .pilar-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--gold); color: var(--navy);
+    font-weight: 800; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .pilar-name { font-size: 17px; font-weight: 700; color: #fff; }
+  .pilar-obj { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 2px; }
+  .pilar-body { padding: 20px 24px; }
+  .pilar-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .meta-tag {
+    font-size: 11px; font-weight: 600; padding: 3px 10px;
+    border-radius: 999px; border: 1px solid var(--gray-200); color: var(--text-muted);
+    background: var(--off-white);
+  }
+  .pilar-exemplos { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+  .pilar-exemplos li { margin-bottom: 4px; }
+
+  /* ── MATRIX CONTENT ── */
+  .matrix-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .matrix-table th {
+    background: var(--navy); color: rgba(255,255,255,0.7);
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 10px 12px; text-align: left;
+  }
+  .matrix-table td { padding: 10px 12px; border-bottom: 1px solid var(--gray-100); vertical-align: top; }
+  .matrix-table tr:nth-child(even) td { background: var(--off-white); }
+  .format-badge {
+    display: inline-block; padding: 2px 8px; border-radius: 4px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
+    background: #eaf0ff; color: #1a3a8a;
+  }
+  .funil-badge {
+    display: inline-block; padding: 2px 8px; border-radius: 4px;
+    font-size: 10px; font-weight: 700;
+  }
+  .funil-topo { background: #e6f9ef; color: #166534; }
+  .funil-meio { background: #fff3d6; color: #7a5800; }
+  .funil-fundo { background: #fde8e8; color: #9b1c1c; }
+
+  /* ── ERROS / PSICOLOGICO ── */
+  .erro-item {
+    background: #fff; border: 1px solid var(--gray-100); border-radius: var(--radius-sm);
+    padding: 14px 18px; margin-bottom: 10px; font-size: 14px; line-height: 1.5;
+    border-left: 3px solid var(--blue-accent); color: var(--text-main);
+  }
+  .erro-item strong { color: var(--navy); }
+
+  /* ── FUNIL VISUAL ── */
+  .funil-visual {
+    display: flex; flex-direction: column; gap: 0;
+    max-width: 560px; margin: 0 auto;
+  }
+  .funil-etapa {
+    padding: 20px 28px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    clip-path: polygon(5% 0%, 95% 0%, 100% 100%, 0% 100%);
+  }
+  .funil-etapa:first-child { clip-path: polygon(0% 0%, 100% 0%, 95% 100%, 5% 100%); }
+  .funil-etapa-label { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+  .funil-etapa-desc { font-size: 12px; opacity: 0.8; font-weight: 400; }
+  .funil-t { background: #1a3f8a; color: #fff; }
+  .funil-m { background: #1d6ef5; color: #fff; }
+  .funil-f { background: var(--gold); color: var(--navy); }
+
+  /* ── POSICIONAMENTO ── */
+  .posic-card {
+    background: #fff; border: 1px solid var(--gray-100);
+    border-radius: var(--radius-md); overflow: hidden; margin-bottom: 20px;
+  }
+  .posic-header { padding: 18px 24px; }
+  .posic-num { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue-accent); margin-bottom: 6px; }
+  .posic-name { font-size: 20px; font-weight: 800; color: var(--navy); }
+  .posic-body { padding: 0 24px 20px; }
+  .posic-row { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--gray-100); font-size: 13px; }
+  .posic-row:last-child { border-bottom: none; }
+  .posic-row-label { font-weight: 700; color: var(--text-muted); width: 110px; flex-shrink: 0; }
+  .posic-chosen {
+    border: 2px solid var(--gold);
+    background: #fffbec;
+  }
+  .posic-chosen .posic-header { background: var(--navy); }
+  .posic-chosen .posic-num { color: var(--gold); }
+  .posic-chosen .posic-name { color: #fff; }
+
+  /* ── TOM DE VOZ ── */
+  .tom-before-after {
+    background: #fff; border: 1px solid var(--gray-100);
+    border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 12px;
+  }
+  .tom-before {
+    padding: 14px 18px; background: #fff5f5; border-bottom: 1px solid #fdd;
+    font-size: 13px; color: #9b1c1c;
+  }
+  .tom-after {
+    padding: 14px 18px; background: #f0fff4;
+    font-size: 13px; color: #166534; font-weight: 500;
+  }
+  .tom-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; opacity: 0.7; }
+
+  /* ── TOP 5 AÇÕES ── */
+  .acao-card {
+    background: #fff; border: 1px solid var(--gray-100);
+    border-radius: var(--radius-md); padding: 22px 26px; margin-bottom: 16px;
+    display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: start;
+  }
+  .acao-num {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--navy); color: var(--gold);
+    font-size: 20px; font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .acao-title { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .acao-meta { display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+  .acao-meta-item { font-size: 11px; color: var(--text-muted); }
+  .acao-meta-item strong { color: var(--text-main); }
+
+  /* ── PLANO 7 DIAS ── */
+  .semana { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; }
+  @media (max-width: 900px) { .semana { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 600px) { .semana { grid-template-columns: repeat(2, 1fr); } }
+  .dia-card {
+    background: #fff; border: 1px solid var(--gray-100);
+    border-radius: var(--radius-sm); overflow: hidden;
+  }
+  .dia-header {
+    background: var(--navy); padding: 10px 12px;
+    font-size: 12px; font-weight: 700; color: var(--gold); text-align: center;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .dia-body { padding: 12px; }
+  .dia-format { font-size: 10px; font-weight: 700; color: var(--blue-accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .dia-content { font-size: 12px; font-weight: 600; color: var(--navy); margin-bottom: 6px; line-height: 1.4; }
+  .dia-funil { font-size: 10px; color: var(--text-muted); }
+
+  /* ── CONCLUSÃO ── */
+  .conclusao-item {
+    display: flex; gap: 16px; align-items: flex-start;
+    padding: 18px 0; border-bottom: 1px solid var(--gray-100);
+  }
+  .conclusao-item:last-child { border-bottom: none; }
+  .conclusao-num {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--gold); color: var(--navy);
+    font-weight: 800; font-size: 14px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .conclusao-q { font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
+  .conclusao-a { font-size: 15px; font-weight: 600; color: var(--navy); }
+
+  /* ── REGRAS ── */
+  .regra-item {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 12px 0; border-bottom: 1px solid var(--gray-100);
+  }
+  .regra-item:last-child { border-bottom: none; }
+  .regra-n {
+    width: 28px; height: 28px; border-radius: 6px;
+    background: var(--navy); color: var(--gold);
+    font-weight: 800; font-size: 12px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .regra-text { font-size: 14px; color: var(--text-main); line-height: 1.5; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- HERO BANNER com imagem real -->
+<div class="hero">
+  <img class="hero-img" src="/mnt/user-data/uploads/Captura_de_Tela_2026-08-13_a_s_10_58_25.png" alt="EPQ — Estudando Por Questões" onerror="this.style.display='none'">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Análise Estratégica 2026</div>
+    <h1 class="hero-title">EPQ <span>Estudando<br>Por Questões</span></h1>
+    <p class="hero-sub">Diagnóstico completo de ICP, auditoria de conteúdo e plano editorial estratégico</p>
+    <div class="hero-badges">
+      <span class="badge badge-gold">ICP Policial PF/PRF/PC</span>
+      <span class="badge badge-outline">21 Partes</span>
+      <span class="badge badge-outline">30+ Conteúdos Mapeados</span>
+    </div>
+  </div>
+</div>
+
+<!-- NAV TABS -->
+<nav class="nav-tabs">
+  <div class="nav-tabs-inner">
+    <button class="tab-btn active" onclick="showSection('resumo', this)">Resumo</button>
+    <button class="tab-btn" onclick="showSection('ranking', this)">Ranking ICP</button>
+    <button class="tab-btn" onclick="showSection('icp', this)">ICP Prioritário</button>
+    <button class="tab-btn" onclick="showSection('dor', this)">Dor Central</button>
+    <button class="tab-btn" onclick="showSection('jtbd', this)">JTBD</button>
+    <button class="tab-btn" onclick="showSection('auditoria', this)">Auditoria</button>
+    <button class="tab-btn" onclick="showSection('banner', this)">Banner Hero</button>
+    <button class="tab-btn" onclick="showSection('gap', this)">Gap ICP</button>
+    <button class="tab-btn" onclick="showSection('problemas', this)">Problemas</button>
+    <button class="tab-btn" onclick="showSection('arquitetura', this)">Arquitetura</button>
+    <button class="tab-btn" onclick="showSection('matriz', this)">Matriz 30</button>
+    <button class="tab-btn" onclick="showSection('erros', this)">Erros Comuns</button>
+    <button class="tab-btn" onclick="showSection('psicologico', this)">Psicológico</button>
+    <button class="tab-btn" onclick="showSection('prova', this)">Prova Social</button>
+    <button class="tab-btn" onclick="showSection('funil', this)">Funil</button>
+    <button class="tab-btn" onclick="showSection('conversao', this)">Conversão</button>
+    <button class="tab-btn" onclick="showSection('posic', this)">Posicionamento</button>
+    <button class="tab-btn" onclick="showSection('tom', this)">Tom de Voz</button>
+    <button class="tab-btn" onclick="showSection('regras', this)">Regras</button>
+    <button class="tab-btn" onclick="showSection('top5', this)">Top 5 Ações</button>
+    <button class="tab-btn" onclick="showSection('semana', this)">7 Dias</button>
+    <button class="tab-btn" onclick="showSection('conclusao', this)">Conclusão</button>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- ══════════════════════════════════════════
+     1. RESUMO EXECUTIVO
+══════════════════════════════════════════ -->
+<div id="resumo" class="section active">
+  <div class="section-header">
+    <div class="section-num">01 — Resumo Executivo</div>
+    <h2 class="section-title">O que está errado e o que fazer</h2>
+    <p class="section-desc">A EPQ produz conteúdo, mas atrai o público errado. A comunicação atual fala de edital quando deveria falar de dor. Fala de oferta quando deveria falar de identidade.</p>
+  </div>
+
+  <div class="grid-3" style="margin-bottom: 24px;">
+    <div class="card" style="border-left: 4px solid var(--red);">
+      <div class="card-title" style="color: var(--red);">Problema Central</div>
+      <p style="font-size: 14px; color: var(--text-muted);">A comunicação é orientada a <strong>edital + oferta</strong>. Atrai candidatos genéricos de baixo ticket antes de qualificar intenção.</p>
+    </div>
+    <div class="card" style="border-left: 4px solid var(--gold);">
+      <div class="card-title" style="color: #7a5800;">Oportunidade</div>
+      <p style="font-size: 14px; color: var(--text-muted);">Candidato policial pré-edital tem o maior ticket, maior urgência e maior potencial de prova social no mercado.</p>
+    </div>
+    <div class="card" style="border-left: 4px solid var(--green);">
+      <div class="card-title" style="color: var(--green);">Solução</div>
+      <p style="font-size: 14px; color: var(--text-muted);">Migrar de "cursinho que anuncia vaga" para "marca editorial que entende o candidato antes da oferta".</p>
+    </div>
+  </div>
+
+  <div class="card card-dark" style="margin-bottom: 20px;">
+    <div class="card-title">A pergunta que esta análise responde</div>
+    <p style="font-size: 16px; color: rgba(255,255,255,0.85); line-height: 1.7; margin-bottom: 16px;">
+      "Se a EPQ continuar produzindo conteúdo como produz hoje, ela está atraindo o ICP que realmente quer?"
+    </p>
+    <p style="font-size: 15px; color: var(--gold); font-weight: 700;">
+      Resposta direta: Não. O conteúdo atual é bom para gerar alcance superficial. Ruim para qualificar o candidato policial de alto ticket.
+    </p>
+  </div>
+
+  <div class="grid-4">
+    <div style="background:#fff; border:1px solid var(--gray-100); border-radius: var(--radius-sm); padding: 18px 20px; text-align: center;">
+      <div style="font-size: 32px; font-weight: 900; color: var(--navy);">11</div>
+      <div style="font-size: 12px; color: var(--text-muted);">Personas mapeadas</div>
+    </div>
+    <div style="background:#fff; border:1px solid var(--gray-100); border-radius: var(--radius-sm); padding: 18px 20px; text-align: center;">
+      <div style="font-size: 32px; font-weight: 900; color: var(--gold);">1</div>
+      <div style="font-size: 12px; color: var(--text-muted);">ICP prioritário validado</div>
+    </div>
+    <div style="background:#fff; border:1px solid var(--gray-100); border-radius: var(--radius-sm); padding: 18px 20px; text-align: center;">
+      <div style="font-size: 32px; font-weight: 900; color: var(--blue-accent);">30+</div>
+      <div style="font-size: 12px; color: var(--text-muted);">Ideias de conteúdo</div>
+    </div>
+    <div style="background:#fff; border:1px solid var(--gray-100); border-radius: var(--radius-sm); padding: 18px 20px; text-align: center;">
+      <div style="font-size: 32px; font-weight: 900; color: var(--red);">6</div>
+      <div style="font-size: 12px; color: var(--text-muted);">Problemas críticos</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     2. RANKING ICP
+══════════════════════════════════════════ -->
+<div id="ranking" class="section">
+  <div class="section-header">
+    <div class="section-num">02 — Ranking de ICPs</div>
+    <h2 class="section-title">Qual persona vale mais para a EPQ</h2>
+    <p class="section-desc">Avaliação de 0–10 em oito dimensões estratégicas. Pontuação final = média ponderada.</p>
+  </div>
+
+  <div class="card" style="padding: 0; overflow: hidden;">
+    <table class="rank-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Persona</th>
+          <th>Fit EPQ</th>
+          <th>Receita</th>
+          <th>Urgência</th>
+          <th>Aquisição</th>
+          <th>Prova Social</th>
+          <th>Score Final</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="top-row">
+          <td><span class="rank-num gold">1</span></td>
+          <td><strong>Carreira Policial (PF/PRF/PC)</strong></td>
+          <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill gold" style="width:90%"></div></div><span class="score-val">9</span></div></td>
+          <td>9</td><td>9</td><td>8</td><td>9</td>
+          <td><span style="font-size:18px;font-weight:900;color:var(--gold)">9.0</span></td>
+        </tr>
+        <tr>
+          <td><span class="rank-num silver">2</span></td>
+          <td>Tribunais (TRF/TST/TRT)</td>
+          <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill" style="width:80%"></div></div><span class="score-val">8</span></div></td>
+          <td>9</td><td>8</td><td>7</td><td>8</td>
+          <td><span style="font-size:18px;font-weight:800;color:var(--navy)">8.0</span></td>
+        </tr>
+        <tr>
+          <td><span class="rank-num">3</span></td>
+          <td>OAB (Exame de Ordem)</td>
+          <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill" style="width:75%"></div></div><span class="score-val">7.5</span></div></td>
+          <td>8</td><td>9</td><td>7</td><td>8</td>
+          <td><span style="font-size:18px;font-weight:800;color:var(--navy)">7.9</span></td>
+        </tr>
+        <tr>
+          <td><span class="rank-num">4</span></td>
+          <td>Candidato que Trabalha</td>
+          <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill" style="width:75%"></div></div><span class="score-val">7</span></div></td>
+          <td>7</td><td>8</td><td>8</td><td>7</td>
+          <td><span style="font-size:18px;font-weight:800;color:var(--navy)">7.4</span></td>
+        </tr>
+        <tr>
+          <td><span class="rank-num">5</span></td>
+          <td>Já Comprou Cursos / Não Passou</td>
+          <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill" style="width:70%"></div></div><span class="score-val">7</span></div></td>
+          <td>7</td><td>9</td><td>6</td><td>9</td>
+          <td><span style="font-size:18px;font-weight:800;color:var(--navy)">7.3</span></td>
+        </tr>
+        <tr>
+          <td><span class="rank-num">6</span></td>
+          <td>Carreira Militar</td>
+          <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill" style="width:65%"></div></div><span class="score-val">7</span></div></td>
+          <td>6</td><td>7</td><td>7</td><td>7</td>
+          <td><span style="font-size:18px;font-weight:800;color:var(--navy)">6.8</span></td>
+        </tr>
+        <tr>
+          <td><span class="rank-num">7</span></td>
+          <td>Bancário</td>
+          <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill" style="width:60%"></div></div><span class="score-val">6</span></div></td>
+          <td>6</td><td>7</td><td>6</td><td>6</td>
+          <td><span style="font-size:18px;font-weight:800;color:var(--navy)">6.2</span></td>
+        </tr>
+        <tr>
+          <td><span class="rank-num">8</span></td>
+          <td>Candidato Pós-edital</td>
+          <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill" style="width:55%"></div></div><span class="score-val">5</span></div></td>
+          <td>5</td><td>5</td><td>7</td><td>6</td>
+          <td><span style="font-size:18px;font-weight:800;color:var(--navy)">5.6</span></td>
+        </tr>
+        <tr>
+          <td><span class="rank-num">9</span></td>
+          <td>Candidato Pouco Tempo</td>
+          <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill" style="width:50%"></div></div><span class="score-val">5</span></div></td>
+          <td>5</td><td>8</td><td>6</td><td>5</td>
+          <td><span style="font-size:18px;font-weight:800;color:var(--navy)">5.5</span></td>
+        </tr>
+        <tr>
+          <td><span class="rank-num">10</span></td>
+          <td>Administrativo (Municipal/Estadual)</td>
+          <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill" style="width:40%"></div></div><span class="score-val">4</span></div></td>
+          <td>3</td><td>5</td><td>6</td><td>4</td>
+          <td><span style="font-size:18px;font-weight:800;color:var(--navy)">4.4</span></td>
+        </tr>
+        <tr>
+          <td><span class="rank-num">11</span></td>
+          <td>Candidato Pré-edital Genérico</td>
+          <td><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill" style="width:35%"></div></div><span class="score-val">3</span></div></td>
+          <td>3</td><td>3</td><td>7</td><td>3</td>
+          <td><span style="font-size:18px;font-weight:800;color:var(--navy)">3.8</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     3. ICP PRIORITÁRIO
+══════════════════════════════════════════ -->
+<div id="icp" class="section">
+  <div class="section-header">
+    <div class="section-num">03 — ICP Prioritário</div>
+    <h2 class="section-title">Quem é o candidato ideal da EPQ</h2>
+  </div>
+
+  <div class="icp-hero">
+    <div class="icp-hero-tag">ICP Validado</div>
+    <div class="icp-hero-name">Candidato Policial PF/PRF/PC</div>
+    <div class="icp-hero-desc">Homem, 24–34 anos, ensino superior completo ou cursando, renda própria (emprego ou família), janela pré-edital de 6–12 meses. Estuda por motivação de identidade, não apenas financeira. Quer "vestir a farda", não apenas "passar na prova".</div>
+    <div class="icp-attrs">
+      <div class="icp-attr">
+        <div class="icp-attr-label">Ticket Médio</div>
+        <div class="icp-attr-val">R$ 1k–3k</div>
+        <div class="icp-attr-sub">Maior do portfólio EPQ</div>
+      </div>
+      <div class="icp-attr">
+        <div class="icp-attr-label">Urgência</div>
+        <div class="icp-attr-val">Extrema</div>
+        <div class="icp-attr-sub">Edital = pânico de perder</div>
+      </div>
+      <div class="icp-attr">
+        <div class="icp-attr-label">Prova Social</div>
+        <div class="icp-attr-val">Viral</div>
+        <div class="icp-attr-sub">1 aprovado = 100 contatos</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Por que este ICP?</div>
+      <ul style="font-size: 14px; color: var(--text-muted); line-height: 1.8; padding-left: 18px;">
+        <li>Maior retorno percebido (salário R$ 5k–20k+) = menor resistência a preço</li>
+        <li>Urgência sazonal extrema: compra rápido quando edital sai</li>
+        <li>Material genérico não resolve: especialização é diferencial real</li>
+        <li>Comunidade compacta: aprovado vira influenciador orgânico</li>
+        <li>Maturidade alta: não cai em promessas vazias, valoriza método</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color: var(--red);">Riscos desta escolha</div>
+      <ul style="font-size: 14px; color: var(--text-muted); line-height: 1.8; padding-left: 18px;">
+        <li><strong>Sazonalidade:</strong> sem edital, urgência cai bruscamente</li>
+        <li><strong>Concorrência:</strong> nichos policiais já têm players especializados</li>
+        <li><strong>Produção cara:</strong> conteúdo de legislação exige atualização constante</li>
+        <li><strong>Janela estreita:</strong> candidato policial pesquisa pouco depois do edital</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="border-left: 4px solid var(--gold);">
+    <div class="card-title">Refinamento do ICP (subsegmento mais preciso)</div>
+    <p style="font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 10px;">
+      "Candidato PF/PRF, 26–32 anos, que trabalha em área de segurança (vigilante, militar temporário, bombeiro civil) ou graduado em Direito/Administração, em pré-edital ativo, seguindo canais de concurso policial no Instagram e YouTube."
+    </p>
+    <p style="font-size: 13px; color: var(--text-muted);">
+      Este perfil específico: já investe em preparação (conhece o custo), tem renda, tem urgência identitária (quer progredir na área), e está em fase de pesquisa ativa de método — momento ideal de aquisição.
+    </p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     4. DOR CENTRAL
+══════════════════════════════════════════ -->
+<div id="dor" class="section">
+  <div class="section-header">
+    <div class="section-num">04 — Dor Central</div>
+    <h2 class="section-title">O que realmente move o candidato policial</h2>
+  </div>
+
+  <div class="dor-central">
+    <div class="dor-central-label">Dor Central — A que conecta tudo</div>
+    <div class="dor-central-text">"Tenho dedicação e vontade, mas sinto que estou estudando errado para uma prova que não perdoa — e o tempo está correndo contra mim."</div>
+  </div>
+
+  <div class="grid-2">
+    <div>
+      <div class="pills-group">
+        <div class="pills-group-label">Dores Funcionais (top 3 em negrito)</div>
+        <div class="pills">
+          <span class="pill top">Conteúdo genérico não cobre a prova</span>
+          <span class="pill top">Legislação desatualizada no material</span>
+          <span class="pill top">Sem método para fase física + cognitiva</span>
+          <span class="pill">Editais esporádicos dificultam planejamento</span>
+          <span class="pill">Falta de simulados no estilo da banca real</span>
+        </div>
+      </div>
+      <div class="pills-group">
+        <div class="pills-group-label">Dores Emocionais (top 3 em negrito)</div>
+        <div class="pills">
+          <span class="pill top red">Medo de perder a janela de idade</span>
+          <span class="pill top red">Pressão familiar: "vai passar quando?"</span>
+          <span class="pill top red">Sensação de que os outros sabem algo que ele não sabe</span>
+          <span class="pill red">Vergonha de reprovar de novo</span>
+          <span class="pill red">Dúvida se tem perfil para a carreira</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="pills-group">
+        <div class="pills-group-label">Desejos (top 3 em negrito)</div>
+        <div class="pills">
+          <span class="pill top green">Vestir a farda — identidade</span>
+          <span class="pill top green">Método que funcione para a banca certa</span>
+          <span class="pill top green">Sentir que está no caminho certo</span>
+          <span class="pill green">Estabilidade com propósito</span>
+          <span class="pill green">Ser referência entre amigos/família</span>
+        </div>
+      </div>
+      <div class="pills-group">
+        <div class="pills-group-label">Objeções (top 3 em negrito)</div>
+        <div class="pills">
+          <span class="pill top">Curso genérico não me preparou antes</span>
+          <span class="pill top">Material sempre desatualizado em legislação</span>
+          <span class="pill top">Por que este seria diferente?</span>
+          <span class="pill">Preço alto sem garantia de aprovação</span>
+          <span class="pill">Sem tempo para aulas ao vivo</span>
+        </div>
+      </div>
+      <div class="pills-group">
+        <div class="pills-group-label">Gatilhos (top 3 em negrito)</div>
+        <div class="pills">
+          <span class="pill top blue">Edital publicado</span>
+          <span class="pill top blue">Aprovado PF com perfil igual ao dele</span>
+          <span class="pill top blue">Conteúdo de legislação atualizada gratuita</span>
+          <span class="pill blue">Simulado no estilo Cebraspe/FGV</span>
+          <span class="pill blue">Ranking de aprovações por banca</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     5. JTBD
+══════════════════════════════════════════ -->
+<div id="jtbd" class="section">
+  <div class="section-header">
+    <div class="section-num">05 — Job to Be Done</div>
+    <h2 class="section-title">O que o candidato realmente "contrata" a EPQ para fazer</h2>
+  </div>
+
+  <div class="grid-2" style="margin-bottom: 24px;">
+    <div class="card">
+      <div class="card-title">Functional Job</div>
+      <p style="font-size: 14px; color: var(--text-muted);">"O candidato contrata a EPQ para <strong>ter acesso a um método especializado na banca da PF/PRF</strong>, com legislação atualizada, simulados reais e guia de preparação física + cognitiva integrado."</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Emotional Job</div>
+      <p style="font-size: 14px; color: var(--text-muted);">"Ele quer sentir que <strong>está fazendo o que um aprovado faz</strong> — que o método é o certo, que não está perdendo tempo, que a aprovação é uma consequência do processo, não uma sorte."</p>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom: 24px;">
+    <div class="card-title">Social Job</div>
+    <p style="font-size: 14px; color: var(--text-muted);">"Ele quer ser percebido como <strong>alguém sério, comprometido com a carreira policial</strong> — não mais como 'aquele que está tentando', mas como 'aquele que vai passar'."</p>
+  </div>
+
+  <div class="jtbd-card">
+    <div class="jtbd-label">Versão 1</div>
+    <div class="jtbd-text">"Quando começo a me preparar para o concurso da PF/PRF, eu quero um método que realmente cubra o que a banca cobra, para que eu não desperdice tempo com conteúdo que não vai cair."</div>
+  </div>
+
+  <div class="jtbd-card">
+    <div class="jtbd-label">Versão 2</div>
+    <div class="jtbd-text">"Quando o edital da PF sai e o prazo começa a correr, eu quero saber exatamente o que estudar e em que ordem, para que eu chegue na prova com confiança, não com ansiedade."</div>
+  </div>
+
+  <div class="jtbd-card featured">
+    <div class="jtbd-label">Versão Escolhida — Mais precisa</div>
+    <div class="jtbd-text">"Quando percebo que meu jeito de estudar não está funcionando para o nível da PF/PRF, eu quero um método que prove que já formou candidatos com o meu perfil, para que eu finalmente saia da estagnação e avance de ciclo."</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     6. AUDITORIA
+══════════════════════════════════════════ -->
+<div id="auditoria" class="section">
+  <div class="section-header">
+    <div class="section-num">06 — Auditoria do Conteúdo Atual</div>
+    <h2 class="section-title">O que a EPQ faz bem — e o que está quebrando resultado</h2>
+  </div>
+
+  <div class="grid-4" style="margin-bottom: 28px;">
+    <div class="audit-item">
+      <div class="audit-label">Posicionamento</div>
+      <div class="audit-score mid">5/10</div>
+      <div class="audit-desc">Existe, mas não é específico. "Estudando por questões" não diferencia de outros.</div>
+    </div>
+    <div class="audit-item">
+      <div class="audit-label">Clareza da Promessa</div>
+      <div class="audit-score low">4/10</div>
+      <div class="audit-desc">Promessa vaga. Falta um "para quem" e "em quanto tempo" explícitos.</div>
+    </div>
+    <div class="audit-item">
+      <div class="audit-label">ICP Percebido</div>
+      <div class="audit-score mid">5/10</div>
+      <div class="audit-desc">Parece falar com "candidato genérico". Policial não se sente representado.</div>
+    </div>
+    <div class="audit-item">
+      <div class="audit-label">Tom de Voz</div>
+      <div class="audit-score mid">6/10</div>
+      <div class="audit-desc">Profissional, mas frio. Sem personalidade editorial distinta.</div>
+    </div>
+    <div class="audit-item">
+      <div class="audit-label">Prova Social</div>
+      <div class="audit-score mid">6/10</div>
+      <div class="audit-desc">Existe (aprovados), mas formato é o padrão "parabéns" sem narrativa.</div>
+    </div>
+    <div class="audit-item">
+      <div class="audit-label">Storytelling</div>
+      <div class="audit-score low">3/10</div>
+      <div class="audit-desc">Praticamente ausente. Nenhum arco de transformação mapeado.</div>
+    </div>
+    <div class="audit-item">
+      <div class="audit-label">Educação</div>
+      <div class="audit-score mid">6/10</div>
+      <div class="audit-desc">Conteúdo existe, mas é genérico. Falta curadoria por banca/cargo.</div>
+    </div>
+    <div class="audit-item">
+      <div class="audit-label">Humanização</div>
+      <div class="audit-score low">4/10</div>
+      <div class="audit-desc">Pouco conteúdo emocional / psicológico. Fala mais de produto que de pessoa.</div>
+    </div>
+    <div class="audit-item">
+      <div class="audit-label">Compartilhável</div>
+      <div class="audit-score low">3/10</div>
+      <div class="audit-desc">Conteúdo de edital não é salvo nem compartilhado fora do momento.</div>
+    </div>
+    <div class="audit-item">
+      <div class="audit-label">Geração de Leads</div>
+      <div class="audit-score mid">5/10</div>
+      <div class="audit-desc">CTA existe, mas não qualifica. Leva qualquer um ao WhatsApp.</div>
+    </div>
+    <div class="audit-item">
+      <div class="audit-label">Diferenciação</div>
+      <div class="audit-score low">4/10</div>
+      <div class="audit-desc">Difícil distinguir do Gran, Estratégia ou outros players no feed.</div>
+    </div>
+    <div class="audit-item">
+      <div class="audit-label">Conversão</div>
+      <div class="audit-score mid">6/10</div>
+      <div class="audit-desc">Funciona quando edital sai, fraca fora do pico de urgência.</div>
+    </div>
+  </div>
+
+  <div class="card card-dark">
+    <div class="card-title">O problema não é falta de conteúdo. O problema é:</div>
+    <p style="font-size: 18px; font-weight: 700; color: var(--gold); margin-top: 8px; line-height: 1.5;">
+      Conteúdo que informa mas não identifica. Que alcança mas não qualifica. Que vende quando tem edital mas não constrói audiência quando não tem.
+    </p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     7. BANNER HERO
+══════════════════════════════════════════ -->
+<div id="banner" class="section">
+  <div class="section-header">
+    <div class="section-num">07 — Análise do Banner Hero</div>
+    <h2 class="section-title">O que a imagem comunica — e o que ela deveria</h2>
+  </div>
+
+  <div class="grid-2" style="margin-bottom: 28px;">
+    <div>
+      <img src="/mnt/user-data/uploads/Captura_de_Tela_2026-08-13_a_s_10_58_25.png" alt="Banner Hero EPQ" style="width: 100%; border-radius: var(--radius-md); border: 1px solid var(--gray-100);">
+    </div>
+    <div>
+      <div class="card" style="margin-bottom: 12px;">
+        <div class="card-title">Em 3 segundos comunica:</div>
+        <p style="font-size: 14px; color: var(--text-muted);">"Curso de concurso sério, para jovem periférico com ambição." A foto de um jovem negro em cenário urbano noturno transmite <strong>ascensão social</strong>, não apenas preparação para prova.</p>
+      </div>
+      <div class="card" style="margin-bottom: 12px;">
+        <div class="card-title">Para quem parece ser:</div>
+        <p style="font-size: 14px; color: var(--text-muted);">Candidato jovem, 20–28 anos, das periferias urbanas, motivado por mudança de vida. Lê-se como "curso para quem precisa sair da situação atual" — o que ativa desejo de ascensão.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Visual é:</div>
+        <div class="pills">
+          <span class="pill green">Motivacional</span>
+          <span class="pill blue">Editorial</span>
+          <span class="pill">Híbrido</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-top: 10px;">Não parece anúncio típico de cursinho. Tem estética cinematográfica.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <div class="card-title">O que o banner ativa bem</div>
+        <ul style="font-size: 14px; color: var(--text-muted); line-height: 1.8; padding-left: 18px;">
+          <li>Desejo de ascensão e mudança de vida</li>
+          <li>Identidade visual distinta dos concorrentes</li>
+          <li>Representatividade — conexão emocional imediata</li>
+          <li>Estágio de consciência: público não consciente do produto (topo do funil)</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title" style="color: var(--red);">O que o banner não ativa</div>
+        <ul style="font-size: 14px; color: var(--text-muted); line-height: 1.8; padding-left: 18px;">
+          <li>Não comunica especialização policial (PF/PRF)</li>
+          <li>Não ativa urgência de edital</li>
+          <li>Não cria prova social ou autoridade</li>
+          <li>Nome "EPQ — Estudando Por Questões" não traduz proposta de valor</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div style="background: var(--navy); border-radius: var(--radius-md); padding: 32px 36px; margin-top: 24px; text-align: center;">
+    <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 12px;">Hero Score</div>
+    <div class="hero-score-big">7/10</div>
+    <p style="font-size: 15px; color: rgba(255,255,255,0.72); max-width: 520px; margin: 0 auto; line-height: 1.6;">
+      A estética é forte e diferenciada. Perde pontos por não comunicar o ICP policial e por não entregar uma promessa clara em 3 segundos. <strong style="color: var(--gold);">Recomendação:</strong> manter a linguagem visual, adicionar copy de nicho policial sobre a imagem em versões de campanha.
+    </p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     8. GAP ICP
+══════════════════════════════════════════ -->
+<div id="gap" class="section">
+  <div class="section-header">
+    <div class="section-num">08 — Gap: ICP Desejado × ICP Atraído</div>
+    <h2 class="section-title">Quem a EPQ quer — vs. quem está chegando</h2>
+  </div>
+
+  <div class="card" style="padding: 0; overflow: hidden; margin-bottom: 24px;">
+    <table class="gap-table">
+      <thead>
+        <tr>
+          <th style="width: 140px;">Elemento</th>
+          <th>ICP Desejado</th>
+          <th>ICP Provavelmente Atraído Hoje</th>
+          <th>Gap</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="el">Perfil</td><td class="desired">Candidato policial, 26–34a, pré-edital ativo</td><td class="current">Candidato genérico, 20–30a, qualquer concurso</td><td class="gap-val">Alto</td></tr>
+        <tr><td class="el">Maturidade</td><td class="desired">Alta — já tentou, já investiu antes</td><td class="current">Baixa/média — iniciante ou disperso</td><td class="gap-val">Alto</td></tr>
+        <tr><td class="el">Urgência</td><td class="desired">Alta — edital próximo ou se preparando</td><td class="current">Variável — reage ao edital, não se prepara antes</td><td class="gap-val">Médio</td></tr>
+        <tr><td class="el">Renda</td><td class="desired">Média-alta — disposto a R$ 1k–3k</td><td class="current">Baixa/média — sensível a preço</td><td class="gap-val">Alto</td></tr>
+        <tr><td class="el">Dor</td><td class="desired">Especialização e método para banca específica</td><td class="current">Conteúdo gratuito e edital recém-saído</td><td class="gap-val">Crítico</td></tr>
+        <tr><td class="el">Linguagem</td><td class="desired">"PF", "PRF", "Cebraspe", "edital PF 2026"</td><td class="current">"Concurso aberto", "estudar para concurso"</td><td class="gap-val">Alto</td></tr>
+        <tr><td class="el">Intenção de Compra</td><td class="desired">Alta — busca solução, não informação</td><td class="current">Baixa — consome, não compra</td><td class="gap-val">Crítico</td></tr>
+        <tr><td class="el">Comportamento</td><td class="desired">Segue canais policiais, estuda diariamente</td><td class="current">Consome reels quando edital aparece</td><td class="gap-val">Alto</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid-2">
+    <div class="card" style="border-left: 4px solid var(--red);">
+      <div class="card-title" style="color: var(--red);">Quem está chegando hoje</div>
+      <p style="font-size: 14px; color: var(--text-muted); line-height: 1.7;">Candidato jovem, genérico, baixa renda, que chega pelo alcance do conteúdo de edital e some quando o momento passa. Baixo potencial de conversão. Alto custo de atenção.</p>
+    </div>
+    <div class="card" style="border-left: 4px solid var(--green);">
+      <div class="card-title" style="color: var(--green);">Quem precisa começar a chegar</div>
+      <p style="font-size: 14px; color: var(--text-muted); line-height: 1.7;">Candidato policial maduro, que já tentou sem sucesso, com renda, que procura método específico para PF/PRF/PC, disposto a investir porque entende o retorno.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     9. PROBLEMAS
+══════════════════════════════════════════ -->
+<div id="problemas" class="section">
+  <div class="section-header">
+    <div class="section-num">09 — Principais Problemas Editoriais</div>
+    <h2 class="section-title">O que está errado no conteúdo atual</h2>
+  </div>
+
+  <div class="card">
+    <div class="problema">
+      <div class="prob-icon red">🔴</div>
+      <div class="prob-text">
+        <div class="prob-title">CRÍTICO — Ausência de identidade do ICP policial</div>
+        O conteúdo atual não fala "PF" ou "PRF" de forma consistente. O candidato policial entra e não se reconhece. Saí imediatamente.
+      </div>
+    </div>
+    <div class="problema">
+      <div class="prob-icon red">🔴</div>
+      <div class="prob-text">
+        <div class="prob-title">CRÍTICO — Zero storytelling de aprovados</div>
+        Prova social existe mas no formato "parabéns ao nosso aluno X". Sem narrativa ANTES → CONFLITO → VIRADA → APROVAÇÃO, o aprovado não convence ninguém.
+      </div>
+    </div>
+    <div class="problema">
+      <div class="prob-icon red">🔴</div>
+      <div class="prob-text">
+        <div class="prob-title">CRÍTICO — Conteúdo dependente de edital</div>
+        Quando não tem edital, não tem conteúdo relevante. A audiência some. O algoritmo pune. O ciclo de reativação fica cada vez mais caro.
+      </div>
+    </div>
+    <div class="problema">
+      <div class="prob-icon yellow">🟡</div>
+      <div class="prob-text">
+        <div class="prob-title">IMPORTANTE — Conteúdo genérico demais</div>
+        "Dicas de estudo" para concurso genérico não diferencia da EPQ dos demais. Falta curadoria por banca, por cargo, por tipo de questão.
+      </div>
+    </div>
+    <div class="problema">
+      <div class="prob-icon yellow">🟡</div>
+      <div class="prob-text">
+        <div class="prob-title">IMPORTANTE — Pouco conteúdo psicológico</div>
+        O candidato sofre ansiedade, síndrome do impostor, comparação com outros. EPQ não fala sobre isso. Quem fala, domina a confiança do candidato.
+      </div>
+    </div>
+    <div class="problema">
+      <div class="prob-icon yellow">🟡</div>
+      <div class="prob-text">
+        <div class="prob-title">IMPORTANTE — CTA não qualifica</div>
+        "Fala com a gente no WhatsApp" leva todos ao mesmo funil. Sem qualificação, a equipe de vendas perde tempo com leads de R$ 0 de ticket potencial.
+      </div>
+    </div>
+    <div class="problema">
+      <div class="prob-icon" style="background:var(--green-light);color:var(--green);">🟢</div>
+      <div class="prob-text">
+        <div class="prob-title">OPORTUNIDADE — Conteúdo de erro e método</div>
+        "Erros comuns de quem estuda para PF" tem altíssimo potencial de salvamento, compartilhamento e qualificação. Nunca foi feito de forma sistemática.
+      </div>
+    </div>
+    <div class="problema">
+      <div class="prob-icon" style="background:var(--green-light);color:var(--green);">🟢</div>
+      <div class="prob-text">
+        <div class="prob-title">OPORTUNIDADE — Conteúdo entre editais</div>
+        "Como manter ritmo entre editais" "o que os aprovados fazem no ciclo sem data" — espaço vazio no mercado que a EPQ pode ocupar.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     10. ARQUITETURA EDITORIAL
+══════════════════════════════════════════ -->
+<div id="arquitetura" class="section">
+  <div class="section-header">
+    <div class="section-num">10 — Nova Arquitetura Editorial</div>
+    <h2 class="section-title">6 pilares com objetivo, persona e formato</h2>
+  </div>
+
+  <div class="pilar">
+    <div class="pilar-header">
+      <div class="pilar-num">1</div>
+      <div>
+        <div class="pilar-name">Atração — "Esse canal me entende"</div>
+        <div class="pilar-obj">Fazer o ICP policial parar o scroll e salvar o conteúdo</div>
+      </div>
+    </div>
+    <div class="pilar-body">
+      <div class="pilar-meta">
+        <span class="meta-tag">Policial pré-edital</span>
+        <span class="meta-tag">Topo do funil</span>
+        <span class="meta-tag">3–4x/semana</span>
+        <span class="meta-tag">Reels + Carrossel</span>
+      </div>
+      <ul class="pilar-exemplos">
+        <li>"7 erros que eliminaram candidatos na prova da PF 2024"</li>
+        <li>"Por que você treina forte mas ainda não passou nos físicos da PRF"</li>
+        <li>"Esse hábito de estudo parece produtivo mas te atrasa na PF"</li>
+        <li>"A diferença entre quem passa e quem não passa no Cebraspe não é esforço"</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="pilar">
+    <div class="pilar-header">
+      <div class="pilar-num">2</div>
+      <div>
+        <div class="pilar-name">Autoridade — "Eles sabem mais que eu"</div>
+        <div class="pilar-obj">Demonstrar domínio técnico específico (não genérico)</div>
+      </div>
+    </div>
+    <div class="pilar-body">
+      <div class="pilar-meta">
+        <span class="meta-tag">Policial + Tribunais</span>
+        <span class="meta-tag">Topo/Meio</span>
+        <span class="meta-tag">2x/semana</span>
+        <span class="meta-tag">Carrossel + Post estático</span>
+      </div>
+      <ul class="pilar-exemplos">
+        <li>"Mudanças na Lei de Abuso de Autoridade que caem na PF — atualizado 2026"</li>
+        <li>"Análise: como o Cebraspe montou a prova de Direito Administrativo nos últimos 3 concursos"</li>
+        <li>"Os 5 pontos de Português que mais caem em tribunais — com gráfico de frequência"</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="pilar">
+    <div class="pilar-header">
+      <div class="pilar-num">3</div>
+      <div>
+        <div class="pilar-name">Método — "Eu quero estudar assim"</div>
+        <div class="pilar-obj">Mostrar como a EPQ pensa, organiza e entrega resultado</div>
+      </div>
+    </div>
+    <div class="pilar-body">
+      <div class="pilar-meta">
+        <span class="meta-tag">Todos ICPs</span>
+        <span class="meta-tag">Meio do funil</span>
+        <span class="meta-tag">2x/semana</span>
+        <span class="meta-tag">Carrossel + Reels</span>
+      </div>
+      <ul class="pilar-exemplos">
+        <li>"Como montar seu cronograma de estudos para a PF em 6 meses trabalhando"</li>
+        <li>"A revisão que aprovados fazem nas últimas 2 semanas antes da prova"</li>
+        <li>"Por que questões > resumos — a lógica por trás do método EPQ"</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="pilar">
+    <div class="pilar-header">
+      <div class="pilar-num">4</div>
+      <div>
+        <div class="pilar-name">Prova Social — "Alguém como eu passou"</div>
+        <div class="pilar-obj">Mostrar transformação real com narrativa de identificação</div>
+      </div>
+    </div>
+    <div class="pilar-body">
+      <div class="pilar-meta">
+        <span class="meta-tag">Todos ICPs</span>
+        <span class="meta-tag">Fundo do funil</span>
+        <span class="meta-tag">1–2x/semana</span>
+        <span class="meta-tag">Reels + Carrossel</span>
+      </div>
+      <ul class="pilar-exemplos">
+        <li>Formato: "Antes → Conflito → Método → Virada → Aprovação" em 60s</li>
+        <li>"Ela trabalhou 8h/dia e passou na PC em 11 meses — veja o que mudou"</li>
+        <li>Case escrito: "De vigilante a Agente da PF — a história do Lucas"</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="pilar">
+    <div class="pilar-header">
+      <div class="pilar-num">5</div>
+      <div>
+        <div class="pilar-name">Psicológico — "Eles me entendem por dentro"</div>
+        <div class="pilar-obj">Criar identificação emocional e construir lealdade antes da oferta</div>
+      </div>
+    </div>
+    <div class="pilar-body">
+      <div class="pilar-meta">
+        <span class="meta-tag">Policial + Quem trabalha</span>
+        <span class="meta-tag">Topo/Meio</span>
+        <span class="meta-tag">2x/semana</span>
+        <span class="meta-tag">Reels + Stories</span>
+      </div>
+      <ul class="pilar-exemplos">
+        <li>"A ansiedade antes da prova não é fraqueza. É sinal de que você se importa."</li>
+        <li>"Por que comparar sua fase com a de outros candidatos é o maior erro"</li>
+        <li>"O que fazer quando parece que todos estão avançando menos você"</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="pilar">
+    <div class="pilar-header">
+      <div class="pilar-num">6</div>
+      <div>
+        <div class="pilar-name">Conversão — "Quero estudar com eles"</div>
+        <div class="pilar-obj">Levar o lead qualificado à matrícula com oferta contextualizada</div>
+      </div>
+    </div>
+    <div class="pilar-body">
+      <div class="pilar-meta">
+        <span class="meta-tag">Policial com edital próximo</span>
+        <span class="meta-tag">Fundo do funil</span>
+        <span class="meta-tag">1x/semana máx</span>
+        <span class="meta-tag">Stories + Post direto</span>
+      </div>
+      <ul class="pilar-exemplos">
+        <li>"Turma PF 2026 abrindo em [data] — [N] vagas disponíveis"</li>
+        <li>Simulado gratuito como isca qualificadora → WhatsApp</li>
+        <li>"Desconto para quem já estudou para PF e não passou — entenda por quê"</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     11. MATRIZ 30 CONTEÚDOS
+══════════════════════════════════════════ -->
+<div id="matriz" class="section">
+  <div class="section-header">
+    <div class="section-num">11 — Matriz de 30 Conteúdos</div>
+    <h2 class="section-title">Ideias estratégicas prontas para produção</h2>
+  </div>
+
+  <div class="card" style="padding: 0; overflow: auto;">
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Ideia</th>
+          <th>Persona</th>
+          <th>Formato</th>
+          <th>Funil</th>
+          <th>CTA</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>7 erros que eliminam candidatos na PF sem eles perceberem</td><td>Policial</td><td><span class="format-badge">Carrossel</span></td><td><span class="funil-badge funil-topo">Topo</span></td><td>Salvar + Comentar</td></tr>
+        <tr><td>2</td><td>PF vs PRF: qual o salário real com adicionais em 2026</td><td>Policial pré-edital</td><td><span class="format-badge">Carrossel</span></td><td><span class="funil-badge funil-topo">Topo</span></td><td>Compartilhar</td></tr>
+        <tr><td>3</td><td>Antes de passar na PF eu trabalhei 8h/dia por 14 meses [case]</td><td>Policial + Quem trabalha</td><td><span class="format-badge">Reels 60s</span></td><td><span class="funil-badge funil-fundo">Fundo</span></td><td>WhatsApp</td></tr>
+        <tr><td>4</td><td>Lei de Abuso de Autoridade — o que mudou e o que cai na prova</td><td>Policial</td><td><span class="format-badge">Post</span></td><td><span class="funil-badge funil-meio">Meio</span></td><td>Salvar</td></tr>
+        <tr><td>5</td><td>Seu cronograma de estudos para PF em 6 meses trabalhando</td><td>Policial + Quem trabalha</td><td><span class="format-badge">Carrossel</span></td><td><span class="funil-badge funil-meio">Meio</span></td><td>WhatsApp</td></tr>
+        <tr><td>6</td><td>A ansiedade antes da prova não é fraqueza — é sinal</td><td>Todos</td><td><span class="format-badge">Reels 30s</span></td><td><span class="funil-badge funil-topo">Topo</span></td><td>Compartilhar</td></tr>
+        <tr><td>7</td><td>Por que fazer 300 questões por dia pode estar te atrasando</td><td>Policial</td><td><span class="format-badge">Reels 45s</span></td><td><span class="funil-badge funil-topo">Topo</span></td><td>Salvar + Comentar</td></tr>
+        <tr><td>8</td><td>Como o Cebraspe monta prova de Dir. Administrativo — análise real</td><td>Policial + Tribunais</td><td><span class="format-badge">Carrossel</span></td><td><span class="funil-badge funil-meio">Meio</span></td><td>Salvar</td></tr>
+        <tr><td>9</td><td>Depoimento: "Reprovei 3x na PF. Na 4ª passei. Isso mudou."</td><td>Já comprou/não passou</td><td><span class="format-badge">Reels</span></td><td><span class="funil-badge funil-fundo">Fundo</span></td><td>WhatsApp</td></tr>
+        <tr><td>10</td><td>Simulado Cebraspe ao vivo — PF estilo real</td><td>Policial</td><td><span class="format-badge">Live</span></td><td><span class="funil-badge funil-meio">Meio</span></td><td>Lead/WhatsApp</td></tr>
+        <tr><td>11</td><td>Por que comparar sua fase com outros candidatos é armadilha</td><td>Todos</td><td><span class="format-badge">Carrossel</span></td><td><span class="funil-badge funil-topo">Topo</span></td><td>Compartilhar</td></tr>
+        <tr><td>12</td><td>O que aprovados fazem nas últimas 2 semanas antes da prova</td><td>Policial</td><td><span class="format-badge">Carrossel</span></td><td><span class="funil-badge funil-meio">Meio</span></td><td>Salvar</td></tr>
+        <tr><td>13</td><td>De vigilante a Agente da PF — narrativa em 5 slides</td><td>Policial</td><td><span class="format-badge">Carrossel</span></td><td><span class="funil-badge funil-fundo">Fundo</span></td><td>WhatsApp</td></tr>
+        <tr><td>14</td><td>Como estudar Português para tribunais sem ser formado em Direito</td><td>Tribunais</td><td><span class="format-badge">Reels</span></td><td><span class="funil-badge funil-topo">Topo</span></td><td>Lead magnet</td></tr>
+        <tr><td>15</td><td>Minha rotina de estudos trabalhando 8h — 4 ajustes que mudaram tudo</td><td>Quem trabalha</td><td><span class="format-badge">Reels</span></td><td><span class="funil-badge funil-topo">Topo</span></td><td>Salvar</td></tr>
+        <tr><td>16</td><td>Os 5 pontos de Direito Penal que mais caíram na PF dos últimos 5 anos</td><td>Policial</td><td><span class="format-badge">Post</span></td><td><span class="funil-badge funil-meio">Meio</span></td><td>Salvar</td></tr>
+        <tr><td>17</td><td>Quiz: qual é o seu perfil de candidato policial?</td><td>Policial pré-edital</td><td><span class="format-badge">Stories</span></td><td><span class="funil-badge funil-topo">Topo</span></td><td>Lead/WhatsApp</td></tr>
+        <tr><td>18</td><td>O que fazer quando parece que todos evoluem menos você</td><td>Todos</td><td><span class="format-badge">Reels</span></td><td><span class="funil-badge funil-topo">Topo</span></td><td>Comentar</td></tr>
+        <tr><td>19</td><td>Método EPQ: por que questões > resumos em qualquer carreira policial</td><td>Policial</td><td><span class="format-badge">Carrossel</span></td><td><span class="funil-badge funil-meio">Meio</span></td><td>WhatsApp</td></tr>
+        <tr><td>20</td><td>Turma PF 2026 — [N] vagas, abertura [data]</td><td>Policial com edital</td><td><span class="format-badge">Stories</span></td><td><span class="funil-badge funil-fundo">Fundo</span></td><td>WhatsApp direto</td></tr>
+        <tr><td>21</td><td>A pressão de família não é obstáculo — é combustível [psicológico]</td><td>Policial jovem</td><td><span class="format-badge">Reels</span></td><td><span class="funil-badge funil-topo">Topo</span></td><td>Compartilhar</td></tr>
+        <tr><td>22</td><td>OAB: o que a faculdade não te ensinou sobre a 2ª fase</td><td>OAB</td><td><span class="format-badge">Carrossel</span></td><td><span class="funil-badge funil-meio">Meio</span></td><td>Lead magnet</td></tr>
+        <tr><td>23</td><td>Verdade incômoda: você pode estar no concurso errado</td><td>Pré-edital</td><td><span class="format-badge">Reels</span></td><td><span class="funil-badge funil-topo">Topo</span></td><td>Comentar</td></tr>
+        <tr><td>24</td><td>Análise: candidatos aprovados na PF — o que eles tinham em comum</td><td>Policial</td><td><span class="format-badge">Carrossel</span></td><td><span class="funil-badge funil-meio">Meio</span></td><td>Salvar</td></tr>
+        <tr><td>25</td><td>Aprovados no TRF: 3 perguntas que eliminam a maioria dos candidatos</td><td>Tribunais</td><td><span class="format-badge">Post</span></td><td><span class="funil-badge funil-meio">Meio</span></td><td>Salvar</td></tr>
+        <tr><td>26</td><td>Você está estudando disciplina errada para PF — veja qual mais cai</td><td>Policial</td><td><span class="format-badge">Stories</span></td><td><span class="funil-badge funil-meio">Meio</span></td><td>Salvar</td></tr>
+        <tr><td>27</td><td>O candidato que reprovou 4x e descobriu o erro na correção da prova</td><td>Já comprou/não passou</td><td><span class="format-badge">Carrossel</span></td><td><span class="funil-badge funil-fundo">Fundo</span></td><td>WhatsApp</td></tr>
+        <tr><td>28</td><td>Flashcards de legislação policial — método EPQ em 30 dias</td><td>Policial + Pouco tempo</td><td><span class="format-badge">Reels</span></td><td><span class="funil-badge funil-meio">Meio</span></td><td>Lead magnet</td></tr>
+        <tr><td>29</td><td>O que os aprovados fazem entre editais que os não aprovados não fazem</td><td>Policial</td><td><span class="format-badge">Carrossel</span></td><td><span class="funil-badge funil-meio">Meio</span></td><td>Salvar</td></tr>
+        <tr><td>30</td><td>Plano de mentoria intensiva "Passa PF" — abertura de turma</td><td>Policial com edital</td><td><span class="format-badge">Post direto</span></td><td><span class="funil-badge funil-fundo">Fundo</span></td><td>WhatsApp urgência</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     12. ERROS COMUNS
+══════════════════════════════════════════ -->
+<div id="erros" class="section">
+  <div class="section-header">
+    <div class="section-num">12 — Banco de "Erros Comuns"</div>
+    <h2 class="section-title">15 verdades que o candidato policial precisa ouvir</h2>
+  </div>
+
+  <div class="erro-item"><strong>1.</strong> Você não está estudando pouco. Está estudando para a banca errada — e a PF não perdoa generalismo.</div>
+  <div class="erro-item"><strong>2.</strong> Fazer questão sem entender o erro é o mesmo que treinar a resposta errada até ela virar automática.</div>
+  <div class="erro-item"><strong>3.</strong> Quantidade de horas não substitui qualidade de método. Um aprovado que estudou 4h certas supera quem estudou 10h erradas.</div>
+  <div class="erro-item"><strong>4.</strong> Revisar o conteúdo que você já sabe é confortável. Estudar o que você não sabe é o que faz a diferença na prova.</div>
+  <div class="erro-item"><strong>5.</strong> Seu material de Direito Penal pode estar desatualizado — e uma lei nova pode valer 3 questões na PF.</div>
+  <div class="erro-item"><strong>6.</strong> Esperar o edital sair para começar a estudar é a receita para entrar em pânico nas 8 semanas seguintes.</div>
+  <div class="erro-item"><strong>7.</strong> Preparação física e preparação cognitiva não são separadas na PF. Quem trata assim, reprova numa das duas.</div>
+  <div class="erro-item"><strong>8.</strong> Estudar sem simular prova é como treinar corrida sem nunca cronometrar — você não sabe o que falta.</div>
+  <div class="erro-item"><strong>9.</strong> Seguir o cronograma de outro candidato é estudar para a aprovação dele, não para a sua.</div>
+  <div class="erro-item"><strong>10.</strong> Ansiedade antes da prova não é sinal de despreparo. É sinal de que você se importa. O problema é quando você deixa ela decidir.</div>
+  <div class="erro-item"><strong>11.</strong> A maioria das reprovações no Cebraspe não é por falta de conhecimento — é por falta de estratégia de prova.</div>
+  <div class="erro-item"><strong>12.</strong> Passar 3 horas num tema que vale 1 questão é o mesmo que ignorar um tema que vale 8.</div>
+  <div class="erro-item"><strong>13.</strong> O candidato que compara a própria evolução com a dos outros perde o foco — e perde a prova.</div>
+  <div class="erro-item"><strong>14.</strong> Vídeo aula longa não é estudo. É consumo. Estudo é praticar questões com o conteúdo fresco na memória.</div>
+  <div class="erro-item"><strong>15.</strong> Reprovar uma vez não define se você vai ser policial. Parar de entender por que reprovou, sim.</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     13. CONTEÚDO PSICOLÓGICO
+══════════════════════════════════════════ -->
+<div id="psicologico" class="section">
+  <div class="section-header">
+    <div class="section-num">13 — Conteúdo Psicológico</div>
+    <h2 class="section-title">5 temas × 10 abordagens cada</h2>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Ansiedade (10 conteúdos)</div>
+      <ol style="font-size: 13px; color: var(--text-muted); line-height: 2; padding-left: 18px;">
+        <li>"A semana antes da prova não é para aprender — é para respirar"</li>
+        <li>"Por que a ansiedade aumenta quanto mais você tenta controlar"</li>
+        <li>"3 sinais de que sua ansiedade virou sabotagem de estudos"</li>
+        <li>"O que fazer na noite antes da prova da PF [rotina real]"</li>
+        <li>"Quando o branco na prova acontece — e o que fazer em 30 segundos"</li>
+        <li>"A diferença entre candidato ansioso e candidato preparado não é calma"</li>
+        <li>"Por que ver outros candidatos avançando aumenta sua ansiedade"</li>
+        <li>"Ansiedade de estudo vs. ansiedade de prova — são problemas diferentes"</li>
+        <li>"Como parar de antecipar o fracasso e voltar a estudar agora"</li>
+        <li>"A pressão familiar não é o problema. É o que você faz com ela."</li>
+      </ol>
+    </div>
+    <div class="card">
+      <div class="card-title">Disciplina (10 conteúdos)</div>
+      <ol style="font-size: 13px; color: var(--text-muted); line-height: 2; padding-left: 18px;">
+        <li>"Disciplina não é força de vontade. É ambiente e rotina."</li>
+        <li>"Por que você consegue estudar no início do mês e perde ritmo no final"</li>
+        <li>"O problema não é falta de disciplina — é meta impossível"</li>
+        <li>"Como manter a rotina de estudos sem um edital para forçar urgência"</li>
+        <li>"3 ajustes de ambiente que aumentam o tempo de foco em 40%"</li>
+        <li>"O dia que você menos quer estudar é o mais importante de todos"</li>
+        <li>"Consistência de 2h/dia supera esporádico de 8h — dados reais"</li>
+        <li>"Por que candidatos que 'amam estudar' às vezes têm menos disciplina"</li>
+        <li>"O segredo dos aprovados que trabalhavam não era tempo — era sistema"</li>
+        <li>"Como recomeçar depois de uma semana sem estudar sem culpa"</li>
+      </ol>
+    </div>
+    <div class="card">
+      <div class="card-title">Falta de Tempo (10 conteúdos)</div>
+      <ol style="font-size: 13px; color: var(--text-muted); line-height: 2; padding-left: 18px;">
+        <li>"Como estudar para a PF trabalhando 8h por dia — cronograma real"</li>
+        <li>"O almoço de 30 minutos que pode valer 1 questão a mais na prova"</li>
+        <li>"Estudar no celular não é o mesmo que estudar errado — se feito certo"</li>
+        <li>"Por que ter 2h de qualidade supera 6h de volume sem foco"</li>
+        <li>"3 formas de não desperdiçar o estudo de final de semana"</li>
+        <li>"Como priorizar o que mais cai quando você não tem tempo para tudo"</li>
+        <li>"Micro revisão: 15 minutos que fazem você reter 3x mais conteúdo"</li>
+        <li>"O erro de quem tenta estudar cansado — e o que fazer em vez disso"</li>
+        <li>"Candidatos que aprovaram trabalhando: o que eles abriram mão"</li>
+        <li>"Como proteger 2h diárias de estudo sem negociar com ninguém"</li>
+      </ol>
+    </div>
+    <div class="card">
+      <div class="card-title">Reprovação (10 conteúdos)</div>
+      <ol style="font-size: 13px; color: var(--text-muted); line-height: 2; padding-left: 18px;">
+        <li>"Reprovar uma vez não é derrota. Reprovar sem entender o porquê, sim."</li>
+        <li>"O que fazer nas 48h depois de não passar — protocolo real"</li>
+        <li>"Como fazer a leitura da sua reprovação antes de começar o próximo ciclo"</li>
+        <li>"Por que quem reprova mais de 2x geralmente está errando na estratégia, não no conteúdo"</li>
+        <li>"A diferença entre desistir e recalibrar — e como saber qual é qual"</li>
+        <li>"O que candidatos reprovados fazem diferente dos aprovados na próxima tentativa"</li>
+        <li>"Reprovei na PF 3 vezes — o que cada reprovação me ensinou"</li>
+        <li>"Gabarito não é punição — é diagnóstico. Aprenda a ler."</li>
+        <li>"Por que sentir vergonha da reprovação é o maior obstáculo para o próximo ciclo"</li>
+        <li>"Como voltar a estudar depois da reprovação sem perder os primeiros 30 dias"</li>
+      </ol>
+    </div>
+    <div class="card" style="grid-column: 1 / -1;">
+      <div class="card-title">Comparação com Outros (10 conteúdos)</div>
+      <div class="grid-2">
+        <ol style="font-size: 13px; color: var(--text-muted); line-height: 2; padding-left: 18px;">
+          <li>"O candidato que estudou 10h/dia e reprovou. O que ele errou?"</li>
+          <li>"Por que ver aprovados no Instagram durante sua preparação pode ser sabotagem"</li>
+          <li>"Comparar horas de estudo com outros candidatos é o dado errado"</li>
+          <li>"Cada candidato tem uma trajetória diferente — a sua não precisa parecer a de ninguém"</li>
+          <li>"O que os 'candidatos do concurso' que você segue não mostram"</li>
+        </ol>
+        <ol start="6" style="font-size: 13px; color: var(--text-muted); line-height: 2; padding-left: 18px;">
+          <li>"Por que concurso não é corrida — é percurso individual"</li>
+          <li>"Aquele amigo que passou mais rápido: o que você pode aprender (sem se diminuir)"</li>
+          <li>"O loop de comparação que drena energia e paralisa o estudo"</li>
+          <li>"Quanto mais você olha para o lado, menos você avança para frente"</li>
+          <li>"Como usar a aprovação dos outros como referência, não como sentença"</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     14. PROVA SOCIAL
+══════════════════════════════════════════ -->
+<div id="prova" class="section">
+  <div class="section-header">
+    <div class="section-num">14 — Estratégia de Prova Social</div>
+    <h2 class="section-title">10 formatos que vendem sem parecer venda</h2>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Formato 1 — Arco Narrativo (Reels 60s)</div>
+      <p style="font-size: 13px; color: var(--text-muted); line-height: 1.7;">Estrutura: ANTES (quem era, o que tentou) → CONFLITO (o que não funcionava) → MÉTODO (o que mudou com a EPQ) → VIRADA (momento da aprovação) → HOJE (vida após).</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Formato 2 — Recorte de Depoimento com Contexto</div>
+      <p style="font-size: 13px; color: var(--text-muted); line-height: 1.7;">Não o print da mensagem. O vídeo do aluno falando 30s + contexto de quem era antes. "Ele tentou 3x. Passou na 4ª. Veja o que mudou."</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Formato 3 — Antes × Depois de Rotina</div>
+      <p style="font-size: 13px; color: var(--text-muted); line-height: 1.7;">Carrossel mostrando a rotina do aluno antes da EPQ vs. depois. Visual, comparativo, identificável.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Formato 4 — Mapa de Aprovados por Banca</div>
+      <p style="font-size: 13px; color: var(--text-muted); line-height: 1.7;">Infográfico: "EPQ formou X aprovados no Cebraspe nos últimos 3 anos — por cargo." Autoridade por dado.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Formato 5 — Série "Quem passou conta"</div>
+      <p style="font-size: 13px; color: var(--text-muted); line-height: 1.7;">Formato semanal: um aprovado diferente toda semana, cargo diferente, perfil diferente. Cobre todos os ICPs.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Formato 6 — Case Escrito Longo (para Instagram ou Blog)</div>
+      <p style="font-size: 13px; color: var(--text-muted); line-height: 1.7;">"A história completa do Lucas: de vigilante a Agente da PF em 14 meses." Profundidade que gera confiança.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Formato 7 — Reação do Professor ao Resultado</div>
+      <p style="font-size: 13px; color: var(--text-muted); line-height: 1.7;">Professor recebe a notícia da aprovação ao vivo (ou recria o momento). Humaniza o método, ativa emoção.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Formato 8 — "Fui eu" (Candidato fala direto)</div>
+      <p style="font-size: 13px; color: var(--text-muted); line-height: 1.7;">O aprovado grava sozinho, sem roteiro, falando para quem ainda está tentando. Autenticidade máxima.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Formato 9 — Dado + Nome (prova social por volume)</div>
+      <p style="font-size: 13px; color: var(--text-muted); line-height: 1.7;">"Nossos últimos 50 aprovados vieram dos seguintes cargos:" Lista com fotos. Prova social em escala.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Formato 10 — Aprovado responde dúvidas dos seguidores</div>
+      <p style="font-size: 13px; color: var(--text-muted); line-height: 1.7;">Live ou Stories com aluno aprovado respondendo perguntas da audiência. Prova social + engajamento + geração de lead.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     15. FUNIL
+══════════════════════════════════════════ -->
+<div id="funil" class="section">
+  <div class="section-header">
+    <div class="section-num">15 — Funil de Conteúdo</div>
+    <h2 class="section-title">O que publicar em cada etapa da jornada</h2>
+  </div>
+
+  <div style="max-width: 520px; margin: 0 auto 36px;">
+    <div class="funil-visual">
+      <div class="funil-etapa funil-t" style="padding: 22px 60px;">
+        <div class="funil-etapa-label">TOPO</div>
+        <div class="funil-etapa-desc">Atração — Identificação — Viralização</div>
+      </div>
+      <div class="funil-etapa funil-m" style="padding: 22px 80px;">
+        <div class="funil-etapa-label">MEIO</div>
+        <div class="funil-etapa-desc">Educação — Autoridade — Método</div>
+      </div>
+      <div class="funil-etapa funil-f" style="padding: 22px 100px;">
+        <div class="funil-etapa-label">FUNDO</div>
+        <div class="funil-etapa-desc">Conversão — Prova — Urgência</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="card" style="border-top: 3px solid var(--navy);">
+      <div class="card-title">TOPO — Fazer parar o scroll</div>
+      <ul style="font-size: 13px; color: var(--text-muted); line-height: 1.9; padding-left: 16px;">
+        <li>Erros comuns (policial)</li>
+        <li>Conteúdo psicológico (ansiedade, comparação)</li>
+        <li>Verdades incômodas sobre estudo</li>
+        <li>Comparativos de carreira (PF vs PRF)</li>
+        <li>Perguntas que geram debate nos comentários</li>
+      </ul>
+      <p style="font-size: 12px; margin-top: 10px; color: var(--blue-accent); font-weight: 600;">Formato: Reels 15–60s, Carrossel</p>
+    </div>
+    <div class="card" style="border-top: 3px solid var(--blue-accent);">
+      <div class="card-title">MEIO — Fazer pensar "eles me entendem"</div>
+      <ul style="font-size: 13px; color: var(--text-muted); line-height: 1.9; padding-left: 16px;">
+        <li>Análise de banca / cargo específico</li>
+        <li>Método EPQ explicado</li>
+        <li>Legislação atualizada</li>
+        <li>Cronogramas e estratégias</li>
+        <li>Simulados comentados ao vivo</li>
+      </ul>
+      <p style="font-size: 12px; margin-top: 10px; color: var(--blue-accent); font-weight: 600;">Formato: Carrossel, Lives, Conteúdo longo</p>
+    </div>
+    <div class="card" style="border-top: 3px solid var(--gold);">
+      <div class="card-title">FUNDO — Fazer agir agora</div>
+      <ul style="font-size: 13px; color: var(--text-muted); line-height: 1.9; padding-left: 16px;">
+        <li>Cases de aprovados com perfil do ICP</li>
+        <li>Oferta de vaga com urgência real</li>
+        <li>Diagnóstico gratuito (isca)</li>
+        <li>Simulado como lead magnet</li>
+        <li>Depoimentos emocionais recentes</li>
+      </ul>
+      <p style="font-size: 12px; margin-top: 10px; color: var(--gold); font-weight: 600;">Formato: Reels, Stories, Post direto</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     16. CONVERSÃO
+══════════════════════════════════════════ -->
+<div id="conversao" class="section">
+  <div class="section-header">
+    <div class="section-num">16 — Estratégia de Conversão</div>
+    <h2 class="section-title">Instagram → WhatsApp → Matrícula</h2>
+  </div>
+
+  <div class="card card-dark" style="margin-bottom: 24px;">
+    <div class="card-title">Jornada Mínima Proposta</div>
+    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 12px;">
+      <span style="background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 600;">Conteúdo de Topo</span>
+      <span style="color: var(--gold);">→</span>
+      <span style="background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 600;">Salvou / Seguiu</span>
+      <span style="color: var(--gold);">→</span>
+      <span style="background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 600;">Conteúdo de Meio</span>
+      <span style="color: var(--gold);">→</span>
+      <span style="background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 600;">Prova Social</span>
+      <span style="color: var(--gold);">→</span>
+      <span style="background: var(--gold); color: var(--navy); padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 700;">WhatsApp</span>
+      <span style="color: var(--gold);">→</span>
+      <span style="background: var(--gold); color: var(--navy); padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 700;">Matrícula</span>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="card" style="border-left: 4px solid var(--green);">
+      <div class="card-title" style="color: var(--green);">O que está bom</div>
+      <ul style="font-size: 13px; color: var(--text-muted); line-height: 1.8; padding-left: 16px;">
+        <li>CTA para WhatsApp existe</li>
+        <li>Time de vendas ativo</li>
+        <li>Funciona quando edital catalisa</li>
+      </ul>
+    </div>
+    <div class="card" style="border-left: 4px solid var(--red);">
+      <div class="card-title" style="color: var(--red);">O que está ruim</div>
+      <ul style="font-size: 13px; color: var(--text-muted); line-height: 1.8; padding-left: 16px;">
+        <li>CTA não qualifica — qualquer um chega</li>
+        <li>Sem isca para pré-edital (lead magnet)</li>
+        <li>Zero diagnóstico antes da oferta</li>
+      </ul>
+    </div>
+    <div class="card" style="border-left: 4px solid var(--gold);">
+      <div class="card-title" style="color: #7a5800;">O que está faltando</div>
+      <ul style="font-size: 13px; color: var(--text-muted); line-height: 1.8; padding-left: 16px;">
+        <li>Lead magnet policial (simulado, checklist)</li>
+        <li>Qualificador antes do WhatsApp</li>
+        <li>Sequência de nutrição por cargo</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 20px;">
+    <div class="card-title">Conteúdo que DEVE levar ao WhatsApp</div>
+    <div class="pills" style="margin-bottom: 14px;">
+      <span class="pill green">Cases de aprovados</span>
+      <span class="pill green">Oferta com edital próximo</span>
+      <span class="pill green">Simulado gratuito como isca</span>
+      <span class="pill green">Conteúdo de método + diagnóstico</span>
+    </div>
+    <div class="card-title" style="color: var(--red);">Conteúdo que NÃO deve levar ao WhatsApp</div>
+    <div class="pills">
+      <span class="pill red">Conteúdo psicológico (constrói audiência, não converte)</span>
+      <span class="pill red">Informação de edital (leads frios)</span>
+      <span class="pill red">Conteúdo de atração (topo)</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     17. POSICIONAMENTO
+══════════════════════════════════════════ -->
+<div id="posic" class="section">
+  <div class="section-header">
+    <div class="section-num">17 — Posicionamento</div>
+    <h2 class="section-title">3 possibilidades — 1 escolhida</h2>
+  </div>
+
+  <div class="posic-card">
+    <div class="posic-header">
+      <div class="posic-num">Opção 1</div>
+      <div class="posic-name">O especialista policial</div>
+    </div>
+    <div class="posic-body">
+      <div class="posic-row"><span class="posic-row-label">Promessa:</span><span>"A melhor preparação especializada para PF, PRF e PC do Brasil"</span></div>
+      <div class="posic-row"><span class="posic-row-label">Diferencial:</span><span>Profundidade de banca, legislação atualizada, aprovados comprovados</span></div>
+      <div class="posic-row"><span class="posic-row-label">ICP:</span><span>Candidato policial maduro, pré-edital</span></div>
+      <div class="posic-row"><span class="posic-row-label">Risco:</span><span>Limita o alcance — exclui outros ICPs lucrativoss</span></div>
+    </div>
+  </div>
+
+  <div class="posic-card posic-chosen">
+    <div class="posic-header">
+      <div class="posic-num">Opção 2 — ESCOLHIDA</div>
+      <div class="posic-name">"A marca que entende quem quer passar"</div>
+    </div>
+    <div class="posic-body">
+      <div class="posic-row"><span class="posic-row-label">Promessa:</span><span>"Estudar por questões não é método — é mentalidade. A EPQ forma candidatos que entendem a prova, não apenas repetem conteúdo."</span></div>
+      <div class="posic-row"><span class="posic-row-label">Diferencial:</span><span>Editorial + método + prova social narrativa + especialização por cargo</span></div>
+      <div class="posic-row"><span class="posic-row-label">ICP:</span><span>Policial como core, tribunais como expansão, "quem trabalha" como crossover</span></div>
+      <div class="posic-row"><span class="posic-row-label">Risco:</span><span>Exige consistência editorial — não funciona com conteúdo esporádico de edital</span></div>
+    </div>
+  </div>
+
+  <div class="posic-card">
+    <div class="posic-header">
+      <div class="posic-num">Opção 3</div>
+      <div class="posic-name">O método para quem já tentou</div>
+    </div>
+    <div class="posic-body">
+      <div class="posic-row"><span class="posic-row-label">Promessa:</span><span>"Para quem já gastou tempo e dinheiro em cursos e não passou — a EPQ descobre o que está errado"</span></div>
+      <div class="posic-row"><span class="posic-row-label">Diferencial:</span><span>Diagnóstico de erro, reposicionamento de método, prova social de "segundas chances"</span></div>
+      <div class="posic-row"><span class="posic-row-label">ICP:</span><span>Persona 11 — Já comprou e não passou</span></div>
+      <div class="posic-row"><span class="posic-row-label">Risco:</span><span>Posicionamento negativo pode repelir candidatos iniciantes</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     18. TOM DE VOZ
+══════════════════════════════════════════ -->
+<div id="tom" class="section">
+  <div class="section-header">
+    <div class="section-num">18 — Tom de Voz</div>
+    <h2 class="section-title">Como a EPQ deve soar — 10 exemplos antes/depois</h2>
+  </div>
+
+  <div class="grid-3" style="margin-bottom: 28px;">
+    <div class="card">
+      <div class="card-title">Palavras que devemos usar</div>
+      <div class="pills">
+        <span class="pill green">Direto</span><span class="pill green">Honesto</span><span class="pill green">Específico</span>
+        <span class="pill green">Método</span><span class="pill green">Prova</span><span class="pill green">Candidato</span>
+        <span class="pill green">Banca</span><span class="pill green">Você</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color: var(--red);">Palavras que devemos evitar</div>
+      <div class="pills">
+        <span class="pill red">Conteúdo incrível</span><span class="pill red">Exclusivo</span>
+        <span class="pill red">Oportunidade única</span><span class="pill red">Vagas limitadas</span>
+        <span class="pill red">Conquiste seu sonho</span><span class="pill red">Aproveite já</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Parâmetros de tom</div>
+      <table style="font-size: 13px; width: 100%;">
+        <tr><td style="color:var(--text-muted); padding: 4px 0;">Autoridade</td><td style="font-weight:700; text-align:right;">Alta</td></tr>
+        <tr><td style="color:var(--text-muted); padding: 4px 0;">Proximidade</td><td style="font-weight:700; text-align:right;">Média-alta</td></tr>
+        <tr><td style="color:var(--text-muted); padding: 4px 0;">Humor</td><td style="font-weight:700; text-align:right;">Baixo (sério)</td></tr>
+        <tr><td style="color:var(--text-muted); padding: 4px 0;">Urgência</td><td style="font-weight:700; text-align:right;">Apenas com edital</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="tom-before-after">
+    <div class="tom-before"><div class="tom-label">ANTES</div>"Edital da PF saiu! Não perca essa oportunidade incrível! Vagas limitadas! Clique aqui!"</div>
+    <div class="tom-after"><div class="tom-label">DEPOIS</div>"O edital da PF foi publicado. Se você está há mais de 6 meses em preparação, já está na frente de 70% dos inscritos. Veja o que ainda falta ajustar."</div>
+  </div>
+  <div class="tom-before-after">
+    <div class="tom-before"><div class="tom-label">ANTES</div>"Conquiste seu sonho de ser policial federal com a EPQ!"</div>
+    <div class="tom-after"><div class="tom-label">DEPOIS</div>"Passar na PF não é sorte — é método. A EPQ já formou X aprovados que tentaram sem sucesso antes."</div>
+  </div>
+  <div class="tom-before-after">
+    <div class="tom-before"><div class="tom-label">ANTES</div>"Parabéns ao nosso aluno João que foi aprovado!"</div>
+    <div class="tom-after"><div class="tom-label">DEPOIS</div>"João tentou 2 vezes sem passar. Na terceira, com método diferente, entrou na PF. Veja o que ele mudou."</div>
+  </div>
+  <div class="tom-before-after">
+    <div class="tom-before"><div class="tom-label">ANTES</div>"Dicas incríveis de como estudar melhor para concurso público!"</div>
+    <div class="tom-after"><div class="tom-label">DEPOIS</div>"O candidato que estudou 12h/dia e reprovou na PF estava fazendo uma coisa errada. Veja qual."</div>
+  </div>
+  <div class="tom-before-after">
+    <div class="tom-before"><div class="tom-label">ANTES</div>"Curso completo para toda a família de concursos com professores especializados!"</div>
+    <div class="tom-after"><div class="tom-label">DEPOIS</div>"Se você estuda para PF, PRF ou PC, o que cai na sua prova é diferente do que cai em outros concursos. E nós sabemos essa diferença."</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     19. REGRAS EDITORIAIS
+══════════════════════════════════════════ -->
+<div id="regras" class="section">
+  <div class="section-header">
+    <div class="section-num">19 — Regras Editoriais</div>
+    <h2 class="section-title">10 regras que todo conteúdo EPQ deve seguir</h2>
+  </div>
+
+  <div class="card">
+    <div class="regra-item"><div class="regra-n">1</div><div class="regra-text"><strong>Todo conteúdo tem uma função no funil.</strong> Antes de publicar, defina: é Topo (atrair), Meio (educar) ou Fundo (converter)? Se não souber, não publique.</div></div>
+    <div class="regra-item"><div class="regra-n">2</div><div class="regra-text"><strong>Nunca publique só porque saiu edital.</strong> Reação a edital sem conexão à dor do candidato gera alcance mas não converte. Edital é gatilho, não pauta.</div></div>
+    <div class="regra-item"><div class="regra-n">3</div><div class="regra-text"><strong>Todo conteúdo de prova social precisa ter narrativa.</strong> Proibido "Parabéns ao aluno X!". Obrigatório: quem era antes, o que mudou, o que sente agora.</div></div>
+    <div class="regra-item"><div class="regra-n">4</div><div class="regra-text"><strong>Conteúdo de topo não pode ter CTA de venda.</strong> CTA de topo = salvar, compartilhar, comentar. Venda é para fundo. Misturar os dois quebra o funil.</div></div>
+    <div class="regra-item"><div class="regra-n">5</div><div class="regra-text"><strong>Pelo menos 2 conteúdos por semana devem mencionar PF, PRF ou PC explicitamente.</strong> O ICP policial precisa se ver no feed. Se não aparecer, ele some.</div></div>
+    <div class="regra-item"><div class="regra-n">6</div><div class="regra-text"><strong>Conteúdo psicológico não pode ter oferta embutida.</strong> O candidato precisa sentir que a EPQ se importa com ele fora do contexto de venda.</div></div>
+    <div class="regra-item"><div class="regra-n">7</div><div class="regra-text"><strong>Legislação publicada precisa conectar à prova real.</strong> "Lei X foi atualizada" não basta. "Lei X foi atualizada — e isso vale 2 questões no Cebraspe" é conteúdo.</div></div>
+    <div class="regra-item"><div class="regra-n">8</div><div class="regra-text"><strong>Distribuição semanal mínima: 40% Topo, 40% Meio, 20% Fundo.</strong> Inverter isso é falar de venda para quem ainda não confia. Resultado: silêncio.</div></div>
+    <div class="regra-item"><div class="regra-n">9</div><div class="regra-text"><strong>Toda semana deve ter pelo menos 1 conteúdo salvável.</strong> Conteúdo que o candidato salva para rever é conteúdo que o algoritmo amplifica. Crie listas, cronogramas, checklists.</div></div>
+    <div class="regra-item"><div class="regra-n">10</div><div class="regra-text"><strong>O conteúdo fala para o candidato, não para o mercado de concursos.</strong> A EPQ não precisa comentar notícia de concurso. Precisa ser a resposta para a dor de quem está tentando passar.</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     20. TOP 5 AÇÕES
+══════════════════════════════════════════ -->
+<div id="top5" class="section">
+  <div class="section-header">
+    <div class="section-num">20 — Top 5 Ações para os Próximos 30 Dias</div>
+    <h2 class="section-title">O que fazer primeiro com esforço e impacto mapeados</h2>
+  </div>
+
+  <div class="acao-card">
+    <div class="acao-num">1</div>
+    <div>
+      <div class="acao-title">Criar 3 Reels "Erro Policial" — publicar 1 por semana</div>
+      <p style="font-size: 13px; color: var(--text-muted);">Conteúdo de atração policial puro. Alta chance de viralização, salvamento e seguimento do ICP correto. Produção simples: roteiro + fala de câmera ou narração sobre texto.</p>
+      <div class="acao-meta">
+        <span class="acao-meta-item"><strong>Esforço:</strong> Baixo</span>
+        <span class="acao-meta-item"><strong>Impacto:</strong> Alto</span>
+        <span class="acao-meta-item"><strong>Métrica:</strong> Alcance, salvamentos, novos seguidores policiais</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="acao-card">
+    <div class="acao-num">2</div>
+    <div>
+      <div class="acao-title">Publicar 2 cases de aprovados em formato narrativo (Reels 60s)</div>
+      <p style="font-size: 13px; color: var(--text-muted);">Estrutura: ANTES → CONFLITO → MÉTODO → APROVAÇÃO. Gravar com o aluno ou recriar com imagem + narração. Resultado imediato em conversão de fundo de funil.</p>
+      <div class="acao-meta">
+        <span class="acao-meta-item"><strong>Esforço:</strong> Médio</span>
+        <span class="acao-meta-item"><strong>Impacto:</strong> Alto</span>
+        <span class="acao-meta-item"><strong>Métrica:</strong> Mensagens no WhatsApp, cliques no link da bio</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="acao-card">
+    <div class="acao-num">3</div>
+    <div>
+      <div class="acao-title">Criar lead magnet policial: "Checklist de estudo PF — 8 semanas antes do edital"</div>
+      <p style="font-size: 13px; color: var(--text-muted);">PDF ou documento simples. Promovido via Stories com link. Captura e-mail/WhatsApp qualificado. Nutre o candidato policial no ciclo pré-edital.</p>
+      <div class="acao-meta">
+        <span class="acao-meta-item"><strong>Esforço:</strong> Médio</span>
+        <span class="acao-meta-item"><strong>Impacto:</strong> Alto</span>
+        <span class="acao-meta-item"><strong>Métrica:</strong> Leads capturados por semana</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="acao-card">
+    <div class="acao-num">4</div>
+    <div>
+      <div class="acao-title">Publicar 1 conteúdo de legislação policial atualizada por semana</div>
+      <p style="font-size: 13px; color: var(--text-muted);">Carrossel ou post. Sempre conectado à prova: "X mudou — e isso cai no Cebraspe assim". Constrói autoridade técnica e atrai seguidores de nicho policial.</p>
+      <div class="acao-meta">
+        <span class="acao-meta-item"><strong>Esforço:</strong> Baixo-Médio</span>
+        <span class="acao-meta-item"><strong>Impacto:</strong> Médio-Alto</span>
+        <span class="acao-meta-item"><strong>Métrica:</strong> Salvamentos, comentários técnicos</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="acao-card">
+    <div class="acao-num">5</div>
+    <div>
+      <div class="acao-title">Gravar 1 Reel psicológico por semana (ansiedade, comparação, disciplina)</div>
+      <p style="font-size: 13px; color: var(--text-muted);">Conteúdo de identificação profunda. Não vende, mas fideliza. O candidato que se identifica com o conteúdo psicológico da EPQ é o que vai comprar sem objeção.</p>
+      <div class="acao-meta">
+        <span class="acao-meta-item"><strong>Esforço:</strong> Baixo</span>
+        <span class="acao-meta-item"><strong>Impacto:</strong> Médio (acumula)</span>
+        <span class="acao-meta-item"><strong>Métrica:</strong> Comentários emocionais, compartilhamentos em grupos</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 16px; border-left: 4px solid var(--red);">
+    <div class="card-title" style="color: var(--red);">O Que Não Fazer nos Próximos 30 Dias</div>
+    <ul style="font-size: 14px; color: var(--text-muted); line-height: 2; padding-left: 18px;">
+      <li><strong>Não criar campanhas de tráfego pago sem lead magnet qualificador</strong> — gera lead frio e caro</li>
+      <li><strong>Não publicar conteúdo institucional</strong> — "conheça a EPQ" não atrai nem converte ICP policial</li>
+      <li><strong>Não repostar editais sem conexão à dor</strong> — informação sem contexto é ruído</li>
+      <li><strong>Não criar mais conteúdo genérico</strong> — volume sem nicho dilui posicionamento</li>
+      <li><strong>Não criar live antes de ter audiência qualificada</strong> — live sem audiência certa gera engajamento baixo e desânimo</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     21. PLANO 7 DIAS
+══════════════════════════════════════════ -->
+<div id="semana" class="section">
+  <div class="section-header">
+    <div class="section-num">22 — Plano Editorial de 7 Dias</div>
+    <h2 class="section-title">Semana prática de publicação com persona e objetivo</h2>
+  </div>
+
+  <div class="semana">
+    <div class="dia-card">
+      <div class="dia-header">SEG</div>
+      <div class="dia-body">
+        <div class="dia-format">Reels</div>
+        <div class="dia-content">"O erro que elimina 40% dos candidatos na PF ainda na 1ª fase"</div>
+        <div class="dia-funil">Persona: Policial | Topo | CTA: Salvar</div>
+      </div>
+    </div>
+    <div class="dia-card">
+      <div class="dia-header">TER</div>
+      <div class="dia-body">
+        <div class="dia-format">Carrossel</div>
+        <div class="dia-content">"Atualização Lei X — o que muda para a sua prova da PF em 2026"</div>
+        <div class="dia-funil">Persona: Policial | Meio | CTA: Salvar</div>
+      </div>
+    </div>
+    <div class="dia-card">
+      <div class="dia-header">QUA</div>
+      <div class="dia-body">
+        <div class="dia-format">Reels</div>
+        <div class="dia-content">"Por que comparar sua evolução com outros candidatos é o maior erro"</div>
+        <div class="dia-funil">Todos | Topo | CTA: Compartilhar</div>
+      </div>
+    </div>
+    <div class="dia-card">
+      <div class="dia-header">QUI</div>
+      <div class="dia-body">
+        <div class="dia-format">Carrossel</div>
+        <div class="dia-content">Case: "De vigilante a Agente da PF — antes e depois em 5 slides"</div>
+        <div class="dia-funil">Policial | Fundo | CTA: WhatsApp</div>
+      </div>
+    </div>
+    <div class="dia-card">
+      <div class="dia-header">SEX</div>
+      <div class="dia-body">
+        <div class="dia-format">Stories</div>
+        <div class="dia-content">Quiz: "Qual é o seu ponto mais fraco para a PF? [cálculo / português / legislação]"</div>
+        <div class="dia-funil">Policial | Topo/Meio | CTA: Lead</div>
+      </div>
+    </div>
+    <div class="dia-card">
+      <div class="dia-header">SÁB</div>
+      <div class="dia-body">
+        <div class="dia-format">Reels</div>
+        <div class="dia-content">"Minha rotina de estudos trabalhando 8h — o que funciona de verdade"</div>
+        <div class="dia-funil">Quem trabalha | Topo | CTA: Salvar</div>
+      </div>
+    </div>
+    <div class="dia-card">
+      <div class="dia-header">DOM</div>
+      <div class="dia-body">
+        <div class="dia-format">Post</div>
+        <div class="dia-content">Carrossel de método: "Como organizar 5h semanais para avançar na PF"</div>
+        <div class="dia-funil">Policial | Meio | CTA: Salvar</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     22. CONCLUSÃO EXECUTIVA
+══════════════════════════════════════════ -->
+<div id="conclusao" class="section">
+  <div class="section-header">
+    <div class="section-num">23 — Conclusão Executiva</div>
+    <h2 class="section-title">10 respostas diretas para o gestor</h2>
+  </div>
+
+  <div class="card">
+    <div class="conclusao-item">
+      <div class="conclusao-num">1</div>
+      <div><div class="conclusao-q">Qual é o ICP prioritário?</div><div class="conclusao-a">Candidato policial PF/PRF/PC, 26–34 anos, pré-edital ativo com janela de 6–12 meses, que já investiu em preparação antes.</div></div>
+    </div>
+    <div class="conclusao-item">
+      <div class="conclusao-num">2</div>
+      <div><div class="conclusao-q">Qual é a principal dor desse ICP?</div><div class="conclusao-a">"Tenho dedicação e vontade, mas sinto que estou estudando errado para uma prova que não perdoa — e o tempo está correndo."</div></div>
+    </div>
+    <div class="conclusao-item">
+      <div class="conclusao-num">3</div>
+      <div><div class="conclusao-q">Por que ele deveria escolher a EPQ?</div><div class="conclusao-a">Porque a EPQ entrega método específico por banca (não genérico), com aprovados que vieram de perfil idêntico ao dele — e isso é a única prova que convence quem já gastou dinheiro antes.</div></div>
+    </div>
+    <div class="conclusao-item">
+      <div class="conclusao-num">4</div>
+      <div><div class="conclusao-q">O que a comunicação atual faz bem?</div><div class="conclusao-a">Estética visual distinta (banner hero forte), base de aprovados existente, presença digital ativa. Tem os ingredientes, falta a receita.</div></div>
+    </div>
+    <div class="conclusao-item">
+      <div class="conclusao-num">5</div>
+      <div><div class="conclusao-q">O que está impedindo crescimento?</div><div class="conclusao-a">Conteúdo reativo (depende de edital), ausência de narrativa de prova social, ICP policial não se reconhece no feed, e conteúdo genérico que dilui posicionamento.</div></div>
+    </div>
+    <div class="conclusao-item">
+      <div class="conclusao-num">6</div>
+      <div><div class="conclusao-q">Qual deve ser a principal mudança editorial?</div><div class="conclusao-a">Parar de publicar conteúdo reativo de edital e começar a publicar conteúdo de identificação policial — erros, método, psicológico e prova social em narrativa.</div></div>
+    </div>
+    <div class="conclusao-item">
+      <div class="conclusao-num">7</div>
+      <div><div class="conclusao-q">Qual deve ser o principal território de conteúdo?</div><div class="conclusao-a">"O que candidatos aprovados na PF/PRF fizeram diferente" — erros, método, psicologia e transformação. Esse território é virgem no mercado.</div></div>
+    </div>
+    <div class="conclusao-item">
+      <div class="conclusao-num">8</div>
+      <div><div class="conclusao-q">Qual deve ser o principal CTA?</div><div class="conclusao-a">Lead magnet qualificador (checklist/simulado policial) → WhatsApp com diagnóstico. Não "fale conosco" — "descubra o que está errado no seu estudo para a PF".</div></div>
+    </div>
+    <div class="conclusao-item">
+      <div class="conclusao-num">9</div>
+      <div><div class="conclusao-q">Qual é a maior oportunidade não explorada?</div><div class="conclusao-a">Conteúdo entre editais — o que fazer, como manter ritmo, por que os aprovados não param. Esse conteúdo fideliza audiência e gera leads qualificados sem depender de edital.</div></div>
+    </div>
+    <div class="conclusao-item">
+      <div class="conclusao-num">10</div>
+      <div>
+        <div class="conclusao-q">Se você fosse responsável pela EPQ pelos próximos 90 dias, quais seriam suas 3 prioridades?</div>
+        <div class="conclusao-a">
+          <strong>1.</strong> Publicar 12 Reels de identificação policial (erros + psicológico) para construir audiência de nicho.<br>
+          <strong>2.</strong> Gravar e publicar 4 cases de aprovados em formato narrativo para ativar prova social de fundo de funil.<br>
+          <strong>3.</strong> Criar 1 lead magnet policial e uma sequência de 5 conteúdos de nutrição — para que o candidato policial chegue ao WhatsApp já qualificado, não frio.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-dark" style="text-align: center; padding: 36px 40px; margin-top: 8px;">
+    <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 14px;">Princípio final</div>
+    <p style="font-size: 20px; font-weight: 700; color: var(--gold); line-height: 1.5; max-width: 600px; margin: 0 auto;">
+      A EPQ não precisa falar mais alto. Precisa falar para a pessoa certa — e falar o que ela ainda não ouviu de lugar nenhum.
+    </p>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<div style="height: 48px;"></div>
+
+<script>
+  function showSection(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({ top: document.querySelector('.nav-tabs').offsetTop - 8, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
