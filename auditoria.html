@@ -1,0 +1,1958 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auditoria de Ativos Meta — EPQ</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --surface2: #1e2436;
+    --surface3: #252c40;
+    --border: #2a3350;
+    --border2: #3a4566;
+    --text: #e8eaf0;
+    --text2: #8e97b4;
+    --text3: #5a6485;
+    --accent: #4f8ef7;
+    --accent2: #2d5fcc;
+    --green: #22c55e;
+    --yellow: #f59e0b;
+    --orange: #f97316;
+    --red: #ef4444;
+    --purple: #a855f7;
+    --blue-tag: #3b82f6;
+    --gray: #6b7280;
+    --ronan: #3b82f6;
+    --flavio: #a855f7;
+    --prop: #ef4444;
+    --meta: #1e2436;
+    --radius: 10px;
+    --radius-sm: 6px;
+    --font: 'Inter', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', 'Fira Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* SIDEBAR */
+  #sidebar {
+    position: fixed; top: 0; left: 0; width: 220px; height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    padding: 20px 18px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-logo .logo-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px;
+    color: var(--text3); text-transform: uppercase; display: block; margin-bottom: 4px;
+  }
+  .sidebar-logo h2 {
+    font-size: 14px; font-weight: 700; color: var(--text);
+  }
+  .sidebar-logo span { color: var(--accent); }
+
+  .sidebar-nav { flex: 1; overflow-y: auto; padding: 10px 0; }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 18px; cursor: pointer;
+    color: var(--text2); font-size: 13px; font-weight: 500;
+    transition: all 0.15s; border-left: 3px solid transparent;
+    user-select: none;
+  }
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+  .nav-item.active {
+    background: var(--surface2); color: var(--accent);
+    border-left-color: var(--accent);
+  }
+  .nav-item .nav-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--border2); flex-shrink: 0;
+  }
+  .nav-item.done .nav-dot { background: var(--green); }
+  .nav-item.active .nav-dot { background: var(--accent); }
+  .nav-item .nav-check { color: var(--green); font-size: 11px; margin-left: auto; }
+
+  .sidebar-footer {
+    padding: 14px 18px;
+    border-top: 1px solid var(--border);
+  }
+  .progress-label { font-size: 11px; color: var(--text3); margin-bottom: 6px; display: flex; justify-content: space-between; }
+  .progress-bar-outer { height: 4px; background: var(--border); border-radius: 4px; }
+  .progress-bar-inner { height: 4px; background: var(--accent); border-radius: 4px; transition: width 0.4s ease; }
+
+  /* MAIN */
+  #main {
+    margin-left: 220px;
+    min-height: 100vh;
+    padding: 0 0 80px 0;
+  }
+
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 50;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 14px; }
+  .step-badge {
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 4px 10px;
+    font-size: 11px; font-weight: 700; color: var(--text2);
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .step-title { font-size: 15px; font-weight: 600; }
+
+  .topbar-actions { display: flex; gap: 8px; }
+  .btn {
+    padding: 7px 14px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border); background: var(--surface2);
+    color: var(--text2); font-size: 12px; font-weight: 600; cursor: pointer;
+    transition: all 0.15s; font-family: var(--font);
+    letter-spacing: 0.3px;
+  }
+  .btn:hover { border-color: var(--border2); color: var(--text); background: var(--surface3); }
+  .btn-primary { background: var(--accent2); border-color: var(--accent); color: #fff; }
+  .btn-primary:hover { background: var(--accent); }
+  .btn-danger { border-color: #7f1d1d; color: #ef4444; }
+  .btn-danger:hover { background: #1a0808; border-color: #ef4444; }
+
+  /* SECTION */
+  .section { padding: 32px 32px 0; display: none; }
+  .section.active { display: block; }
+
+  .section-header { margin-bottom: 24px; }
+  .section-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text3); margin-bottom: 6px;
+  }
+  .section-h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .section-sub { color: var(--text2); font-size: 14px; max-width: 580px; }
+
+  /* CONTEXT BOX */
+  .context-box {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 14px 18px;
+    display: flex; gap: 12px; align-items: flex-start;
+    margin-bottom: 28px;
+  }
+  .context-box .cb-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .context-box .cb-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); margin-bottom: 3px; }
+  .context-box .cb-text { font-size: 13px; color: var(--text2); }
+  .context-box.who .cb-icon { color: var(--accent); }
+  .context-box.what .cb-icon { color: var(--yellow); }
+
+  /* GRID */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-bottom: 28px; }
+
+  /* STATUS CARD */
+  .status-card {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px 18px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .status-card .sc-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text3); }
+  .status-card .sc-name { font-size: 14px; font-weight: 600; }
+  .status-card .sc-sub { font-size: 12px; color: var(--text3); font-family: var(--mono); }
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600;
+    width: fit-content;
+  }
+  .badge-verify { background: #312f10; color: var(--yellow); border: 1px solid #7c6c0a; }
+  .badge-unknown { background: #1a1a2e; color: var(--text3); border: 1px solid var(--border2); }
+  .badge-ok { background: #0d2a18; color: var(--green); border: 1px solid #155e2a; }
+  .badge-warn { background: #2a1a00; color: var(--orange); border: 1px solid #7a4c00; }
+  .badge-error { background: #2a0a0a; color: var(--red); border: 1px solid #7a1a1a; }
+
+  /* QUESTION BLOCK */
+  .qblock {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 22px 24px;
+    margin-bottom: 16px; transition: border-color 0.2s;
+  }
+  .qblock:hover { border-color: var(--border2); }
+  .qblock .qb-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--text3); margin-bottom: 8px;
+  }
+  .qblock .qb-q { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .qblock .qb-hint { font-size: 12px; color: var(--text3); margin-bottom: 16px; }
+
+  /* RADIO / CHECKBOX OPTIONS */
+  .options-grid { display: flex; flex-direction: column; gap: 8px; }
+  .opt-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px; border-radius: var(--radius-sm);
+    background: var(--surface3); border: 1px solid var(--border);
+    cursor: pointer; transition: all 0.15s; user-select: none;
+  }
+  .opt-item:hover { border-color: var(--border2); background: #202840; }
+  .opt-item.selected { border-color: var(--accent); background: #0d1a3a; }
+  .opt-item input[type="radio"],
+  .opt-item input[type="checkbox"] { display: none; }
+  .opt-radio {
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 2px solid var(--border2); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .opt-item.selected .opt-radio { border-color: var(--accent); background: var(--accent); }
+  .opt-radio::after {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: #fff; display: none;
+  }
+  .opt-item.selected .opt-radio::after { display: block; }
+  .opt-check {
+    width: 16px; height: 16px; border-radius: 4px;
+    border: 2px solid var(--border2); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: transparent;
+    transition: all 0.15s;
+  }
+  .opt-item.selected .opt-check { border-color: var(--accent); background: var(--accent); color: #fff; }
+  .opt-label { font-size: 13px; font-weight: 500; }
+  .opt-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* PERSON BADGE */
+  .person-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700;
+  }
+  .badge-ronan { background: #0d1f3a; color: var(--ronan); border: 1px solid #1e3d6e; }
+  .badge-flavio { background: #1a0d2e; color: var(--flavio); border: 1px solid #3d1e6e; }
+  .badge-prop { background: #2a0d0d; color: var(--prop); border: 1px solid #6e1e1e; }
+  .badge-meta { background: var(--surface3); color: var(--text2); border: 1px solid var(--border2); }
+
+  /* TEXT INPUT */
+  .field-group { margin-bottom: 16px; }
+  .field-label { font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 6px; display: block; }
+  .field-input {
+    width: 100%; background: var(--surface3); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px 14px;
+    color: var(--text); font-size: 13px; font-family: var(--font);
+    outline: none; transition: border-color 0.15s;
+  }
+  .field-input:focus { border-color: var(--accent); }
+  .field-input::placeholder { color: var(--text3); }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px; background: var(--border); margin: 28px 0;
+  }
+
+  /* ASSET HEADER */
+  .asset-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 18px; background: var(--surface3);
+    border-radius: var(--radius) var(--radius) 0 0;
+    border: 1px solid var(--border); border-bottom: none;
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--text2);
+  }
+  .asset-group { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 16px; }
+  .asset-group .asset-header { border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+  .asset-group .qblock {
+    border-radius: 0; border: none; border-top: 1px solid var(--border);
+    margin-bottom: 0;
+  }
+
+  /* FLOW NAV */
+  .flow-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 24px 32px; border-top: 1px solid var(--border);
+    margin-top: 32px;
+    position: sticky; bottom: 0;
+    background: linear-gradient(transparent, var(--bg) 30%);
+    z-index: 40;
+  }
+  .flow-nav .fn-info { font-size: 12px; color: var(--text3); }
+  .btn-lg {
+    padding: 10px 24px; font-size: 14px; font-weight: 700;
+    border-radius: var(--radius);
+  }
+
+  /* WARNING BOX */
+  .warning-box {
+    background: #1f1200; border: 1px solid #7a4c00;
+    border-radius: var(--radius); padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+  .warning-box .wb-head { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .warning-box .wb-icon { font-size: 20px; }
+  .warning-box .wb-title { font-size: 14px; font-weight: 700; color: var(--orange); }
+  .warning-box .wb-text { font-size: 13px; color: var(--text2); padding-left: 30px; }
+  .warning-check-list { list-style: none; padding-left: 30px; margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .warning-check-list li {
+    display: flex; gap: 10px; align-items: center;
+    font-size: 13px; color: var(--text2); cursor: pointer;
+    user-select: none;
+  }
+  .wcheck { width: 16px; height: 16px; border-radius: 4px; border: 2px solid var(--border2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; }
+  .wcheck.checked { border-color: var(--green); background: var(--green); color: #fff; }
+
+  /* EVIDENCE */
+  .evidence-card {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px 18px; margin-bottom: 12px;
+  }
+  .evidence-card .ev-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .ev-badge { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); background: var(--surface3); border-radius: 4px; padding: 2px 8px; }
+  .ev-del { font-size: 11px; color: var(--red); cursor: pointer; opacity: 0.7; }
+  .ev-del:hover { opacity: 1; }
+  .ev-text { font-size: 13px; color: var(--text); font-family: var(--mono); }
+
+  /* DIAGNOSIS */
+  .diag-box {
+    border-radius: var(--radius); padding: 22px 26px; margin-bottom: 20px;
+    border: 1px solid;
+  }
+  .diag-box.low { background: #0a1e12; border-color: #155e2a; }
+  .diag-box.medium { background: #1e1800; border-color: #7c6c0a; }
+  .diag-box.high { background: #1e0f00; border-color: #7a4c00; }
+  .diag-box.critical { background: #1e0808; border-color: #7a1a1a; }
+  .diag-box .db-tag { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .diag-box.low .db-tag { color: var(--green); }
+  .diag-box.medium .db-tag { color: var(--yellow); }
+  .diag-box.high .db-tag { color: var(--orange); }
+  .diag-box.critical .db-tag { color: var(--red); }
+  .diag-box .db-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+  .diag-box .db-text { font-size: 14px; color: var(--text2); }
+
+  /* ACTION ITEM */
+  .action-item {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px 20px; margin-bottom: 12px;
+  }
+  .action-item .ai-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .action-num { font-size: 12px; font-weight: 700; font-family: var(--mono); color: var(--text3); }
+  .action-item .ai-title { font-size: 14px; font-weight: 700; }
+  .action-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .action-meta-item { font-size: 12px; color: var(--text2); }
+  .action-meta-item b { color: var(--text3); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 2px; }
+  .action-reason { font-size: 13px; color: var(--text2); margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px; }
+
+  /* PRIO BADGES */
+  .prio-alta { color: var(--red); }
+  .prio-media { color: var(--yellow); }
+  .prio-baixa { color: var(--green); }
+
+  /* RESPONSIBLE SECTION */
+  .resp-section {
+    border-radius: var(--radius); overflow: hidden;
+    border: 1px solid; margin-bottom: 20px;
+  }
+  .resp-section.ronan { border-color: #1e3d6e; }
+  .resp-section.flavio { border-color: #3d1e6e; }
+  .resp-section.prop { border-color: #6e1e1e; }
+  .resp-section.meta-dep { border-color: var(--border2); }
+  .resp-header {
+    padding: 12px 20px; font-size: 12px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; display: flex; align-items: center; gap: 10px;
+  }
+  .resp-section.ronan .resp-header { background: #0d1f3a; color: var(--ronan); }
+  .resp-section.flavio .resp-header { background: #1a0d2e; color: var(--flavio); }
+  .resp-section.prop .resp-header { background: #2a0d0d; color: var(--prop); }
+  .resp-section.meta-dep .resp-header { background: var(--surface3); color: var(--text2); }
+  .resp-body { padding: 14px 20px; background: var(--surface2); }
+
+  /* PATH CARDS */
+  .path-card {
+    border-radius: var(--radius); border: 2px solid var(--border);
+    padding: 20px 24px; margin-bottom: 14px; cursor: pointer;
+    transition: all 0.2s; position: relative;
+  }
+  .path-card.recommended {
+    border-color: var(--accent);
+    background: #050e24;
+  }
+  .path-card .pc-tag { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
+  .path-card .pc-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .path-card .pc-text { font-size: 13px; color: var(--text2); }
+  .path-card .pc-rec {
+    position: absolute; top: -1px; right: 20px;
+    background: var(--accent); color: #fff;
+    font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    padding: 2px 10px; border-radius: 0 0 6px 6px;
+  }
+
+  /* SEPARATOR */
+  .sec-divider {
+    display: flex; align-items: center; gap: 12px; margin: 28px 0;
+  }
+  .sec-divider span { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); white-space: nowrap; }
+  .sec-divider::before, .sec-divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  /* RELATION VISUAL */
+  .relation-flow {
+    display: flex; flex-direction: column; gap: 6px; align-items: flex-start;
+    padding: 20px;
+  }
+  .rel-node {
+    background: var(--surface3); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 10px 16px;
+    font-size: 13px; font-weight: 600; min-width: 180px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .rel-node .rn-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .rel-arrow { font-size: 18px; color: var(--text3); margin-left: 16px; }
+  .rel-status { font-size: 11px; font-weight: 700; margin-left: auto; }
+  .rel-node.same { border-color: #155e2a; background: #0a1e12; }
+  .rel-node.diff { border-color: #7a4c00; background: #1e0f00; }
+  .rel-node.unknown { border-color: var(--border2); background: var(--surface3); }
+  .rel-node.missing { border-color: #7a1a1a; background: #1e0808; }
+
+  /* PRINT */
+  @media print {
+    #sidebar, .topbar, .flow-nav, .btn, #section-dashboard .card-grid { display: none !important; }
+    #main { margin-left: 0 !important; }
+    .section { display: block !important; }
+    body { background: #fff; color: #111; }
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+  /* INTRO */
+  .intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; }
+  .intro-card {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 18px 20px;
+  }
+  .intro-card .ic-icon { font-size: 24px; margin-bottom: 8px; }
+  .intro-card .ic-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .intro-card .ic-text { font-size: 12px; color: var(--text2); }
+
+  /* TAGS */
+  .tag {
+    display: inline-block; padding: 2px 8px; border-radius: 4px;
+    font-size: 11px; font-weight: 700;
+  }
+  .tag-blue { background: #0d1f3a; color: var(--accent); border: 1px solid #1e3d6e; }
+  .tag-purple { background: #1a0d2e; color: var(--purple); border: 1px solid #3d1e6e; }
+  .tag-red { background: #2a0a0a; color: var(--red); border: 1px solid #7a1a1a; }
+
+  /* REPORT FINAL */
+  .report-section {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 24px 28px; margin-bottom: 20px;
+  }
+  .report-section .rs-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text3); margin-bottom: 16px; padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .report-row {
+    display: flex; gap: 16px; padding: 8px 0;
+    border-bottom: 1px solid var(--border); font-size: 13px;
+  }
+  .report-row:last-child { border-bottom: none; }
+  .report-row .rr-key { color: var(--text3); min-width: 180px; font-weight: 600; }
+  .report-row .rr-val { color: var(--text); flex: 1; }
+
+  /* TOOLTIP */
+  .tooltip-wrap { position: relative; display: inline-flex; }
+  .tooltip-icon { width: 16px; height: 16px; border-radius: 50%; background: var(--surface3); border: 1px solid var(--border2); font-size: 10px; font-weight: 700; color: var(--text3); display: flex; align-items: center; justify-content: center; cursor: help; }
+  .tooltip-text {
+    position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+    background: var(--surface3); border: 1px solid var(--border2);
+    border-radius: 6px; padding: 8px 12px; font-size: 12px; color: var(--text2);
+    white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 0.15s;
+    z-index: 200;
+  }
+  .tooltip-wrap:hover .tooltip-text { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <span class="logo-tag">Meta · EPQ</span>
+    <h2>Auditoria de<br><span>Ativos</span></h2>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-item active" onclick="goTo('dashboard')" id="nav-dashboard">
+      <div class="nav-dot"></div> Dashboard
+    </div>
+    <div class="nav-item" onclick="goTo('bloqueio')" id="nav-bloqueio">
+      <div class="nav-dot"></div> ⚠️ Bloqueio de Segurança
+    </div>
+    <div class="nav-item" onclick="goTo('etapa1')" id="nav-etapa1">
+      <div class="nav-dot"></div> Etapa 1 · Acesso do Cliente
+    </div>
+    <div class="nav-item" onclick="goTo('etapa2')" id="nav-etapa2">
+      <div class="nav-dot"></div> Etapa 2 · Business Portfolio
+    </div>
+    <div class="nav-item" onclick="goTo('etapa3')" id="nav-etapa3">
+      <div class="nav-dot"></div> Etapa 3 · Proprietário
+    </div>
+    <div class="nav-item" onclick="goTo('etapa4')" id="nav-etapa4">
+      <div class="nav-dot"></div> Etapa 4 · Acessos
+    </div>
+    <div class="nav-item" onclick="goTo('etapa5')" id="nav-etapa5">
+      <div class="nav-dot"></div> Etapa 5 · Conta de Anúncios
+    </div>
+    <div class="nav-item" onclick="goTo('etapa6')" id="nav-etapa6">
+      <div class="nav-dot"></div> Etapa 6 · Relação dos Ativos
+    </div>
+    <div class="nav-item" onclick="goTo('evidencias')" id="nav-evidencias">
+      <div class="nav-dot"></div> Evidências
+    </div>
+    <div class="nav-item" onclick="goTo('diagnostico')" id="nav-diagnostico">
+      <div class="nav-dot"></div> Diagnóstico
+    </div>
+    <div class="nav-item" onclick="goTo('plano')" id="nav-plano">
+      <div class="nav-dot"></div> Plano de Ação
+    </div>
+    <div class="nav-item" onclick="goTo('relatorio')" id="nav-relatorio">
+      <div class="nav-dot"></div> Relatório Final
+    </div>
+  </div>
+  <div class="sidebar-footer">
+    <div class="progress-label">
+      <span>Progresso</span>
+      <span id="progress-pct">0%</span>
+    </div>
+    <div class="progress-bar-outer">
+      <div class="progress-bar-inner" id="progress-bar" style="width:0%"></div>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main id="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="step-badge" id="topbar-badge">VISÃO GERAL</div>
+      <div class="step-title" id="topbar-title">Dashboard da Auditoria</div>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn" onclick="saveData()">💾 Salvar</button>
+      <button class="btn" onclick="exportDiag()">📤 Exportar</button>
+      <button class="btn" onclick="window.print()">🖨️ Imprimir</button>
+      <button class="btn btn-danger" onclick="resetAll()">🔄 Resetar</button>
+    </div>
+  </div>
+
+  <!-- ======== DASHBOARD ======== -->
+  <div class="section active" id="section-dashboard">
+    <div class="section-header">
+      <div class="section-eyebrow">Auditoria em andamento</div>
+      <div class="section-h1">Ativos Meta — EPQ</div>
+      <div class="section-sub">Investigação estruturada para mapear propriedade, acesso e bloqueios. Nenhuma ação será tomada sem confirmação de proprietário.</div>
+    </div>
+
+    <div class="card-grid">
+      <div class="status-card">
+        <div class="sc-label">Instagram</div>
+        <div class="sc-name">Conta</div>
+        <div class="sc-sub">@estudandopquestoes</div>
+        <div class="status-badge badge-verify" id="sc-instagram">🟡 A verificar</div>
+      </div>
+      <div class="status-card">
+        <div class="sc-label">Página</div>
+        <div class="sc-name">Estudando P Questões</div>
+        <div class="sc-sub">facebook.com/…</div>
+        <div class="status-badge badge-verify" id="sc-pagina">🟡 A verificar</div>
+      </div>
+      <div class="status-card">
+        <div class="sc-label">Conta de Anúncios</div>
+        <div class="sc-name">Ronan / EPQ</div>
+        <div class="sc-sub">ID desconhecido</div>
+        <div class="status-badge badge-verify" id="sc-ads">🟡 A verificar</div>
+      </div>
+      <div class="status-card">
+        <div class="sc-label">Business Portfolio</div>
+        <div class="sc-name">Empresa</div>
+        <div class="sc-sub">A confirmar</div>
+        <div class="status-badge badge-unknown" id="sc-bp">❓ Desconhecido</div>
+      </div>
+      <div class="status-card">
+        <div class="sc-label">Proprietário dos Ativos</div>
+        <div class="sc-name">Proprietário</div>
+        <div class="sc-sub">Não confirmado</div>
+        <div class="status-badge badge-unknown" id="sc-prop">❓ Desconhecido</div>
+      </div>
+      <div class="status-card">
+        <div class="sc-label">Acesso da Agência</div>
+        <div class="sc-name">Flávio / Agência</div>
+        <div class="sc-sub">Status atual</div>
+        <div class="status-badge badge-unknown" id="sc-agencia">❓ A verificar</div>
+      </div>
+    </div>
+
+    <div class="intro-grid">
+      <div class="intro-card">
+        <div class="ic-icon">🔍</div>
+        <div class="ic-title">Objetivo da Auditoria</div>
+        <div class="ic-text">Identificar quem possui cada ativo, quem tem acesso, onde está o bloqueio e qual é o caminho correto para resolver.</div>
+      </div>
+      <div class="intro-card">
+        <div class="ic-icon">⚠️</div>
+        <div class="ic-title">Princípio Fundamental</div>
+        <div class="ic-text">Nunca presumir o proprietário. Acesso não significa propriedade. Investigar antes de agir.</div>
+      </div>
+      <div class="intro-card">
+        <div class="ic-icon">🟦</div>
+        <div class="ic-title">Ronan / Cliente</div>
+        <div class="ic-text">Verifica conta pessoal, Página, Instagram e Business Portfolio visível para ele.</div>
+      </div>
+      <div class="intro-card">
+        <div class="ic-icon">🟪</div>
+        <div class="ic-title">Flávio / Agência</div>
+        <div class="ic-text">Conduz a auditoria, analisa dados, mapeia ativos, verifica inconsistências e monta o plano.</div>
+      </div>
+    </div>
+
+    <div class="warning-box">
+      <div class="wb-head">
+        <span class="wb-icon">⛔</span>
+        <span class="wb-title">ATENÇÃO — Antes de começar</span>
+      </div>
+      <div class="wb-text">Não realizar nenhuma alteração nos ativos antes de completar a auditoria. Confirme os bloqueios de segurança na próxima etapa.</div>
+    </div>
+
+    <div class="flow-nav">
+      <div class="fn-info">Comece pelos bloqueios de segurança antes de preencher as etapas.</div>
+      <button class="btn btn-primary btn-lg" onclick="goTo('bloqueio')">Iniciar Auditoria →</button>
+    </div>
+  </div>
+
+  <!-- ======== BLOQUEIO DE SEGURANÇA ======== -->
+  <div class="section" id="section-bloqueio">
+    <div class="section-header">
+      <div class="section-eyebrow">Pré-requisito</div>
+      <div class="section-h1">⚠️ Bloqueio de Segurança</div>
+      <div class="section-sub">Confirme os itens abaixo antes de iniciar qualquer investigação ou ação nos ativos.</div>
+    </div>
+
+    <div class="context-box what">
+      <div class="cb-icon">🎯</div>
+      <div>
+        <div class="cb-label">Por que isso importa</div>
+        <div class="cb-text">Alterações realizadas sem confirmação de proprietário podem comprometer a recuperação dos ativos permanentemente. Este checklist deve ser revisado antes de qualquer ação.</div>
+      </div>
+    </div>
+
+    <div class="warning-box">
+      <div class="wb-head">
+        <span class="wb-icon">⚠️</span>
+        <span class="wb-title">Não recomendamos nenhuma alteração enquanto a propriedade não estiver confirmada.</span>
+      </div>
+      <ul class="warning-check-list" id="safety-checklist">
+        <li onclick="toggleSafety(this)">
+          <div class="wcheck">✓</div>
+          <span>Não criar novo Instagram</span>
+        </li>
+        <li onclick="toggleSafety(this)">
+          <div class="wcheck">✓</div>
+          <span>Não criar nova Página</span>
+        </li>
+        <li onclick="toggleSafety(this)">
+          <div class="wcheck">✓</div>
+          <span>Não excluir ativos existentes</span>
+        </li>
+        <li onclick="toggleSafety(this)">
+          <div class="wcheck">✓</div>
+          <span>Não remover administradores atuais</span>
+        </li>
+        <li onclick="toggleSafety(this)">
+          <div class="wcheck">✓</div>
+          <span>Não desconectar o Instagram da Página ou Business Portfolio</span>
+        </li>
+        <li onclick="toggleSafety(this)">
+          <div class="wcheck">✓</div>
+          <span>Não criar nova estrutura de Business Portfolio sem diagnóstico completo</span>
+        </li>
+        <li onclick="toggleSafety(this)">
+          <div class="wcheck">✓</div>
+          <span>Não transferir ativos sem identificar o proprietário atual</span>
+        </li>
+        <li onclick="toggleSafety(this)">
+          <div class="wcheck">✓</div>
+          <span>Reunir evidências antes de qualquer contato com a Meta</span>
+        </li>
+      </ul>
+    </div>
+
+    <div id="safety-status" style="display:none; background:#0a1e12; border:1px solid #155e2a; border-radius:var(--radius); padding:14px 20px; margin-bottom:20px;">
+      <span style="color:var(--green); font-weight:700;">✅ Todos os bloqueios confirmados.</span>
+      <span style="color:var(--text2); font-size:13px; margin-left:8px;">Pode avançar para a auditoria.</span>
+    </div>
+
+    <div class="flow-nav">
+      <button class="btn" onclick="goTo('dashboard')">← Voltar</button>
+      <button class="btn btn-primary btn-lg" onclick="goTo('etapa1')">Etapa 1 · Acesso do Cliente →</button>
+    </div>
+  </div>
+
+  <!-- ======== ETAPA 1 ======== -->
+  <div class="section" id="section-etapa1">
+    <div class="section-header">
+      <div class="section-eyebrow">Etapa 1 de 6</div>
+      <div class="section-h1">Acesso do Cliente</div>
+      <div class="section-sub">Mapear o que Ronan consegue visualizar e acessar na sua conta Meta.</div>
+    </div>
+
+    <div class="context-box who">
+      <div class="cb-icon">🟦</div>
+      <div>
+        <div class="cb-label">Quem deve responder</div>
+        <div class="cb-text"><strong>Ronan</strong> — verificar na sua conta pessoal Facebook/Meta. Flávio pode orientar o processo.</div>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qb-tag">Pergunta 1.1</div>
+      <div class="qb-q">Ronan consegue acessar sua conta Facebook/Meta?</div>
+      <div class="qb-hint">Considerar: login, autenticação em dois fatores, conta bloqueada.</div>
+      <div class="options-grid" id="q1-1">
+        <div class="opt-item" onclick="selectOpt('q1-1', this, '✅ Sim, acesso completo')">
+          <div class="opt-radio"></div>
+          <div class="opt-dot" style="background:var(--green)"></div>
+          <div class="opt-label">Sim, acesso completo</div>
+        </div>
+        <div class="opt-item" onclick="selectOpt('q1-1', this, '🟡 Sim, mas acesso limitado')">
+          <div class="opt-radio"></div>
+          <div class="opt-dot" style="background:var(--yellow)"></div>
+          <div class="opt-label">Sim, mas acesso limitado</div>
+        </div>
+        <div class="opt-item" onclick="selectOpt('q1-1', this, '🟠 Consegue visualizar, mas não administrar')">
+          <div class="opt-radio"></div>
+          <div class="opt-dot" style="background:var(--orange)"></div>
+          <div class="opt-label">Consegue visualizar, mas não administrar</div>
+        </div>
+        <div class="opt-item" onclick="selectOpt('q1-1', this, '🔴 Não consegue')">
+          <div class="opt-radio"></div>
+          <div class="opt-dot" style="background:var(--red)"></div>
+          <div class="opt-label">Não consegue acessar</div>
+        </div>
+        <div class="opt-item" onclick="selectOpt('q1-1', this, '⚪ Não sabemos')">
+          <div class="opt-radio"></div>
+          <div class="opt-dot" style="background:var(--gray)"></div>
+          <div class="opt-label">Não sabemos</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qb-tag">Pergunta 1.2</div>
+      <div class="qb-q">Ronan consegue visualizar a Página <em>Estudando P Questões</em>?</div>
+      <div class="qb-hint">Ir em: facebook.com → Páginas → verificar se a Página aparece como gerenciada.</div>
+      <div class="options-grid" id="q1-2">
+        <div class="opt-item" onclick="selectOpt('q1-2', this, 'Sim')"><div class="opt-radio"></div><div class="opt-label">Sim, aparece</div></div>
+        <div class="opt-item" onclick="selectOpt('q1-2', this, 'Não')"><div class="opt-radio"></div><div class="opt-label">Não aparece</div></div>
+        <div class="opt-item" onclick="selectOpt('q1-2', this, 'Parcialmente')"><div class="opt-radio"></div><div class="opt-label">Aparece parcialmente / acesso limitado</div></div>
+        <div class="opt-item" onclick="selectOpt('q1-2', this, 'Não sabemos')"><div class="opt-radio"></div><div class="opt-label">Não sabemos</div></div>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qb-tag">Pergunta 1.3</div>
+      <div class="qb-q">Ronan consegue visualizar o Instagram <em>@estudandopquestoes</em>?</div>
+      <div class="qb-hint">Verificar em: Configurações da Conta → Contas Vinculadas → Instagram.</div>
+      <div class="options-grid" id="q1-3">
+        <div class="opt-item" onclick="selectOpt('q1-3', this, 'Sim')"><div class="opt-radio"></div><div class="opt-label">Sim, aparece</div></div>
+        <div class="opt-item" onclick="selectOpt('q1-3', this, 'Não')"><div class="opt-radio"></div><div class="opt-label">Não aparece</div></div>
+        <div class="opt-item" onclick="selectOpt('q1-3', this, 'Parcialmente')"><div class="opt-radio"></div><div class="opt-label">Aparece parcialmente / acesso limitado</div></div>
+        <div class="opt-item" onclick="selectOpt('q1-3', this, 'Não sabemos')"><div class="opt-radio"></div><div class="opt-label">Não sabemos</div></div>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qb-tag">Observações · Etapa 1</div>
+      <div class="qb-q">Alguma observação sobre o acesso?</div>
+      <textarea class="field-input" id="obs-etapa1" rows="3" placeholder="Ex.: Ronan recebe erro ao tentar acessar o gerenciador de negócios, consegue ver a Página mas não editar..."></textarea>
+    </div>
+
+    <div class="flow-nav">
+      <button class="btn" onclick="goTo('bloqueio')">← Bloqueio</button>
+      <button class="btn btn-primary btn-lg" onclick="goTo('etapa2')">Etapa 2 · Business Portfolio →</button>
+    </div>
+  </div>
+
+  <!-- ======== ETAPA 2 ======== -->
+  <div class="section" id="section-etapa2">
+    <div class="section-header">
+      <div class="section-eyebrow">Etapa 2 de 6</div>
+      <div class="section-h1">Business Portfolio</div>
+      <div class="section-sub">Identificar se existe um Business Portfolio visível para Ronan e quais ativos ele contém.</div>
+    </div>
+
+    <div class="context-box who">
+      <div class="cb-icon">🟦</div>
+      <div>
+        <div class="cb-label">Quem deve verificar</div>
+        <div class="cb-text"><strong>Ronan</strong> — acessar business.facebook.com e verificar estrutura disponível.</div>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qb-tag">Pergunta 2.1</div>
+      <div class="qb-q">Existe algum Business Portfolio visível para Ronan?</div>
+      <div class="qb-hint">Acessar: business.facebook.com → verificar se aparece alguma empresa.</div>
+      <div class="options-grid" id="q2-1">
+        <div class="opt-item" onclick="selectOpt('q2-1', this, 'Sim, um'); showField('bp-fields')"><div class="opt-radio"></div><div class="opt-label">Sim, um Business Portfolio</div></div>
+        <div class="opt-item" onclick="selectOpt('q2-1', this, 'Sim, mais de um'); showField('bp-fields')"><div class="opt-radio"></div><div class="opt-label">Sim, mais de um</div></div>
+        <div class="opt-item" onclick="selectOpt('q2-1', this, 'Não'); hideField('bp-fields')"><div class="opt-radio"></div><div class="opt-label">Não aparece nenhum</div></div>
+        <div class="opt-item" onclick="selectOpt('q2-1', this, 'Não sabemos'); hideField('bp-fields')"><div class="opt-radio"></div><div class="opt-label">Não sabemos</div></div>
+      </div>
+    </div>
+
+    <div id="bp-fields" style="display:none">
+      <div class="qblock">
+        <div class="qb-tag">Dados do Business Portfolio</div>
+        <div class="qb-q">Informe os dados do(s) Business Portfolio(s) encontrado(s).</div>
+        <div class="field-group">
+          <label class="field-label">Nome do Business Portfolio</label>
+          <input class="field-input" id="bp-nome" type="text" placeholder="Ex.: EPQ, Estudando P Questões, Ronan...">
+        </div>
+        <div class="field-group">
+          <label class="field-label">ID do Business Portfolio</label>
+          <input class="field-input" id="bp-id" type="text" placeholder="Ex.: 1234567890">
+        </div>
+      </div>
+
+      <div class="qblock">
+        <div class="qb-tag">Pergunta 2.2</div>
+        <div class="qb-q">O Instagram <em>@estudandopquestoes</em> aparece nesse Business Portfolio?</div>
+        <div class="options-grid" id="q2-2">
+          <div class="opt-item" onclick="selectOpt('q2-2', this, 'Sim')"><div class="opt-radio"></div><div class="opt-label">Sim</div></div>
+          <div class="opt-item" onclick="selectOpt('q2-2', this, 'Não')"><div class="opt-radio"></div><div class="opt-label">Não</div></div>
+          <div class="opt-item" onclick="selectOpt('q2-2', this, 'Não sabemos')"><div class="opt-radio"></div><div class="opt-label">Não sabemos</div></div>
+        </div>
+      </div>
+
+      <div class="qblock">
+        <div class="qb-tag">Pergunta 2.3</div>
+        <div class="qb-q">A Página <em>Estudando P Questões</em> aparece nesse Business Portfolio?</div>
+        <div class="options-grid" id="q2-3">
+          <div class="opt-item" onclick="selectOpt('q2-3', this, 'Sim')"><div class="opt-radio"></div><div class="opt-label">Sim</div></div>
+          <div class="opt-item" onclick="selectOpt('q2-3', this, 'Não')"><div class="opt-radio"></div><div class="opt-label">Não</div></div>
+          <div class="opt-item" onclick="selectOpt('q2-3', this, 'Não sabemos')"><div class="opt-radio"></div><div class="opt-label">Não sabemos</div></div>
+        </div>
+      </div>
+
+      <div class="qblock">
+        <div class="qb-tag">Pergunta 2.4</div>
+        <div class="qb-q">A Conta de Anúncios aparece nesse Business Portfolio?</div>
+        <div class="options-grid" id="q2-4">
+          <div class="opt-item" onclick="selectOpt('q2-4', this, 'Sim')"><div class="opt-radio"></div><div class="opt-label">Sim</div></div>
+          <div class="opt-item" onclick="selectOpt('q2-4', this, 'Não')"><div class="opt-radio"></div><div class="opt-label">Não</div></div>
+          <div class="opt-item" onclick="selectOpt('q2-4', this, 'Não sabemos')"><div class="opt-radio"></div><div class="opt-label">Não sabemos</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-nav">
+      <button class="btn" onclick="goTo('etapa1')">← Etapa 1</button>
+      <button class="btn btn-primary btn-lg" onclick="goTo('etapa3')">Etapa 3 · Proprietário →</button>
+    </div>
+  </div>
+
+  <!-- ======== ETAPA 3 ======== -->
+  <div class="section" id="section-etapa3">
+    <div class="section-header">
+      <div class="section-eyebrow">Etapa 3 de 6</div>
+      <div class="section-h1">Identificação do Proprietário</div>
+      <div class="section-sub">Quem aparece como proprietário de cada ativo? Atenção: acesso ≠ propriedade.</div>
+    </div>
+
+    <div class="context-box what">
+      <div class="cb-icon">⚠️</div>
+      <div>
+        <div class="cb-label">Princípio fundamental</div>
+        <div class="cb-text">Nunca presumir propriedade com base em acesso. O proprietário é quem consta como tal na estrutura Meta — não quem utiliza ou quem gerencia.</div>
+      </div>
+    </div>
+
+    <div class="asset-group">
+      <div class="asset-header">📷 Instagram · @estudandopquestoes</div>
+      <div class="qblock">
+        <div class="qb-tag">Pergunta 3.1</div>
+        <div class="qb-q">Quem aparece como proprietário do Instagram?</div>
+        <div class="qb-hint">Verificar em: Configurações do Instagram → Gerenciador de Negócios → Proprietário.</div>
+        <div class="options-grid" id="q3-1">
+          <div class="opt-item" onclick="selectOpt('q3-1', this, 'Ronan')"><div class="opt-radio"></div><div class="opt-label">Ronan (conta pessoal)</div></div>
+          <div class="opt-item" onclick="selectOpt('q3-1', this, 'Empresa EPQ')"><div class="opt-radio"></div><div class="opt-label">Empresa EPQ / Business Portfolio próprio</div></div>
+          <div class="opt-item" onclick="selectOpt('q3-1', this, 'Flávio/Agência')"><div class="opt-radio"></div><div class="opt-label">Flávio / Agência</div></div>
+          <div class="opt-item" onclick="selectOpt('q3-1', this, 'Outra pessoa')"><div class="opt-radio"></div><div class="opt-label">Outra pessoa (física)</div></div>
+          <div class="opt-item" onclick="selectOpt('q3-1', this, 'Outra empresa')"><div class="opt-radio"></div><div class="opt-label">Outra empresa / Business Portfolio</div></div>
+          <div class="opt-item" onclick="selectOpt('q3-1', this, 'Business Portfolio desconhecido')"><div class="opt-radio"></div><div class="opt-label">Business Portfolio desconhecido</div></div>
+          <div class="opt-item" onclick="selectOpt('q3-1', this, 'Não aparece')"><div class="opt-radio"></div><div class="opt-label">Não aparece / não é possível ver</div></div>
+          <div class="opt-item" onclick="selectOpt('q3-1', this, 'Não sabemos')"><div class="opt-radio"></div><div class="opt-label">Não sabemos</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="asset-group">
+      <div class="asset-header">📘 Página · Estudando P Questões</div>
+      <div class="qblock">
+        <div class="qb-tag">Pergunta 3.2</div>
+        <div class="qb-q">Quem aparece como proprietário da Página?</div>
+        <div class="qb-hint">Verificar em: Configurações da Página → Papéis → quem aparece como Administrador Principal.</div>
+        <div class="options-grid" id="q3-2">
+          <div class="opt-item" onclick="selectOpt('q3-2', this, 'Ronan')"><div class="opt-radio"></div><div class="opt-label">Ronan</div></div>
+          <div class="opt-item" onclick="selectOpt('q3-2', this, 'Empresa EPQ')"><div class="opt-radio"></div><div class="opt-label">Empresa EPQ</div></div>
+          <div class="opt-item" onclick="selectOpt('q3-2', this, 'Flávio/Agência')"><div class="opt-radio"></div><div class="opt-label">Flávio / Agência</div></div>
+          <div class="opt-item" onclick="selectOpt('q3-2', this, 'Outra pessoa')"><div class="opt-radio"></div><div class="opt-label">Outra pessoa</div></div>
+          <div class="opt-item" onclick="selectOpt('q3-2', this, 'Outra empresa')"><div class="opt-radio"></div><div class="opt-label">Outra empresa / Business Portfolio</div></div>
+          <div class="opt-item" onclick="selectOpt('q3-2', this, 'Não aparece')"><div class="opt-radio"></div><div class="opt-label">Não aparece</div></div>
+          <div class="opt-item" onclick="selectOpt('q3-2', this, 'Não sabemos')"><div class="opt-radio"></div><div class="opt-label">Não sabemos</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="asset-group">
+      <div class="asset-header">💰 Conta de Anúncios · Ronan / EPQ</div>
+      <div class="qblock">
+        <div class="qb-tag">Pergunta 3.3</div>
+        <div class="qb-q">Quem aparece como proprietário da Conta de Anúncios?</div>
+        <div class="qb-hint">Verificar em: business.facebook.com → Configurações → Contas de Anúncios → Proprietário.</div>
+        <div class="options-grid" id="q3-3">
+          <div class="opt-item" onclick="selectOpt('q3-3', this, 'Ronan')"><div class="opt-radio"></div><div class="opt-label">Ronan</div></div>
+          <div class="opt-item" onclick="selectOpt('q3-3', this, 'Empresa EPQ')"><div class="opt-radio"></div><div class="opt-label">Empresa EPQ</div></div>
+          <div class="opt-item" onclick="selectOpt('q3-3', this, 'Flávio/Agência')"><div class="opt-radio"></div><div class="opt-label">Flávio / Agência</div></div>
+          <div class="opt-item" onclick="selectOpt('q3-3', this, 'Outra pessoa')"><div class="opt-radio"></div><div class="opt-label">Outra pessoa</div></div>
+          <div class="opt-item" onclick="selectOpt('q3-3', this, 'Outra empresa')"><div class="opt-radio"></div><div class="opt-label">Outra empresa / Business Portfolio</div></div>
+          <div class="opt-item" onclick="selectOpt('q3-3', this, 'Não aparece')"><div class="opt-radio"></div><div class="opt-label">Não aparece</div></div>
+          <div class="opt-item" onclick="selectOpt('q3-3', this, 'Não sabemos')"><div class="opt-radio"></div><div class="opt-label">Não sabemos</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-nav">
+      <button class="btn" onclick="goTo('etapa2')">← Etapa 2</button>
+      <button class="btn btn-primary btn-lg" onclick="goTo('etapa4')">Etapa 4 · Acessos →</button>
+    </div>
+  </div>
+
+  <!-- ======== ETAPA 4 ======== -->
+  <div class="section" id="section-etapa4">
+    <div class="section-header">
+      <div class="section-eyebrow">Etapa 4 de 6</div>
+      <div class="section-h1">Mapeamento de Acessos</div>
+      <div class="section-sub">Quais níveis de acesso Ronan e Flávio possuem em cada ativo?</div>
+    </div>
+
+    <div class="asset-group">
+      <div class="asset-header">📷 Instagram · @estudandopquestoes</div>
+      <div class="qblock">
+        <div class="qb-tag">Pergunta 4.1</div>
+        <div class="qb-q">Qual acesso <span class="person-badge badge-ronan">🟦 Ronan</span> possui no Instagram?</div>
+        <div class="options-grid" id="q4-1">
+          <div class="opt-item" onclick="selectOpt('q4-1', this, 'Administrador')"><div class="opt-radio"></div><div class="opt-label">Administrador</div></div>
+          <div class="opt-item" onclick="selectOpt('q4-1', this, 'Acesso total')"><div class="opt-radio"></div><div class="opt-label">Acesso total (não-administrador)</div></div>
+          <div class="opt-item" onclick="selectOpt('q4-1', this, 'Acesso parcial')"><div class="opt-radio"></div><div class="opt-label">Acesso parcial</div></div>
+          <div class="opt-item" onclick="selectOpt('q4-1', this, 'Visualização')"><div class="opt-radio"></div><div class="opt-label">Apenas visualização</div></div>
+          <div class="opt-item" onclick="selectOpt('q4-1', this, 'Nenhum')"><div class="opt-radio"></div><div class="opt-label">Nenhum</div></div>
+          <div class="opt-item" onclick="selectOpt('q4-1', this, 'Não sabemos')"><div class="opt-radio"></div><div class="opt-label">Não sabemos</div></div>
+        </div>
+      </div>
+      <div class="qblock">
+        <div class="qb-tag">Pergunta 4.2</div>
+        <div class="qb-q">Qual acesso <span class="person-badge badge-flavio">🟪 Flávio/Agência</span> possui no Instagram?</div>
+        <div class="options-grid" id="q4-2">
+          <div class="opt-item" onclick="selectOpt('q4-2', this, 'Administrador')"><div class="opt-radio"></div><div class="opt-label">Administrador</div></div>
+          <div class="opt-item" onclick="selectOpt('q4-2', this, 'Acesso total')"><div class="opt-radio"></div><div class="opt-label">Acesso total</div></div>
+          <div class="opt-item" onclick="selectOpt('q4-2', this, 'Acesso parcial')"><div class="opt-radio"></div><div class="opt-label">Acesso parcial / Parceiro</div></div>
+          <div class="opt-item" onclick="selectOpt('q4-2', this, 'Visualização')"><div class="opt-radio"></div><div class="opt-label">Apenas visualização</div></div>
+          <div class="opt-item" onclick="selectOpt('q4-2', this, 'Nenhum')"><div class="opt-radio"></div><div class="opt-label">Nenhum</div></div>
+          <div class="opt-item" onclick="selectOpt('q4-2', this, 'Não sabemos')"><div class="opt-radio"></div><div class="opt-label">Não sabemos</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="asset-group">
+      <div class="asset-header">📘 Página · Estudando P Questões</div>
+      <div class="qblock">
+        <div class="qb-tag">Pergunta 4.3</div>
+        <div class="qb-q">Qual acesso <span class="person-badge badge-ronan">🟦 Ronan</span> possui na Página?</div>
+        <div class="options-grid" id="q4-3">
+          <div class="opt-item" onclick="selectOpt('q4-3', this, 'Administrador')"><div class="opt-radio"></div><div class="opt-label">Administrador</div></div>
+          <div class="opt-item" onclick="selectOpt('q4-3', this, 'Acesso total')"><div class="opt-radio"></div><div class="opt-label">Acesso total</div></div>
+          <div class="opt-item" onclick="selectOpt('q4-3', this, 'Acesso parcial')"><div class="opt-radio"></div><div class="opt-label">Acesso parcial</div></div>
+          <div class="opt-item" onclick="selectOpt('q4-3', this, 'Visualização')"><div class="opt-radio"></div><div class="opt-label">Apenas visualização</div></div>
+          <div class="opt-item" onclick="selectOpt('q4-3', this, 'Nenhum')"><div class="opt-radio"></div><div class="opt-label">Nenhum</div></div>
+          <div class="opt-item" onclick="selectOpt('q4-3', this, 'Não sabemos')"><div class="opt-radio"></div><div class="opt-label">Não sabemos</div></div>
+        </div>
+      </div>
+      <div class="qblock">
+        <div class="qb-tag">Pergunta 4.4</div>
+        <div class="qb-q">Qual acesso <span class="person-badge badge-flavio">🟪 Flávio/Agência</span> possui na Página?</div>
+        <div class="options-grid" id="q4-4">
+          <div class="opt-item" onclick="selectOpt('q4-4', this, 'Administrador')"><div class="opt-radio"></div><div class="opt-label">Administrador</div></div>
+          <div class="opt-item" onclick="selectOpt('q4-4', this, 'Acesso total')"><div class="opt-radio"></div><div class="opt-label">Acesso total</div></div>
+          <div class="opt-item" onclick="selectOpt('q4-4', this, 'Acesso parcial')"><div class="opt-radio"></div><div class="opt-label">Acesso parcial</div></div>
+          <div class="opt-item" onclick="selectOpt('q4-4', this, 'Visualização')"><div class="opt-radio"></div><div class="opt-label">Apenas visualização</div></div>
+          <div class="opt-item" onclick="selectOpt('q4-4', this, 'Nenhum')"><div class="opt-radio"></div><div class="opt-label">Nenhum</div></div>
+          <div class="opt-item" onclick="selectOpt('q4-4', this, 'Não sabemos')"><div class="opt-radio"></div><div class="opt-label">Não sabemos</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qb-tag">Pergunta 4.5</div>
+      <div class="qb-q">Existe outra pessoa ou empresa administrando algum dos ativos?</div>
+      <div class="options-grid" id="q4-5">
+        <div class="opt-item" onclick="selectOpt('q4-5', this, 'Sim'); showField('outro-admin-fields')"><div class="opt-radio"></div><div class="opt-label">Sim</div></div>
+        <div class="opt-item" onclick="selectOpt('q4-5', this, 'Não'); hideField('outro-admin-fields')"><div class="opt-radio"></div><div class="opt-label">Não</div></div>
+        <div class="opt-item" onclick="selectOpt('q4-5', this, 'Não sabemos'); hideField('outro-admin-fields')"><div class="opt-radio"></div><div class="opt-label">Não sabemos</div></div>
+      </div>
+    </div>
+
+    <div id="outro-admin-fields" style="display:none">
+      <div class="qblock">
+        <div class="qb-tag">Identificação do Outro Administrador</div>
+        <div class="qb-q">Informe os dados disponíveis sobre o administrador/proprietário identificado.</div>
+        <div class="field-group">
+          <label class="field-label">Nome / Empresa</label>
+          <input class="field-input" id="outro-admin-nome" type="text" placeholder="Ex.: antiga agência, administrador original, empresa anterior...">
+        </div>
+        <div class="field-group">
+          <label class="field-label">E-mail ou contato (se disponível)</label>
+          <input class="field-input" id="outro-admin-email" type="text" placeholder="Ex.: email@empresa.com">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Status do contato</label>
+          <select class="field-input" id="outro-admin-status">
+            <option value="">Selecione...</option>
+            <option value="Acessível">Acessível — temos contato</option>
+            <option value="Inacessível">Inacessível — sem canal de contato</option>
+            <option value="Desconhecido">Desconhecido — sem identificação</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-nav">
+      <button class="btn" onclick="goTo('etapa3')">← Etapa 3</button>
+      <button class="btn btn-primary btn-lg" onclick="goTo('etapa5')">Etapa 5 · Conta de Anúncios →</button>
+    </div>
+  </div>
+
+  <!-- ======== ETAPA 5 ======== -->
+  <div class="section" id="section-etapa5">
+    <div class="section-header">
+      <div class="section-eyebrow">Etapa 5 de 6</div>
+      <div class="section-h1">Conta de Anúncios</div>
+      <div class="section-sub">Verificar o acesso de Flávio e o comportamento da conta ao tentar utilizar os ativos como identidade.</div>
+    </div>
+
+    <div class="context-box who">
+      <div class="cb-icon">🟪</div>
+      <div>
+        <div class="cb-label">Quem deve verificar</div>
+        <div class="cb-text"><strong>Flávio / Agência</strong> — verificar no Gerenciador de Anúncios e no Business Portfolio da agência.</div>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qb-tag">Pergunta 5.1</div>
+      <div class="qb-q">A conta de anúncios está acessível para Flávio?</div>
+      <div class="qb-hint">Verificar se aparece no Business Portfolio da agência ou se foi compartilhada como parceiro.</div>
+      <div class="options-grid" id="q5-1">
+        <div class="opt-item" onclick="selectOpt('q5-1', this, 'Sim')"><div class="opt-radio"></div><div class="opt-label">Sim, acesso total</div></div>
+        <div class="opt-item" onclick="selectOpt('q5-1', this, 'Parcialmente')"><div class="opt-radio"></div><div class="opt-label">Parcialmente / acesso limitado</div></div>
+        <div class="opt-item" onclick="selectOpt('q5-1', this, 'Não')"><div class="opt-radio"></div><div class="opt-label">Não</div></div>
+        <div class="opt-item" onclick="selectOpt('q5-1', this, 'Não sabemos')"><div class="opt-radio"></div><div class="opt-label">Não sabemos</div></div>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qb-tag">Pergunta 5.2</div>
+      <div class="qb-q">O Instagram aparece no campo "Identidade" ao criar um anúncio?</div>
+      <div class="qb-hint">Ir em: Gerenciador de Anúncios → Criar Campanha → Identidade → verificar se @estudandopquestoes aparece.</div>
+      <div class="options-grid" id="q5-2">
+        <div class="opt-item" onclick="selectOpt('q5-2', this, 'Sim')"><div class="opt-radio"></div><div class="opt-label">Sim, aparece e funciona</div></div>
+        <div class="opt-item" onclick="selectOpt('q5-2', this, 'Aparece com erro')"><div class="opt-radio"></div><div class="opt-label">Aparece, mas gera erro</div></div>
+        <div class="opt-item" onclick="selectOpt('q5-2', this, 'Não')"><div class="opt-radio"></div><div class="opt-label">Não aparece</div></div>
+        <div class="opt-item" onclick="selectOpt('q5-2', this, 'Não testamos')"><div class="opt-radio"></div><div class="opt-label">Não testamos ainda</div></div>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qb-tag">Pergunta 5.3</div>
+      <div class="qb-q">A Página aparece como opção de identidade?</div>
+      <div class="options-grid" id="q5-3">
+        <div class="opt-item" onclick="selectOpt('q5-3', this, 'Sim')"><div class="opt-radio"></div><div class="opt-label">Sim</div></div>
+        <div class="opt-item" onclick="selectOpt('q5-3', this, 'Não')"><div class="opt-radio"></div><div class="opt-label">Não</div></div>
+        <div class="opt-item" onclick="selectOpt('q5-3', this, 'Não sabemos')"><div class="opt-radio"></div><div class="opt-label">Não sabemos</div></div>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qb-tag">Pergunta 5.4</div>
+      <div class="qb-q">Qual é o status atual da Conta de Anúncios?</div>
+      <div class="options-grid" id="q5-4">
+        <div class="opt-item" onclick="selectOpt('q5-4', this, 'Ativa')"><div class="opt-radio"></div><div class="opt-label">Ativa e funcionando</div></div>
+        <div class="opt-item" onclick="selectOpt('q5-4', this, 'Ativa com restrições')"><div class="opt-radio"></div><div class="opt-label">Ativa, mas com restrições</div></div>
+        <div class="opt-item" onclick="selectOpt('q5-4', this, 'Suspensa')"><div class="opt-radio"></div><div class="opt-label">Suspensa / desabilitada</div></div>
+        <div class="opt-item" onclick="selectOpt('q5-4', this, 'Não sabemos')"><div class="opt-radio"></div><div class="opt-label">Não sabemos</div></div>
+      </div>
+    </div>
+
+    <div class="flow-nav">
+      <button class="btn" onclick="goTo('etapa4')">← Etapa 4</button>
+      <button class="btn btn-primary btn-lg" onclick="goTo('etapa6')">Etapa 6 · Relação dos Ativos →</button>
+    </div>
+  </div>
+
+  <!-- ======== ETAPA 6 ======== -->
+  <div class="section" id="section-etapa6">
+    <div class="section-header">
+      <div class="section-eyebrow">Etapa 6 de 6</div>
+      <div class="section-h1">Relação entre os Ativos</div>
+      <div class="section-sub">Comparar a estrutura de cada ativo para identificar se estão na mesma organização ou distribuídos.</div>
+    </div>
+
+    <div class="context-box what">
+      <div class="cb-icon">🔗</div>
+      <div>
+        <div class="cb-label">O que estamos verificando</div>
+        <div class="cb-text">Os ativos (Instagram, Página, Conta de Anúncios) precisam estar no mesmo Business Portfolio ou corretamente compartilhados para que a conta de anúncios possa utilizá-los como identidade.</div>
+      </div>
+    </div>
+
+    <div id="relation-visual" style="background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 20px;">
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text3); margin-bottom: 16px;">Mapa de Estrutura</div>
+      <div class="relation-flow" id="relation-flow-content">
+        <div class="rel-node unknown">
+          <div class="rel-dot" style="background:var(--gray)"></div>
+          <span>📷 Instagram</span>
+          <span class="rel-status" style="color:var(--gray)">A verificar</span>
+        </div>
+        <div class="rel-arrow">↕</div>
+        <div class="rel-node unknown">
+          <div class="rel-dot" style="background:var(--gray)"></div>
+          <span>📘 Página</span>
+          <span class="rel-status" style="color:var(--gray)">A verificar</span>
+        </div>
+        <div class="rel-arrow">↕</div>
+        <div class="rel-node unknown">
+          <div class="rel-dot" style="background:var(--gray)"></div>
+          <span>🏢 Business Portfolio</span>
+          <span class="rel-status" style="color:var(--gray)">A verificar</span>
+        </div>
+        <div class="rel-arrow">↕</div>
+        <div class="rel-node unknown">
+          <div class="rel-dot" style="background:var(--gray)"></div>
+          <span>💰 Conta de Anúncios</span>
+          <span class="rel-status" style="color:var(--gray)">A verificar</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qb-tag">Pergunta 6.1</div>
+      <div class="qb-q">O Instagram e a Conta de Anúncios estão no mesmo Business Portfolio?</div>
+      <div class="options-grid" id="q6-1">
+        <div class="opt-item" onclick="selectOpt('q6-1', this, 'Sim')"><div class="opt-radio"></div><div class="opt-label">Sim, mesmo Business Portfolio</div></div>
+        <div class="opt-item" onclick="selectOpt('q6-1', this, 'Não')"><div class="opt-radio"></div><div class="opt-label">Não, Business Portfolios diferentes</div></div>
+        <div class="opt-item" onclick="selectOpt('q6-1', this, 'Parcialmente')"><div class="opt-radio"></div><div class="opt-label">Um deles está compartilhado como parceiro</div></div>
+        <div class="opt-item" onclick="selectOpt('q6-1', this, 'Não sabemos')"><div class="opt-radio"></div><div class="opt-label">Não sabemos</div></div>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qb-tag">Pergunta 6.2</div>
+      <div class="qb-q">A Página e o Instagram estão conectados entre si?</div>
+      <div class="qb-hint">Verificar se a Página tem o Instagram vinculado nas configurações.</div>
+      <div class="options-grid" id="q6-2">
+        <div class="opt-item" onclick="selectOpt('q6-2', this, 'Sim')"><div class="opt-radio"></div><div class="opt-label">Sim, conectados</div></div>
+        <div class="opt-item" onclick="selectOpt('q6-2', this, 'Não')"><div class="opt-radio"></div><div class="opt-label">Não estão conectados</div></div>
+        <div class="opt-item" onclick="selectOpt('q6-2', this, 'Não sabemos')"><div class="opt-radio"></div><div class="opt-label">Não sabemos</div></div>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <div class="qb-tag">Pergunta 6.3 · Situação Geral</div>
+      <div class="qb-q">Como você descreveria a situação geral dos ativos?</div>
+      <div class="options-grid" id="q6-3">
+        <div class="opt-item" onclick="selectOpt('q6-3', this, 'Mesma estrutura')"><div class="opt-radio"></div><div class="opt-dot" style="background:var(--green)"></div><div class="opt-label">Tudo na mesma estrutura, mas algo não funciona</div></div>
+        <div class="opt-item" onclick="selectOpt('q6-3', this, 'Estruturas diferentes')"><div class="opt-radio"></div><div class="opt-dot" style="background:var(--yellow)"></div><div class="opt-label">Ativos distribuídos em estruturas diferentes</div></div>
+        <div class="opt-item" onclick="selectOpt('q6-3', this, 'Proprietário desconhecido')"><div class="opt-radio"></div><div class="opt-dot" style="background:var(--red)"></div><div class="opt-label">Proprietário de algum ativo desconhecido</div></div>
+        <div class="opt-item" onclick="selectOpt('q6-3', this, 'Acesso insuficiente')"><div class="opt-radio"></div><div class="opt-dot" style="background:var(--orange)"></div><div class="opt-label">Proprietário conhecido, mas sem acesso suficiente</div></div>
+        <div class="opt-item" onclick="selectOpt('q6-3', this, 'Não sabemos')"><div class="opt-radio"></div><div class="opt-dot" style="background:var(--gray)"></div><div class="opt-label">Informações insuficientes para determinar</div></div>
+      </div>
+    </div>
+
+    <div class="flow-nav">
+      <button class="btn" onclick="goTo('etapa5')">← Etapa 5</button>
+      <button class="btn btn-primary btn-lg" onclick="goTo('evidencias')">Evidências →</button>
+    </div>
+  </div>
+
+  <!-- ======== EVIDÊNCIAS ======== -->
+  <div class="section" id="section-evidencias">
+    <div class="section-header">
+      <div class="section-eyebrow">Registro</div>
+      <div class="section-h1">Evidências Coletadas</div>
+      <div class="section-sub">Registre screenshots, IDs, mensagens da Meta e qualquer informação que documente o estado atual dos ativos.</div>
+    </div>
+
+    <div style="display:flex; gap:16px; margin-bottom:24px; flex-wrap:wrap;">
+      <div style="flex:1; min-width:280px;">
+        <div class="qblock">
+          <div class="qb-tag">Nova Evidência</div>
+          <div class="qb-q">Adicionar evidência</div>
+          <div class="field-group">
+            <label class="field-label">Tipo de evidência</label>
+            <select class="field-input" id="ev-tipo">
+              <option value="">Selecione o tipo...</option>
+              <option value="Screenshot">Screenshot</option>
+              <option value="ID">ID / Número</option>
+              <option value="Nome">Nome / Identificação</option>
+              <option value="E-mail">E-mail</option>
+              <option value="Business Portfolio">Business Portfolio</option>
+              <option value="Link">Link / URL</option>
+              <option value="Mensagem da Meta">Mensagem da Meta</option>
+              <option value="Erro">Mensagem de erro</option>
+              <option value="Outro">Outro</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Ativo relacionado</label>
+            <select class="field-input" id="ev-ativo">
+              <option value="">Selecione o ativo...</option>
+              <option value="Instagram">Instagram</option>
+              <option value="Página">Página</option>
+              <option value="Conta de Anúncios">Conta de Anúncios</option>
+              <option value="Business Portfolio">Business Portfolio</option>
+              <option value="Usuário">Usuário</option>
+              <option value="Permissão">Permissão</option>
+              <option value="Geral">Geral</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Descrição / conteúdo</label>
+            <textarea class="field-input" id="ev-texto" rows="4" placeholder="Descreva a evidência: o que foi encontrado, qual é o dado, qual mensagem apareceu..."></textarea>
+          </div>
+          <button class="btn btn-primary" onclick="addEvidence()" style="width:100%; justify-content:center; margin-top:4px;">+ Adicionar Evidência</button>
+        </div>
+      </div>
+
+      <div style="flex:1; min-width:280px;">
+        <div style="font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text3); margin-bottom:14px;">Evidências Registradas</div>
+        <div id="evidence-list">
+          <div style="text-align:center; padding:40px; color:var(--text3); font-size:13px;">Nenhuma evidência registrada ainda.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-nav">
+      <button class="btn" onclick="goTo('etapa6')">← Etapa 6</button>
+      <button class="btn btn-primary btn-lg" onclick="goTo('diagnostico')">Ver Diagnóstico →</button>
+    </div>
+  </div>
+
+  <!-- ======== DIAGNÓSTICO ======== -->
+  <div class="section" id="section-diagnostico">
+    <div class="section-header">
+      <div class="section-eyebrow">Resultado da Análise</div>
+      <div class="section-h1">Diagnóstico Automático</div>
+      <div class="section-sub">Gerado com base nas respostas fornecidas nas etapas anteriores.</div>
+    </div>
+    <div id="diag-content">
+      <div style="text-align:center; padding:60px 20px; color:var(--text3);">
+        <div style="font-size:32px; margin-bottom:12px;">🔍</div>
+        <div style="font-size:15px; font-weight:600; color:var(--text2); margin-bottom:6px;">Complete as etapas para gerar o diagnóstico</div>
+        <div style="font-size:13px;">Preencha pelo menos as etapas 1 a 6 para que o sistema possa analisar os dados.</div>
+      </div>
+    </div>
+    <div class="flow-nav">
+      <button class="btn" onclick="goTo('evidencias')">← Evidências</button>
+      <button class="btn btn-primary btn-lg" onclick="generateDiagnosis(); goTo('plano')">Gerar Plano de Ação →</button>
+    </div>
+  </div>
+
+  <!-- ======== PLANO DE AÇÃO ======== -->
+  <div class="section" id="section-plano">
+    <div class="section-header">
+      <div class="section-eyebrow">Resultado</div>
+      <div class="section-h1">Plano de Ação</div>
+      <div class="section-sub">Gerado automaticamente com base no diagnóstico. Dividido por responsável.</div>
+    </div>
+    <div id="plano-content">
+      <div style="text-align:center; padding:60px 20px; color:var(--text3);">
+        <div style="font-size:13px;">Gere o diagnóstico primeiro para ver o plano de ação.</div>
+      </div>
+    </div>
+    <div class="flow-nav">
+      <button class="btn" onclick="goTo('diagnostico')">← Diagnóstico</button>
+      <button class="btn btn-primary btn-lg" onclick="goTo('relatorio')">Relatório Final →</button>
+    </div>
+  </div>
+
+  <!-- ======== RELATÓRIO FINAL ======== -->
+  <div class="section" id="section-relatorio">
+    <div class="section-header">
+      <div class="section-eyebrow">Encerramento</div>
+      <div class="section-h1">Relatório Final da Auditoria</div>
+      <div class="section-sub">Documento executivo completo. Clique em "Exportar" para salvar ou "Imprimir" para gerar PDF.</div>
+    </div>
+    <div id="relatorio-content">
+      <div style="text-align:center; padding:60px 20px; color:var(--text3);">
+        <div style="font-size:13px;">Complete o diagnóstico para gerar o relatório final.</div>
+      </div>
+    </div>
+    <div class="flow-nav">
+      <button class="btn" onclick="goTo('plano')">← Plano de Ação</button>
+      <button class="btn btn-primary btn-lg" onclick="generateDiagnosis(); renderReport()">📋 Finalizar Auditoria</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// ===================== STATE =====================
+let state = {
+  answers: {},
+  evidences: [],
+  safetyChecked: [],
+  obs: {}
+};
+
+// ===================== NAVIGATION =====================
+const sections = ['dashboard','bloqueio','etapa1','etapa2','etapa3','etapa4','etapa5','etapa6','evidencias','diagnostico','plano','relatorio'];
+const sectionLabels = {
+  'dashboard': ['VISÃO GERAL', 'Dashboard da Auditoria'],
+  'bloqueio': ['PRÉ-REQUISITO', 'Bloqueio de Segurança'],
+  'etapa1': ['ETAPA 1 DE 6', 'Acesso do Cliente — Ronan'],
+  'etapa2': ['ETAPA 2 DE 6', 'Business Portfolio'],
+  'etapa3': ['ETAPA 3 DE 6', 'Identificação do Proprietário'],
+  'etapa4': ['ETAPA 4 DE 6', 'Mapeamento de Acessos'],
+  'etapa5': ['ETAPA 5 DE 6', 'Conta de Anúncios'],
+  'etapa6': ['ETAPA 6 DE 6', 'Relação entre os Ativos'],
+  'evidencias': ['REGISTRO', 'Evidências Coletadas'],
+  'diagnostico': ['ANÁLISE', 'Diagnóstico Automático'],
+  'plano': ['RESULTADO', 'Plano de Ação'],
+  'relatorio': ['ENCERRAMENTO', 'Relatório Final']
+};
+
+function goTo(id) {
+  sections.forEach(s => {
+    document.getElementById('section-' + s).classList.remove('active');
+    document.getElementById('nav-' + s).classList.remove('active');
+  });
+  document.getElementById('section-' + id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+  document.getElementById('topbar-badge').textContent = sectionLabels[id][0];
+  document.getElementById('topbar-title').textContent = sectionLabels[id][1];
+  if (id === 'diagnostico') generateDiagnosis();
+  if (id === 'plano') { generateDiagnosis(); generatePlan(); }
+  if (id === 'relatorio') { generateDiagnosis(); generatePlan(); renderReport(); }
+  window.scrollTo(0, 0);
+  updateProgress();
+}
+
+// ===================== OPTIONS =====================
+function selectOpt(groupId, el, value) {
+  const group = document.getElementById(groupId);
+  group.querySelectorAll('.opt-item').forEach(item => item.classList.remove('selected'));
+  el.classList.add('selected');
+  state.answers[groupId] = value;
+  updateProgress();
+  updateDashboardCards();
+  saveData(true);
+}
+
+function showField(id) { document.getElementById(id).style.display = 'block'; }
+function hideField(id) { document.getElementById(id).style.display = 'none'; }
+
+function toggleSafety(el) {
+  const check = el.querySelector('.wcheck');
+  check.classList.toggle('checked');
+  const all = document.querySelectorAll('#safety-checklist .wcheck');
+  const checkedAll = [...all].every(c => c.classList.contains('checked'));
+  document.getElementById('safety-status').style.display = checkedAll ? 'block' : 'none';
+}
+
+// ===================== PROGRESS =====================
+function updateProgress() {
+  const totalQuestions = ['q1-1','q1-2','q1-3','q2-1','q3-1','q3-2','q3-3','q4-1','q4-2','q4-3','q4-4','q4-5','q5-1','q5-2','q5-3','q5-4','q6-1','q6-2','q6-3'];
+  const answered = totalQuestions.filter(q => state.answers[q]).length;
+  const pct = Math.round((answered / totalQuestions.length) * 100);
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-bar').style.width = pct + '%';
+
+  // Update nav dots
+  const etapas = {
+    'etapa1': ['q1-1','q1-2','q1-3'],
+    'etapa2': ['q2-1'],
+    'etapa3': ['q3-1','q3-2','q3-3'],
+    'etapa4': ['q4-1','q4-2','q4-3','q4-4','q4-5'],
+    'etapa5': ['q5-1','q5-2','q5-3','q5-4'],
+    'etapa6': ['q6-1','q6-2','q6-3']
+  };
+  Object.entries(etapas).forEach(([etapa, qs]) => {
+    const done = qs.every(q => state.answers[q]);
+    const navEl = document.getElementById('nav-' + etapa);
+    if (done) navEl.classList.add('done');
+    else navEl.classList.remove('done');
+  });
+}
+
+// ===================== DASHBOARD CARDS =====================
+function updateDashboardCards() {
+  // Instagram
+  const ig = state.answers['q3-1'];
+  if (ig === 'Ronan' || ig === 'Empresa EPQ') setBadge('sc-instagram', 'ok', '✅ Proprietário identificado');
+  else if (ig === 'Não sabemos' || !ig) setBadge('sc-instagram', 'verify', '🟡 A verificar');
+  else if (ig === 'Business Portfolio desconhecido' || ig === 'Não aparece') setBadge('sc-instagram', 'error', '🔴 Proprietário desconhecido');
+  else setBadge('sc-instagram', 'warn', '🟠 Outra estrutura');
+
+  // Página
+  const pg = state.answers['q3-2'];
+  if (pg === 'Ronan' || pg === 'Empresa EPQ') setBadge('sc-pagina', 'ok', '✅ Proprietário identificado');
+  else if (!pg || pg === 'Não sabemos') setBadge('sc-pagina', 'verify', '🟡 A verificar');
+  else setBadge('sc-pagina', 'warn', '🟠 Outra estrutura');
+
+  // Ads
+  const ads = state.answers['q5-1'];
+  if (ads === 'Sim') setBadge('sc-ads', 'ok', '✅ Acessível');
+  else if (ads === 'Parcialmente') setBadge('sc-ads', 'warn', '🟠 Acesso parcial');
+  else if (ads === 'Não') setBadge('sc-ads', 'error', '🔴 Sem acesso');
+  else setBadge('sc-ads', 'verify', '🟡 A verificar');
+
+  // BP
+  const bp = state.answers['q2-1'];
+  if (bp === 'Sim, um' || bp === 'Sim, mais de um') setBadge('sc-bp', 'ok', '✅ Identificado');
+  else if (bp === 'Não') setBadge('sc-bp', 'error', '🔴 Não encontrado');
+  else setBadge('sc-bp', 'unknown', '❓ Desconhecido');
+
+  // Proprietário
+  const prop3_1 = state.answers['q3-1'];
+  const prop3_2 = state.answers['q3-2'];
+  if (prop3_1 === 'Ronan' || prop3_1 === 'Empresa EPQ') setBadge('sc-prop', 'ok', '✅ Confirmado');
+  else if (prop3_1 === 'Não sabemos' || !prop3_1) setBadge('sc-prop', 'unknown', '❓ Desconhecido');
+  else setBadge('sc-prop', 'warn', '🟠 Terceiro');
+
+  // Agência
+  const ag4 = state.answers['q4-2'];
+  if (ag4 === 'Administrador' || ag4 === 'Acesso total') setBadge('sc-agencia', 'ok', '✅ Acesso completo');
+  else if (ag4 === 'Acesso parcial') setBadge('sc-agencia', 'warn', '🟠 Acesso parcial');
+  else if (ag4 === 'Nenhum') setBadge('sc-agencia', 'error', '🔴 Sem acesso');
+  else setBadge('sc-agencia', 'unknown', '❓ A verificar');
+}
+
+function setBadge(id, type, text) {
+  const el = document.getElementById(id);
+  el.className = 'status-badge badge-' + type;
+  el.textContent = text;
+}
+
+// ===================== EVIDENCE =====================
+function addEvidence() {
+  const tipo = document.getElementById('ev-tipo').value;
+  const ativo = document.getElementById('ev-ativo').value;
+  const texto = document.getElementById('ev-texto').value.trim();
+  if (!tipo || !texto) { alert('Preencha o tipo e a descrição da evidência.'); return; }
+  const ev = { id: Date.now(), tipo, ativo, texto };
+  state.evidences.push(ev);
+  renderEvidences();
+  document.getElementById('ev-tipo').value = '';
+  document.getElementById('ev-ativo').value = '';
+  document.getElementById('ev-texto').value = '';
+  saveData(true);
+}
+
+function renderEvidences() {
+  const list = document.getElementById('evidence-list');
+  if (state.evidences.length === 0) {
+    list.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text3); font-size:13px;">Nenhuma evidência registrada ainda.</div>';
+    return;
+  }
+  list.innerHTML = state.evidences.map(ev => `
+    <div class="evidence-card">
+      <div class="ev-head">
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <span class="ev-badge">${ev.tipo}</span>
+          ${ev.ativo ? `<span class="ev-badge" style="background:#0d1f3a; color:var(--accent); border-color:#1e3d6e;">${ev.ativo}</span>` : ''}
+        </div>
+        <span class="ev-del" onclick="deleteEvidence(${ev.id})">✕ Remover</span>
+      </div>
+      <div class="ev-text">${ev.texto}</div>
+    </div>
+  `).join('');
+}
+
+function deleteEvidence(id) {
+  state.evidences = state.evidences.filter(ev => ev.id !== id);
+  renderEvidences();
+  saveData(true);
+}
+
+// ===================== DIAGNOSIS ENGINE =====================
+function analyzeSituation() {
+  const a = state.answers;
+  const result = {
+    scenario: '',
+    severity: 'medium', // low, medium, high, critical
+    path: '',
+    pathLabel: '',
+    issues: [],
+    ronanAccess: a['q1-1'] || 'Não sabemos',
+    igProp: a['q3-1'] || 'Não sabemos',
+    pgProp: a['q3-2'] || 'Não sabemos',
+    adsProp: a['q3-3'] || 'Não sabemos',
+    ronanIgAccess: a['q4-1'] || 'Não sabemos',
+    flavioIgAccess: a['q4-2'] || 'Não sabemos',
+    ronanPgAccess: a['q4-3'] || 'Não sabemos',
+    flavioPgAccess: a['q4-4'] || 'Não sabemos',
+    adsAccess: a['q5-1'] || 'Não sabemos',
+    igInAds: a['q5-2'] || 'Não sabemos',
+    relation: a['q6-1'] || 'Não sabemos',
+    generalSituation: a['q6-3'] || 'Não sabemos',
+    bp: a['q2-1'] || 'Não sabemos',
+    otherAdmin: a['q4-5'] || 'Não sabemos'
+  };
+
+  // Determine scenario & path
+  const unknownProp = ['Não sabemos','Não aparece','Business Portfolio desconhecido'].includes(result.igProp);
+  const thirdPartyProp = ['Outra pessoa','Outra empresa','Flávio/Agência'].includes(result.igProp);
+  const differentStructures = result.relation === 'Não' || result.generalSituation === 'Estruturas diferentes';
+  const sameStructureFail = (result.relation === 'Sim' || result.generalSituation === 'Mesma estrutura') && result.igInAds !== 'Sim';
+  const insufficientInfo = Object.keys(a).length < 6 || result.generalSituation === 'Não sabemos';
+
+  if (insufficientInfo && Object.keys(a).length < 4) {
+    result.scenario = 'Informações insuficientes para diagnóstico definitivo.';
+    result.path = 'E';
+    result.pathLabel = 'INVESTIGAÇÃO ADICIONAL';
+    result.severity = 'medium';
+    result.issues = ['Menos da metade das etapas foi preenchida.'];
+  } else if (unknownProp) {
+    result.scenario = 'O proprietário do Instagram não está confirmado. Não é possível avançar com configurações sem essa informação.';
+    result.path = 'C';
+    result.pathLabel = 'RECUPERAÇÃO DO ATIVO';
+    result.severity = 'critical';
+    result.issues.push('Proprietário do Instagram desconhecido ou não identificado.');
+  } else if (result.otherAdmin === 'Sim' && document.getElementById('outro-admin-status') && document.getElementById('outro-admin-status').value === 'Inacessível') {
+    result.scenario = 'Um terceiro administra os ativos e não há canal de contato conhecido.';
+    result.path = 'C';
+    result.pathLabel = 'RECUPERAÇÃO DO ATIVO';
+    result.severity = 'critical';
+    result.issues.push('Administrador externo sem canal de contato identificado.');
+  } else if (differentStructures) {
+    result.scenario = 'Os ativos estão distribuídos em Business Portfolios diferentes, impedindo a utilização direta do Instagram como identidade dos anúncios.';
+    result.path = 'B';
+    result.pathLabel = 'COMPARTILHAMENTO ENTRE BUSINESS PORTFOLIOS';
+    result.severity = 'high';
+    result.issues.push('Instagram e Conta de Anúncios em estruturas diferentes.');
+  } else if (sameStructureFail) {
+    result.scenario = 'Os ativos aparentemente estão na mesma estrutura, mas existe uma inconsistência de permissão ou conexão que impede o uso do Instagram como identidade.';
+    result.path = 'A';
+    result.pathLabel = 'CORREÇÃO INTERNA';
+    result.severity = 'medium';
+    result.issues.push('Inconsistência de permissão/conexão dentro da mesma estrutura.');
+  } else if (thirdPartyProp && result.flavioIgAccess !== 'Administrador') {
+    result.scenario = 'O proprietário está identificado como terceiro, mas os usuários atuais não possuem acesso administrativo suficiente.';
+    result.path = 'D';
+    result.pathLabel = 'REGULARIZAÇÃO DE PERMISSÕES';
+    result.severity = 'high';
+    result.issues.push('Proprietário é terceiro. Permissões insuficientes para Flávio/Agência.');
+  } else if (result.igInAds === 'Sim') {
+    result.scenario = 'O Instagram aparece corretamente como identidade. A estrutura parece funcional. Verificar se existe algum outro bloqueio pontual.';
+    result.path = 'A';
+    result.pathLabel = 'VERIFICAÇÃO PONTUAL';
+    result.severity = 'low';
+    result.issues.push('Estrutura funcional, verificar bloqueio específico se houver erro.');
+  } else {
+    result.scenario = 'Existem informações suficientes para iniciar a investigação, mas o cenário ainda precisa de dados adicionais para diagnóstico definitivo.';
+    result.path = 'E';
+    result.pathLabel = 'INVESTIGAÇÃO ADICIONAL';
+    result.severity = 'medium';
+    result.issues.push('Dados insuficientes ou contraditórios para determinar o caminho preciso.');
+  }
+
+  // Additional issues
+  if (result.adsAccess === 'Não') result.issues.push('Flávio não tem acesso à conta de anúncios.');
+  if (result.igInAds === 'Aparece com erro') result.issues.push('Instagram aparece na identidade mas gera erro.');
+  if (result.ronanAccess === '🔴 Não consegue') result.issues.push('Ronan não consegue acessar sua conta Meta.');
+  if (result.bp === 'Não') result.issues.push('Nenhum Business Portfolio encontrado para Ronan.');
+  if (result.flavioPgAccess === 'Nenhum') result.issues.push('Flávio não tem acesso à Página.');
+
+  return result;
+}
+
+function generateDiagnosis() {
+  const r = analyzeSituation();
+  const sevMap = {low: {cls:'low',label:'🟢 BAIXO',color:'var(--green)'}, medium: {cls:'medium',label:'🟡 MÉDIO',color:'var(--yellow)'}, high: {cls:'high',label:'🟠 ALTO',color:'var(--orange)'}, critical: {cls:'critical',label:'🔴 CRÍTICO',color:'var(--red)'}};
+  const sev = sevMap[r.severity];
+
+  const pathDescriptions = {
+    'A': 'Os ativos estão na mesma estrutura. A solução está em corrigir permissões ou reconexões internas.',
+    'B': 'Os ativos pertencem a empresas/portfolios diferentes. É necessário compartilhamento ou transferência entre Business Portfolios.',
+    'C': 'O proprietário é desconhecido ou inacessível. É necessário reunir evidências e iniciar processo de recuperação.',
+    'D': 'O proprietário está identificado, mas os usuários atuais não possuem permissão suficiente. É necessário solicitar acesso adequado.',
+    'E': 'Informações insuficientes. É necessário completar a investigação antes de determinar o caminho.'
+  };
+
+  const issuesList = r.issues.length > 0 ? r.issues.map(i => `<li style="padding: 4px 0; font-size:13px; color:var(--text2);">⚠️ ${i}</li>`).join('') : '<li style="color:var(--text2); font-size:13px;">Nenhum problema crítico identificado além do relatado.</li>';
+
+  document.getElementById('diag-content').innerHTML = `
+    <div class="diag-box ${sev.cls}">
+      <div class="db-tag">NÍVEL DE RISCO — ${sev.label}</div>
+      <div class="db-title">CAMINHO ${r.path} · ${r.pathLabel}</div>
+      <div class="db-text">${r.scenario}</div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px;">
+      <div class="status-card">
+        <div class="sc-label">Proprietário do Instagram</div>
+        <div class="sc-name">${r.igProp}</div>
+      </div>
+      <div class="status-card">
+        <div class="sc-label">Proprietário da Página</div>
+        <div class="sc-name">${r.pgProp}</div>
+      </div>
+      <div class="status-card">
+        <div class="sc-label">Acesso de Flávio ao IG</div>
+        <div class="sc-name">${r.flavioIgAccess}</div>
+      </div>
+      <div class="status-card">
+        <div class="sc-label">IG na Identidade</div>
+        <div class="sc-name">${r.igInAds}</div>
+      </div>
+    </div>
+
+    <div class="report-section" style="margin-bottom:20px;">
+      <div class="rs-title">PROBLEMAS IDENTIFICADOS</div>
+      <ul style="list-style:none; padding:0;">${issuesList}</ul>
+    </div>
+
+    <div class="path-card recommended">
+      <div class="pc-rec">RECOMENDADO</div>
+      <div class="pc-tag">Caminho ${r.path}</div>
+      <div class="pc-title">${r.pathLabel}</div>
+      <div class="pc-text">${pathDescriptions[r.path]}</div>
+    </div>
+
+    <div class="sec-divider"><span>Todos os caminhos possíveis</span></div>
+
+    ${['A','B','C','D','E'].map(p => `
+      <div class="path-card ${p === r.path ? 'recommended' : ''}">
+        ${p === r.path ? '<div class="pc-rec">RECOMENDADO</div>' : ''}
+        <div class="pc-tag">Caminho ${p}</div>
+        <div class="pc-title">${{A:'Correção Interna',B:'Compartilhamento entre Business Portfolios',C:'Recuperação do Ativo',D:'Regularização de Permissões',E:'Investigação Adicional'}[p]}</div>
+        <div class="pc-text">${pathDescriptions[p]}</div>
+      </div>
+    `).join('')}
+  `;
+}
+
+// ===================== PLAN GENERATOR =====================
+function generatePlan() {
+  const r = analyzeSituation();
+  const a = state.answers;
+  let ronanActions = [];
+  let flavioActions = [];
+  let propActions = [];
+  let metaActions = [];
+
+  // Always check
+  ronanActions.push({title:'Confirmar acesso completo à conta Facebook/Meta', priority:'🔴 Alta', dep:'Login ativo', motivo:'Sem acesso à conta, nenhuma verificação é possível.'});
+  flavioActions.push({title:'Mapear todos os Business Portfolios visíveis no ecossistema EPQ', priority:'🔴 Alta', dep:'Acesso de Ronan à conta', motivo:'Necessário para identificar onde cada ativo está registrado.'});
+
+  if (!a['q3-1'] || a['q3-1'] === 'Não sabemos') {
+    ronanActions.push({title:'Identificar proprietário do Instagram nas configurações Meta', priority:'🔴 Alta', dep:'Acesso ao Gerenciador de Negócios', motivo:'Proprietário não confirmado — etapa bloqueante.'});
+    flavioActions.push({title:'Analisar qual Business Portfolio aparece como proprietário do Instagram', priority:'🔴 Alta', dep:'Dados de Ronan', motivo:'Determinar estrutura de propriedade.'});
+  }
+
+  if (r.path === 'A') {
+    flavioActions.push({title:'Verificar permissões da conta de anúncios para uso do Instagram como identidade', priority:'🟠 Alta', dep:'Acesso à conta de anúncios', motivo:'Inconsistência interna identificada.'});
+    flavioActions.push({title:'Reconectar Instagram ao Gerenciador de Negócios (se desconectado)', priority:'🟡 Média', dep:'Confirmação de propriedade', motivo:'Reconexão pode resolver o problema de identidade.'});
+  }
+
+  if (r.path === 'B') {
+    flavioActions.push({title:'Identificar Business Portfolio proprietário do Instagram', priority:'🔴 Alta', dep:'Dados coletados nas etapas', motivo:'Ativos em estruturas diferentes.'});
+    propActions.push({title:'Compartilhar Instagram como Parceiro com o Business Portfolio da conta de anúncios', priority:'🔴 Alta', dep:'Identificação do proprietário', motivo:'Única forma de permitir uso do Instagram sem transferência.'});
+    propActions.push({title:'Ou: transferir o Instagram para o Business Portfolio da conta de anúncios', priority:'🟡 Média', dep:'Acordo entre proprietários', motivo:'Alternativa ao compartilhamento.'});
+  }
+
+  if (r.path === 'C') {
+    ronanActions.push({title:'Reunir todas as evidências de propriedade (screenshots, IDs, e-mails de criação)', priority:'🔴 Alta', dep:'Acesso ao Instagram e Página', motivo:'Evidências necessárias para processo de recuperação.'});
+    metaActions.push({title:'Iniciar processo de recuperação de ativo junto ao suporte Meta', priority:'🔴 Alta', dep:'Evidências coletadas', motivo:'Proprietário inacessível ou desconhecido.'});
+    flavioActions.push({title:'Documentar o caso e preparar solicitação formal à Meta', priority:'🟡 Média', dep:'Evidências de Ronan', motivo:'Suporte precisa de documentação estruturada.'});
+  }
+
+  if (r.path === 'D') {
+    propActions.push({title:'Conceder acesso administrativo a Ronan no Instagram', priority:'🔴 Alta', dep:'Contato com proprietário', motivo:'Usuários atuais sem permissão suficiente.'});
+    propActions.push({title:'Conceder acesso à Agência (Flávio) como Parceiro ou Administrador', priority:'🔴 Alta', dep:'Decisão do proprietário', motivo:'Agência não possui acesso operacional.'});
+    flavioActions.push({title:'Estabelecer contato com o proprietário atual do ativo', priority:'🔴 Alta', dep:'Identificação do proprietário', motivo:'Negociação de acesso necessária.'});
+  }
+
+  if (a['q5-2'] === 'Aparece com erro') {
+    flavioActions.push({title:'Investigar e documentar o erro ao selecionar Instagram como identidade', priority:'🟠 Alta', dep:'Acesso à conta de anúncios', motivo:'Erro funcional identificado que precisa de diagnóstico técnico.'});
+  }
+
+  if (a['q5-1'] === 'Não') {
+    flavioActions.push({title:'Verificar se a conta de anúncios foi compartilhada com o Business Portfolio da agência', priority:'🟠 Alta', dep:'Acesso de Ronan ao Business Portfolio', motivo:'Agência sem acesso à conta de anúncios.'});
+    ronanActions.push({title:'Compartilhar a conta de anúncios com o Business Portfolio da agência', priority:'🟠 Alta', dep:'Ter acesso administrativo à conta', motivo:'Agência precisa de acesso para operar.'});
+  }
+
+  // Render
+  let html = '';
+
+  if (ronanActions.length > 0) {
+    html += `<div class="resp-section ronan"><div class="resp-header">🟦 AÇÕES DO RONAN / CLIENTE</div><div class="resp-body">`;
+    ronanActions.forEach((act, i) => {
+      html += renderAction(i+1, act, 'ronan');
+    });
+    html += `</div></div>`;
+  }
+
+  if (flavioActions.length > 0) {
+    html += `<div class="resp-section flavio"><div class="resp-header">🟪 AÇÕES DO FLÁVIO / AGÊNCIA</div><div class="resp-body">`;
+    flavioActions.forEach((act, i) => {
+      html += renderAction(i+1, act, 'flavio');
+    });
+    html += `</div></div>`;
+  }
+
+  if (propActions.length > 0) {
+    html += `<div class="resp-section prop"><div class="resp-header">🟥 AÇÕES DO PROPRIETÁRIO ATUAL</div><div class="resp-body">`;
+    propActions.forEach((act, i) => {
+      html += renderAction(i+1, act, 'prop');
+    });
+    html += `</div></div>`;
+  }
+
+  if (metaActions.length > 0) {
+    html += `<div class="resp-section meta-dep"><div class="resp-header">⚫ DEPENDENTE DA META</div><div class="resp-body">`;
+    metaActions.forEach((act, i) => {
+      html += renderAction(i+1, act, 'meta');
+    });
+    html += `</div></div>`;
+  }
+
+  document.getElementById('plano-content').innerHTML = html;
+}
+
+function renderAction(n, act, resp) {
+  const respLabel = {ronan: '<span class="person-badge badge-ronan">🟦 Ronan</span>', flavio: '<span class="person-badge badge-flavio">🟪 Flávio</span>', prop: '<span class="person-badge badge-prop">🟥 Proprietário</span>', meta: '<span class="person-badge badge-meta">⚫ Meta</span>'}[resp];
+  return `
+    <div class="action-item">
+      <div class="ai-head">
+        <span class="action-num">${String(n).padStart(2,'0')}</span>
+        <div class="ai-title">${act.title}</div>
+      </div>
+      <div class="action-meta">
+        <div class="action-meta-item"><b>Responsável</b>${respLabel}</div>
+        <div class="action-meta-item"><b>Prioridade</b>${act.priority}</div>
+        <div class="action-meta-item"><b>Dependência</b>${act.dep}</div>
+        <div class="action-meta-item"><b>Status</b><span style="color:var(--yellow)">⏳ Pendente</span></div>
+      </div>
+      <div class="action-reason"><b style="color:var(--text3); font-size:10px; text-transform:uppercase; letter-spacing:1px;">Motivo: </b>${act.motivo}</div>
+    </div>
+  `;
+}
+
+// ===================== REPORT =====================
+function renderReport() {
+  const r = analyzeSituation();
+  const a = state.answers;
+  const sevMap = {low: '🟢 Baixo', medium: '🟡 Médio', high: '🟠 Alto', critical: '🔴 Crítico'};
+  const bpNome = document.getElementById('bp-nome') ? document.getElementById('bp-nome').value || 'Não informado' : 'Não informado';
+  const bpId = document.getElementById('bp-id') ? document.getElementById('bp-id').value || 'Não informado' : 'Não informado';
+
+  document.getElementById('relatorio-content').innerHTML = `
+    <div class="report-section">
+      <div class="rs-title">DIAGNÓSTICO EXECUTIVO</div>
+      <div class="report-row"><div class="rr-key">Situação encontrada</div><div class="rr-val">${r.scenario}</div></div>
+      <div class="report-row"><div class="rr-key">Proprietário do Instagram</div><div class="rr-val">${r.igProp}</div></div>
+      <div class="report-row"><div class="rr-key">Proprietário da Página</div><div class="rr-val">${r.pgProp}</div></div>
+      <div class="report-row"><div class="rr-key">Proprietário da Conta de Anúncios</div><div class="rr-val">${r.adsProp}</div></div>
+      <div class="report-row"><div class="rr-key">Business Portfolio</div><div class="rr-val">${a['q2-1'] || 'A verificar'} — ${bpNome} (ID: ${bpId})</div></div>
+      <div class="report-row"><div class="rr-key">Acesso de Ronan ao Meta</div><div class="rr-val">${r.ronanAccess}</div></div>
+      <div class="report-row"><div class="rr-key">Acesso de Flávio ao Instagram</div><div class="rr-val">${r.flavioIgAccess}</div></div>
+      <div class="report-row"><div class="rr-key">Acesso da Agência à Conta de Anúncios</div><div class="rr-val">${r.adsAccess}</div></div>
+      <div class="report-row"><div class="rr-key">Instagram como Identidade</div><div class="rr-val">${r.igInAds}</div></div>
+      <div class="report-row"><div class="rr-key">Relação entre ativos</div><div class="rr-val">${r.relation}</div></div>
+      <div class="report-row"><div class="rr-key">Administrador terceiro</div><div class="rr-val">${r.otherAdmin}</div></div>
+      <div class="report-row"><div class="rr-key">Nível de risco</div><div class="rr-val">${sevMap[r.severity]}</div></div>
+    </div>
+
+    <div class="report-section">
+      <div class="rs-title">CAMINHO RECOMENDADO</div>
+      <div class="path-card recommended" style="margin-bottom:0;">
+        <div class="pc-rec">RECOMENDADO</div>
+        <div class="pc-tag">Caminho ${r.path}</div>
+        <div class="pc-title">${r.pathLabel}</div>
+        <div class="pc-text">${{A:'Corrigir permissões ou reconexão dentro da mesma estrutura.',B:'Compartilhar o Instagram como Parceiro entre Business Portfolios, ou iniciar processo de transferência.',C:'Reunir evidências, identificar o proprietário e iniciar processo de recuperação junto à Meta.',D:'Contatar o proprietário atual para solicitar acesso administrativo adequado.',E:'Completar as etapas de investigação antes de qualquer ação.'}[r.path]}</div>
+      </div>
+    </div>
+
+    ${state.evidences.length > 0 ? `
+    <div class="report-section">
+      <div class="rs-title">EVIDÊNCIAS COLETADAS (${state.evidences.length})</div>
+      ${state.evidences.map(ev => `
+        <div class="report-row" style="flex-direction:column; gap:4px;">
+          <div style="display:flex; gap:8px;">
+            <span class="ev-badge">${ev.tipo}</span>
+            ${ev.ativo ? `<span class="ev-badge" style="background:#0d1f3a; color:var(--accent); border-color:#1e3d6e;">${ev.ativo}</span>` : ''}
+          </div>
+          <div class="rr-val" style="font-family:var(--mono); font-size:12px;">${ev.texto}</div>
+        </div>
+      `).join('')}
+    </div>
+    ` : ''}
+
+    <div class="report-section">
+      <div class="rs-title">BLOQUEIOS DE SEGURANÇA</div>
+      <div class="report-row"><div class="rr-key">Status dos bloqueios</div><div class="rr-val">Verifique a seção de Bloqueio de Segurança</div></div>
+      <div class="report-row"><div class="rr-key">Ação não autorizada</div><div class="rr-val">Nenhuma alteração deve ser realizada antes da confirmação de propriedade</div></div>
+    </div>
+
+    <div style="text-align:center; padding:20px; color:var(--text3); font-size:12px; border-top: 1px solid var(--border); margin-top:20px;">
+      Auditoria gerada pelo painel EPQ Meta Assets — ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')}
+    </div>
+  `;
+}
+
+// ===================== SAVE / LOAD =====================
+function saveData(silent = false) {
+  const obs1 = document.getElementById('obs-etapa1');
+  if (obs1) state.obs.etapa1 = obs1.value;
+  const bpN = document.getElementById('bp-nome');
+  if (bpN) state.bp_nome = bpN.value;
+  const bpI = document.getElementById('bp-id');
+  if (bpI) state.bp_id = bpI.value;
+
+  localStorage.setItem('epq_meta_audit', JSON.stringify(state));
+  if (!silent) {
+    const btn = document.querySelector('.topbar-actions .btn');
+    if (btn) { btn.textContent = '✅ Salvo!'; setTimeout(() => btn.textContent = '💾 Salvar', 1500); }
+  }
+}
+
+function loadData() {
+  const saved = localStorage.getItem('epq_meta_audit');
+  if (!saved) return;
+  try {
+    state = JSON.parse(saved);
+    // Restore answers
+    Object.entries(state.answers).forEach(([groupId, value]) => {
+      const group = document.getElementById(groupId);
+      if (!group) return;
+      group.querySelectorAll('.opt-item').forEach(item => {
+        if (item.querySelector('.opt-label') && item.querySelector('.opt-label').textContent.trim() === value.replace(/^[^a-zA-Z]+ /,'').trim()) {
+          item.classList.add('selected');
+        }
+        // Also match by first chars
+        const label = item.querySelector('.opt-label');
+        if (label && label.textContent.includes(value.replace(/🟢|🟡|🟠|🔴|⚪|✅/g,'').trim())) {
+          item.classList.add('selected');
+        }
+      });
+      // Show conditional fields
+      if (groupId === 'q2-1' && (value.includes('Sim'))) showField('bp-fields');
+      if (groupId === 'q4-5' && value === 'Sim') showField('outro-admin-fields');
+    });
+    // Restore text fields
+    if (state.obs && state.obs.etapa1) { const el = document.getElementById('obs-etapa1'); if (el) el.value = state.obs.etapa1; }
+    if (state.bp_nome) { const el = document.getElementById('bp-nome'); if (el) el.value = state.bp_nome; }
+    if (state.bp_id) { const el = document.getElementById('bp-id'); if (el) el.value = state.bp_id; }
+    renderEvidences();
+    updateProgress();
+    updateDashboardCards();
+  } catch(e) { console.error('Load error', e); }
+}
+
+function resetAll() {
+  if (!confirm('Resetar toda a auditoria? Todos os dados serão perdidos.')) return;
+  localStorage.removeItem('epq_meta_audit');
+  location.reload();
+}
+
+function exportDiag() {
+  generateDiagnosis();
+  const r = analyzeSituation();
+  const a = state.answers;
+  const text = `AUDITORIA DE ATIVOS META — EPQ
+Data: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}
+===========================
+
+ATIVOS INVESTIGADOS
+• Instagram: @estudandopquestoes
+• Página: Estudando P Questões
+• Conta de Anúncios: Ronan / EPQ
+
+DIAGNÓSTICO
+Cenário: ${r.scenario}
+Nível de Risco: ${{low:'Baixo',medium:'Médio',high:'Alto',critical:'Crítico'}[r.severity]}
+Caminho Recomendado: ${r.path} — ${r.pathLabel}
+
+PROPRIETÁRIOS
+• Instagram: ${r.igProp}
+• Página: ${r.pgProp}
+• Conta de Anúncios: ${r.adsProp}
+
+ACESSOS
+• Ronan → Instagram: ${r.ronanIgAccess}
+• Ronan → Página: ${r.ronanPgAccess}
+• Flávio → Instagram: ${r.flavioIgAccess}
+• Flávio → Página: ${r.flavioPgAccess}
+• Agência → Conta de Anúncios: ${r.adsAccess}
+
+CONTA DE ANÚNCIOS
+• Instagram como Identidade: ${r.igInAds}
+• Status da Conta: ${a['q5-4'] || 'Não verificado'}
+
+RELAÇÃO ENTRE ATIVOS
+• Mesma estrutura: ${r.relation}
+• Situação geral: ${r.generalSituation}
+
+PROBLEMAS IDENTIFICADOS
+${r.issues.map(i => '• ' + i).join('\n')}
+
+EVIDÊNCIAS (${state.evidences.length})
+${state.evidences.map(ev => `[${ev.tipo}] ${ev.ativo ? '['+ev.ativo+'] ' : ''}${ev.texto}`).join('\n')}
+
+BLOQUEIOS DE SEGURANÇA
+Nenhuma alteração deve ser realizada antes da confirmação de propriedade.
+
+---
+Gerado por: Painel EPQ Meta Assets Audit`;
+
+  const blob = new Blob([text], {type:'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a2 = document.createElement('a');
+  a2.href = url;
+  a2.download = `auditoria-meta-epq-${new Date().toISOString().split('T')[0]}.txt`;
+  a2.click();
+  URL.revokeObjectURL(url);
+}
+
+// Init
+window.addEventListener('DOMContentLoaded', () => {
+  loadData();
+});
+</script>
+</body>
+</html>
