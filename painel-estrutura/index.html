@@ -84,6 +84,25 @@
     .app{grid-template-columns:1fr;grid-template-rows:56px 1fr;}
     .sidebar,.terminal{display:none;}
   }
+
+      .tree-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+      .tree-btn{padding:6px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);font-size:11.5px;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+      .tree-btn:hover{border-color:var(--border-active);color:var(--text);}
+      .tree-info{font-size:11.5px;color:var(--text-tertiary);margin-left:auto;}
+      .tree-container{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:12px 10px;max-height:calc(100vh - 220px);overflow-y:auto;}
+      .tree-group{display:flex;flex-direction:column;gap:2px;}
+      .tree-node{display:flex;flex-direction:column;}
+      .tree-row{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:var(--radius-sm);cursor:default;transition:background 0.12s ease;}
+      .tree-node.has-children>.tree-row{cursor:pointer;}
+      .tree-node.has-children>.tree-row:hover{background:var(--surface-hover);}
+      .tree-toggle{width:14px;height:14px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:9px;transition:transform 0.15s ease;flex-shrink:0;}
+      .tree-toggle.open{transform:rotate(90deg);}
+      .tree-toggle-placeholder{width:14px;flex-shrink:0;}
+      .tree-icon{font-size:12px;line-height:1;}
+      .tree-label{font-size:12.5px;color:var(--text-secondary);flex:1;line-height:1.3;letter-spacing:0.01em;}
+      .tree-link{font-size:11px;color:var(--text-tertiary);text-decoration:none;padding:2px 8px;border-radius:999px;border:1px solid var(--border);background:var(--surface);opacity:0;transition:opacity 0.12s ease;white-space:nowrap;}
+      .tree-row:hover .tree-link{opacity:1;}
+      .tree-link:hover{border-color:var(--border-active);color:var(--text);}
 </style>
 </head>
 <body>
@@ -119,9 +138,9 @@
       </div>
 
       <div class="sidebar-title">atalhos</div>
-      <div class="nav-item" data-target="section-terminal">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-        <span>terminal</span>
+      <div class="nav-item" data-target="section-drive">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4 2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <span>drive</span>
       </div>
     </aside>
 
@@ -199,19 +218,2043 @@
         </div>
       </div>
 
-      <div id="section-terminal" class="section">
-        <div class="section-title">terminal</div>
-        <div class="terminal">
-          <div class="terminal-header"><div class="terminal-dot"></div><div class="terminal-title">epq estrutura</div></div>
-          <div class="terminal-body" id="terminalBody">
-            <div class="terminal-line"><span class="prefix">&gt;</span><span class="resp">Sistema operacional. Navegue pelo menu lateral.</span></div>
-          </div>
-          <div class="terminal-composer">
-            <input class="terminal-input" id="terminalInput" placeholder="comando..." autocomplete="off">
-            <button class="terminal-send" id="terminalSend" aria-label="enviar">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            </button>
-          </div>
+      <div id="section-drive" class="section">
+        <div class="section-title">drive — estrutura em árvore</div>
+        <div class="tree-controls">
+          <button class="tree-btn" id="treeExpandAll">expandir tudo</button>
+          <button class="tree-btn" id="treeCollapseAll">recolher tudo</button>
+          <span class="tree-info">clique em ▶ para expandir · pastas clicáveis abrem no Drive</span>
+        </div>
+        <div class="tree-container">
+          <div class="tree-group">
+<div class="tree-node has-children" style="padding-left:0px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-13rLR4CFEQF7M-wE6BsHuegklaHmpj8F_">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">00 - Sistema Criativo EPQ</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/13rLR4CFEQF7M-wE6BsHuegklaHmpj8F_" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-13rLR4CFEQF7M-wE6BsHuegklaHmpj8F_" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1qL4vaWm5AWCOQZRMG8eHT0Krd2nMYpgU">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Marca</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1qL4vaWm5AWCOQZRMG8eHT0Krd2nMYpgU" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1qL4vaWm5AWCOQZRMG8eHT0Krd2nMYpgU" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children last" style="padding-left:36px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1UhBVFZBhCBZVYcHJvsa1IDI2i4Ff74Py">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">00 - Marca</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1UhBVFZBhCBZVYcHJvsa1IDI2i4Ff74Py" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1UhBVFZBhCBZVYcHJvsa1IDI2i4Ff74Py" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1A0vaO9ZPQRJgCzkeYqgApeUfnQyeQOpY">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Logos e Identidade</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1A0vaO9ZPQRJgCzkeYqgApeUfnQyeQOpY" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1A0vaO9ZPQRJgCzkeYqgApeUfnQyeQOpY" style="display:none;">
+<div class="tree-group">
+<div class="tree-node last" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">Logo EPQ.jpeg</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">EPQ — Design System Brand Book</span>
+</div>
+</div>
+<div class="tree-node last" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">Referencia Visual</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1xPaVooYYOP8i5rJfxXlyqV73veUZXnXw">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">02 - Playbook</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1xPaVooYYOP8i5rJfxXlyqV73veUZXnXw" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1xPaVooYYOP8i5rJfxXlyqV73veUZXnXw" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children last" style="padding-left:36px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1UJW-hFGv18jIWWPH_6_eHc9RsmSZ4Ve1">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Playbook Marketing EPQ</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1UJW-hFGv18jIWWPH_6_eHc9RsmSZ4Ve1" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1UJW-hFGv18jIWWPH_6_eHc9RsmSZ4Ve1" style="display:none;">
+<div class="tree-group">
+<div class="tree-node" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">PLaybook Marketing EPQ.png</span>
+</div>
+</div>
+<div class="tree-node last" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">playbookmkt.html</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1Mg4NPHGjU6P0EPc9K8wIlCG0Hjjivdnw">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">03 - Modelos de Briefing</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1Mg4NPHGjU6P0EPc9K8wIlCG0Hjjivdnw" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1Mg4NPHGjU6P0EPc9K8wIlCG0Hjjivdnw" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children last" style="padding-left:36px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1wym3yjzUAzl0NQlcxnJpsCMnko-bGzh7">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">04 - Modelos de Briefing</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1wym3yjzUAzl0NQlcxnJpsCMnko-bGzh7" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1wym3yjzUAzl0NQlcxnJpsCMnko-bGzh7" style="display:none;">
+<div class="tree-group">
+<div class="tree-node last" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">Modelo de Briefing</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1GYDa9HRX71Kz6Wbvl-1vsWWd_vxuyJBd">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">04 - Referências</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1GYDa9HRX71Kz6Wbvl-1vsWWd_vxuyJBd" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1GYDa9HRX71Kz6Wbvl-1vsWWd_vxuyJBd" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children last" style="padding-left:36px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1JzXv_JYC82E50AypbWeSge86ratXJDT1">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">02 - Referencias</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1JzXv_JYC82E50AypbWeSge86ratXJDT1" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1JzXv_JYC82E50AypbWeSge86ratXJDT1" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children last" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1cpM4ZdqIwk2V2JGEWhnFgoOHNzpN1mwB">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Ideias</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1cpM4ZdqIwk2V2JGEWhnFgoOHNzpN1mwB" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1cpM4ZdqIwk2V2JGEWhnFgoOHNzpN1mwB" style="display:none;">
+<div class="tree-group">
+<div class="tree-node last" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">01 - Ago.png</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1S6UXO9X82ju2gteTpKA8waDlsExCewyC">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">05 - Materiais Brutos</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1S6UXO9X82ju2gteTpKA8waDlsExCewyC" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1S6UXO9X82ju2gteTpKA8waDlsExCewyC" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:36px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1-Cu9NlOqkH5B6owrvhs1G78BXHLOwnSH">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Brutos</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1-Cu9NlOqkH5B6owrvhs1G78BXHLOwnSH" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1-Cu9NlOqkH5B6owrvhs1G78BXHLOwnSH" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1ji2GLnEn3I5CdUBXGLClrq_Ps7V8uC08">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Artes Antigas</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1ji2GLnEn3I5CdUBXGLClrq_Ps7V8uC08" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1ji2GLnEn3I5CdUBXGLClrq_Ps7V8uC08" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-12PokYO32xCFqY2hVNbJnTUvVsfMfUV8w">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Depoimentos</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/12PokYO32xCFqY2hVNbJnTUvVsfMfUV8w" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-12PokYO32xCFqY2hVNbJnTUvVsfMfUV8w" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1jOhUxKN9rWHASQUOHmr8NSPrPsD28bl6">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Fotos</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1jOhUxKN9rWHASQUOHmr8NSPrPsD28bl6" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1jOhUxKN9rWHASQUOHmr8NSPrPsD28bl6" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-13xEXQSqG6sks9syZWaGKgJpALuCulBAf">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Materiais dos Cursos</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/13xEXQSqG6sks9syZWaGKgJpALuCulBAf" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-13xEXQSqG6sks9syZWaGKgJpALuCulBAf" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1EBAd10_RrENB6c4IjdvoFbJ0Iqr65AF-">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Outros</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1EBAd10_RrENB6c4IjdvoFbJ0Iqr65AF-" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1EBAd10_RrENB6c4IjdvoFbJ0Iqr65AF-" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-18wGvAgmuJSCBS8_1IOCt-fHp0GF1hdkI">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Ronan</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/18wGvAgmuJSCBS8_1IOCt-fHp0GF1hdkI" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-18wGvAgmuJSCBS8_1IOCt-fHp0GF1hdkI" style="display:none;">
+<div class="tree-group">
+<div class="tree-node" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">Conheça a EPQ 2.mp4</span>
+</div>
+</div>
+<div class="tree-node" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">Conheça a EPQ.mp4</span>
+</div>
+</div>
+<div class="tree-node last" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">Transpetro.mp4</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1fxjwz7CCQnGJRoNj98YX09pMfBxvPnrp">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Vídeos</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1fxjwz7CCQnGJRoNj98YX09pMfBxvPnrp" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1fxjwz7CCQnGJRoNj98YX09pMfBxvPnrp" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:36px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1rCwGXmH_XF7eAFpENgn6c1kv96KBDWRk">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">02 - Enviados</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1rCwGXmH_XF7eAFpENgn6c1kv96KBDWRk" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1rCwGXmH_XF7eAFpENgn6c1kv96KBDWRk" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:36px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-13mCzn4ScMbEVBZs8zPGrdlK79JYMk9nD">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Fotos</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/13mCzn4ScMbEVBZs8zPGrdlK79JYMk9nD" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-13mCzn4ScMbEVBZs8zPGrdlK79JYMk9nD" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:36px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1aScGYMIdjpL4RTKx2YveSmdmWAEhSjXa">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Videos</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1aScGYMIdjpL4RTKx2YveSmdmWAEhSjXa" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1aScGYMIdjpL4RTKx2YveSmdmWAEhSjXa" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:0px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1RbzxgDi0Fk7ACj0l9SpVkQEfkXKBfBOf">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Apoio Geral</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1RbzxgDi0Fk7ACj0l9SpVkQEfkXKBfBOf" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1RbzxgDi0Fk7ACj0l9SpVkQEfkXKBfBOf" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children last" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1bxDXfztzSTLOTOv14ZTPhCU01NowiWRC">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">03 - Materiais </span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1bxDXfztzSTLOTOv14ZTPhCU01NowiWRC" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1bxDXfztzSTLOTOv14ZTPhCU01NowiWRC" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:0px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1eWMsO0r0a5PhYN7DVp-iCaZsRjqny1O7">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">02 - Social Media</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1eWMsO0r0a5PhYN7DVp-iCaZsRjqny1O7" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1eWMsO0r0a5PhYN7DVp-iCaZsRjqny1O7" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:0px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1EKaz0tElLGA_bneNehxu4Ju8dK6HUs2w">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">03 - Anúncios</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1EKaz0tElLGA_bneNehxu4Ju8dK6HUs2w" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1EKaz0tElLGA_bneNehxu4Ju8dK6HUs2w" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:0px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1usMncTFL0PPiz4Jg42nScI6L6GFt-R1j">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Concursos</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1usMncTFL0PPiz4Jg42nScI6L6GFt-R1j" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1usMncTFL0PPiz4Jg42nScI6L6GFt-R1j" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1--0IpkJ8e6D1rYqNDyKV037-5fwxwz-A">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Ads</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1--0IpkJ8e6D1rYqNDyKV037-5fwxwz-A" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1--0IpkJ8e6D1rYqNDyKV037-5fwxwz-A" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1d9rvUiWjDU7LM4qJRAXSPBHf0LFKDKGw">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Banner</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1d9rvUiWjDU7LM4qJRAXSPBHf0LFKDKGw" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1d9rvUiWjDU7LM4qJRAXSPBHf0LFKDKGw" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children last" style="padding-left:36px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1_HuHr-u2H2fs3H43SyGf2ZRKC3qjhkc3">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">banner</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1_HuHr-u2H2fs3H43SyGf2ZRKC3qjhkc3" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1_HuHr-u2H2fs3H43SyGf2ZRKC3qjhkc3" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children last" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1n_a4zZDfPgXoTCFMBvRJBP_baaBVh6lD">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">EPQ_banner_1920x500</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1n_a4zZDfPgXoTCFMBvRJBP_baaBVh6lD" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1n_a4zZDfPgXoTCFMBvRJBP_baaBVh6lD" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1zNqjWeM7S-dpp-d4o5eexKVjI3pIBjFf">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Apoio</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1zNqjWeM7S-dpp-d4o5eexKVjI3pIBjFf" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1zNqjWeM7S-dpp-d4o5eexKVjI3pIBjFf" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1QG_S750E6e1_D7hqUTUmh6fOYZLtT_6Q">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Referencia</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1QG_S750E6e1_D7hqUTUmh6fOYZLtT_6Q" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1QG_S750E6e1_D7hqUTUmh6fOYZLtT_6Q" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1CLc-Zxjqw7Bdf2m9Kc57PGYq6TVleeY6">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">02 - Briefing</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1CLc-Zxjqw7Bdf2m9Kc57PGYq6TVleeY6" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1CLc-Zxjqw7Bdf2m9Kc57PGYq6TVleeY6" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1_HkUlEAcLJXd_i-vaEPBIdZUjAQ4-IQb">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">03 - Arquivo Finalizado</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1_HkUlEAcLJXd_i-vaEPBIdZUjAQ4-IQb" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1_HkUlEAcLJXd_i-vaEPBIdZUjAQ4-IQb" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1Vy6MkGgnMnXm-AeyEV_sqRF9ppvxP51v">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">08 - Agosto</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1Vy6MkGgnMnXm-AeyEV_sqRF9ppvxP51v" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1Vy6MkGgnMnXm-AeyEV_sqRF9ppvxP51v" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1xr3Lmjof9p2M1SICzaAA40KluqrdNVet">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">09 - Setembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1xr3Lmjof9p2M1SICzaAA40KluqrdNVet" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1xr3Lmjof9p2M1SICzaAA40KluqrdNVet" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1BDq01LYqLxmN8CMRXqofGSYKBLxrV3Sw">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">10 - Outubro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1BDq01LYqLxmN8CMRXqofGSYKBLxrV3Sw" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1BDq01LYqLxmN8CMRXqofGSYKBLxrV3Sw" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1wayISFvjKUpKVgA-ygvovxYPfqYbtwQk">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">11 - Novembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1wayISFvjKUpKVgA-ygvovxYPfqYbtwQk" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1wayISFvjKUpKVgA-ygvovxYPfqYbtwQk" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1lehpwoHWLU1LGOsmFDMzg-X4RTlttPqX">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">12 - Dezembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1lehpwoHWLU1LGOsmFDMzg-X4RTlttPqX" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1lehpwoHWLU1LGOsmFDMzg-X4RTlttPqX" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-13pKISAB9ruy1V_8dmP2RysliZm4y7AgK">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">OLD</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/13pKISAB9ruy1V_8dmP2RysliZm4y7AgK" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-13pKISAB9ruy1V_8dmP2RysliZm4y7AgK" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1DPvjmL4OLIEJccPrxnOOI6dEgcgG8Q2t">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Carrossel</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1DPvjmL4OLIEJccPrxnOOI6dEgcgG8Q2t" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1DPvjmL4OLIEJccPrxnOOI6dEgcgG8Q2t" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children last" style="padding-left:36px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1ToMBTYo2bv86zen_uILig8RbSvifbuqZ">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">social</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1ToMBTYo2bv86zen_uILig8RbSvifbuqZ" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1ToMBTYo2bv86zen_uILig8RbSvifbuqZ" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children last" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1UxjTU7QE1TYzvvLYytyqjy_S5AxxMZ_A">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">EPQ_social_carrossel_1080x1080</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1UxjTU7QE1TYzvvLYytyqjy_S5AxxMZ_A" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1UxjTU7QE1TYzvvLYytyqjy_S5AxxMZ_A" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1n1kioMHlMoMWt6-RowKayAdC9IwjNS1e">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Apoio</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1n1kioMHlMoMWt6-RowKayAdC9IwjNS1e" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1n1kioMHlMoMWt6-RowKayAdC9IwjNS1e" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1aE1B5f9wHEsQZjEJndSXsvKFDaae_U4y">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Referencia</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1aE1B5f9wHEsQZjEJndSXsvKFDaae_U4y" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1aE1B5f9wHEsQZjEJndSXsvKFDaae_U4y" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-18VeP3ERPuXqsed7nmTUe0XJGNkws0VEH">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">02 - Briefing</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/18VeP3ERPuXqsed7nmTUe0XJGNkws0VEH" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-18VeP3ERPuXqsed7nmTUe0XJGNkws0VEH" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1evrRd3CDrP05htdvKksHkE-gC8JVd3YN">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">03 - Arquivo Finalizado</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1evrRd3CDrP05htdvKksHkE-gC8JVd3YN" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1evrRd3CDrP05htdvKksHkE-gC8JVd3YN" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1_UAVgTQ31-j34qYV4dza9qDX9lpxeTO1">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">08 - Agosto</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1_UAVgTQ31-j34qYV4dza9qDX9lpxeTO1" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1_UAVgTQ31-j34qYV4dza9qDX9lpxeTO1" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-18rcC5txKH5aJh0U5gieUcH8zIICzuFZf">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">09 - Setembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/18rcC5txKH5aJh0U5gieUcH8zIICzuFZf" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-18rcC5txKH5aJh0U5gieUcH8zIICzuFZf" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1YY5UTiTmqAwt9EKjrv0jVhYAq16yNE8C">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">10 - Outubro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1YY5UTiTmqAwt9EKjrv0jVhYAq16yNE8C" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1YY5UTiTmqAwt9EKjrv0jVhYAq16yNE8C" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1uZ4Qj0h_Ucq0yaL46TydHo3P27AxQqB2">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">11 - Novembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1uZ4Qj0h_Ucq0yaL46TydHo3P27AxQqB2" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1uZ4Qj0h_Ucq0yaL46TydHo3P27AxQqB2" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1_2G2vt0l1RpkR9rPQL84asB19RWWwcJj">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">12 - Dezembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1_2G2vt0l1RpkR9rPQL84asB19RWWwcJj" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1_2G2vt0l1RpkR9rPQL84asB19RWWwcJj" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1visdclCxKAeF-b5EI3SLBcSGAJfoyL5r">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">OLD</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1visdclCxKAeF-b5EI3SLBcSGAJfoyL5r" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1visdclCxKAeF-b5EI3SLBcSGAJfoyL5r" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1GGX8ahw09U_v5FWNccAgT1pHE_6bsv7d">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Feed</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1GGX8ahw09U_v5FWNccAgT1pHE_6bsv7d" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1GGX8ahw09U_v5FWNccAgT1pHE_6bsv7d" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:36px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1_2hvxO_Mn9mbg-7aXrVbWcQk6tSE-PDi">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">ads</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1_2hvxO_Mn9mbg-7aXrVbWcQk6tSE-PDi" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1_2hvxO_Mn9mbg-7aXrVbWcQk6tSE-PDi" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children last" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-13Ozx841wJY9-z8dw6_3WjhKAuU-j-SLm">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">EPQ_ads_feed_1080x1080</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/13Ozx841wJY9-z8dw6_3WjhKAuU-j-SLm" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-13Ozx841wJY9-z8dw6_3WjhKAuU-j-SLm" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1uYcnxCbQca0D8o6l13TX184KA4beCTo2">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Apoio</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1uYcnxCbQca0D8o6l13TX184KA4beCTo2" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1uYcnxCbQca0D8o6l13TX184KA4beCTo2" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1PRe3zzNlvPStSi_bUHTXIsf-EajRYq9u">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Referencia</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1PRe3zzNlvPStSi_bUHTXIsf-EajRYq9u" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1PRe3zzNlvPStSi_bUHTXIsf-EajRYq9u" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1lTwxNZXKEu1N7Z6m8GEKK178hqoGDCsb">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">02 - Briefing</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1lTwxNZXKEu1N7Z6m8GEKK178hqoGDCsb" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1lTwxNZXKEu1N7Z6m8GEKK178hqoGDCsb" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1GDszq3UlWGbiO1uNH_S5s6o7odbsjHf_">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">03 - Arquivo Finalizado</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1GDszq3UlWGbiO1uNH_S5s6o7odbsjHf_" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1GDszq3UlWGbiO1uNH_S5s6o7odbsjHf_" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1j6pqQeUIo8DwPuF5FhnBzVbALaYwBxsK">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">08 - Agosto</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1j6pqQeUIo8DwPuF5FhnBzVbALaYwBxsK" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1j6pqQeUIo8DwPuF5FhnBzVbALaYwBxsK" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1AX-cyTtVSk7yzujEQl3PcJYHFDM3bzga">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">09 - Setembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1AX-cyTtVSk7yzujEQl3PcJYHFDM3bzga" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1AX-cyTtVSk7yzujEQl3PcJYHFDM3bzga" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1w0UQIp-Ypsa9XoIGePwpYjO9Zq9sjrP-">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">10 - Outubro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1w0UQIp-Ypsa9XoIGePwpYjO9Zq9sjrP-" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1w0UQIp-Ypsa9XoIGePwpYjO9Zq9sjrP-" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1agxqdXcnUvugkSSy0RpGN_7hUIZFvCz0">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">11 - Novembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1agxqdXcnUvugkSSy0RpGN_7hUIZFvCz0" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1agxqdXcnUvugkSSy0RpGN_7hUIZFvCz0" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1ovMNkbc5I315OBGDQ-VzRBlaHACyL_v9">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">12 - Dezembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1ovMNkbc5I315OBGDQ-VzRBlaHACyL_v9" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1ovMNkbc5I315OBGDQ-VzRBlaHACyL_v9" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1fBxUXCEqOxF4TSb7EB-ZAqkBozOyjhwr">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">OLD</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1fBxUXCEqOxF4TSb7EB-ZAqkBozOyjhwr" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1fBxUXCEqOxF4TSb7EB-ZAqkBozOyjhwr" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:36px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-11Fj-zrMicb5ry-XBBRMAmaw2VVnyQMVo">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">social</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/11Fj-zrMicb5ry-XBBRMAmaw2VVnyQMVo" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-11Fj-zrMicb5ry-XBBRMAmaw2VVnyQMVo" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children last" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1hXhjDD-h788fRwYTsd0XeADFpIs8yWBk">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">EPQ_social_feed_1080x1080</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1hXhjDD-h788fRwYTsd0XeADFpIs8yWBk" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1hXhjDD-h788fRwYTsd0XeADFpIs8yWBk" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-19YYf_IXq1-UCZYshcm_mtsafI-nBqLYm">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Apoio</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/19YYf_IXq1-UCZYshcm_mtsafI-nBqLYm" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-19YYf_IXq1-UCZYshcm_mtsafI-nBqLYm" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1C9AP-Y45lFD-Th8lroDVv-Pl-h8PNAhn">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Referencia</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1C9AP-Y45lFD-Th8lroDVv-Pl-h8PNAhn" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1C9AP-Y45lFD-Th8lroDVv-Pl-h8PNAhn" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1H-xXYSaEEa9QtPhT0i-laZtNePASjCYg">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">02 - Briefing</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1H-xXYSaEEa9QtPhT0i-laZtNePASjCYg" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1H-xXYSaEEa9QtPhT0i-laZtNePASjCYg" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-13WYCPwLtFwtbfQ54rdv_Q3VaomC-ezQf">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">03 - Arquivo Finalizado</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/13WYCPwLtFwtbfQ54rdv_Q3VaomC-ezQf" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-13WYCPwLtFwtbfQ54rdv_Q3VaomC-ezQf" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1p3DyqMkM-lcpsXor9UKWEm7YEJMIJBM4">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">08 - Agosto</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1p3DyqMkM-lcpsXor9UKWEm7YEJMIJBM4" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1p3DyqMkM-lcpsXor9UKWEm7YEJMIJBM4" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1EQf5SFS_HWeEGd8IkGcv7G4ome7g3FPw">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">09 - Setembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1EQf5SFS_HWeEGd8IkGcv7G4ome7g3FPw" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1EQf5SFS_HWeEGd8IkGcv7G4ome7g3FPw" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1uKMzkmno8AR6_pK6T0epydatDkvO2dg2">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">10 - Outubro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1uKMzkmno8AR6_pK6T0epydatDkvO2dg2" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1uKMzkmno8AR6_pK6T0epydatDkvO2dg2" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1to1QJxcJyeJUKlPcrORTTAe2wM0Z2rUA">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">11 - Novembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1to1QJxcJyeJUKlPcrORTTAe2wM0Z2rUA" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1to1QJxcJyeJUKlPcrORTTAe2wM0Z2rUA" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1kY8UBo3OHGES8mgH0C6wvRZPhjRXnhc8">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">12 - Dezembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1kY8UBo3OHGES8mgH0C6wvRZPhjRXnhc8" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1kY8UBo3OHGES8mgH0C6wvRZPhjRXnhc8" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1c_mYzPHt37SmCc2-JMo8YrV_E5hyIgaO">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">OLD</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1c_mYzPHt37SmCc2-JMo8YrV_E5hyIgaO" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1c_mYzPHt37SmCc2-JMo8YrV_E5hyIgaO" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1j5cy9szO7ymYG0cqk9-6_Pe4IaFKGy-H">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Impresso</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1j5cy9szO7ymYG0cqk9-6_Pe4IaFKGy-H" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1j5cy9szO7ymYG0cqk9-6_Pe4IaFKGy-H" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children last" style="padding-left:36px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1lVuQlYYgLSjzsSpXAmD19Jm0cO3HveO6">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">impresso</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1lVuQlYYgLSjzsSpXAmD19Jm0cO3HveO6" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1lVuQlYYgLSjzsSpXAmD19Jm0cO3HveO6" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children last" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1JF-vahUzCGVuh51xgC74GX2l1_0WJVdM">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">EPQ_impresso_a4_210x297mm</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1JF-vahUzCGVuh51xgC74GX2l1_0WJVdM" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1JF-vahUzCGVuh51xgC74GX2l1_0WJVdM" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1aHfaDgZqNj8MYpJ-TZLK603ygnWzpnV3">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Apoio</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1aHfaDgZqNj8MYpJ-TZLK603ygnWzpnV3" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1aHfaDgZqNj8MYpJ-TZLK603ygnWzpnV3" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-19_ob97sa1beSsOPc9elwAggIexcGR0k3">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Referencia</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/19_ob97sa1beSsOPc9elwAggIexcGR0k3" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-19_ob97sa1beSsOPc9elwAggIexcGR0k3" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1aRhgX38I64lJxNgobltQoJ-6jKfrZUIB">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">02 - Briefing</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1aRhgX38I64lJxNgobltQoJ-6jKfrZUIB" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1aRhgX38I64lJxNgobltQoJ-6jKfrZUIB" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1cgRAl5NUDNbQlCb1WOw-WZ52-OdVmLkO">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">03 - Arquivo Finalizado</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1cgRAl5NUDNbQlCb1WOw-WZ52-OdVmLkO" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1cgRAl5NUDNbQlCb1WOw-WZ52-OdVmLkO" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1qFZrftp8_Ylsg_U0CjWfuRDhZLK0rD3p">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">08 - Agosto</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1qFZrftp8_Ylsg_U0CjWfuRDhZLK0rD3p" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1qFZrftp8_Ylsg_U0CjWfuRDhZLK0rD3p" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1KqFdnk-Ev_nyc2cU8VBsjUS8zzflFaX7">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">09 - Setembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1KqFdnk-Ev_nyc2cU8VBsjUS8zzflFaX7" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1KqFdnk-Ev_nyc2cU8VBsjUS8zzflFaX7" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1BvwH6PYIiCxyAnOD1X-asLNFusiB8Xj8">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">10 - Outubro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1BvwH6PYIiCxyAnOD1X-asLNFusiB8Xj8" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1BvwH6PYIiCxyAnOD1X-asLNFusiB8Xj8" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1GtIswXy-L33a1hfiiTsPFBIJwMeAyKgg">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">11 - Novembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1GtIswXy-L33a1hfiiTsPFBIJwMeAyKgg" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1GtIswXy-L33a1hfiiTsPFBIJwMeAyKgg" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1jtC4qgLzYego-0FNIvWHjpWt6jOJLL9d">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">12 - Dezembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1jtC4qgLzYego-0FNIvWHjpWt6jOJLL9d" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1jtC4qgLzYego-0FNIvWHjpWt6jOJLL9d" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1lhQiYJMpojEfD6Zz7BpgcqNK_dA6TvML">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">OLD</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1lhQiYJMpojEfD6Zz7BpgcqNK_dA6TvML" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1lhQiYJMpojEfD6Zz7BpgcqNK_dA6TvML" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1tVHZeNFFgqWi-rhcLyZToJS8ejNkmntC">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Reels</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1tVHZeNFFgqWi-rhcLyZToJS8ejNkmntC" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1tVHZeNFFgqWi-rhcLyZToJS8ejNkmntC" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children last" style="padding-left:36px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1V30fIMsT--ukyxHotLEKTivyS6_kN5Y7">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">social</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1V30fIMsT--ukyxHotLEKTivyS6_kN5Y7" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1V30fIMsT--ukyxHotLEKTivyS6_kN5Y7" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children last" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1TSJOowv-VtVU_TAlD4VmexW8FDyDDlfA">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">EPQ_social_reels_1080x1920</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1TSJOowv-VtVU_TAlD4VmexW8FDyDDlfA" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1TSJOowv-VtVU_TAlD4VmexW8FDyDDlfA" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1OytzSzat9YGJlajLrDp78yJgufDc8fEx">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Apoio</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1OytzSzat9YGJlajLrDp78yJgufDc8fEx" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1OytzSzat9YGJlajLrDp78yJgufDc8fEx" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1VNmfTdbqGvaINMhA6xnLzKAxON3wVq89">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Referencia</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1VNmfTdbqGvaINMhA6xnLzKAxON3wVq89" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1VNmfTdbqGvaINMhA6xnLzKAxON3wVq89" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1i35cK39VuxlXCZDiS2j4F5jelT4KVKPM">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">02 - Briefing</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1i35cK39VuxlXCZDiS2j4F5jelT4KVKPM" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1i35cK39VuxlXCZDiS2j4F5jelT4KVKPM" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1YNoTt3Gn_oI7LuSDL4YRz83st8AqHD-l">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">03 - Arquivo Finalizado</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1YNoTt3Gn_oI7LuSDL4YRz83st8AqHD-l" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1YNoTt3Gn_oI7LuSDL4YRz83st8AqHD-l" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1jYAvzv-sgftmnHooBpc7A_fSCUeh4xOM">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">08 - Agosto</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1jYAvzv-sgftmnHooBpc7A_fSCUeh4xOM" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1jYAvzv-sgftmnHooBpc7A_fSCUeh4xOM" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1Pgq6E9En7OzDk9JsN7lt0MuMQDI_oEiQ">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">09 - Setembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1Pgq6E9En7OzDk9JsN7lt0MuMQDI_oEiQ" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1Pgq6E9En7OzDk9JsN7lt0MuMQDI_oEiQ" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1pL4VyD_gsI58fAPGBOrDD7171oSY7o6e">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">10 - Outubro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1pL4VyD_gsI58fAPGBOrDD7171oSY7o6e" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1pL4VyD_gsI58fAPGBOrDD7171oSY7o6e" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1of2halaf5V1QUhQzt1e-bKDGuvqKqw4T">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">11 - Novembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1of2halaf5V1QUhQzt1e-bKDGuvqKqw4T" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1of2halaf5V1QUhQzt1e-bKDGuvqKqw4T" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-19rqstJI1XV_dmNGl_cmJ_cIVyTG14DON">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">12 - Dezembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/19rqstJI1XV_dmNGl_cmJ_cIVyTG14DON" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-19rqstJI1XV_dmNGl_cmJ_cIVyTG14DON" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1huOfoJYhSSe2p8d3Neupc-zp049YgHa6">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">OLD</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1huOfoJYhSSe2p8d3Neupc-zp049YgHa6" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1huOfoJYhSSe2p8d3Neupc-zp049YgHa6" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1zKjbvicjWCgNFYoB-tVpbjdusNeOVc3K">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Stories</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1zKjbvicjWCgNFYoB-tVpbjdusNeOVc3K" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1zKjbvicjWCgNFYoB-tVpbjdusNeOVc3K" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:36px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1N9XESHADB4_bNViWWnRfAPCrMOZHCwl0">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">ads</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1N9XESHADB4_bNViWWnRfAPCrMOZHCwl0" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1N9XESHADB4_bNViWWnRfAPCrMOZHCwl0" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children last" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1BC6LfWLew-U2WGTqSaiwV6bEfMKibr5Z">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">EPQ_ads_stories_1080x1920</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1BC6LfWLew-U2WGTqSaiwV6bEfMKibr5Z" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1BC6LfWLew-U2WGTqSaiwV6bEfMKibr5Z" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1ywwEZ5olkxZWpf9svbWoAlfnORb8pY9J">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Apoio</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1ywwEZ5olkxZWpf9svbWoAlfnORb8pY9J" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1ywwEZ5olkxZWpf9svbWoAlfnORb8pY9J" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1_bItXT07MbTnrxnXqgD38lfa1GjPLz4Q">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Referencia</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1_bItXT07MbTnrxnXqgD38lfa1GjPLz4Q" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1_bItXT07MbTnrxnXqgD38lfa1GjPLz4Q" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1VvwqtatU150UJi8k0wj1KxvPD9C3Z5Cn">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">02 - Briefing</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1VvwqtatU150UJi8k0wj1KxvPD9C3Z5Cn" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1VvwqtatU150UJi8k0wj1KxvPD9C3Z5Cn" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1JTSUOQC290nAmsu59FIM2bBXqF0EhFHB">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">03 - Arquivo Finalizado</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1JTSUOQC290nAmsu59FIM2bBXqF0EhFHB" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1JTSUOQC290nAmsu59FIM2bBXqF0EhFHB" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1gPomN6lCZFagHYZTfXXG9CJAth6yObex">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">08 - Agosto</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1gPomN6lCZFagHYZTfXXG9CJAth6yObex" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1gPomN6lCZFagHYZTfXXG9CJAth6yObex" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1Q2Ey3EZzpN_-5qXB2LgldbQde5tqpS4q">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">09 - Setembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1Q2Ey3EZzpN_-5qXB2LgldbQde5tqpS4q" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1Q2Ey3EZzpN_-5qXB2LgldbQde5tqpS4q" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1yiG7sj9ynYRstIWcISG_2IOpKFQO6JrX">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">10 - Outubro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1yiG7sj9ynYRstIWcISG_2IOpKFQO6JrX" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1yiG7sj9ynYRstIWcISG_2IOpKFQO6JrX" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1901tZCH54JWeS15y--uBVtGowYqa33Mx">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">11 - Novembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1901tZCH54JWeS15y--uBVtGowYqa33Mx" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1901tZCH54JWeS15y--uBVtGowYqa33Mx" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1oCru0rDWGJGhlnllhQkY5ZFxLFSsG3hx">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">12 - Dezembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1oCru0rDWGJGhlnllhQkY5ZFxLFSsG3hx" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1oCru0rDWGJGhlnllhQkY5ZFxLFSsG3hx" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1ZTeFRi6QKvmQXMNjKUUQpV1vbCZIuldb">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">OLD</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1ZTeFRi6QKvmQXMNjKUUQpV1vbCZIuldb" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1ZTeFRi6QKvmQXMNjKUUQpV1vbCZIuldb" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:36px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1B806KtxW_w-Wm_jm7e1GGofglyrjdP0u">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">social</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1B806KtxW_w-Wm_jm7e1GGofglyrjdP0u" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1B806KtxW_w-Wm_jm7e1GGofglyrjdP0u" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children last" style="padding-left:54px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-16ndp1SkfNIjceXpzAHsDptQ5R3KsvP1L">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">EPQ_social_stories_1080x1920</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/16ndp1SkfNIjceXpzAHsDptQ5R3KsvP1L" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-16ndp1SkfNIjceXpzAHsDptQ5R3KsvP1L" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1RCv16431mTIFkIeBp8uhcuiD5DFwrEdY">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Apoio</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1RCv16431mTIFkIeBp8uhcuiD5DFwrEdY" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1RCv16431mTIFkIeBp8uhcuiD5DFwrEdY" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1bLKh-8EVk03Nn65-aC5BWVerocY0elQh">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Referencia</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1bLKh-8EVk03Nn65-aC5BWVerocY0elQh" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1bLKh-8EVk03Nn65-aC5BWVerocY0elQh" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:108px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1pQwQAlZlaV3ayDfS_qhgUNYZ0IZrcBxv">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">00 - PLanejamento</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1pQwQAlZlaV3ayDfS_qhgUNYZ0IZrcBxv" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1pQwQAlZlaV3ayDfS_qhgUNYZ0IZrcBxv" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:108px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1errre-9VmPtAVkfEx_ZxEG5J3MrS5nA1">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Cards</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1errre-9VmPtAVkfEx_ZxEG5J3MrS5nA1" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1errre-9VmPtAVkfEx_ZxEG5J3MrS5nA1" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:126px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1DWVMnvYgstkQ8FxpWSMVM8ZYaoKrhfKm">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">01 - Concursos</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1DWVMnvYgstkQ8FxpWSMVM8ZYaoKrhfKm" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1DWVMnvYgstkQ8FxpWSMVM8ZYaoKrhfKm" style="display:none;">
+<div class="tree-group">
+<div class="tree-node last" style="padding-left:144px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">Gaurda.png</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:126px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-14vWbAHLc07J0ND2M_0hqwlpdHUMQPe8d">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">02 - Prova Social</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/14vWbAHLc07J0ND2M_0hqwlpdHUMQPe8d" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-14vWbAHLc07J0ND2M_0hqwlpdHUMQPe8d" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children last" style="padding-left:144px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1x3cFAAusCFxFGIsoiD06wNaW-3JeITJo">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Ex Alunos 01</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1x3cFAAusCFxFGIsoiD06wNaW-3JeITJo" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1x3cFAAusCFxFGIsoiD06wNaW-3JeITJo" style="display:none;">
+<div class="tree-group">
+<div class="tree-node" style="padding-left:162px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">00 - Aprovados SEAP RJ.png</span>
+</div>
+</div>
+<div class="tree-node" style="padding-left:162px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">01 - Lúcio Botelho.jpeg</span>
+</div>
+</div>
+<div class="tree-node" style="padding-left:162px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">02 - Charlene Talarico.jpeg</span>
+</div>
+</div>
+<div class="tree-node" style="padding-left:162px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">03- Sérgio.jpeg</span>
+</div>
+</div>
+<div class="tree-node last" style="padding-left:162px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">04 - Wesley.png</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:126px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1WBaj86FwxcwI-wVlVGUKtGw6_Rm7ZtwT">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">03 - Aprovados</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1WBaj86FwxcwI-wVlVGUKtGw6_Rm7ZtwT" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1WBaj86FwxcwI-wVlVGUKtGw6_Rm7ZtwT" style="display:none;">
+<div class="tree-group">
+<div class="tree-node last" style="padding-left:144px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">Cartaz.png</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:126px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1lot0e1ao4pcieslimGXcoYyljFFdAZrw">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">04 - Publicados</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1lot0e1ao4pcieslimGXcoYyljFFdAZrw" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1lot0e1ao4pcieslimGXcoYyljFFdAZrw" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node last" style="padding-left:126px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">ST - 13-08.png</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:108px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1FECR4LMghswMZjM4OE-HCoWPSlKrXlaF">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">02 - Carrosseis</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1FECR4LMghswMZjM4OE-HCoWPSlKrXlaF" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1FECR4LMghswMZjM4OE-HCoWPSlKrXlaF" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:126px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1RV9uyUC2Tk-84WgGpDC69f5lW6S_aHMy">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">03 - Aprovados</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1RV9uyUC2Tk-84WgGpDC69f5lW6S_aHMy" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1RV9uyUC2Tk-84WgGpDC69f5lW6S_aHMy" style="display:none;">
+<div class="tree-group">
+<div class="tree-node last" style="padding-left:144px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">Cartaz.png</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:126px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1v8jAjnKQM1xc0aqtkJm9mfimQ30-Kz3S">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">04 - Publicados</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1v8jAjnKQM1xc0aqtkJm9mfimQ30-Kz3S" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1v8jAjnKQM1xc0aqtkJm9mfimQ30-Kz3S" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node" style="padding-left:126px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">01 - Cheklist.png</span>
+</div>
+</div>
+<div class="tree-node" style="padding-left:126px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">02 - Cheklist.png</span>
+</div>
+</div>
+<div class="tree-node" style="padding-left:126px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">03 - Cheklist.png</span>
+</div>
+</div>
+<div class="tree-node" style="padding-left:126px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">04  - Cheklist.png</span>
+</div>
+</div>
+<div class="tree-node last" style="padding-left:126px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">Checklist stories.png</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:108px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1f4QVr_gb59j0-OBGGiuEL1u0dCPprcCu">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">03 - Videos</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1f4QVr_gb59j0-OBGGiuEL1u0dCPprcCu" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1f4QVr_gb59j0-OBGGiuEL1u0dCPprcCu" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:126px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1bV1_t1olzRy7E2hyCAnFgS6LGC-T4Vdk">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">03 - Aprovados</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1bV1_t1olzRy7E2hyCAnFgS6LGC-T4Vdk" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1bV1_t1olzRy7E2hyCAnFgS6LGC-T4Vdk" style="display:none;">
+<div class="tree-group">
+<div class="tree-node last" style="padding-left:144px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">Cartaz.png</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:126px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-16mV4Up5fqxcGbKNiZPkXscECtGgpCB6r">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">04 - Publicados</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/16mV4Up5fqxcGbKNiZPkXscECtGgpCB6r" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-16mV4Up5fqxcGbKNiZPkXscECtGgpCB6r" style="display:none;">
+<div class="tree-group">
+<div class="tree-node last" style="padding-left:144px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">anúncio de perfil novo </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node last" style="padding-left:126px">
+<div class="tree-row">
+<span class="tree-toggle-placeholder"></span>
+<span class="tree-icon">📄</span>
+<span class="tree-label">01 - AGO.mp4</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1AR4HU48OogJ55ng4seuNK0Ln2q_Hbf4D">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">02 - Briefing</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1AR4HU48OogJ55ng4seuNK0Ln2q_Hbf4D" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1AR4HU48OogJ55ng4seuNK0Ln2q_Hbf4D" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:72px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1ZXncOH5WfoEtc_YoFm8XsTzJU-MjL8vm">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">03 - Arquivo Finalizado</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1ZXncOH5WfoEtc_YoFm8XsTzJU-MjL8vm" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1ZXncOH5WfoEtc_YoFm8XsTzJU-MjL8vm" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1Ebd2ujm_XlO3D_ydqEAkkmdq8lzAvdhN">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">08 - Agosto</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1Ebd2ujm_XlO3D_ydqEAkkmdq8lzAvdhN" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1Ebd2ujm_XlO3D_ydqEAkkmdq8lzAvdhN" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1EqAW-WAiDU3pjNC1Tv_Tr1n_fY_KvD89">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">09 - Setembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1EqAW-WAiDU3pjNC1Tv_Tr1n_fY_KvD89" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1EqAW-WAiDU3pjNC1Tv_Tr1n_fY_KvD89" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-14zXXhbFQXjfzJBP4pMcVQGGMv7mAHkHH">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">10 - Outubro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/14zXXhbFQXjfzJBP4pMcVQGGMv7mAHkHH" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-14zXXhbFQXjfzJBP4pMcVQGGMv7mAHkHH" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1F3PjOs79dNyiNCYxnWRrrBacFx_VPRMp">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">11 - Novembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1F3PjOs79dNyiNCYxnWRrrBacFx_VPRMp" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1F3PjOs79dNyiNCYxnWRrrBacFx_VPRMp" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1Dw0HxLCjh0f4aceZzBY4KJthHCvxknge">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">12 - Dezembro</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1Dw0HxLCjh0f4aceZzBY4KJthHCvxknge" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1Dw0HxLCjh0f4aceZzBY4KJthHCvxknge" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:90px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1ZhNJ4uu00urBxC3dL1lumkg3zihp9leW">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">OLD</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1ZhNJ4uu00urBxC3dL1lumkg3zihp9leW" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1ZhNJ4uu00urBxC3dL1lumkg3zihp9leW" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:0px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1LTCGlNviLtRKASQ4iPkwaz9X_8WYFp_a">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Dicas de Estudo</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1LTCGlNviLtRKASQ4iPkwaz9X_8WYFp_a" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1LTCGlNviLtRKASQ4iPkwaz9X_8WYFp_a" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1a4e9iFKnk15-Ib7sa_wG3El3zkrCxJce">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Ads</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1a4e9iFKnk15-Ib7sa_wG3El3zkrCxJce" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1a4e9iFKnk15-Ib7sa_wG3El3zkrCxJce" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1MwTg2w4jgFi_Zq4722ElUnSmb2c1-R_z">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Banner</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1MwTg2w4jgFi_Zq4722ElUnSmb2c1-R_z" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1MwTg2w4jgFi_Zq4722ElUnSmb2c1-R_z" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1pc_vorezvo1mEaLXUORrPpH5mAaYpQ_L">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Carrossel</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1pc_vorezvo1mEaLXUORrPpH5mAaYpQ_L" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1pc_vorezvo1mEaLXUORrPpH5mAaYpQ_L" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1F65R-oWPrCzogDFq85_OvGycJ7ZrZ-8l">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Feed</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1F65R-oWPrCzogDFq85_OvGycJ7ZrZ-8l" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1F65R-oWPrCzogDFq85_OvGycJ7ZrZ-8l" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1qDmwUzyO0gX-LzVaEvSVTvtP3VSJg0R-">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Impresso</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1qDmwUzyO0gX-LzVaEvSVTvtP3VSJg0R-" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1qDmwUzyO0gX-LzVaEvSVTvtP3VSJg0R-" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-17nTElwHmFNsqZp8Xk_JADRg86-xloGMT">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Reels</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/17nTElwHmFNsqZp8Xk_JADRg86-xloGMT" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-17nTElwHmFNsqZp8Xk_JADRg86-xloGMT" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1vFXtL92DhGrtiBGpC27RQjsZOI1-H4gO">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Stories</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1vFXtL92DhGrtiBGpC27RQjsZOI1-H4gO" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1vFXtL92DhGrtiBGpC27RQjsZOI1-H4gO" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:0px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-11ClmqZZGIgQsiRORtoWXvk5FvDBbYkLh">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Impressos</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/11ClmqZZGIgQsiRORtoWXvk5FvDBbYkLh" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-11ClmqZZGIgQsiRORtoWXvk5FvDBbYkLh" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:0px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1ZwpCiNTgQ1u8VGwaMTPGXw1Thwx2TRzi">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Institucional</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1ZwpCiNTgQ1u8VGwaMTPGXw1Thwx2TRzi" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1ZwpCiNTgQ1u8VGwaMTPGXw1Thwx2TRzi" style="display:none;">
+<div class="tree-group">
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1Utc9qFdYUrutkU6Ld70xscmpHHEVMnXN">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Ads</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1Utc9qFdYUrutkU6Ld70xscmpHHEVMnXN" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1Utc9qFdYUrutkU6Ld70xscmpHHEVMnXN" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1k-a4Fcz4sobhOoopFabgZUr7XFRVdH7a">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Banner</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1k-a4Fcz4sobhOoopFabgZUr7XFRVdH7a" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1k-a4Fcz4sobhOoopFabgZUr7XFRVdH7a" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-16q9pV0JXF_oIVHSH4wfBlDSX7s012XlF">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Carrossel</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/16q9pV0JXF_oIVHSH4wfBlDSX7s012XlF" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-16q9pV0JXF_oIVHSH4wfBlDSX7s012XlF" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1jcMXpV4EOkrevyKNEFbhGVAnu4Z82766">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Feed</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1jcMXpV4EOkrevyKNEFbhGVAnu4Z82766" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1jcMXpV4EOkrevyKNEFbhGVAnu4Z82766" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1bwJrnBrJaxHshcISIQuhSBPNoWRajaq4">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Impresso</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1bwJrnBrJaxHshcISIQuhSBPNoWRajaq4" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1bwJrnBrJaxHshcISIQuhSBPNoWRajaq4" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1zsVGy0MLwhv354lqmd3qYznpiplHUs73">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Reels</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1zsVGy0MLwhv354lqmd3qYznpiplHUs73" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1zsVGy0MLwhv354lqmd3qYznpiplHUs73" style="display:none;">
+
+</div>
+</div>
+<div class="tree-node has-children last" style="padding-left:18px">
+<div class="tree-row">
+<span class="tree-toggle" data-target="tree-1hRXBSjERAnxtvNTygOz2MWqkStfb5byy">▶</span>
+<span class="tree-icon">📁</span>
+<span class="tree-label">Stories</span>
+<a class="tree-link" href="https://drive.google.com/drive/folders/1hRXBSjERAnxtvNTygOz2MWqkStfb5byy" target="_blank" rel="noopener">abrir</a>
+</div>
+<div class="tree-children" id="tree-1hRXBSjERAnxtvNTygOz2MWqkStfb5byy" style="display:none;">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
         </div>
       </div>
     </main>
@@ -255,6 +2298,30 @@
   };
   terminalSend.addEventListener('click', send);
   terminalInput.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+</script>
+
+<script>
+  document.addEventListener('click', function(e){
+    const toggle = e.target.closest('.tree-toggle');
+    if (!toggle) return;
+    e.stopPropagation();
+    const targetId = toggle.getAttribute('data-target');
+    const target = document.getElementById(targetId);
+    if (!target) return;
+    const isHidden = target.style.display === 'none';
+    target.style.display = isHidden ? 'block' : 'none';
+    toggle.classList.toggle('open', isHidden);
+  });
+
+  document.getElementById('treeExpandAll').addEventListener('click', function(){
+    document.querySelectorAll('.tree-children').forEach(el => el.style.display = 'block');
+    document.querySelectorAll('.tree-toggle').forEach(el => el.classList.add('open'));
+  });
+
+  document.getElementById('treeCollapseAll').addEventListener('click', function(){
+    document.querySelectorAll('.tree-children').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.tree-toggle').forEach(el => el.classList.remove('open'));
+  });
 </script>
 </body>
 </html>
