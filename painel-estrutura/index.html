@@ -6,282 +6,174 @@
 <title>EPQ · Painel de Estrutura</title>
 <style>
   :root{
-    --navy:#050B18;
-    --mid:#0A1830;
-    --soft:#0E2242;
-    --blue:#1B5FE0;
-    --bright:#3D8BFF;
+    --bg:#050505;
+    --surface:rgba(255,255,255,0.035);
+    --surface-hover:rgba(255,255,255,0.06);
+    --border:rgba(255,255,255,0.10);
+    --border-active:rgba(255,255,255,0.22);
+    --text:#ffffff;
+    --text-secondary:#888888;
+    --text-tertiary:#555555;
+    --accent:rgba(120,180,255,0.25);
+    --accent-glow:rgba(120,180,255,0.12);
     --cyan:#00D9FF;
     --gold:#F2B705;
-    --white:#F3F7FC;
-    --dim:#8AA0C4;
-    --dimmer:#5A6E90;
-    --line:rgba(140,170,220,.16);
+    --blue:#1B5FE0;
+    --bright:#3D8BFF;
+    --navy:#050B18;
+    --mid:#0A1830;
+    --radius:10px;
+    --radius-sm:6px;
   }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-    background:var(--navy);color:var(--white);
-    -webkit-font-smoothing:antialiased;
-    line-height:1.5;
-  }
-  ::selection{background:var(--blue);color:var(--white);}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Space Grotesk','Inter',ui-sans-serif,system-ui,sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;}
+  .app{display:grid;grid-template-columns:260px 1fr;grid-template-rows:56px 1fr;height:100vh;}
+  .topbar{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);}
+  .topbar-left,.topbar-right{display:flex;align-items:center;gap:14px;}
+  .logo{width:24px;height:24px;border:1px solid var(--border-active);border-radius:var(--radius-sm);background:linear-gradient(135deg,rgba(120,180,255,0.2),rgba(120,180,255,0.05));box-shadow:0 0 20px rgba(120,180,255,0.12),inset 0 1px 0 rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;letter-spacing:0.05em;color:rgba(255,255,255,0.9);}
+  .brand{font-size:13px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:rgba(255,255,255,0.85);}
+  .status-pill{font-size:10px;padding:4px 10px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);letter-spacing:0.08em;text-transform:uppercase;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
 
-  .wrap{max-width:1200px;margin:0 auto;padding:32px 28px 80px;}
+  .sidebar{border-right:1px solid var(--border);padding:18px 12px;display:flex;flex-direction:column;gap:6px;background:linear-gradient(180deg,rgba(255,255,255,0.015),transparent);overflow-y:auto;}
+  .sidebar-title{font-size:10px;text-transform:uppercase;letter-spacing:0.14em;color:var(--text-tertiary);padding:14px 12px 6px;font-weight:500;}
+  .nav-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-sm);color:var(--text-secondary);font-size:12.5px;font-weight:400;letter-spacing:0.02em;cursor:pointer;transition:all 0.15s ease;border:1px solid transparent;}
+  .nav-item:hover{background:var(--surface);color:var(--text);border-color:var(--border);}
+  .nav-item.active{background:var(--surface);color:var(--text);border-color:var(--border-active);box-shadow:inset 0 1px 0 rgba(255,255,255,0.04),0 0 0 1px rgba(255,255,255,0.04);}
+  .nav-icon{width:16px;height:16px;opacity:0.6;}
+  .nav-item.active .nav-icon{opacity:1;}
 
-  header{position:sticky;top:0;z-index:90;backdrop-filter:blur(8px);background:rgba(5,11,24,.75);border-bottom:1px solid var(--line);padding:18px 0;}
-  .header-inner{max-width:1200px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
-  .brand{font-family:system-ui;font-weight:800;font-size:18px;letter-spacing:.04em;}
-  .brand span{color:var(--cyan);}
-  .status{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:11px;color:var(--dim);letter-spacing:.12em;}
+  .main{overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:18px;}
+  .section{display:none;}
+  .section.active{display:block;}
+  .section-title{font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:var(--text-tertiary);font-weight:500;margin-bottom:8px;}
+  .panel-header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
 
-  .hero{margin:40px 0 28px;padding:34px 28px;border:1px solid var(--line);border-radius:6px;background:
-    radial-gradient(ellipse at top left, rgba(27,95,224,.14), transparent 55%),
-    linear-gradient(180deg,var(--mid),var(--navy));position:relative;overflow:hidden;}
-  .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--cyan),var(--gold));}
-  .hero h1{font-family:system-ui;font-weight:800;font-size:clamp(26px,3.6vw,40px);max-width:900px;line-height:1.15;}
-  .hero p{margin-top:12px;max-width:720px;color:var(--dim);font-size:15px;}
-  .rule{margin-top:14px;display:inline-flex;align-items:center;gap:10px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:11px;letter-spacing:.12em;color:var(--gold);font-weight:700;padding:10px 14px;border:1px solid rgba(242,183,5,.35);border-radius:999px;background:rgba(242,183,5,.08);}
+  .card{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:14px 16px;display:flex;flex-direction:column;gap:8px;}
+  .card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .card-title{font-size:13px;font-weight:500;letter-spacing:0.02em;}
+  .card-desc{font-size:12px;color:var(--text-secondary);line-height:1.45;}
+  .card-list{margin-top:4px;padding-left:14px;color:var(--text-secondary);font-size:12px;line-height:1.55;}
+  .tag{font-size:10px;padding:5px 10px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);letter-spacing:0.08em;text-transform:uppercase;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+  .tag.active{border-color:rgba(120,180,255,0.35);color:rgba(180,210,255,0.95);box-shadow:0 0 18px rgba(120,180,255,0.12);}
 
-  .section{margin:34px 0 28px;}
-  .section-title{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-  .section-title h2{font-family:system-ui;font-weight:800;font-size:clamp(22px,2.8vw,30px);}
-  .tag{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:10px;letter-spacing:.16em;color:var(--cyan);font-weight:800;padding:6px 10px;border:1px solid rgba(0,217,255,.35);border-radius:999px;background:rgba(0,217,255,.08);}
+  .job{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:14px 16px;display:flex;align-items:center;gap:14px;}
+  .job-icon{width:34px;height:34px;border-radius:var(--radius-sm);border:1px solid var(--border-active);background:linear-gradient(180deg,rgba(120,180,255,0.12),rgba(120,180,255,0.03));box-shadow:inset 0 1px 0 rgba(255,255,255,0.08),0 0 18px rgba(120,180,255,0.08);display:flex;align-items:center;justify-content:center;font-size:14px;}
+  .job-info{flex:1;}
+  .job-name{font-size:13px;font-weight:500;letter-spacing:0.02em;}
+  .job-meta{font-size:11px;color:var(--text-secondary);margin-top:3px;}
+  .job-path{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px;}
+  .job-path span{padding:5px 10px;border-radius:999px;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--text-secondary);font-size:11.5px;}
+  .job-path .sep{color:var(--gold);font-weight:700;}
 
-  .grid{display:grid;gap:14px;}
-  .grid.cols-2{grid-template-columns:repeat(2,1fr);}
-  .grid.cols-3{grid-template-columns:repeat(3,1fr);}
+  .rule-box{margin-top:8px;padding:14px 16px;border:1px solid rgba(0,217,255,0.35);border-radius:var(--radius);background:rgba(0,217,255,0.06);}
+  .rule-box strong{color:var(--cyan);}
 
-  .card{border:1px solid var(--line);border-radius:6px;background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.0));overflow:hidden;}
-  .card-head{padding:16px 18px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--soft),var(--mid));display:flex;justify-content:space-between;align-items:center;gap:10px;}
-  .card-head h3{font-family:system-ui;font-weight:800;font-size:16px;word-break:break-word;}
-  .card-body{padding:16px 18px;}
-  .card p{color:var(--dim);font-size:14px;}
-  .card ul{list-style:none;margin-top:8px;}
-  .card li{padding:7px 0;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px;display:flex;align-items:flex-start;gap:10px;}
-  .card li::before{content:'▸';color:var(--cyan);font-size:12px;margin-top:1px;}
+  .terminal{border-left:1px solid var(--border);background:linear-gradient(180deg,rgba(255,255,255,0.015),rgba(255,255,255,0.01));display:flex;flex-direction:column;overflow:hidden;}
+  .terminal-header{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+  .terminal-title{font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:var(--text-tertiary);font-weight:500;}
+  .terminal-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px rgba(0,217,255,0.5);}
+  .terminal-body{flex:1;overflow-y:auto;padding:14px 16px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:11.5px;line-height:1.55;color:rgba(255,255,255,0.78);}
+  .terminal-line{margin-bottom:10px;}
+  .terminal-line .prefix{color:var(--text-tertiary);margin-right:8px;}
+  .terminal-line .resp{color:rgba(255,255,255,0.7);}
+  .terminal-composer{padding:12px 14px;border-top:1px solid var(--border);display:flex;gap:10px;align-items:flex-end;}
+  .terminal-input{flex:1;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);padding:10px 12px;font-family:inherit;font-size:12px;outline:none;}
+  .terminal-input:focus{border-color:var(--border-active);}
+  .terminal-send{width:34px;height:34px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .terminal-send:hover{border-color:var(--border-active);background:var(--surface-hover);}
 
-  .tree{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:13px;color:var(--dim);}
-  .tree .row{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:4px;}
-  .tree .row:hover{background:rgba(255,255,255,.04);}
-  .tree .ico{width:22px;text-align:center;color:var(--cyan);}
-  .tree .name{color:var(--white);font-weight:600;}
-  .tree .meta{margin-left:auto;color:var(--dimmer);font-size:11.5px;}
-  .tree .indent{padding-left:18px;border-left:1px solid var(--line);margin-left:10px;}
-
-  .cta-box{margin-top:18px;padding:18px 20px;border:1px solid rgba(0,217,255,.35);border-radius:6px;background:rgba(0,217,255,.06);}
-  .cta-box strong{color:var(--cyan);}
-
-  .jobs{margin-top:10px;}
-  .job{border:1px solid var(--line);border-radius:6px;background:var(--mid);overflow:hidden;}
-  .job-head{padding:14px 16px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--soft),var(--mid));display:flex;align-items:center;justify-content:space-between;gap:10px;}
-  .job-head h4{font-family:system-ui;font-weight:800;font-size:15px;word-break:break-word;}
-  .job-body{padding:14px 16px;}
-  .path{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
-  .path span{padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--dim);font-size:12px;}
-  .path .sep{color:var(--gold);font-weight:700;}
-
-  @media(max-width:760px){
-    .grid.cols-2,.grid.cols-3{grid-template-columns:1fr;}
-    .header-inner{flex-direction:column;align-items:flex-start;}
+  @media(max-width:860px){
+    .app{grid-template-columns:1fr;grid-template-rows:56px 1fr;}
+    .sidebar,.terminal{display:none;}
   }
 </style>
 </head>
 <body>
-  <header>
-    <div class="header-inner">
-      <div class="brand">EPQ <span>·</span> Estrutura de Criação</div>
-      <div class="status">SISTEMA OPERACIONAL</div>
-    </div>
-  </header>
+  <div class="app">
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="logo">E</div>
+        <div class="brand">epq painel</div>
+      </div>
+      <div class="topbar-right">
+        <div class="status-pill">estrutura</div>
+        <div class="status-pill" id="clock">--:--</div>
+      </div>
+    </header>
 
-  <div class="wrap">
+    <aside class="sidebar">
+      <div class="sidebar-title">navegação</div>
+      <div class="nav-item active" data-target="section-sistema">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+        <span>sistema criativo</span>
+      </div>
+      <div class="nav-item" data-target="section-jobs">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <span>jobs</span>
+      </div>
+      <div class="nav-item" data-target="section-regras">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+        <span>regras</span>
+      </div>
 
-    <div class="hero">
-      <h1>Mapa do Drive de Criação</h1>
-      <p>Visão didática da estrutura atual, jobs padrão e regra de briefing obrigatória.</p>
-      <div class="rule">REGRA FIXA — SEM BRIEFING APROVADO, NÃO EXISTE CRIAÇÃO</div>
-    </div>
+      <div class="sidebar-title">atalhos</div>
+      <div class="nav-item" data-target="section-terminal">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        <span>terminal</span>
+      </div>
+    </aside>
 
-    <div class="section">
-      <div class="section-title"><h2>00 — Sistema Criativo EPQ</h2><span class="tag">FONTE OFICIAL</span></div>
-      <div class="grid cols-2">
-        <div class="card">
-          <div class="card-head"><h3>01 - Marca</h3><span class="tag">IDENTIDADE</span></div>
-          <div class="card-body">
-            <ul>
-              <li>Design System Brand Book</li>
-              <li>Referência Visual</li>
-              <li>Logos e Identidade</li>
-            </ul>
+    <main class="main">
+      <div id="section-sistema" class="section active">
+        <div class="section-title">00 — sistema criativo epq</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;">
+          <div class="card">
+            <div class="card-head"><div class="card-title">01 - Marca</div><div class="tag">identidade</div></div>
+            <div class="card-desc">Brand Book, referência visual e logo.</div>
+            <ul class="card-list"><li>Design System Brand Book</li><li>Referência Visual</li><li>Logos e Identidade</li></ul>
           </div>
-        </div>
-        <div class="card">
-          <div class="card-head"><h3>02 - Playbook</h3><span class="tag">ESTRATÉGIA</span></div>
-          <div class="card-body">
-            <ul>
-              <li>Playbook Marketing EPQ</li>
-              <li>Arquivo HTML interativo</li>
-            </ul>
+          <div class="card">
+            <div class="card-head"><div class="card-title">02 - Playbook</div><div class="tag">estratégia</div></div>
+            <div class="card-desc">Playbook de Marketing EPQ.</div>
+            <ul class="card-list"><li>Playbook Marketing EPQ</li><li>HTML interativo</li></ul>
           </div>
-        </div>
-        <div class="card">
-          <div class="card-head"><h3>03 - Modelos de Briefing</h3><span class="tag">OBRIGATÓRIO</span></div>
-          <div class="card-body">
-            <ul>
-              <li>Modelo de Briefing oficial</li>
-              <li>Base para todo projeto novo</li>
-            </ul>
+          <div class="card">
+            <div class="card-head"><div class="card-title">03 - Modelos de Briefing</div><div class="tag">obrigatório</div></div>
+            <div class="card-desc">Modelo base para todo job.</div>
+            <ul class="card-list"><li>Modelo de Briefing oficial</li><li>Sem briefing, sem criação</li></ul>
           </div>
-        </div>
-        <div class="card">
-          <div class="card-head"><h3>04 - Referências</h3><span class="tag">INSPIRAÇÃO</span></div>
-          <div class="card-body">
-            <ul>
-              <li>Referências visuais e textuais</li>
-              <li>Ideias aprovadas</li>
-            </ul>
+          <div class="card">
+            <div class="card-head"><div class="card-title">04 - Referências</div><div class="tag">inspiração</div></div>
+            <div class="card-desc">Referências visuais e textuais.</div>
+            <ul class="card-list"><li>Referências visuais</li><li>Ideias aprovadas</li></ul>
           </div>
-        </div>
-        <div class="card">
-          <div class="card-head"><h3>05 - Materiais Brutos</h3><span class="tag">ACERVO</span></div>
-          <div class="card-body">
-            <ul>
-              <li>Artes antigas</li>
-              <li>Fotos e vídeos</li>
-              <li>Depoimentos</li>
-              <li>Materiais dos cursos</li>
-            </ul>
+          <div class="card">
+            <div class="card-head"><div class="card-title">05 - Materiais Brutos</div><div class="tag">acervo</div></div>
+            <div class="card-desc">Arte antiga, fotos, vídeos e depoimentos.</div>
+            <ul class="card-list"><li>Artes antigas</li><li>Fotos / vídeos</li><li>Depoimentos</li></ul>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="section">
-      <div class="section-title"><h2>Jobs Padrão</h2><span class="tag">CADA PEÇA USA UM JOB</span></div>
-      <p style="color:var(--dim);margin-bottom:14px;">Cada job segue o mesmo padrão interno: <strong style="color:var(--white);">01 - Apoio → 02 - Briefing → 03 - Arquivo Finalizado</strong></p>
-
-      <div class="jobs">
-        <div class="job">
-          <div class="job-head"><h4>EPQ_social_stories_1080x1920</h4><span class="tag">SOCIAL</span></div>
-          <div class="job-body">
-            <div class="path">
-              <span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span>
-              <span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span>
-            </div>
-          </div>
-        </div>
-        <div class="job">
-          <div class="job-head"><h4>EPQ_social_feed_1080x1080</h4><span class="tag">SOCIAL</span></div>
-          <div class="job-body">
-            <div class="path">
-              <span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span>
-              <span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span>
-            </div>
-          </div>
-        </div>
-        <div class="job">
-          <div class="job-head"><h4>EPQ_social_carrossel_1080x1080</h4><span class="tag">SOCIAL</span></div>
-          <div class="job-body">
-            <div class="path">
-              <span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span>
-              <span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span>
-            </div>
-          </div>
-        </div>
-        <div class="job">
-          <div class="job-head"><h4>EPQ_social_reels_1080x1920</h4><span class="tag">SOCIAL</span></div>
-          <div class="job-body">
-            <div class="path">
-              <span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span>
-              <span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span>
-            </div>
-          </div>
-        </div>
-        <div class="job">
-          <div class="job-head"><h4>EPQ_ads_feed_1080x1080</h4><span class="tag">PERFORMANCE</span></div>
-          <div class="job-body">
-            <div class="path">
-              <span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span>
-              <span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span>
-            </div>
-          </div>
-        </div>
-        <div class="job">
-          <div class="job-head"><h4>EPQ_ads_stories_1080x1920</h4><span class="tag">PERFORMANCE</span></div>
-          <div class="job-body">
-            <div class="path">
-              <span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span>
-              <span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span>
-            </div>
-          </div>
-        </div>
-        <div class="job">
-          <div class="job-head"><h4>EPQ_banner_1920x500</h4><span class="tag">DIGITAL</span></div>
-          <div class="job-body">
-            <div class="path">
-              <span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span>
-              <span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span>
-            </div>
-          </div>
-        </div>
-        <div class="job">
-          <div class="job-head"><h4>EPQ_impresso_a4_210x297mm</h4><span class="tag">IMPRESSO</span></div>
-          <div class="job-body">
-            <div class="path">
-              <span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span>
-              <span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span>
-            </div>
-          </div>
+      <div id="section-jobs" class="section">
+        <div class="section-title">jobs padrão</div>
+        <p style="color:var(--text-secondary);font-size:12px;margin-bottom:10px;">Cada job usa a mesma estrutura: <strong style="color:var(--text);">01 - Apoio › 02 - Briefing › 03 - Arquivo Finalizado</strong></p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_social_stories_1080x1920</div><div class="job-meta">social</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
+          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_social_feed_1080x1080</div><div class="job-meta">social</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
+          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_social_carrossel_1080x1080</div><div class="job-meta">social</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
+          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_social_reels_1080x1920</div><div class="job-meta">social</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
+          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_ads_feed_1080x1080</div><div class="job-meta">performance</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
+          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_ads_stories_1080x1920</div><div class="job-meta">performance</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
+          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_banner_1920x500</div><div class="job-meta">digital</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
+          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_impresso_a4_210x297mm</div><div class="job-meta">impresso</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
         </div>
       </div>
-    </div>
 
-    <div class="section">
-      <div class="section-title"><h2>Fluxo de uso</h2><span class="tag">COMO USAR</span></div>
-      <div class="grid cols-3">
+      <div id="section-regras" class="section">
+        <div class="section-title">regras rápidas</div>
         <div class="card">
-          <div class="card-head"><h3>01 - Apoio</h3></div>
-          <div class="card-body">
-            <p>Referências visuais, textuais e inspirações para o job. Uso opcional, mas recomendado.</p>
-            <ul>
-              <li>Referências de estilo</li>
-              <li>Imagens de apoio</li>
-              <li>Textos ou materiais existentes</li>
-            </ul>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-head"><h3>02 - Briefing</h3></div>
-          <div class="card-body">
-            <p>Documento obrigatório antes de criar. Ele define objetivo, público, mensagem, CTA e direção de arte.</p>
-            <ul>
-              <li>Modelo oficial EPQ</li>
-              <li>Sem este arquivo, não criar</li>
-              <li>Base para aprovação</li>
-            </ul>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-head"><h3>03 - Arquivo Finalizado</h3></div>
-          <div class="card-body">
-            <p>Versão final publicável na raiz. Versões antigas vão para <strong>OLD</strong>.</p>
-            <ul>
-              <li>Arte final na raiz</li>
-              <li>OLD guarda versões</li>
-              <li>Rastreabilidade simples</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-title"><h2>Regras rápidas</h2><span class="tag">GOVERNANÇA</span></div>
-      <div class="card">
-        <div class="card-body">
-          <ul>
+          <div class="card-list">
             <li>Toda peça nasce de briefing oficial preenchido e aprovado.</li>
             <li>O briefing é o documento de governança da peça.</li>
             <li>Cada job tem estrutura padronizada para manter consistência.</li>
@@ -289,13 +181,68 @@
             <li>Referências ajudam, mas não substituem o briefing.</li>
             <li>Se a peça sair do sistema, pare, registre o desvio e proponha alternativa.</li>
           </ul>
-          <div class="cta-box">
+          <div class="rule-box">
             <strong>Ferramenta oficial:</strong> Modelo de Briefing EPQ em <strong>00 - Sistema Criativo EPQ › 03 - Modelos de Briefing</strong>.
           </div>
         </div>
       </div>
-    </div>
 
+      <div id="section-terminal" class="section">
+        <div class="section-title">terminal</div>
+        <div class="terminal">
+          <div class="terminal-header"><div class="terminal-dot"></div><div class="terminal-title">epq estrutura</div></div>
+          <div class="terminal-body" id="terminalBody">
+            <div class="terminal-line"><span class="prefix">&gt;</span><span class="resp">Sistema operacional. Navegue pelo menu lateral.</span></div>
+          </div>
+          <div class="terminal-composer">
+            <input class="terminal-input" id="terminalInput" placeholder="comando..." autocomplete="off">
+            <button class="terminal-send" id="terminalSend" aria-label="enviar">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
   </div>
+
+<script>
+  const NAV = document.querySelectorAll('.nav-item');
+  const SECTIONS = document.querySelectorAll('.section');
+  NAV.forEach(item => {
+    item.addEventListener('click', () => {
+      NAV.forEach(n => n.classList.remove('active'));
+      item.classList.add('active');
+      const target = document.getElementById(item.dataset.target);
+      SECTIONS.forEach(s => s.classList.remove('active'));
+      if (target) target.classList.add('active');
+    });
+  });
+
+  const clock = document.getElementById('clock');
+  const tick = () => {
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    if (clock) clock.textContent = `${hh}:${mm}`;
+  };
+  tick();
+  setInterval(tick, 1000);
+
+  const terminalBody = document.getElementById('terminalBody');
+  const terminalInput = document.getElementById('terminalInput');
+  const terminalSend = document.getElementById('terminalSend');
+  const send = () => {
+    const val = (terminalInput.value || '').trim();
+    if (!val) return;
+    const line = document.createElement('div');
+    line.className = 'terminal-line';
+    line.innerHTML = `<span class="prefix">&gt;</span><span class="resp">${val.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</span>`;
+    terminalBody.appendChild(line);
+    terminalInput.value = '';
+    terminalBody.scrollTop = terminalBody.scrollHeight;
+  };
+  terminalSend.addEventListener('click', send);
+  terminalInput.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+</script>
 </body>
 </html>
