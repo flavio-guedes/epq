@@ -20,8 +20,6 @@
     --gold:#F2B705;
     --blue:#1B5FE0;
     --bright:#3D8BFF;
-    --navy:#050B18;
-    --mid:#0A1830;
     --radius:10px;
     --radius-sm:6px;
   }
@@ -107,8 +105,12 @@
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
         <span>sistema criativo</span>
       </div>
+      <div class="nav-item" data-target="section-editorias">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4 2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <span>editorias</span>
+      </div>
       <div class="nav-item" data-target="section-jobs">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4 2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
         <span>jobs</span>
       </div>
       <div class="nav-item" data-target="section-regras">
@@ -155,18 +157,28 @@
         </div>
       </div>
 
+      <div id="section-editorias" class="section">
+        <div class="section-title">editorias</div>
+        <p style="color:var(--text-secondary);font-size:12px;margin-bottom:10px;">Cada editoria contém os mesmos formatos. Dentro de cada formato, as categorias de job.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div class="job"><div class="job-icon">◆</div><div class="job-info"><div class="job-name">Concursos</div><div class="job-meta">Feed · Stories · Carrossel · Reels · Ads · Banner · Impresso</div><div class="job-path"><span>social</span><span class="sep">·</span><span>ads</span><span class="sep">·</span><span>banner</span><span class="sep">·</span><span>impresso</span></div></div></div>
+          <div class="job"><div class="job-icon">◆</div><div class="job-info"><div class="job-name">Dicas de Estudo</div><div class="job-meta">Feed · Stories · Carrossel · Reels · Ads · Banner · Impresso</div><div class="job-path"><span>social</span><span class="sep">·</span><span>ads</span><span class="sep">·</span><span>banner</span><span class="sep">·</span><span>impresso</span></div></div></div>
+          <div class="job"><div class="job-icon">◆</div><div class="job-info"><div class="job-name">Institucional</div><div class="job-meta">Feed · Stories · Carrossel · Reels · Ads · Banner · Impresso</div><div class="job-path"><span>social</span><span class="sep">·</span><span>ads</span><span class="sep">·</span><span>banner</span><span class="sep">·</span><span>impresso</span></div></div></div>
+        </div>
+      </div>
+
       <div id="section-jobs" class="section">
         <div class="section-title">jobs padrão</div>
-        <p style="color:var(--text-secondary);font-size:12px;margin-bottom:10px;">Cada job usa a mesma estrutura: <strong style="color:var(--text);">01 - Apoio › 02 - Briefing › 03 - Arquivo Finalizado</strong></p>
+        <p style="color:var(--text-secondary);font-size:12px;margin-bottom:10px;">Cada job usa a mesma estrutura: <strong style="color:var(--text);">01 - Apoio › 01 - Referencia + 02 - Briefing · 03 - Arquivo Finalizado › OLD</strong></p>
         <div style="display:flex;flex-direction:column;gap:10px;">
-          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_social_stories_1080x1920</div><div class="job-meta">social</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
-          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_social_feed_1080x1080</div><div class="job-meta">social</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
-          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_social_carrossel_1080x1080</div><div class="job-meta">social</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
-          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_social_reels_1080x1920</div><div class="job-meta">social</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
-          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_ads_feed_1080x1080</div><div class="job-meta">performance</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
-          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_ads_stories_1080x1920</div><div class="job-meta">performance</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
-          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_banner_1920x500</div><div class="job-meta">digital</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
-          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_impresso_a4_210x297mm</div><div class="job-meta">impresso</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
+          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_social_stories_1080x1920</div><div class="job-meta">Concursos › Stories › social</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">+</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
+          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_social_feed_1080x1080</div><div class="job-meta">Concursos › Feed › social</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">+</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
+          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_social_carrossel_1080x1080</div><div class="job-meta">Concursos › Carrossel › social</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">+</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
+          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_social_reels_1080x1920</div><div class="job-meta">Concursos › Reels › social</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">+</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
+          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_ads_feed_1080x1080</div><div class="job-meta">Concursos › Feed › ads</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">+</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
+          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_ads_stories_1080x1920</div><div class="job-meta">Concursos › Stories › ads</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">+</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
+          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_banner_1920x500</div><div class="job-meta">Concursos › Banner › banner</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">+</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
+          <div class="job"><div class="job-icon">◈</div><div class="job-info"><div class="job-name">EPQ_impresso_a4_210x297mm</div><div class="job-meta">Concursos › Impresso › impresso</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">+</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div></div></div>
         </div>
       </div>
 
@@ -175,10 +187,10 @@
         <div class="card">
           <div class="card-list">
             <li>Toda peça nasce de briefing oficial preenchido e aprovado.</li>
-            <li>O briefing é o documento de governança da peça.</li>
+            <li>O briefing fica dentro de <strong>01 - Apoio/02 - Briefing</strong>.</li>
             <li>Cada job tem estrutura padronizada para manter consistência.</li>
             <li>OLD guarda versões antigas; a raiz guarda a versão final.</li>
-            <li>Referências ajudam, mas não substituem o briefing.</li>
+            <li>Referências ficam em <strong>01 - Apoio/01 - Referencia</strong>.</li>
             <li>Se a peça sair do sistema, pare, registre o desvio e proponha alternativa.</li>
           </ul>
           <div class="rule-box">
