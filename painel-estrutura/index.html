@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPQ · Painel de Estrutura</title>
+<style>
+  :root{
+    --navy:#050B18;
+    --mid:#0A1830;
+    --soft:#0E2242;
+    --blue:#1B5FE0;
+    --bright:#3D8BFF;
+    --cyan:#00D9FF;
+    --gold:#F2B705;
+    --white:#F3F7FC;
+    --dim:#8AA0C4;
+    --dimmer:#5A6E90;
+    --line:rgba(140,170,220,.16);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    background:var(--navy);color:var(--white);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  ::selection{background:var(--blue);color:var(--white);}
+
+  .wrap{max-width:1200px;margin:0 auto;padding:32px 28px 80px;}
+
+  header{position:sticky;top:0;z-index:90;backdrop-filter:blur(8px);background:rgba(5,11,24,.75);border-bottom:1px solid var(--line);padding:18px 0;}
+  .header-inner{max-width:1200px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .brand{font-family:system-ui;font-weight:800;font-size:18px;letter-spacing:.04em;}
+  .brand span{color:var(--cyan);}
+  .status{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:11px;color:var(--dim);letter-spacing:.12em;}
+
+  .hero{margin:40px 0 28px;padding:34px 28px;border:1px solid var(--line);border-radius:6px;background:
+    radial-gradient(ellipse at top left, rgba(27,95,224,.14), transparent 55%),
+    linear-gradient(180deg,var(--mid),var(--navy));position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--cyan),var(--gold));}
+  .hero h1{font-family:system-ui;font-weight:800;font-size:clamp(26px,3.6vw,40px);max-width:900px;line-height:1.15;}
+  .hero p{margin-top:12px;max-width:720px;color:var(--dim);font-size:15px;}
+  .rule{margin-top:14px;display:inline-flex;align-items:center;gap:10px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:11px;letter-spacing:.12em;color:var(--gold);font-weight:700;padding:10px 14px;border:1px solid rgba(242,183,5,.35);border-radius:999px;background:rgba(242,183,5,.08);}
+
+  .section{margin:34px 0 28px;}
+  .section-title{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .section-title h2{font-family:system-ui;font-weight:800;font-size:clamp(22px,2.8vw,30px);}
+  .tag{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:10px;letter-spacing:.16em;color:var(--cyan);font-weight:800;padding:6px 10px;border:1px solid rgba(0,217,255,.35);border-radius:999px;background:rgba(0,217,255,.08);}
+
+  .grid{display:grid;gap:14px;}
+  .grid.cols-2{grid-template-columns:repeat(2,1fr);}
+  .grid.cols-3{grid-template-columns:repeat(3,1fr);}
+
+  .card{border:1px solid var(--line);border-radius:6px;background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.0));overflow:hidden;}
+  .card-head{padding:16px 18px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--soft),var(--mid));display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .card-head h3{font-family:system-ui;font-weight:800;font-size:16px;word-break:break-word;}
+  .card-body{padding:16px 18px;}
+  .card p{color:var(--dim);font-size:14px;}
+  .card ul{list-style:none;margin-top:8px;}
+  .card li{padding:7px 0;border-top:1px solid var(--line);color:var(--dim);font-size:13.5px;display:flex;align-items:flex-start;gap:10px;}
+  .card li::before{content:'▸';color:var(--cyan);font-size:12px;margin-top:1px;}
+
+  .tree{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:13px;color:var(--dim);}
+  .tree .row{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:4px;}
+  .tree .row:hover{background:rgba(255,255,255,.04);}
+  .tree .ico{width:22px;text-align:center;color:var(--cyan);}
+  .tree .name{color:var(--white);font-weight:600;}
+  .tree .meta{margin-left:auto;color:var(--dimmer);font-size:11.5px;}
+  .tree .indent{padding-left:18px;border-left:1px solid var(--line);margin-left:10px;}
+
+  .cta-box{margin-top:18px;padding:18px 20px;border:1px solid rgba(0,217,255,.35);border-radius:6px;background:rgba(0,217,255,.06);}
+  .cta-box strong{color:var(--cyan);}
+
+  .jobs{margin-top:10px;}
+  .job{border:1px solid var(--line);border-radius:6px;background:var(--mid);overflow:hidden;}
+  .job-head{padding:14px 16px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--soft),var(--mid));display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .job-head h4{font-family:system-ui;font-weight:800;font-size:15px;word-break:break-word;}
+  .job-body{padding:14px 16px;}
+  .path{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+  .path span{padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--dim);font-size:12px;}
+  .path .sep{color:var(--gold);font-weight:700;}
+
+  @media(max-width:760px){
+    .grid.cols-2,.grid.cols-3{grid-template-columns:1fr;}
+    .header-inner{flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand">EPQ <span>·</span> Estrutura de Criação</div>
+      <div class="status">SISTEMA OPERACIONAL</div>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <div class="hero">
+      <h1>Mapa do Drive de Criação</h1>
+      <p>Visão didática da estrutura atual, jobs padrão e regra de briefing obrigatória.</p>
+      <div class="rule">REGRA FIXA — SEM BRIEFING APROVADO, NÃO EXISTE CRIAÇÃO</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><h2>00 — Sistema Criativo EPQ</h2><span class="tag">FONTE OFICIAL</span></div>
+      <div class="grid cols-2">
+        <div class="card">
+          <div class="card-head"><h3>01 - Marca</h3><span class="tag">IDENTIDADE</span></div>
+          <div class="card-body">
+            <ul>
+              <li>Design System Brand Book</li>
+              <li>Referência Visual</li>
+              <li>Logos e Identidade</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>02 - Playbook</h3><span class="tag">ESTRATÉGIA</span></div>
+          <div class="card-body">
+            <ul>
+              <li>Playbook Marketing EPQ</li>
+              <li>Arquivo HTML interativo</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>03 - Modelos de Briefing</h3><span class="tag">OBRIGATÓRIO</span></div>
+          <div class="card-body">
+            <ul>
+              <li>Modelo de Briefing oficial</li>
+              <li>Base para todo projeto novo</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>04 - Referências</h3><span class="tag">INSPIRAÇÃO</span></div>
+          <div class="card-body">
+            <ul>
+              <li>Referências visuais e textuais</li>
+              <li>Ideias aprovadas</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>05 - Materiais Brutos</h3><span class="tag">ACERVO</span></div>
+          <div class="card-body">
+            <ul>
+              <li>Artes antigas</li>
+              <li>Fotos e vídeos</li>
+              <li>Depoimentos</li>
+              <li>Materiais dos cursos</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><h2>Jobs Padrão</h2><span class="tag">CADA PEÇA USA UM JOB</span></div>
+      <p style="color:var(--dim);margin-bottom:14px;">Cada job segue o mesmo padrão interno: <strong style="color:var(--white);">01 - Apoio → 02 - Briefing → 03 - Arquivo Finalizado</strong></p>
+
+      <div class="jobs">
+        <div class="job">
+          <div class="job-head"><h4>EPQ_social_stories_1080x1920</h4><span class="tag">SOCIAL</span></div>
+          <div class="job-body">
+            <div class="path">
+              <span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span>
+              <span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span>
+            </div>
+          </div>
+        </div>
+        <div class="job">
+          <div class="job-head"><h4>EPQ_social_feed_1080x1080</h4><span class="tag">SOCIAL</span></div>
+          <div class="job-body">
+            <div class="path">
+              <span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span>
+              <span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span>
+            </div>
+          </div>
+        </div>
+        <div class="job">
+          <div class="job-head"><h4>EPQ_social_carrossel_1080x1080</h4><span class="tag">SOCIAL</span></div>
+          <div class="job-body">
+            <div class="path">
+              <span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span>
+              <span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span>
+            </div>
+          </div>
+        </div>
+        <div class="job">
+          <div class="job-head"><h4>EPQ_social_reels_1080x1920</h4><span class="tag">SOCIAL</span></div>
+          <div class="job-body">
+            <div class="path">
+              <span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span>
+              <span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span>
+            </div>
+          </div>
+        </div>
+        <div class="job">
+          <div class="job-head"><h4>EPQ_ads_feed_1080x1080</h4><span class="tag">PERFORMANCE</span></div>
+          <div class="job-body">
+            <div class="path">
+              <span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span>
+              <span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span>
+            </div>
+          </div>
+        </div>
+        <div class="job">
+          <div class="job-head"><h4>EPQ_ads_stories_1080x1920</h4><span class="tag">PERFORMANCE</span></div>
+          <div class="job-body">
+            <div class="path">
+              <span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span>
+              <span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span>
+            </div>
+          </div>
+        </div>
+        <div class="job">
+          <div class="job-head"><h4>EPQ_banner_1920x500</h4><span class="tag">DIGITAL</span></div>
+          <div class="job-body">
+            <div class="path">
+              <span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span>
+              <span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span>
+            </div>
+          </div>
+        </div>
+        <div class="job">
+          <div class="job-head"><h4>EPQ_impresso_a4_210x297mm</h4><span class="tag">IMPRESSO</span></div>
+          <div class="job-body">
+            <div class="path">
+              <span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span>
+              <span class="sep">›</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><h2>Fluxo de uso</h2><span class="tag">COMO USAR</span></div>
+      <div class="grid cols-3">
+        <div class="card">
+          <div class="card-head"><h3>01 - Apoio</h3></div>
+          <div class="card-body">
+            <p>Referências visuais, textuais e inspirações para o job. Uso opcional, mas recomendado.</p>
+            <ul>
+              <li>Referências de estilo</li>
+              <li>Imagens de apoio</li>
+              <li>Textos ou materiais existentes</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>02 - Briefing</h3></div>
+          <div class="card-body">
+            <p>Documento obrigatório antes de criar. Ele define objetivo, público, mensagem, CTA e direção de arte.</p>
+            <ul>
+              <li>Modelo oficial EPQ</li>
+              <li>Sem este arquivo, não criar</li>
+              <li>Base para aprovação</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>03 - Arquivo Finalizado</h3></div>
+          <div class="card-body">
+            <p>Versão final publicável na raiz. Versões antigas vão para <strong>OLD</strong>.</p>
+            <ul>
+              <li>Arte final na raiz</li>
+              <li>OLD guarda versões</li>
+              <li>Rastreabilidade simples</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title"><h2>Regras rápidas</h2><span class="tag">GOVERNANÇA</span></div>
+      <div class="card">
+        <div class="card-body">
+          <ul>
+            <li>Toda peça nasce de briefing oficial preenchido e aprovado.</li>
+            <li>O briefing é o documento de governança da peça.</li>
+            <li>Cada job tem estrutura padronizada para manter consistência.</li>
+            <li>OLD guarda versões antigas; a raiz guarda a versão final.</li>
+            <li>Referências ajudam, mas não substituem o briefing.</li>
+            <li>Se a peça sair do sistema, pare, registre o desvio e proponha alternativa.</li>
+          </ul>
+          <div class="cta-box">
+            <strong>Ferramenta oficial:</strong> Modelo de Briefing EPQ em <strong>00 - Sistema Criativo EPQ › 03 - Modelos de Briefing</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
