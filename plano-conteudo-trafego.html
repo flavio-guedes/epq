@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPQ · Plano Estratégico de Conteúdo + Tráfego</title>
+<style>
+  :root {
+    --bg:#0b1220;
+    --panel:#0f172a;
+    --panel-2:#111b2d;
+    --line:#1f2d42;
+    --text:#e6e9ef;
+    --muted:#8a93a6;
+    --blue:#3b82f6;
+    --green:#10b981;
+    --amber:#f59e0b;
+    --red:#ef4444;
+    --purple:#7c3aed;
+    --radius:14px;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial;
+    background: radial-gradient(1200px 800px at 20% -10%, rgba(59,130,246,.18), transparent),
+                radial-gradient(1000px 700px at 80% 10%, rgba(124,58,237,.15), transparent),
+                var(--bg);
+    color: var(--text);
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+  header {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    padding: 18px 18px 14px; border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(15,23,42,.7), rgba(15,23,42,.4));
+    backdrop-filter: blur(10px);
+    position: sticky; top: 0; z-index: 50;
+  }
+  header h1 { font-size: 18px; margin: 0; letter-spacing: .2px; }
+  header p { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
+  .section { margin-top: 22px; }
+  .section h2 { font-size: 15px; color: var(--muted); text-transform: uppercase; letter-spacing: .14em; margin: 0 0 10px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card {
+    background: linear-gradient(180deg, rgba(15,23,42,.85), rgba(17,27,45,.75));
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.18);
+  }
+  .tag { display: inline-block; padding: 4px 8px; border-radius: 999px; font-size: 11px; background: rgba(59,130,246,.12); color: #cfe3ff; border: 1px solid rgba(59,130,246,.25); margin-right: 8px; }
+  .tbl-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); margin-top: 16px; }
+  table { width: 100%; border-collapse: collapse; min-width: 900px; }
+  th, td { text-align: left; padding: 10px 12px; font-size: 12px; border-bottom: 1px solid var(--line); }
+  th { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 10.5px; letter-spacing: .12em; color: #fff; text-transform: uppercase; background: rgba(59,130,246,.12); }
+  td { color: var(--muted); }
+  tr:last-child td { border-bottom: none; }
+  .actions { margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .link {
+    display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 10px; font-size: 13px; font-weight: 600; text-decoration: none; border: 1px solid transparent;
+  }
+  .link.primary { background: rgba(59,130,246,.14); color: #e8f1ff; border-color: rgba(59,130,246,.35); }
+  .link.primary:hover { background: rgba(59,130,246,.25); }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>EPQ · Plano Estratégico de Conteúdo + Tráfego</h1>
+        <p>Período: 21/08 → 30/09 · Responsável: Lara · Aprovação: Ronan · Estratégia: Flávio</p>
+      </div>
+      <div class="tag">Operação</div>
+    </header>
+
+    <div class="section">
+      <h2>1) Diagnóstico rápido</h2>
+      <div class="card">
+        <p>O calendário atual já separa orgânico e tráfego? Não. Por isso este documento cria essa divisão explicitamente e transforma a agenda em um sistema operacional, com tags, matriz, headlines, legendas, CTAs, stories, horários e checklist de informações.</p>
+        <p style="margin-top:10px;"><strong>Informações não inventadas:</strong> toda seção sem dados confirmados está marcada como <span style="color:var(--amber)">AGUARDANDO INFORMAÇÃO</span>.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>2) Separação Orgânico × Tráfego</h2>
+      <div class="grid">
+        <div class="card">
+          <h3 style="margin:0 0 8px;color:#e8f1ff">Orgânico</h3>
+          <p style="margin:0;color:var(--muted);font-size:13px;">Aulas, motivação, bastidores, professor, aluno, FAQ, prova social e abertura de curso. Função: autoridade, relacionamento, identificação, educação e demanda.</p>
+        </div>
+        <div class="card">
+          <h3 style="margin:0 0 8px;color:#e8f1ff">Tráfego</h3>
+          <p style="margin:0;color:var(--muted);font-size:13px;">Anúncios de reconhecimento, abertura de cursos, remarketing e conversão. Função: leads, WhatsApp, matrícula e escala de criativos.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>3) Tags</h2>
+      <div class="card">
+        <p><strong>Canal:</strong> ORGÂNICO | TRÁFEGO | ORGÂNICO → TRÁFEGO</p>
+        <p><strong>Formato:</strong> REELS | CARROSSEL | POST ESTÁTICO | STORY | STORY INTERATIVO | LIVE | DEPOIMENTO | CORTE DE AULA | BASTIDOR | ANÚNCIO</p>
+        <p><strong>Editoria:</strong> AULA | QUESTÃO | MOTIVAÇÃO | PROVA SOCIAL | RESULTADO | PROFESSOR | ALUNO | BASTIDORES | INSTITUCIONAL | ABERTURA DE CURSO | OFERTA | DÚVIDA FREQUENTE | CONCURSO | CARREIRA MILITAR | PMERJ | URGÊNCIA | FAQ</p>
+        <p><strong>Objetivo:</strong> ALCANCE | ENGAJAMENTO | AUTORIDADE | EDUCAÇÃO | CONSIDERAÇÃO | GERAÇÃO DE LEAD | WHATSAPP | MATRÍCULA | REMARKETING | CONVERSÃO</p>
+        <p><strong>Funil:</strong> TOPO | MEIO | FUNDO</p>
+        <p><strong>Prioridade:</strong> P0 — CRÍTICO | P1 — IMPORTANTE | P2 — OPORTUNIDADE</p>
+        <p><strong>Status:</strong> IDEIA | AGUARDANDO INFORMAÇÃO | ROTEIRO | GRAVAÇÃO | EDIÇÃO | AGUARDANDO APROVAÇÃO | APROVADO | PROGRAMADO | PUBLICADO | IMPULSIONAR | ANÚNCIO ATIVO</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>4) Função do orgânico</h2>
+      <div class="grid">
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">AULA</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Autoridade + educação</p></div>
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">MOTIVAÇÃO</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Conexão + identificação</p></div>
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">PROFESSOR</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Confiança + proximidade</p></div>
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">ALUNO / PROVA SOCIAL</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Credibilidade + resultado</p></div>
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">ABERTURA DE CURSO</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Demanda + conversão</p></div>
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">FAQ / DÚVIDA</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Redução de objeção</p></div>
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">STORY</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Relacionamento + conversão</p></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>5) Função do tráfego pago</h2>
+      <div class="card">
+        <p><strong>CAMPANHA 01 — Reconhecimento / Aquecimento</strong> — objetivo: engajamento, visualização e leads frios. status: AGUARDANDO DEFINIÇÃO.</p>
+        <p style="margin-top:8px;"><strong>CAMPANHA 02 — Abertura de cursos</strong> — objetivo: WhatsApp / leads / matrícula. status: AGUARDANDO DEFINIÇÃO.</p>
+        <p style="margin-top:8px;"><strong>CAMPANHA 03 — Remarketing</strong> — objetivo: recuperar interessados. públicos: vídeos assistidos, engajados, visitantes de perfil, conversas iniciadas. status: AGUARDANDO DEFINIÇÃO.</p>
+        <p style="margin-top:8px;"><strong>CAMPANHA 04 — Conversão</strong> — objetivo: matrícula. status: AGUARDANDO DEFINIÇÃO.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>6) Calendário final</h2>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>ID</th><th>Data</th><th>Canal</th><th>Formato</th><th>Editoria</th><th>Tema</th><th>Objetivo</th><th>Funil</th><th>Headline</th><th>CTA</th><th>Horário</th><th>Responsável</th><th>Apoio</th><th>Mídia paga?</th><th>Status</th></tr>
+          <tr><td>EPQ-AGO-001</td><td>21/08</td><td>ORGÂNICO</td><td>REELS</td><td>AULA</td><td>Erro que elimina pontos na 1ª fase</td><td>AUTORIDADE</td><td>TOPO</td><td>"Você está estudando do jeito certo?"</td><td>Assista / Salve</td><td>19h</td><td>LARA</td><td>RONAN</td><td>Não</td><td>AGUARDANDO APROVAÇÃO</td></tr>
+          <tr><td>EPQ-AGO-002</td><td>22/08</td><td>ORGÂNICO</td><td>CARROSSEL</td><td>QUESTÃO</td><td>5 erros mais comuns</td><td>ENGAJAMENTO</td><td>TOPO</td><td>"5 erros que repetem toda semana"</td><td>Salve / Compartilhe</td><td>18h</td><td>LARA</td><td>RONAN</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-AGO-003</td><td>23/08</td><td>ORGÂNICO</td><td>STORY</td><td>MOTIVAÇÃO</td><td>Atividade motivacional 2024</td><td>ALCANCE</td><td>TOPO</td><td>"Quem continua em 2026"</td><td>Responda</td><td>12h</td><td>LARA</td><td>—</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-AGO-004</td><td>24/08</td><td>ORGÂNICO → TRÁFEGO</td><td>REELS</td><td>PROVA SOCIAL</td><td>Depoimento aluno PF</td><td>CONSIDERAÇÃO</td><td>MEIO</td><td>"De vigilante a aprovado"</td><td>Quero entender</td><td>19h</td><td>LARA</td><td>ALUNO</td><td>Sim</td><td>AGUARDANDO INFORMAÇÃO</td></tr>
+          <tr><td>EPQ-AGO-005</td><td>25/08</td><td>ORGÂNICO</td><td>CARROSSEL</td><td>PMERJ</td><td>Carreira e preparação</td><td>AUTORIDADE</td><td>MEIO</td><td>"O que a PMERJ exige em 2026"</td><td>Salve</td><td>18h</td><td>LARA</td><td>RONAN</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-AGO-006</td><td>26/08</td><td>ORGÂNICO</td><td>LIVE</td><td>PROFESSOR</td><td>Perguntas e respostas</td><td>ENGAJAMENTO</td><td>MEIO</td><td>"Live com o professor"</td><td>Participe</td><td>20h</td><td>LARA</td><td>PROFESSOR</td><td>Não</td><td>AGUARDANDO INFORMAÇÃO</td></tr>
+          <tr><td>EPQ-AGO-007</td><td>27/08</td><td>TRÁFEGO</td><td>ANÚNCIO</td><td>ABERTURA DE CURSO</td><td>Anúncio curso X</td><td>WHATSAPP</td><td>FUNDO</td><td>"Turma aberta: próximas aulas em 2 semanas"</td><td>Chame no WhatsApp</td><td>—</td><td>LARA</td><td>RONAN</td><td>Sim</td><td>AGUARDANDO INFORMAÇÃO</td></tr>
+          <tr><td>EPQ-AGO-008</td><td>28/08</td><td>ORGÂNICO</td><td>REELS</td><td>MOTIVAÇÃO</td><td>Atividade motivacional 2024</td><td>ALCANCE</td><td>TOPO</td><td>"Quem começou junto lembra"</td><td>Assista</td><td>19h</td><td>LARA</td><td>—</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-AGO-009</td><td>29/08</td><td>ORGÂNICO</td><td>STORY</td><td>BASTIDORES</td><td>Preparação de aula</td><td>ENGAJAMENTO</td><td>MEIO</td><td>"Por trás da aula"</td><td>Participe</td><td>12h</td><td>LARA</td><td>PROFESSOR</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-AGO-010</td><td>30/08</td><td>ORGÂNICO → TRÁFEGO</td><td>CARROSSEL</td><td>OFERTA</td><td>Condições de matrícula</td><td>MATRÍCULA</td><td>FUNDO</td><td>"Como garantir sua vaga agora"</td><td>Quero entender</td><td>18h</td><td>LARA</td><td>RONAN</td><td>Sim</td><td>AGUARDANDO INFORMAÇÃO</td></tr>
+          <tr><td>EPQ-AGO-011</td><td>31/08</td><td>ORGÂNICO</td><td>REELS</td><td>RESULTADO</td><td>Evolução de aluno</td><td>AUTORIDADE</td><td>MEIO</td><td>"Resultado que valeu a rotina"</td><td>Salve</td><td>19h</td><td>LARA</td><td>ALUNO</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-SET-001</td><td>01/09</td><td>ORGÂNICO</td><td>CARROSSEL</td><td>ABERTURA DE CURSO</td><td>Abertura oficial</td><td>MATRÍCULA</td><td>FUNDO</td><td>"Aberta a primeira turma"</td><td>Chame no WhatsApp</td><td>18h</td><td>LARA</td><td>RONAN</td><td>Não</td><td>AGUARDANDO INFORMAÇÃO</td></tr>
+          <tr><td>EPQ-SET-002</td><td>02/09</td><td>TRÁFEGO</td><td>ANÚNCIO</td><td>ABERTURA DE CURSO</td><td>Campanha de abertura</td><td>LEAD</td><td>FUNDO</td><td>"Turma aberta: vagas limitadas"</td><td>Quero a vaga</td><td>—</td><td>LARA</td><td>FLÁVIO</td><td>Sim</td><td>AGUARDANDO DEFINIÇÃO</td></tr>
+          <tr><td>EPQ-SET-003</td><td>03/09</td><td>ORGÂNICO</td><td>REELS</td><td>PROFESSOR</td><td>Professor explica método</td><td>AUTORIDADE</td><td>MEIO</td><td>"Como o professor monta a aula"</td><td>Assista</td><td>19h</td><td>LARA</td><td>PROFESSOR</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-SET-004</td><td>04/09</td><td>ORGÂNICO</td><td>STORY</td><td>FAQ</td><td>Dúvidas frequentes</td><td>EDUCAÇÃO</td><td>MEIO</td><td>"Dúvidas que todo candidato tem"</td><td>Pergunte</td><td>12h</td><td>LARA</td><td>RONAN</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-SET-005</td><td>05/09</td><td>TRÁFEGO</td><td>ANÚNCIO</td><td>REMARKETING</td><td>Quem assistiu e não chamou</td><td>CONVERSÃO</td><td>FUNDO</td><td>"Ainda tem dúvida?"</td><td>Chame no WhatsApp</td><td>—</td><td>LARA</td><td>FLÁVIO</td><td>Sim</td><td>AGUARDANDO DEFINIÇÃO</td></tr>
+          <tr><td>EPQ-SET-006</td><td>06/09</td><td>ORGÂNICO</td><td>CARROSSEL</td><td>PROVA SOCIAL</td><td>Case antes/depois</td><td>CONSIDERAÇÃO</td><td>MEIO</td><td>"Antes e depois da EPQ"</td><td>Quero entender</td><td>18h</td><td>LARA</td><td>ALUNO</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-SET-007</td><td>07/09</td><td>ORGÂNICO</td><td>REELS</td><td>QUESTÃO</td><td>Questão comentada</td><td>EDUCAÇÃO</td><td>TOPO</td><td>"Essa questão reprova 60%"</td><td>Assista / Salve</td><td>19h</td><td>LARA</td><td>PROFESSOR</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-SET-008</td><td>08/09</td><td>ORGÂNICO</td><td>LIVE</td><td>FAQ</td><td>Live de dúvidas</td><td>ENGAJAMENTO</td><td>MEIO</td><td>"Tire dúvidas ao vivo"</td><td>Participe</td><td>20h</td><td>LARA</td><td>RONAN + PROFESSOR</td><td>Não</td><td>AGUARDANDO INFORMAÇÃO</td></tr>
+          <tr><td>EPQ-SET-009</td><td>09/09</td><td>ORGÂNICO → TRÁFEGO</td><td>CARROSSEL</td><td>OFERTA</td><td>Condições e prazo</td><td>MATRÍCULA</td><td>FUNDO</td><td>"Prazo e condições especiais"</td><td>Quero a vaga</td><td>18h</td><td>LARA</td><td>RONAN</td><td>Sim</td><td>AGUARDANDO INFORMAÇÃO</td></tr>
+          <tr><td>EPQ-SET-010</td><td>10/09</td><td>ORGÂNICO</td><td>STORY</td><td>BASTIDORES</td><td>Aula ao vivo</td><td>ENGAJAMENTO</td><td>MEIO</td><td>"Aula acontecendo agora"</td><td>Assista</td><td>12h</td><td>LARA</td><td>PROFESSOR</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-SET-011</td><td>11/09</td><td>TRÁFEGO</td><td>ANÚNCIO</td><td>REMARKETING</td><td>Leads não convertidos</td><td>CONVERSÃO</td><td>FUNDO</td><td>"Última chance para esta turma"</td><td>Chame no WhatsApp</td><td>—</td><td>LARA</td><td>FLÁVIO</td><td>Sim</td><td>AGUARDANDO DEFINIÇÃO</td></tr>
+          <tr><td>EPQ-SET-012</td><td>12/09</td><td>ORGÂNICO</td><td>REELS</td><td>RESULTADO</td><td>Aprovado na PMERJ</td><td>AUTORIDADE</td><td>MEIO</td><td>"Aprovado PMERJ: rotina que deu certo"</td><td>Salve</td><td>19h</td><td>LARA</td><td>ALUNO</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-SET-013</td><td>13/09</td><td>ORGÂNICO</td><td>CARROSSEL</td><td>MOTIVAÇÃO</td><td>Atividade motivacional 2024+</td><td>ALCANCE</td><td>TOPO</td><td>"Motivação que ainda vale"</td><td>Compartilhe</td><td>18h</td><td>LARA</td><td>—</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-SET-014</td><td>14/09</td><td>ORGÂNICO</td><td>STORY</td><td>DÚVIDA FREQUENTE</td><td>Matrícula e início</td><td>EDUCAÇÃO</td><td>MEIO</td><td>"Quando começa? Como se matricular?"</td><td>Pergunte</td><td>12h</td><td>LARA</td><td>RONAN</td><td>Não</td><td>AGUARDANDO INFORMAÇÃO</td></tr>
+          <tr><td>EPQ-SET-015</td><td>15/09</td><td>ORGÂNICO → TRÁFEGO</td><td>REELS</td><td>OFERTA</td><td>Benefícios do curso</td><td>MATRÍCULA</td><td>FUNDO</td><td>"O que muda ao entrar na EPQ"</td><td>Quero a vaga</td><td>19h</td><td>LARA</td><td>RONAN</td><td>Sim</td><td>AGUARDANDO INFORMAÇÃO</td></tr>
+          <tr><td>EPQ-SET-016</td><td>16/09</td><td>ORGÂNICO</td><td>CARROSSEL</td><td>AULA</td><td>Resumo de aula</td><td>AUTORIDADE</td><td>MEIO</td><td>"O que você precisa dominar"</td><td>Salve</td><td>18h</td><td>LARA</td><td>PROFESSOR</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-SET-017</td><td>17/09</td><td>TRÁFEGO</td><td>ANÚNCIO</td><td>CONVERSÃO</td><td>Alta intenção</td><td>MATRÍCULA</td><td>FUNDO</td><td>"Últimas vagas"</td><td>Chame no WhatsApp</td><td>—</td><td>LARA</td><td>FLÁVIO</td><td>Sim</td><td>AGUARDANDO DEFINIÇÃO</td></tr>
+          <tr><td>EPQ-SET-018</td><td>18/09</td><td>ORGÂNICO</td><td>REELS</td><td>PROVA SOCIAL</td><td>Depoimento em vídeo</td><td>CONSIDERAÇÃO</td><td>MEIO</td><td>"O que um aluno mudou em 30 dias"</td><td>Quero entender</td><td>19h</td><td>LARA</td><td>ALUNO</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-SET-019</td><td>19/09</td><td>ORGÂNICO</td><td>STORY</td><td>MOTIVAÇÃO</td><td>Atividade motivacional 2024+</td><td>ALCANCE</td><td>TOPO</td><td>"Continue estudando"</td><td>Responda</td><td>12h</td><td>LARA</td><td>—</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-SET-020</td><td>20/09</td><td>ORGÂNICO</td><td>LIVE</td><td>ABERTURA DE CURSO</td><td>Live de abertura</td><td>MATRÍCULA</td><td>FUNDO</td><td>"Abertura oficial: tire dúvidas"</td><td>Participe</td><td>20h</td><td>LARA</td><td>RONAN + PROFESSOR</td><td>Não</td><td>AGUARDANDO INFORMAÇÃO</td></tr>
+          <tr><td>EPQ-SET-021</td><td>21/09</td><td>TRÁFEGO</td><td>ANÚNCIO</td><td>REMARKETING</td><td>Quem engajou e não converteu</td><td>CONVERSÃO</td><td>FUNDO</td><td>"Ainda dá tempo"</td><td>Chame no WhatsApp</td><td>—</td><td>LARA</td><td>FLÁVIO</td><td>Sim</td><td>AGUARDANDO DEFINIÇÃO</td></tr>
+          <tr><td>EPQ-SET-022</td><td>22/09</td><td>ORGÂNICO</td><td>CARROSSEL</td><td>CARREIRA MILITAR</td><td>PMERJ / carreira</td><td>AUTORIDADE</td><td>MEIO</td><td>"O que muda na carreira militar"</td><td>Salve</td><td>18h</td><td>LARA</td><td>RONAN</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-SET-023</td><td>23/09</td><td>ORGÂNICO</td><td>REELS</td><td>QUESTÃO</td><td>Questão resolvida</td><td>EDUCAÇÃO</td><td>TOPO</td><td>"Resolva essa questão em 60s"</td><td>Assista / Salve</td><td>19h</td><td>LARA</td><td>PROFESSOR</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-SET-024</td><td>24/09</td><td>ORGÂNICO → TRÁFEGO</td><td>CARROSSEL</td><td>OFERTA</td><td>Encerramento de turma</td><td>MATRÍCULA</td><td>FUNDO</td><td>"Última chamada"</td><td>Quero a vaga</td><td>18h</td><td>LARA</td><td>RONAN</td><td>Sim</td><td>AGUARDANDO INFORMAÇÃO</td></tr>
+          <tr><td>EPQ-SET-025</td><td>25/09</td><td>ORGÂNICO</td><td>STORY</td><td>PROVA SOCIAL</td><td>Resultado recente</td><td>AUTORIDADE</td><td>MEIO</td><td>"Resultado dessa semana"</td><td>Salve</td><td>12h</td><td>LARA</td><td>ALUNO</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-SET-026</td><td>26/09</td><td>ORGÂNICO</td><td>REELS</td><td>MOTIVAÇÃO</td><td>Atividade motivacional 2024+</td><td>ALCANCE</td><td>TOPO</td><td>"Continue focado"</td><td>Assista</td><td>19h</td><td>LARA</td><td>—</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-SET-027</td><td>27/09</td><td>ORGÂNICO</td><td>CARROSSEL</td><td>DÚVIDA FREQUENTE</td><td>Pagamento e dúvidas</td><td>EDUCAÇÃO</td><td>MEIO</td><td>"Tire dúvidas antes de matricular"</td><td>Pergunte</td><td>18h</td><td>LARA</td><td>RONAN</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-SET-028</td><td>28/09</td><td>TRÁFEGO</td><td>ANÚNCIO</td><td>CONVERSÃO</td><td>Última oportunidade</td><td>MATRÍCULA</td><td>FUNDO</td><td>"Últimas vagas: última semana"</td><td>Chame no WhatsApp</td><td>—</td><td>LARA</td><td>FLÁVIO</td><td>Sim</td><td>AGUARDANDO DEFINIÇÃO</td></tr>
+          <tr><td>EPQ-SET-029</td><td>29/09</td><td>ORGÂNICO</td><td>REELS</td><td>RESULTADO</td><td>Case final do mês</td><td>AUTORIDADE</td><td>MEIO</td><td>"Fechando o mês com resultado"</td><td>Salve</td><td>19h</td><td>LARA</td><td>ALUNO</td><td>Não</td><td>IDEIA</td></tr>
+          <tr><td>EPQ-SET-030</td><td>30/09</td><td>ORGÂNICO</td><td>CARROSSEL</td><td>RESUMO</td><td>Resumo do mês</td><td>ENGAJAMENTO</td><td>MEIO</td><td>"O que mudou em setembro"</td><td>Comente</td><td>18h</td><td>LARA</td><td>—</td><td>Não</td><td>IDEIA</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>7) Headlines + legendas + CTAs</h2>
+      <div class="card">
+        <p><strong>Headline 01:</strong> "Você está estudando do jeito certo para a PMERJ?"</p>
+        <p><strong>Legenda:</strong> Hook: muitos estudam mais, mas não melhoram. Contexto: o método importa mais que a carga. Prova: exemplo real. CTA: Assista e salve para revisar depois.</p>
+        <p><strong>CTA do Story:</strong> "Qual sua maior dificuldade? Responda aqui."</p>
+        <p style="margin-top:10px;"><strong>Headline 02:</strong> "Uma questão pode separar você da aprovação."</p>
+        <p><strong>Legenda:</strong> Hook: o detalhe que ninguém percebe. Contexto: revisão de erro comum. Prova: estatística simples. CTA: Salve para não repetir.</p>
+        <p><strong>Hashtags:</strong> #PMERJ #Concursos #EstudoComMetodo #EPQ</p>
+        <p style="margin-top:10px;"><strong>Nota:</strong> Todas as legendas devem seguir Hook → problema → contexto → solução → prova → CTA. Para conversão: Hook → oportunidade → benefício → urgência → CTA WhatsApp.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>8) Stories</h2>
+      <div class="grid">
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">Aquecimento</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Enquete, caixa de perguntas, contagem regressiva</p></div>
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">Conteúdo</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Repost qualificado, bastidores, resumo de aula</p></div>
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">Interativo</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Quiz, enquete, caixa de perguntas, DM</p></div>
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">Prova social</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Depoimento em vídeo, print de mensagem</p></div>
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">CTA</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Link, WhatsApp, “Chame no link”</p></div>
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">Venda</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Oferta, prazo, condição, urgência</p></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>9) Horários</h2>
+      <div class="card">
+        <p><strong>Manhã — 12h:</strong> Stories, lembretes, resumos.</p>
+        <p><strong>Almoço — 12h30–13h30:</strong> Reels curtos para consumo rápido.</p>
+        <p><strong>Final da tarde — 18h:</strong> Carrosséis, conteúdo mais denso.</p>
+        <p><strong>Noite — 19h–20h:</strong> Reels de maior retenção.</p>
+        <p style="margin-top:10px;"><strong>Ajuste obrigatório:</strong> após 7–14 dias, revisar alcance e horários e atualizar conforme dados reais.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>10) Conteúdos de 2024+</h2>
+      <div class="card">
+        <p>Só reaproveitar material que tenha qualidade, contexto, autorização e possa gerar prova social. Quando o material for antigo, usar tratamentos como: <strong>“Arquivo EPQ — preparação que continua atual”</strong> ou <strong>“Da nossa sala de aula para quem está começando agora”</strong>. Não inventar datas ou resultados.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>11) Matriz de conteúdo</h2>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Editoria</th><th>Reels</th><th>Carrossel</th><th>Story</th><th>Tráfego</th></tr>
+          <tr><td>Aula</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+          <tr><td>Motivação</td><td>✓</td><td>✓</td><td>✓</td><td>possível</td></tr>
+          <tr><td>Professor</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+          <tr><td>Prova social</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+          <tr><td>Abertura</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+          <tr><td>FAQ</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>12) Banco de criativos</h2>
+      <div class="grid">
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">CREATIVO A — Aula</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Função: autoridade. Funil: topo/meio. Pode virar anúncio: sim. CTA: Assista / Salve.</p></div>
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">CREATIVO B — Professor</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Função: confiança. Funil: meio. Pode virar anúncio: sim. CTA: Assista / Salve.</p></div>
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">CREATIVO C — Aluno</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Função: prova social. Funil: meio. Pode virar anúncio: sim. CTA: Quero entender.</p></div>
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">CREATIVO D — Resultado</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Função: credibilidade. Funil: meio. Pode virar anúncio: sim. CTA: Salve.</p></div>
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">CREATIVO E — Motivacional</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Função: conexão. Funil: topo. Pode virar anúncio: possível. CTA: Compartilhe.</p></div>
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">CREATIVO F — Oferta</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Função: demanda. Funil: fundo. Pode virar anúncio: sim. CTA: Quero a vaga.</p></div>
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">CREATIVO G — Objeção/FAQ</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Função: reduzir objeção. Funil: meio. Pode virar anúncio: possível. CTA: Pergunte.</p></div>
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">CREATIVO H — Urgência</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Função: decisão. Funil: fundo. Pode virar anúncio: sim. CTA: Chame no WhatsApp.</p></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>13) Estratégia de mídia paga</h2>
+      <div class="card">
+        <p><strong>AGOSTO:</strong> R$200 — CUSTO DE PRODUÇÃO (AGUARDANDO CONFIRMAÇÃO)</p>
+        <p><strong>SETEMBRO:</strong> R$400 — INVESTIMENTO EM TRÁFEGO (AGUARDANDO CONFIRMAÇÃO)</p>
+        <p style="margin-top:10px;"><strong>Observação:</strong> não misturar custo operacional com mídia. Confirmar com Ronan/Flávio antes de lançar campanhas.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>14) Checklist para Ronan</h2>
+      <div class="card">
+        <p>Cursos abertos, datas, vagas, preço, condições, desconto, prazo, início, horários, modalidade, endereço, professores, diferenciais, materiais, resultados, orçamento de mídia, meta de matrícula e WhatsApp oficial.</p>
+        <p style="margin-top:10px;"><strong>Classificação:</strong> URGENTE | IMPORTANTE | PODE AGUARDAR</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>15) Professores</h2>
+      <div class="card">
+        <p>Disciplina, especialidade, concursos, dificuldades dos alunos, erros comuns, dicas, disponibilidade para gravação/live, autorização de imagem, aulas antigas, materiais e temas para Reels.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>16) Alunos</h2>
+      <div class="card">
+        <p>Nome, curso, concurso, resultado, evolução, depoimento, foto, vídeo, autorização, rotina, dificuldades e motivo de escolha. Perguntas: como conheceu a EPQ, maior dificuldade, o que mudou, destaque dos professores, recado para novos alunos.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>17) Gestão/Flaj</h2>
+      <div class="card">
+        <p>Calendário acadêmico, abertura de turmas, datas, professores confirmados, materiais, registros, eventos, números, diferenciais e regras de comunicação.</p>
+        <p style="margin-top:10px;"><strong>Classificação:</strong> PÚBLICA | INTERNA | CONFIDENCIAL</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>18) Fluxo de aprovação</h2>
+      <div class="card">
+        <p>IDEIA → BRIEFING → ROTEIRO → GRAVAÇÃO → EDIÇÃO → APROVAÇÃO (Ronan) → PUBLICAÇÃO (Lara) → TRÁFEGO (Flávio) → MÉTRICAS → APRENDIZADO</p>
+        <p style="margin-top:10px;"><strong>Prazo Ronan:</strong> até 24h. <strong>Prazo Lara:</strong> até 12h após aprovação. <strong>Emergencial:</strong> Flávio pode aprovar conteúdo educacional simples quando Ronan não estiver disponível.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>19) Métricas</h2>
+      <div class="grid">
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">Orgânico</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">Alcance, visualização, retenção, compartilhamentos, salvamentos, comentários, visitas, seguidores, cliques e respostas.</p></div>
+        <div class="card"><div style="color:var(--cyan);font-weight:700;font-size:13px;">Tráfego</div><p style="margin:6px 0 0;color:var(--muted);font-size:13px;">CPM, CTR, CPC, CPL, custo por conversa, leads, taxa de conversão, custo por matrícula e ROAS.</p></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>20) Relatório semanal</h2>
+      <div class="card">
+        <p>1) O que publicamos · 2) O que funcionou · 3) O que não funcionou · 4) Top 3 conteúdos · 5) Top 3 criativos · 6) Leads · 7) Conversas · 8) Matrículas · 9) Investimento em mídia · 10) Aprendizados · 11) Decisões para próxima semana · 12) Pendências Ronan · 13) Pendências professores · 14) Pendências gestão</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>21) Backlog de pendências</h2>
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Pendência</th><th>Responsável</th><th>Prazo</th><th>Prioridade</th><th>Impacto</th><th>Status</th></tr>
+          <tr><td>Confirmar cursos e datas</td><td>Ronan</td><td>24/08</td><td>P1</td><td>Alto</td><td>AGUARDANDO</td></tr>
+          <tr><td>Confirmar orçamento de mídia</td><td>Ronan / Flávio</td><td>24/08</td><td>P1</td><td>Alto</td><td>AGUARDANDO</td></tr>
+          <tr><td>Enviar depoimentos de alunos</td><td>Alunos</td><td>28/08</td><td>P2</td><td>Médio</td><td>AGUARDANDO</td></tr>
+          <tr><td>Disponibilidade de professores</td><td>Professores</td><td>26/08</td><td>P1</td><td>Alto</td><td>AGUARDANDO</td></tr>
+          <tr><td>Informações institucionais</td><td>Gestão/Flaj</td><td>26/08</td><td>P1</td><td>Alto</td><td>AGUARDANDO</td></tr>
+          <tr><td>Aprovação dos criativos de setembro</td><td>Ronan</td><td>30/08</td><td>P0</td><td>Alto</td><td>AGUARDANDO</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>22) Próximas decisões</h2>
+      <div class="card">
+        <p>1. Validar se R$200 e R$400 são produção ou mídia.</p>
+        <p>2. Confirmar cursos, vagas e datas com Ronan.</p>
+        <p>3. Confirmar orçamento de mídia para setembro.</p>
+        <p>4. Ajustar horários após primeiros 7–14 dias.</p>
+        <p>5. Definir critério de “material de 2024+” com Ronan.</p>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a class="link primary" href="https://flavio-guedes.github.io/epq/playbookmkt.html" target="_blank" rel="noopener">Abrir Playbook de Marketing</a>
+    </div>
+  </div>
+</body>
+</html>
