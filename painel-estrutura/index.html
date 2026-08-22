@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drive EPQ · Painel de Estrutura</title>
+<style>
+  :root{
+    --bg:#050505;
+    --surface:rgba(255,255,255,0.035);
+    --surface-hover:rgba(255,255,255,0.06);
+    --border:rgba(255,255,255,0.10);
+    --border-active:rgba(255,255,255,0.22);
+    --text:#ffffff;
+    --text-secondary:#888888;
+    --text-tertiary:#555555;
+    --accent:rgba(120,180,255,0.25);
+    --accent-glow:rgba(120,180,255,0.12);
+    --cyan:#00D9FF;
+    --gold:#F2B705;
+    --blue:#1B5FE0;
+    --bright:#3D8BFF;
+    --radius:10px;
+    --radius-sm:6px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Space Grotesk','Inter',ui-sans-serif,system-ui,sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;}
+  .app{display:grid;grid-template-columns:260px 1fr;grid-template-rows:56px 1fr;height:100vh;}
+  .topbar{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);}
+  .topbar-left,.topbar-right{display:flex;align-items:center;gap:14px;}
+  .logo{width:24px;height:24px;border:1px solid var(--border-active);border-radius:var(--radius-sm);background:linear-gradient(135deg,rgba(120,180,255,0.2),rgba(120,180,255,0.05));box-shadow:0 0 20px rgba(120,180,255,0.12),inset 0 1px 0 rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;letter-spacing:0.05em;color:rgba(255,255,255,0.9);}
+  .brand{font-size:13px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:rgba(255,255,255,0.85);}
+  .status-pill{font-size:10px;padding:4px 10px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);letter-spacing:0.08em;text-transform:uppercase;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+
+  .sidebar{border-right:1px solid var(--border);padding:18px 12px;display:flex;flex-direction:column;gap:6px;background:linear-gradient(180deg,rgba(255,255,255,0.015),transparent);overflow-y:auto;}
+  .sidebar-title{font-size:10px;text-transform:uppercase;letter-spacing:0.14em;color:var(--text-tertiary);padding:14px 12px 6px;font-weight:500;}
+  .nav-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-sm);color:var(--text-secondary);font-size:12.5px;font-weight:400;letter-spacing:0.02em;cursor:pointer;transition:all 0.15s ease;border:1px solid transparent;}
+  .nav-item:hover{background:var(--surface);color:var(--text);border-color:var(--border);}
+  .nav-item.active{background:var(--surface);color:var(--text);border-color:var(--border-active);box-shadow:inset 0 1px 0 rgba(255,255,255,0.04),0 0 0 1px rgba(255,255,255,0.04);}
+  .nav-icon{width:16px;height:16px;opacity:0.6;}
+  .nav-item.active .nav-icon{opacity:1;}
+
+  .main{overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:18px;}
+  .section{display:none;}
+  .section.active{display:block;}
+  .section-title{font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:var(--text-tertiary);font-weight:500;margin-bottom:8px;}
+  .panel-header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+
+  .card{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:14px 16px;display:flex;flex-direction:column;gap:8px;}
+  .card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .card-title{font-size:13px;font-weight:500;letter-spacing:0.02em;}
+  .card-desc{font-size:12px;color:var(--text-secondary);line-height:1.45;}
+  .card-list{margin-top:4px;padding-left:14px;color:var(--text-secondary);font-size:12px;line-height:1.55;}
+  .tag{font-size:10px;padding:5px 10px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);letter-spacing:0.08em;text-transform:uppercase;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+  .tag.active{border-color:rgba(120,180,255,0.35);color:rgba(180,210,255,0.95);box-shadow:0 0 18px rgba(120,180,255,0.12);}
+
+  .job{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:14px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .job-icon{width:34px;height:34px;border-radius:var(--radius-sm);border:1px solid var(--border-active);background:linear-gradient(180deg,rgba(120,180,255,0.12),rgba(120,180,255,0.03));box-shadow:inset 0 1px 0 rgba(255,255,255,0.08),0 0 18px rgba(120,180,255,0.08);display:flex;align-items:center;justify-content:center;font-size:14px;}
+  .job-info{flex:1;min-width:180px;}
+  .job-name{font-size:13px;font-weight:500;letter-spacing:0.02em;}
+  .job-meta{font-size:11px;color:var(--text-secondary);margin-top:3px;}
+  .job-path{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px;}
+  .job-path span{padding:5px 10px;border-radius:999px;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--text-secondary);font-size:11.5px;}
+  .job-path .sep{color:var(--gold);font-weight:700;}
+  .job-preview{margin-top:8px;padding:10px;border:1px solid var(--border);border-radius:var(--radius-sm);background:rgba(255,255,255,0.02);color:var(--text-secondary);font-size:11.5px;line-height:1.45;}
+  .job-preview strong{color:var(--text);}
+  .job-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+  .job-btn{padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);font-size:11px;text-decoration:none;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+  .job-btn:hover{border-color:var(--border-active);color:var(--text);}
+
+  .rule-box{margin-top:8px;padding:14px 16px;border:1px solid rgba(0,217,255,0.35);border-radius:var(--radius);background:rgba(0,217,255,0.06);}
+  .rule-box strong{color:var(--cyan);}
+
+  .tree-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+  .tree-btn{padding:6px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);font-size:11.5px;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+  .tree-btn:hover{border-color:var(--border-active);color:var(--text);}
+  .tree-info{font-size:11.5px;color:var(--text-tertiary);margin-left:auto;}
+  .tree-container{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:12px 10px;max-height:calc(100vh - 220px);overflow-y:auto;}
+  .tree-group{display:flex;flex-direction:column;gap:2px;}
+  .tree-node{display:flex;flex-direction:column;}
+  .tree-row{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:var(--radius-sm);cursor:default;transition:background 0.12s ease;}
+  .tree-node.has-children>.tree-row{cursor:pointer;}
+  .tree-node.has-children>.tree-row:hover{background:var(--surface-hover);}
+  .tree-toggle{width:14px;height:14px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:9px;transition:transform 0.15s ease;flex-shrink:0;}
+  .tree-toggle.open{transform:rotate(90deg);}
+  .tree-toggle-placeholder{width:14px;flex-shrink:0;}
+  .tree-icon{font-size:12px;line-height:1;}
+  .tree-label{font-size:12.5px;color:var(--text-secondary);flex:1;line-height:1.3;letter-spacing:0.01em;}
+  .tree-link{font-size:11px;color:var(--text-tertiary);text-decoration:none;padding:2px 8px;border-radius:999px;border:1px solid var(--border);background:var(--surface);opacity:0;transition:opacity 0.12s ease;white-space:nowrap;}
+  .tree-row:hover .tree-link{opacity:1;}
+  .tree-link:hover{border-color:var(--border-active);color:var(--text);}
+
+  .editoria-card{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:14px 16px;cursor:pointer;transition:all 0.15s ease;}
+  .editoria-card:hover{border-color:var(--border-active);background:var(--surface-hover);}
+  .editoria-header{display:flex;align-items:center;gap:14px;}
+  .editoria-toggle{color:var(--text-secondary);font-size:11px;transition:transform 0.15s ease;margin-left:auto;}
+  .editoria-card.open .editoria-toggle{transform:rotate(90deg);}
+  .editoria-body{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:none;}
+  .editoria-body.open{display:block;}
+  .format-group{margin-top:8px;}
+  .format-header{font-size:12px;font-weight:500;color:var(--text);margin-bottom:6px;}
+  .categoria-row{font-size:11.5px;color:var(--text-secondary);margin-bottom:6px;padding-left:10px;border-left:2px solid var(--border);}
+
+  .filters-bar{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;padding:12px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
+  .filter-group{display:flex;flex-direction:column;gap:4px;}
+  .filter-label{font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-tertiary);font-weight:500;}
+  .filter-select,.filter-input{padding:8px 10px;border-radius:var(--radius-sm);border:1px solid var(--border);background:rgba(255,255,255,0.03);color:var(--text);font-size:12px;font-family:inherit;outline:none;min-width:140px;}
+  .filter-select:focus,.filter-input:focus{border-color:var(--border-active);}
+  .filter-clear{padding:8px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);font-size:11.5px;cursor:pointer;height:fit-content;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+  .filter-clear:hover{border-color:var(--border-active);color:var(--text);}
+
+  .meses-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  .mes-card{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:14px 16px;display:flex;flex-direction:column;gap:6px;transition:all 0.15s ease;}
+  .mes-card:hover{border-color:var(--border-active);background:var(--surface-hover);}
+  .mes-header{font-size:13px;font-weight:500;letter-spacing:0.02em;color:var(--text);}
+  .mes-body{font-size:12px;color:var(--text-secondary);line-height:1.4;}
+
+  .quick-card{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:14px 16px;display:flex;flex-direction:column;gap:6px;cursor:pointer;transition:all 0.15s ease;}
+  .quick-card:hover{border-color:var(--border-active);background:var(--surface-hover);transform:translateY(-1px);}
+  .quick-icon{font-size:20px;line-height:1;}
+  .quick-title{font-size:13px;font-weight:500;letter-spacing:0.02em;color:var(--text);}
+  .quick-desc{font-size:11.5px;color:var(--text-secondary);line-height:1.4;}
+
+  .tour-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:999;}
+  .tour-overlay.open{display:flex;}
+  .tour-dialog{border:1px solid var(--border-active);border-radius:var(--radius);background:rgba(10,10,10,0.95);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);padding:18px;max-width:520px;width:calc(100% - 40px);max-height:calc(100vh - 80px);overflow-y:auto;}
+  .tour-title{font-size:13px;font-weight:500;letter-spacing:0.02em;color:var(--text);margin-bottom:8px;}
+  .tour-body{font-size:12px;color:var(--text-secondary);line-height:1.55;}
+  .tour-actions{display:flex;gap:10px;margin-top:12px;justify-content:flex-end;}
+  .tour-btn{padding:8px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);font-size:11.5px;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+  .tour-btn:hover{border-color:var(--border-active);color:var(--text);}
+  .tour-btn.primary{border-color:rgba(120,180,255,0.35);color:rgba(180,210,255,0.95);}
+
+  .system-link{font-size:11px;color:var(--text-tertiary);text-decoration:none;padding:4px 8px;border-radius:999px;border:1px solid var(--border);background:var(--surface);white-space:nowrap;}
+  .system-link:hover{border-color:var(--border-active);color:var(--text);}
+
+  @media(max-width:860px){
+    .app{grid-template-columns:1fr;grid-template-rows:56px 1fr;}
+    .sidebar{display:none;}
+  }
+  @media(max-width:640px){
+    .filters-bar{flex-direction:column;align-items:stretch;}
+    .filter-select,.filter-input{min-width:auto;width:100%;}
+    .meses-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="logo">E</div>
+        <div class="brand">drive epq</div>
+      </div>
+      <div class="topbar-right">
+        <div class="status-pill">drive</div>
+        <div class="status-pill" id="clock">--:--</div>
+        <div class="status-pill" id="tourPill" style="cursor:pointer;">tour</div>
+      </div>
+    </header>
+
+    <aside class="sidebar">
+      <div class="sidebar-title">navegação</div>
+      <div class="nav-item active" data-target="section-atalhos">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <span>atalhos</span>
+      </div>
+      <div class="nav-item" data-target="section-sistema">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+        <span>sistema criativo</span>
+      </div>
+      <div class="nav-item" data-target="section-editorias">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4 2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <span>editorias</span>
+      </div>
+      <div class="nav-item" data-target="section-jobs">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4 2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <span>jobs</span>
+      </div>
+      <div class="nav-item" data-target="section-a-criar">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+        <span>a criar</span>
+      </div>
+      <div class="nav-item" data-target="section-meses">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span>meses</span>
+      </div>
+      <div class="nav-item" data-target="section-regras">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+        <span>regras</span>
+      </div>
+
+      <div class="sidebar-title">atalhos</div>
+      <div class="nav-item" data-target="section-drive">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 19a2 2 0 0 1-2 2H4 2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <span>drive</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div id="section-atalhos" class="section active">
+        <div class="section-title">atalhos rápidos</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;">
+          <div class="quick-card" onclick="window.open('https://drive.google.com/drive/folders/1z6Y3JwfKfupA95KT_Il_X8xs5vqfMNeJ','_blank')">
+            <div class="quick-icon">📂</div>
+            <div class="quick-title">Abrir Drive EPQ</div>
+            <div class="quick-desc">Pasta principal 01 - Criação</div>
+          </div>
+          <div class="quick-card" onclick="document.getElementById('section-jobs').scrollIntoView({behavior:'smooth'})">
+            <div class="quick-icon">◈</div>
+            <div class="quick-title">Ver Jobs</div>
+            <div class="quick-desc">jobs padrão</div>
+          </div>
+          <div class="quick-card" onclick="document.getElementById('section-regras').scrollIntoView({behavior:'smooth'})">
+            <div class="quick-icon">⚡</div>
+            <div class="quick-title">Regras</div>
+            <div class="quick-desc">Padrões e governança</div>
+          </div>
+          <div class="quick-card" onclick="document.getElementById('section-meses').scrollIntoView({behavior:'smooth'})">
+            <div class="quick-icon">📅</div>
+            <div class="quick-title">Meses</div>
+            <div class="quick-desc">08 a 12/2026</div>
+          </div>
+          <div class="quick-card" onclick="document.getElementById('section-a-criar').scrollIntoView({behavior:'smooth'})">
+            <div class="quick-icon">🧭</div>
+            <div class="quick-title">A Criar</div>
+            <div class="quick-desc">Sugestões do sistema</div>
+          </div>
+          <div class="quick-card" onclick="startTour()">
+            <div class="quick-icon">🎓</div>
+            <div class="quick-title">Tour</div>
+            <div class="quick-desc">Apresentação guiada</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="section-sistema" class="section">
+        <div class="section-title">00 — sistema criativo epq</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;">
+          <div class="card">
+            <div class="card-head"><div class="card-title">01 - Marca</div><div class="tag">identidade</div></div>
+            <div class="card-desc">Brand Book, referência visual e logo.</div>
+            <ul class="card-list"><li>Design System Brand Book</li><li>Referência Visual</li><li>Logos e Identidade</li></ul>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title">02 - Playbook</div><div class="tag">estratégia</div></div>
+            <div class="card-desc">Playbook de Marketing EPQ.</div>
+            <ul class="card-list"><li>Playbook Marketing EPQ</li><li>HTML interativo</li></ul>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title">03 - Modelos de Briefing</div><div class="tag">obrigatório</div></div>
+            <div class="card-desc">Modelo base para todo job.</div>
+            <ul class="card-list"><li>Modelo de Briefing oficial</li><li>Sem briefing, sem criação</li></ul>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title">04 - Referências</div><div class="tag">inspiração</div></div>
+            <div class="card-desc">Referências visuais e textuais.</div>
+            <ul class="card-list"><li>Referências visuais</li><li>Ideias aprovadas</li></ul>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title">05 - Materiais Brutos</div><div class="tag">acervo</div></div>
+            <div class="card-desc">Arte antiga, fotos, vídeos e depoimentos.</div>
+            <ul class="card-list"><li>Artes antigas</li><li>Fotos / vídeos</li><li>Depoimentos</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <div id="section-editorias" class="section">
+        <div class="section-title">editorias</div>
+        <p style="color:var(--text-secondary);font-size:12px;margin-bottom:10px;">Cada editoria agrupa formatos/canais. Clique para expandir e ver categorias e jobs sugeridos.</p>
+        <div id="editoriasList" style="display:flex;flex-direction:column;gap:10px;"></div>
+      </div>
+
+      <div id="section-jobs" class="section">
+        <div class="section-title">jobs padrão</div>
+        <p style="color:var(--text-secondary);font-size:12px;margin-bottom:10px;">Caminho padrão: <strong style="color:var(--text);">Editoria › Formato › Categoria › Job</strong></p>
+        
+        <div class="filters-bar">
+          <div class="filter-group">
+            <label class="filter-label">editoria</label>
+            <select class="filter-select" id="filterEditoria" onchange="applyFilters()">
+              <option value="">todas</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">formato</label>
+            <select class="filter-select" id="filterFormato" onchange="applyFilters()">
+              <option value="">todos</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">categoria</label>
+            <select class="filter-select" id="filterCategoria" onchange="applyFilters()">
+              <option value="">todas</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">busca</label>
+            <input type="text" class="filter-input" id="filterBusca" placeholder="nome do job..." oninput="applyFilters()">
+          </div>
+          <button class="filter-clear" onclick="clearFilters()">limpar</button>
+        </div>
+        
+        <div id="jobsList" style="display:flex;flex-direction:column;gap:10px;margin-top:12px;"></div>
+        <div id="jobsEmpty" style="display:none;color:var(--text-tertiary);font-size:12px;margin-top:10px;">nenhum job encontrado</div>
+      </div>
+
+      <div id="section-a-criar" class="section">
+        <div class="section-title">a criar</div>
+        <p style="color:var(--text-secondary);font-size:12px;margin-bottom:10px;">Sugestões automáticas para expandir o sistema sem perder identidade.</p>
+        <div id="aCriarList" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;"></div>
+      </div>
+
+      <div id="section-meses" class="section">
+        <div class="section-title">calendário de meses</div>
+        <p style="color:var(--text-secondary);font-size:12px;margin-bottom:10px;">Use pastas mensais dentro de cada job para organizar entregues.</p>
+        <div class="meses-grid">
+          <div class="mes-card"><div class="mes-header">08 - Agosto</div><div class="mes-body">jobs · arquivos de agosto/2026</div></div>
+          <div class="mes-card"><div class="mes-header">09 - Setembro</div><div class="mes-body">jobs · arquivos de setembro/2026</div></div>
+          <div class="mes-card"><div class="mes-header">10 - Outubro</div><div class="mes-body">jobs · arquivos de outubro/2026</div></div>
+          <div class="mes-card"><div class="mes-header">11 - Novembro</div><div class="mes-body">jobs · arquivos de novembro/2026</div></div>
+          <div class="mes-card"><div class="mes-header">12 - Dezembro</div><div class="mes-body">jobs · arquivos de dezembro/2026</div></div>
+        </div>
+      </div>
+
+      <div id="section-regras" class="section">
+        <div class="section-title">regras rápidas</div>
+        <div class="card">
+          <ul class="card-list">
+            <li>Toda peça nasce de briefing oficial preenchido e aprovado.</li>
+            <li>Briefing fica em <strong>02 - Briefing</strong>.</li>
+            <li>Referências ficam em <strong>01 - Apoio/01 - Referencia</strong>.</li>
+            <li>Cada job tem estrutura padronizada para manter consistência.</li>
+            <li>OLD guarda versões antigas; a raiz guarda a versão final.</li>
+          </ul>
+          <div class="rule-box">
+            <strong>Ferramenta oficial:</strong> Modelo de Briefing EPQ em <strong>00 - Sistema Criativo EPQ › 03 - Modelos de Briefing</strong>.
+          </div>
+        </div>
+      </div>
+
+      <div id="section-drive" class="section">
+        <div class="section-title">drive — estrutura em árvore</div>
+        <div class="tree-controls">
+          <button class="tree-btn" id="treeExpandAll">expandir tudo</button>
+          <button class="tree-btn" id="treeCollapseAll">recolher tudo</button>
+          <button class="tree-btn copy" id="treeCopy">copiar estrutura</button>
+          <input type="text" class="tree-search" id="treeSearch" placeholder="buscar na árvore..." oninput="searchTree(this.value)">
+          <span class="tree-info">clique em ▶ para expandir</span>
+        </div>
+        <div class="tree-container" id="treeContainer">
+          <div class="tree-node has-children">
+            <div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">📁</span><span class="tree-label">01 - Criação</span></div>
+            <div class="tree-children" style="display:none;">
+              <div class="tree-node has-children">
+                <div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🗂️</span><span class="tree-label">00 - Sistema Criativo EPQ</span></div>
+                <div class="tree-children" style="display:none;">
+                  <div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">📄</span><span class="tree-label">01 - Marca</span></div></div>
+                  <div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">📄</span><span class="tree-label">02 - Playbook</span></div></div>
+                  <div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">📄</span><span class="tree-label">03 - Modelos de Briefing</span></div></div>
+                  <div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">📄</span><span class="tree-label">04 - Referências</span></div></div>
+                  <div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">📄</span><span class="tree-label">05 - Materiais Brutos</span></div></div>
+                </div>
+              </div>
+
+              <div class="tree-node has-children">
+                <div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🗂️</span><span class="tree-label">Concursos</span></div>
+                <div class="tree-children" style="display:none;">
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Feed</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">ads</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Stories</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">ads</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Carrossel</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Reels</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Ads</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">ads</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🖼️</span><span class="tree-label">Banner</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">banner</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🖨️</span><span class="tree-label">Impresso</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">impresso</span></div></div></div></div>
+                </div>
+              </div>
+
+              <div class="tree-node has-children">
+                <div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🗂️</span><span class="tree-label">Dicas de Estudo</span></div>
+                <div class="tree-children" style="display:none;">
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Feed</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Stories</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                </div>
+              </div>
+
+              <div class="tree-node has-children">
+                <div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🗂️</span><span class="tree-label">Institucional</span></div>
+                <div class="tree-children" style="display:none;">
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Feed</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Banner</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">banner</span></div></div></div></div>
+                </div>
+              </div>
+
+              <div class="tree-node has-children">
+                <div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🗂️</span><span class="tree-label">Redes Sociais</span></div>
+                <div class="tree-children" style="display:none;">
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Feed</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">ads</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Stories</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">ads</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Carrossel</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Reels</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                </div>
+              </div>
+
+              <div class="tree-node has-children">
+                <div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🗂️</span><span class="tree-label">YouTube</span></div>
+                <div class="tree-children" style="display:none;">
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Feed</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Reels</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Short</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎙️</span><span class="tree-label">Podcast</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                </div>
+              </div>
+
+              <div class="tree-node has-children">
+                <div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🗂️</span><span class="tree-label">E-mail Marketing</span></div>
+                <div class="tree-children" style="display:none;">
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Feed</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                </div>
+              </div>
+
+              <div class="tree-node has-children">
+                <div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🗂️</span><span class="tree-label">Eventos</span></div>
+                <div class="tree-children" style="display:none;">
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Feed</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Webinar</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                </div>
+              </div>
+
+              <div class="tree-node has-children">
+                <div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🗂️</span><span class="tree-label">Treinamento</span></div>
+                <div class="tree-children" style="display:none;">
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Feed</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Podcast</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Webinar</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="tour-overlay" id="tourOverlay">
+    <div class="tour-dialog">
+      <div class="tour-title" id="tourTitle">Tour</div>
+      <div class="tour-body" id="tourBody"></div>
+      <div class="tour-actions">
+        <button class="tour-btn" id="tourPrev">voltar</button>
+        <button class="tour-btn primary" id="tourNext">avançar</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const NAV = document.querySelectorAll('.nav-item');
+  const SECTIONS = document.querySelectorAll('.section');
+  NAV.forEach(item => {
+    item.addEventListener('click', () => {
+      NAV.forEach(n => n.classList.remove('active'));
+      item.classList.add('active');
+      const target = document.getElementById(item.dataset.target);
+      SECTIONS.forEach(s => s.classList.remove('active'));
+      if (target) target.classList.add('active');
+    });
+  });
+
+  const clock = document.getElementById('clock');
+  const tick = () => {
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    if (clock) clock.textContent = `${hh}:${mm}`;
+  };
+  tick();
+  setInterval(tick, 1000);
+
+  const editoriasOptions = ['Concursos','Dicas de Estudo','Institucional','Redes Sociais','YouTube','E-mail Marketing','Eventos','Treinamento'];
+  const formatosOptions = ['Feed','Stories','Carrossel','Reels','Ads','Banner','Impresso','Short','Podcast','Webinar'];
+  const categoriasOptions = ['social','ads','banner','impresso'];
+
+  const jobsData = [
+    {name:'EPQ_social_stories_1080x1920', editoria:'Concursos', formato:'Stories', categoria:'social', briefing:'Rascunho', versoes:2},
+    {name:'EPQ_social_feed_1080x1080', editoria:'Concursos', formato:'Feed', categoria:'social', briefing:'Aprovado', versoes:3},
+    {name:'EPQ_social_carrossel_1080x1080', editoria:'Concursos', formato:'Carrossel', categoria:'social', briefing:'Em revisão', versoes:1},
+    {name:'EPQ_social_reels_1080x1920', editoria:'Concursos', formato:'Reels', categoria:'social', briefing:'Pendente', versoes:0},
+    {name:'EPQ_ads_feed_1080x1080', editoria:'Concursos', formato:'Feed', categoria:'ads', briefing:'Aprovado', versoes:4},
+    {name:'EPQ_ads_stories_1080x1920', editoria:'Concursos', formato:'Stories', categoria:'ads', briefing:'Rascunho', versoes:1},
+    {name:'EPQ_banner_1920x500', editoria:'Concursos', formato:'Banner', categoria:'banner', briefing:'Aprovado', versoes:2},
+    {name:'EPQ_impresso_a4_210x297mm', editoria:'Concursos', formato:'Impresso', categoria:'impresso', briefing:'Pendente', versoes:0},
+  ];
+
+  const editoriasList = document.getElementById('editoriasList');
+  const aCriarList = document.getElementById('aCriarList');
+  const jobsList = document.getElementById('jobsList');
+  const filterEditoria = document.getElementById('filterEditoria');
+  const filterFormato = document.getElementById('filterFormato');
+  const filterCategoria = document.getElementById('filterCategoria');
+
+  editoriasOptions.forEach(ed => {
+    const fmtBlocks = formatosOptions.map(fmt => {
+      const cats = categoriasOptions.filter(cat => jobsData.some(j => j.editoria === ed && j.formato === fmt && j.categoria === cat));
+      if (!cats.length) return '';
+      const catList = cats.map(c => `<div class="categoria-row">${c}</div>`).join('');
+      return `<div class="format-group"><div class="format-header">${fmt}</div>${catList}</div>`;
+    }).join('');
+    const card = document.createElement('div');
+    card.className = 'editoria-card';
+    card.innerHTML = `<div class="editoria-header"><div class="job-icon">◆</div><div class="job-info"><div class="job-name">${ed}</div><div class="job-meta">${formatosOptions.length} formatos · clique para expandir</div></div><span class="editoria-toggle">▶</span></div><div class="editoria-body">${fmtBlocks}</div>`;
+    card.addEventListener('click', () => {
+      const body = card.querySelector('.editoria-body');
+      body.classList.toggle('open');
+      card.classList.toggle('open');
+    });
+    editoriasList.appendChild(card);
+  });
+
+  editoriasOptions.forEach(ed => { const o = document.createElement('option'); o.value = ed; o.textContent = ed; filterEditoria.appendChild(o); });
+  formatosOptions.forEach(fmt => { const o = document.createElement('option'); o.value = fmt; o.textContent = fmt; filterFormato.appendChild(o); });
+  categoriasOptions.forEach(cat => { const o = document.createElement('option'); o.value = cat; o.textContent = cat; filterCategoria.appendChild(o); });
+
+  jobsData.forEach(j => {
+    const el = document.createElement('div');
+    el.className = 'job';
+    el.dataset.editoria = j.editoria;
+    el.dataset.formato = j.formato;
+    el.dataset.categoria = j.categoria;
+    el.dataset.name = j.name;
+    el.innerHTML = `<div class="job-icon">◈</div><div class="job-info"><div class="job-name">${j.name}</div><div class="job-meta">${j.editoria} › ${j.formato} › ${j.categoria}</div><div class="job-path"><span>Editoria</span><span class="sep">›</span><span>Formato</span><span class="sep">›</span><span>Categoria</span><span class="sep">›</span><span>Job</span></div><div class="job-preview"><strong>Briefing:</strong> ${j.briefing} · <strong>Versões:</strong> ${j.versoes}</div></div><div class="job-actions"><a class="job-btn" href="https://drive.google.com/drive/folders/1z6Y3JwfKfupA95KT_Il_X8xs5vqfMNeJ" target="_blank" rel="noopener">abrir</a><a class="job-btn" href="https://drive.google.com/drive/folders/1z6Y3JwfKfupA95KT_Il_X8xs5vqfMNeJ" target="_blank" rel="noopener">preview</a></div>`;
+    jobsList.appendChild(el);
+  });
+
+  const sugestoes = [
+    {titulo:'Guia de tom por canal', desc:'Documento rápido com exemplos de copy para Instagram, anúncios, WhatsApp e e-mail.'},
+    {titulo:'Checklist de aprovação', desc:'Lista objetiva para revisar branding, legibilidade, CTA e formato antes de publicar.'},
+    {titulo:'Biblioteca de prompts IA', desc:'Prompts aprovados por formato, sem segredo, prontos para reaproveitar.'},
+    {titulo:'Templates editáveis', desc:'Base em PSD/AI/FIG com camadas já no padrão EPQ.'},
+    {titulo:'Matriz de concursos', desc:'Mapa de dor, vocabulário e referências visuais por concurso.'},
+    {titulo:'Guia de métricas', desc:'O que medir por canal e o que ajustar na próxima peça.'},
+  ];
+  sugestoes.forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<div class="card-title">${s.titulo}</div><div class="card-desc">${s.desc}</div>`;
+    aCriarList.appendChild(card);
+  });
+
+  function applyFilters(){
+    const editoria = filterEditoria.value;
+    const formato = filterFormato.value;
+    const categoria = filterCategoria.value;
+    const busca = document.getElementById('filterBusca').value.toLowerCase();
+    const jobs = document.querySelectorAll('#jobsList .job');
+    let visible = 0;
+    jobs.forEach(job => {
+      const matchEd = !editoria || job.dataset.editoria === editoria;
+      const matchFmt = !formato || job.dataset.formato === formato;
+      const matchCat = !categoria || job.dataset.categoria === categoria;
+      const matchBusca = !busca || job.dataset.name.toLowerCase().includes(busca);
+      const show = matchEd && matchFmt && matchCat && matchBusca;
+      job.style.display = show ? 'flex' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('jobsEmpty').style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  function clearFilters(){
+    filterEditoria.value = '';
+    filterFormato.value = '';
+    filterCategoria.value = '';
+    document.getElementById('filterBusca').value = '';
+    applyFilters();
+  }
+
+  const tourSteps = [
+    {title:'Bem-vindo ao Drive EPQ', body:'Este painel é a visão operacional da estrutura de criação. Use os atalhos para navegar rapidamente.'},
+    {title:'Sistema Criativo', body:'A pasta 00 guarda a identidade da marca: brand book, playbook, briefing modelo, referências e materiais brutos.'},
+    {title:'Editorias e Canais', body:'Cada editoria contém canais/formato. Clique nas editorias para expandir e ver as categorias.'},
+    {title:'Jobs', body:'Cada job segue o mesmo padrão de pasta: Apoio, Briefing, Arquivo Finalizado e OLD.'},
+    {title:'A Criar', body:'Sugestões do sistema para manter consistência e acelerar produção.'},
+    {title:'Drive em árvore', body:'Visualize toda a estrutura, busque por nome e abra qualquer pasta diretamente.'}
+  ];
+  let tourIndex = 0;
+  const tourOverlay = document.getElementById('tourOverlay');
+  const tourTitle = document.getElementById('tourTitle');
+  const tourBody = document.getElementById('tourBody');
+  const tourNext = document.getElementById('tourNext');
+  const tourPrev = document.getElementById('tourPrev');
+
+  function renderTour(){
+    const step = tourSteps[tourIndex];
+    tourTitle.textContent = step.title;
+    tourBody.textContent = step.body;
+    tourPrev.style.visibility = tourIndex === 0 ? 'hidden' : 'visible';
+    tourNext.textContent = tourIndex === tourSteps.length - 1 ? 'concluir' : 'avançar';
+  }
+  function openTour(){ tourOverlay.classList.add('open'); renderTour(); }
+  function closeTour(){ tourOverlay.classList.remove('open'); }
+  function nextTour(){ if (tourIndex < tourSteps.length - 1){ tourIndex++; renderTour(); } else { closeTour(); } }
+  function prevTour(){ if (tourIndex > 0){ tourIndex--; renderTour(); } }
+
+  document.getElementById('tourPill').addEventListener('click', openTour);
+  tourNext.addEventListener('click', nextTour);
+  tourPrev.addEventListener('click', prevTour);
+  tourOverlay.addEventListener('click', (e) => { if (e.target === tourOverlay) closeTour(); });
+
+  document.getElementById('treeExpandAll').addEventListener('click', function(){
+    document.querySelectorAll('.tree-children').forEach(el => el.style.display = 'block');
+    document.querySelectorAll('.tree-toggle').forEach(el => el.classList.add('open'));
+  });
+
+  document.getElementById('treeCollapseAll').addEventListener('click', function(){
+    document.querySelectorAll('.tree-children').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.tree-toggle').forEach(el => el.classList.remove('open'));
+  });
+
+  document.getElementById('treeCopy').addEventListener('click', function(){
+    const treeText = document.getElementById('treeContainer').innerText;
+    navigator.clipboard.writeText(treeText).then(() => {
+      const btn = document.getElementById('treeCopy');
+      btn.textContent = 'copiado!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'copiar estrutura'; btn.classList.remove('copied'); }, 2000);
+    });
+  });
+
+  function searchTree(query){
+    if (!query) { document.querySelectorAll('.tree-node').forEach(n => n.style.display = ''); return; }
+    const lower = query.toLowerCase();
+    document.querySelectorAll('.tree-node').forEach(node => {
+      const label = node.querySelector('.tree-label');
+      if (label && label.textContent.toLowerCase().includes(lower)) {
+        node.style.display = '';
+        let parent = node.parentElement;
+        while (parent) {
+          if (parent.classList.contains('tree-children')) {
+            parent.style.display = 'block';
+            const toggle = document.querySelector(`[data-target="${parent.id}"]`);
+            if (toggle) toggle.classList.add('open');
+          }
+          parent = parent.parentElement;
+        }
+      } else if (!node.querySelector('.tree-toggle')) {
+        node.style.display = 'none';
+      }
+    });
+  }
+
+  document.addEventListener('click', function(e){
+    const toggle = e.target.closest('.tree-toggle');
+    if (!toggle) return;
+    e.stopPropagation();
+    const targetId = toggle.getAttribute('data-target');
+    const target = document.getElementById(targetId);
+    if (!target) return;
+    const isHidden = target.style.display === 'none';
+    target.style.display = isHidden ? 'block' : 'none';
+    toggle.classList.toggle('open', isHidden);
+  });
+</script>
+</body>
+</html>
