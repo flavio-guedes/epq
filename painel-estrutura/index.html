@@ -95,9 +95,11 @@
   .editoria-header{display:flex;align-items:center;gap:14px;}
   .editoria-toggle{color:var(--text-secondary);font-size:11px;transition:transform 0.15s ease;margin-left:auto;}
   .editoria-card.open .editoria-toggle{transform:rotate(90deg);}
-  .editoria-body{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
-  .editoria-status{font-size:11px;color:var(--text-tertiary);margin-top:6px;}
-  .editoria-status.missing{color:#ff6b6b;}
+  .editoria-body{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:none;}
+  .editoria-body.open{display:block;}
+  .format-group{margin-top:8px;}
+  .format-header{font-size:12px;font-weight:500;color:var(--text);margin-bottom:6px;}
+  .categoria-row{font-size:11.5px;color:var(--text-secondary);margin-bottom:6px;padding-left:10px;border-left:2px solid var(--border);}
 
   .filters-bar{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;padding:12px 14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
   .filter-group{display:flex;flex-direction:column;gap:4px;}
@@ -207,7 +209,7 @@
           <div class="quick-card" onclick="document.getElementById('section-jobs').scrollIntoView({behavior:'smooth'})">
             <div class="quick-icon">◈</div>
             <div class="quick-title">Ver Jobs</div>
-            <div class="quick-desc">8 jobs padrão</div>
+            <div class="quick-desc">jobs padrão</div>
           </div>
           <div class="quick-card" onclick="document.getElementById('section-regras').scrollIntoView({behavior:'smooth'})">
             <div class="quick-icon">⚡</div>
@@ -239,44 +241,39 @@
             <div class="card-head"><div class="card-title">01 - Marca</div><div class="tag">identidade</div></div>
             <div class="card-desc">Brand Book, referência visual e logo.</div>
             <ul class="card-list"><li>Design System Brand Book</li><li>Referência Visual</li><li>Logos e Identidade</li></ul>
-            <div class="job-actions"><a class="system-link" href="https://drive.google.com/drive/folders/13rLR4CFEQF7M-wE6BsHuegklaHmpj8F_" target="_blank" rel="noopener">abrir pasta</a></div>
           </div>
           <div class="card">
             <div class="card-head"><div class="card-title">02 - Playbook</div><div class="tag">estratégia</div></div>
             <div class="card-desc">Playbook de Marketing EPQ.</div>
             <ul class="card-list"><li>Playbook Marketing EPQ</li><li>HTML interativo</li></ul>
-            <div class="job-actions"><a class="system-link" href="https://drive.google.com/drive/folders/13rLR4CFEQF7M-wE6BsHuegklaHmpj8F_" target="_blank" rel="noopener">abrir pasta</a></div>
           </div>
           <div class="card">
             <div class="card-head"><div class="card-title">03 - Modelos de Briefing</div><div class="tag">obrigatório</div></div>
             <div class="card-desc">Modelo base para todo job.</div>
             <ul class="card-list"><li>Modelo de Briefing oficial</li><li>Sem briefing, sem criação</li></ul>
-            <div class="job-actions"><a class="system-link" href="https://drive.google.com/drive/folders/13rLR4CFEQF7M-wE6BsHuegklaHmpj8F_" target="_blank" rel="noopener">abrir pasta</a></div>
           </div>
           <div class="card">
             <div class="card-head"><div class="card-title">04 - Referências</div><div class="tag">inspiração</div></div>
             <div class="card-desc">Referências visuais e textuais.</div>
             <ul class="card-list"><li>Referências visuais</li><li>Ideias aprovadas</li></ul>
-            <div class="job-actions"><a class="system-link" href="https://drive.google.com/drive/folders/13rLR4CFEQF7M-wE6BsHuegklaHmpj8F_" target="_blank" rel="noopener">abrir pasta</a></div>
           </div>
           <div class="card">
             <div class="card-head"><div class="card-title">05 - Materiais Brutos</div><div class="tag">acervo</div></div>
             <div class="card-desc">Arte antiga, fotos, vídeos e depoimentos.</div>
             <ul class="card-list"><li>Artes antigas</li><li>Fotos / vídeos</li><li>Depoimentos</li></ul>
-            <div class="job-actions"><a class="system-link" href="https://drive.google.com/drive/folders/13rLR4CFEQF7M-wE6BsHuegklaHmpj8F_" target="_blank" rel="noopener">abrir pasta</a></div>
           </div>
         </div>
       </div>
 
       <div id="section-editorias" class="section">
         <div class="section-title">editorias</div>
-        <p style="color:var(--text-secondary);font-size:12px;margin-bottom:10px;">Cada editoria contém formatos adaptados. Clique para expandir e ver categorias/jobs sugeridos.</p>
+        <p style="color:var(--text-secondary);font-size:12px;margin-bottom:10px;">Cada editoria agrupa formatos/canais. Clique para expandir e ver categorias e jobs sugeridos.</p>
         <div id="editoriasList" style="display:flex;flex-direction:column;gap:10px;"></div>
       </div>
 
       <div id="section-jobs" class="section">
         <div class="section-title">jobs padrão</div>
-        <p style="color:var(--text-secondary);font-size:12px;margin-bottom:10px;">Cada job usa a mesma estrutura: <strong style="color:var(--text);">01 - Apoio › 01 - Referencia + 02 - Briefing · 03 - Arquivo Finalizado › OLD</strong></p>
+        <p style="color:var(--text-secondary);font-size:12px;margin-bottom:10px;">Caminho padrão: <strong style="color:var(--text);">Editoria › Formato › Categoria › Job</strong></p>
         
         <div class="filters-bar">
           <div class="filter-group">
@@ -316,13 +313,13 @@
 
       <div id="section-meses" class="section">
         <div class="section-title">calendário de meses</div>
-        <p style="color:var(--text-secondary);font-size:12px;margin-bottom:10px;">Cada job pode conter pastas mensais em <strong style="color:var(--text);">03 - Arquivo Finalizado</strong>.</p>
+        <p style="color:var(--text-secondary);font-size:12px;margin-bottom:10px;">Use pastas mensais dentro de cada job para organizar entregues.</p>
         <div class="meses-grid">
-          <div class="mes-card"><div class="mes-header">08 - Agosto</div><div class="mes-body">8 jobs · arquivos de agosto/2026</div></div>
-          <div class="mes-card"><div class="mes-header">09 - Setembro</div><div class="mes-body">8 jobs · arquivos de setembro/2026</div></div>
-          <div class="mes-card"><div class="mes-header">10 - Outubro</div><div class="mes-body">8 jobs · arquivos de outubro/2026</div></div>
-          <div class="mes-card"><div class="mes-header">11 - Novembro</div><div class="mes-body">8 jobs · arquivos de novembro/2026</div></div>
-          <div class="mes-card"><div class="mes-header">12 - Dezembro</div><div class="mes-body">8 jobs · arquivos de dezembro/2026</div></div>
+          <div class="mes-card"><div class="mes-header">08 - Agosto</div><div class="mes-body">jobs · arquivos de agosto/2026</div></div>
+          <div class="mes-card"><div class="mes-header">09 - Setembro</div><div class="mes-body">jobs · arquivos de setembro/2026</div></div>
+          <div class="mes-card"><div class="mes-header">10 - Outubro</div><div class="mes-body">jobs · arquivos de outubro/2026</div></div>
+          <div class="mes-card"><div class="mes-header">11 - Novembro</div><div class="mes-body">jobs · arquivos de novembro/2026</div></div>
+          <div class="mes-card"><div class="mes-header">12 - Dezembro</div><div class="mes-body">jobs · arquivos de dezembro/2026</div></div>
         </div>
       </div>
 
@@ -331,11 +328,10 @@
         <div class="card">
           <ul class="card-list">
             <li>Toda peça nasce de briefing oficial preenchido e aprovado.</li>
-            <li>O briefing fica dentro de <strong>01 - Apoio/02 - Briefing</strong>.</li>
+            <li>Briefing fica em <strong>02 - Briefing</strong>.</li>
+            <li>Referências ficam em <strong>01 - Apoio/01 - Referencia</strong>.</li>
             <li>Cada job tem estrutura padronizada para manter consistência.</li>
             <li>OLD guarda versões antigas; a raiz guarda a versão final.</li>
-            <li>Referências ficam em <strong>01 - Apoio/01 - Referencia</strong>.</li>
-            <li>Se a peça sair do sistema, pare, registre o desvio e proponha alternativa.</li>
           </ul>
           <div class="rule-box">
             <strong>Ferramenta oficial:</strong> Modelo de Briefing EPQ em <strong>00 - Sistema Criativo EPQ › 03 - Modelos de Briefing</strong>.
@@ -350,9 +346,98 @@
           <button class="tree-btn" id="treeCollapseAll">recolher tudo</button>
           <button class="tree-btn copy" id="treeCopy">copiar estrutura</button>
           <input type="text" class="tree-search" id="treeSearch" placeholder="buscar na árvore..." oninput="searchTree(this.value)">
-          <span class="tree-info">clique em ▶ para expandir · pastas clicáveis abrem no Drive</span>
+          <span class="tree-info">clique em ▶ para expandir</span>
         </div>
-        <div class="tree-container" id="treeContainer"></div>
+        <div class="tree-container" id="treeContainer">
+          <div class="tree-node has-children">
+            <div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">📁</span><span class="tree-label">01 - Criação</span></div>
+            <div class="tree-children" style="display:none;">
+              <div class="tree-node has-children">
+                <div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🗂️</span><span class="tree-label">00 - Sistema Criativo EPQ</span></div>
+                <div class="tree-children" style="display:none;">
+                  <div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">📄</span><span class="tree-label">01 - Marca</span></div></div>
+                  <div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">📄</span><span class="tree-label">02 - Playbook</span></div></div>
+                  <div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">📄</span><span class="tree-label">03 - Modelos de Briefing</span></div></div>
+                  <div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">📄</span><span class="tree-label">04 - Referências</span></div></div>
+                  <div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">📄</span><span class="tree-label">05 - Materiais Brutos</span></div></div>
+                </div>
+              </div>
+
+              <div class="tree-node has-children">
+                <div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🗂️</span><span class="tree-label">Concursos</span></div>
+                <div class="tree-children" style="display:none;">
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Feed</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">ads</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Stories</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">ads</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Carrossel</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Reels</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Ads</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">ads</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🖼️</span><span class="tree-label">Banner</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">banner</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🖨️</span><span class="tree-label">Impresso</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">impresso</span></div></div></div></div>
+                </div>
+              </div>
+
+              <div class="tree-node has-children">
+                <div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🗂️</span><span class="tree-label">Dicas de Estudo</span></div>
+                <div class="tree-children" style="display:none;">
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Feed</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Stories</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                </div>
+              </div>
+
+              <div class="tree-node has-children">
+                <div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🗂️</span><span class="tree-label">Institucional</span></div>
+                <div class="tree-children" style="display:none;">
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Feed</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Banner</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">banner</span></div></div></div></div>
+                </div>
+              </div>
+
+              <div class="tree-node has-children">
+                <div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🗂️</span><span class="tree-label">Redes Sociais</span></div>
+                <div class="tree-children" style="display:none;">
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Feed</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">ads</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Stories</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">ads</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Carrossel</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Reels</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                </div>
+              </div>
+
+              <div class="tree-node has-children">
+                <div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🗂️</span><span class="tree-label">YouTube</span></div>
+                <div class="tree-children" style="display:none;">
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Feed</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Reels</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Short</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎙️</span><span class="tree-label">Podcast</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                </div>
+              </div>
+
+              <div class="tree-node has-children">
+                <div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🗂️</span><span class="tree-label">E-mail Marketing</span></div>
+                <div class="tree-children" style="display:none;">
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Feed</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                </div>
+              </div>
+
+              <div class="tree-node has-children">
+                <div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🗂️</span><span class="tree-label">Eventos</span></div>
+                <div class="tree-children" style="display:none;">
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Feed</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Webinar</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                </div>
+              </div>
+
+              <div class="tree-node has-children">
+                <div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🗂️</span><span class="tree-label">Treinamento</span></div>
+                <div class="tree-children" style="display:none;">
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Feed</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Podcast</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                  <div class="tree-node has-children"><div class="tree-row"><span class="tree-toggle">▶</span><span class="tree-icon">🎬</span><span class="tree-label">Webinar</span></div><div class="tree-children" style="display:none;"><div class="tree-node"><div class="tree-row"><span class="tree-toggle-placeholder"></span><span class="tree-icon">🗂️</span><span class="tree-label">social</span></div></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   </div>
@@ -391,6 +476,10 @@
   tick();
   setInterval(tick, 1000);
 
+  const editoriasOptions = ['Concursos','Dicas de Estudo','Institucional','Redes Sociais','YouTube','E-mail Marketing','Eventos','Treinamento'];
+  const formatosOptions = ['Feed','Stories','Carrossel','Reels','Ads','Banner','Impresso','Short','Podcast','Webinar'];
+  const categoriasOptions = ['social','ads','banner','impresso'];
+
   const jobsData = [
     {name:'EPQ_social_stories_1080x1920', editoria:'Concursos', formato:'Stories', categoria:'social', briefing:'Rascunho', versoes:2},
     {name:'EPQ_social_feed_1080x1080', editoria:'Concursos', formato:'Feed', categoria:'social', briefing:'Aprovado', versoes:3},
@@ -402,10 +491,6 @@
     {name:'EPQ_impresso_a4_210x297mm', editoria:'Concursos', formato:'Impresso', categoria:'impresso', briefing:'Pendente', versoes:0},
   ];
 
-  const editoriasOptions = ['Concursos','Dicas de Estudo','Institucional','Redes Sociais','YouTube','E-mail Marketing','Eventos','Treinamento'];
-  const formatosOptions = ['Feed','Stories','Carrossel','Reels','Ads','Banner','Impresso','Short','Podcast','Webinar'];
-  const categoriasOptions = ['social','ads','banner','impresso'];
-
   const editoriasList = document.getElementById('editoriasList');
   const aCriarList = document.getElementById('aCriarList');
   const jobsList = document.getElementById('jobsList');
@@ -414,18 +499,19 @@
   const filterCategoria = document.getElementById('filterCategoria');
 
   editoriasOptions.forEach(ed => {
-    const formatos = formatosOptions.map(fmt => {
+    const fmtBlocks = formatosOptions.map(fmt => {
       const cats = categoriasOptions.filter(cat => jobsData.some(j => j.editoria === ed && j.formato === fmt && j.categoria === cat));
-      return cats.length ? `<div style="font-size:11.5px;color:var(--text-secondary);margin-bottom:6px;"><strong style="color:var(--text);font-weight:500;">${fmt}</strong> — ${cats.join(', ')}${cats.length ? ' · jobs sugeridos' : ''}</div>` : '';
+      if (!cats.length) return '';
+      const catList = cats.map(c => `<div class="categoria-row">${c}</div>`).join('');
+      return `<div class="format-group"><div class="format-header">${fmt}</div>${catList}</div>`;
     }).join('');
     const card = document.createElement('div');
     card.className = 'editoria-card';
-    card.innerHTML = `<div class="editoria-header"><div class="job-icon">◆</div><div class="job-info"><div class="job-name">${ed}</div><div class="job-meta">${formatosOptions.length} formatos · clique para expandir</div></div><span class="editoria-toggle">▶</span></div><div class="editoria-body" style="display:none;">${formatos}</div>`;
+    card.innerHTML = `<div class="editoria-header"><div class="job-icon">◆</div><div class="job-info"><div class="job-name">${ed}</div><div class="job-meta">${formatosOptions.length} formatos · clique para expandir</div></div><span class="editoria-toggle">▶</span></div><div class="editoria-body">${fmtBlocks}</div>`;
     card.addEventListener('click', () => {
       const body = card.querySelector('.editoria-body');
-      const isHidden = body.style.display === 'none';
-      body.style.display = isHidden ? 'block' : 'none';
-      card.classList.toggle('open', isHidden);
+      body.classList.toggle('open');
+      card.classList.toggle('open');
     });
     editoriasList.appendChild(card);
   });
@@ -441,7 +527,7 @@
     el.dataset.formato = j.formato;
     el.dataset.categoria = j.categoria;
     el.dataset.name = j.name;
-    el.innerHTML = `<div class="job-icon">◈</div><div class="job-info"><div class="job-name">${j.name}</div><div class="job-meta">${j.editoria} › ${j.formato} › ${j.categoria}</div><div class="job-path"><span>01 - Apoio</span><span class="sep">›</span><span>01 - Referencia</span><span class="sep">+</span><span>02 - Briefing</span><span class="sep">›</span><span>03 - Arquivo Finalizado</span><span class="sep">›</span><span>OLD</span></div><div class="job-preview"><strong>Briefing:</strong> ${j.briefing} · <strong>Versões:</strong> ${j.versoes}</div></div><div class="job-actions"><a class="job-btn" href="https://drive.google.com/drive/folders/1z6Y3JwfKfupA95KT_Il_X8xs5vqfMNeJ" target="_blank" rel="noopener">abrir</a><a class="job-btn" href="https://drive.google.com/drive/folders/1z6Y3JwfKfupA95KT_Il_X8xs5vqfMNeJ" target="_blank" rel="noopener">preview</a></div>`;
+    el.innerHTML = `<div class="job-icon">◈</div><div class="job-info"><div class="job-name">${j.name}</div><div class="job-meta">${j.editoria} › ${j.formato} › ${j.categoria}</div><div class="job-path"><span>Editoria</span><span class="sep">›</span><span>Formato</span><span class="sep">›</span><span>Categoria</span><span class="sep">›</span><span>Job</span></div><div class="job-preview"><strong>Briefing:</strong> ${j.briefing} · <strong>Versões:</strong> ${j.versoes}</div></div><div class="job-actions"><a class="job-btn" href="https://drive.google.com/drive/folders/1z6Y3JwfKfupA95KT_Il_X8xs5vqfMNeJ" target="_blank" rel="noopener">abrir</a><a class="job-btn" href="https://drive.google.com/drive/folders/1z6Y3JwfKfupA95KT_Il_X8xs5vqfMNeJ" target="_blank" rel="noopener">preview</a></div>`;
     jobsList.appendChild(el);
   });
 
@@ -490,10 +576,10 @@
   const tourSteps = [
     {title:'Bem-vindo ao Drive EPQ', body:'Este painel é a visão operacional da estrutura de criação. Use os atalhos para navegar rapidamente.'},
     {title:'Sistema Criativo', body:'A pasta 00 guarda a identidade da marca: brand book, playbook, briefing modelo, referências e materiais brutos.'},
-    {title:'Editorias e Formatos', body:'Cada editoria tem formatos específicos. Clique nas editorias para expandir e ver as categorias sugeridas.'},
-    {title:'Jobs', body:'Cada job segue o mesmo padrão: Apoio > Briefing, Arquivo Finalizado > OLD. Use filtros para encontrar rápido.'},
+    {title:'Editorias e Canais', body:'Cada editoria contém canais/formato. Clique nas editorias para expandir e ver as categorias.'},
+    {title:'Jobs', body:'Cada job segue o mesmo padrão de pasta: Apoio, Briefing, Arquivo Finalizado e OLD.'},
     {title:'A Criar', body:'Sugestões do sistema para manter consistência e acelerar produção.'},
-    {title:'Drive em árvore', body:'Visualize toda a estrutura, busque por nome, copie a árvore ou abra qualquer pasta diretamente.'}
+    {title:'Drive em árvore', body:'Visualize toda a estrutura, busque por nome e abra qualquer pasta diretamente.'}
   ];
   let tourIndex = 0;
   const tourOverlay = document.getElementById('tourOverlay');
