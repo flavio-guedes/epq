@@ -93,7 +93,7 @@
   .stat-value{font-size:22px;font-weight:800;color:var(--navy)}
   .stat-sub{font-size:11px;color:var(--muted);margin-top:2px}
 
-  .board{display:grid;grid-template-columns:repeat(7,minmax(220px,1fr));gap:14px}
+  .board{display:grid;grid-template-columns:repeat(4,minmax(260px,1fr));gap:14px}
   .col{background:rgba(255,255,255,0.6);border-radius:12px;border:1px solid rgba(10,31,59,0.06);padding:10px;display:flex;flex-direction:column;max-height:calc(100vh - 230px);min-height:240px}
   .col-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
   .col-title{font-weight:700;font-size:13px;color:var(--navy);display:flex;align-items:center;gap:8px}
@@ -167,22 +167,65 @@
 
   .hamburger{display:none;background:transparent;border:0;font-size:22px;cursor:pointer;color:var(--navy)}
 
+  /* Login */
+  .login-wrap{
+    position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;
+    background:linear-gradient(160deg,#0a1f3b 0%,#1b3a8a 60%,#0f2a52 100%);z-index:100;
+  }
+  .login-card{
+    background:rgba(255,255,255,0.92);backdrop-filter:blur(16px);
+    border-radius:16px;padding:20px;width:min(420px,100%);box-shadow:0 20px 60px rgba(0,0,0,0.35);
+    border:1px solid rgba(255,255,255,0.4);
+  }
+  .login-title{font-weight:900;color:var(--navy);font-size:22px;margin-bottom:4px}
+  .login-sub{color:var(--muted);font-size:12px;margin-bottom:14px}
+  .login-field{margin-bottom:12px}
+  .login-field label{font-size:12px;font-weight:800;color:var(--navy);display:block;margin-bottom:6px}
+  .login-field input{
+    width:100%;padding:12px;border-radius:12px;border:1px solid rgba(10,31,59,0.08);background:#f9fafb;
+  }
+  .login-hint{font-size:11px;color:var(--muted);margin-top:8px}
+  .login-error{color:var(--danger);font-size:12px;margin-top:8px;display:none}
+
+  .hidden{display:none !important}
+
   @media (max-width: 1100px){
-    .board{grid-template-columns:repeat(4,minmax(220px,1fr));overflow-x:auto;padding-bottom:10px}
+    .board{grid-template-columns:repeat(2,minmax(220px,1fr))}
   }
   @media (max-width: 780px){
     .sidebar{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);transition:.2s ease;z-index:60}
     .sidebar.open{transform:translateX(0)}
     .hamburger{display:inline-flex}
     .stats{grid-template-columns:repeat(2,minmax(120px,1fr))}
-    .board{grid-template-columns:repeat(3,minmax(220px,1fr));overflow-x:auto;padding-bottom:10px}
-    .col{min-height:auto}
+    .board{grid-template-columns:1fr;max-height:none}
+    .col{max-height:60vh}
     .search{max-width:100%}
   }
 </style>
 </head>
 <body>
-<div class="app">
+<div class="login-wrap" id="login-screen">
+  <div class="login-card">
+    <div class="brand" style="margin-bottom:14px">
+      <div class="brand-mark">EPQ</div>
+      <div>
+        <div class="brand-text">EPQ Central</div>
+        <div class="brand-sub">Gestão de Tarefas</div>
+      </div>
+    </div>
+    <div class="login-title">Central de Tarefas</div>
+    <div class="login-sub">Acesse com seu e-mail da equipe.</div>
+    <div class="login-field">
+      <label>E-mail</label>
+      <input id="login-email" type="email" placeholder="seu@email.com" autocomplete="email"/>
+    </div>
+    <button class="btn primary" style="width:100%;justify-content:center" id="login-submit" onclick="sendMagicLink()">Continuar</button>
+    <div class="login-error" id="login-error"></div>
+    <div class="login-hint">Enviaremos um link de acesso. Não pedimos senha nesta versão.</div>
+  </div>
+</div>
+
+<div class="app hidden" id="app">
   <aside class="sidebar" id="sidebar">
     <div class="brand">
       <div class="brand-mark">EPQ</div>
@@ -195,8 +238,13 @@
       <div class="nav-item active" data-page="home" onclick="go('home')"><span class="nav-icon">▦</span> Visão Geral</div>
       <div class="nav-item" data-page="tasks" onclick="go('tasks')"><span class="nav-icon">☰</span> Tarefas</div>
       <div class="nav-item" data-page="projects" onclick="go('projects')"><span class="nav-icon">◫</span> Projetos</div>
-      <div class="nav-item" data-page="team" onclick="go('team')"><span class="nav-icon">◉</span> Equipe</div>
+      <div class="nav-item admin-only hidden" data-page="team" onclick="go('team')"><span class="nav-icon">◉</span> Equipe</div>
     </nav>
+    <div style="margin-top:auto;padding-top:12px;border-top:1px solid rgba(255,255,255,0.08);font-size:11px;color:rgba(255,255,255,0.6)">
+      <div id="user-name">-</div>
+      <div id="user-role">-</div>
+      <button class="btn ghost sm" style="margin-top:8px;width:100%;justify-content:center" onclick="logout()">Sair</button>
+    </div>
   </aside>
 
   <div class="main">
@@ -206,7 +254,8 @@
         <h1 id="page-title">Visão Geral</h1>
       </div>
       <div class="top-actions">
-        <button class="btn primary" onclick="openCreate()">+ Nova Tarefa</button>
+        <button class="btn primary admin-only hidden" onclick="openCreate()">+ Nova Tarefa</button>
+        <button class="btn primary member-only hidden" onclick="openCreate()">+ Nova Tarefa</button>
       </div>
     </header>
 
@@ -249,7 +298,11 @@
     </section>
 
     <section class="page" id="page-team">
-      <div id="team-list"></div>
+      <div class="filters">
+        <input class="search" id="team-search" placeholder="Buscar membro..." oninput="renderUsers()"/>
+        <button class="btn primary admin-only hidden" onclick="openCreateUser()">+ Adicionar membro</button>
+      </div>
+      <div class="list" id="team-list"></div>
     </section>
   </div>
 </div>
@@ -304,21 +357,49 @@
   <div class="drawer-body" id="drawer-body"></div>
 </div>
 
+<!-- Modal usuário -->
+<div class="modal-wrap" id="user-modal">
+  <div class="modal">
+    <div class="modal-title" id="user-modal-title">Novo membro</div>
+    <div class="field"><label>Nome</label><input id="u-name"/></div>
+    <div class="field"><label>E-mail</label><input id="u-email"/></div>
+    <div class="field"><label>Função</label><input id="u-func"/></div>
+    <div class="field">
+      <label>Tipo de acesso</label>
+      <select id="u-role"><option>Membro</option><option>Admin</option></select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeUserModal()">Cancelar</button>
+      <button class="btn primary" id="user-modal-save" onclick="saveUser()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
+/* =========================================================
+   CONFIGURE AQUI os dados do seu projeto Supabase.
+   NÃO comite a chave real em repositório público.
+   ========================================================= */
+const SUPABASE_URL = window.SUPABASE_URL || 'SUA_URL_SUPABASE';
+const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'SUA_CHAVE_ANON';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 const LS_KEY='epq.tasks.v1';
+const LS_USERS='epq.users.v1';
 const NOW=()=>new Date();
 const fmt=d=>d?new Date(d+'T00:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}).toUpperCase():'Sem prazo';
 const id=()=>Math.random().toString(36).slice(2,9);
 
 const defaults=[
-  {id:id(),title:'Criar campanha de captação PMERJ',desc:'Brief e peças iniciais da campanha.',who:'Flávio',area:'Marketing',project:'Campanha PMERJ',priority:'Alta',status:'A fazer',deadline:'2026-09-10',createdAt:new Date().toISOString()},
-  {id:id(),title:'Produzir criativos para anúncios',desc:'Versões para feed e stories.',who:'João',area:'Design',project:'Campanha PMERJ',priority:'Alta',status:'Fazendo',deadline:new Date(Date.now()-86400000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
-  {id:id(),title:'Revisar conteúdo da área pedagógica',desc:'Ajustar textos e sequência das aulas.',who:'Clara',area:'Pedagógico',project:'Área Pedagógica',priority:'Média',status:'A fazer',deadline:new Date(Date.now()+172****0000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
-  {id:id(),title:'Criar post para Instagram',desc:'Copy e layout.',who:'Flávio',area:'Conteúdo',project:'Conteúdo Instagram',priority:'Média',status:'Aguardando informações',deadline:new Date(Date.now()+864****0000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
-  {id:id(),title:'Organizar depoimentos de aprovados',desc:'Selecionar e revisar prints/textos.',who:'Rafaela',area:'Comercial',project:'Captação de Leads',priority:'Baixa',status:'A fazer',deadline:'2026-09-15',createdAt:new Date().toISOString()},
-  {id:id(),title:'Atualizar página da turma',desc:'Ajustar agenda e novidades.',who:'Clara',area:'Pedagógico',project:'Área Pedagógica',priority:'Baixa',status:'Aguardando informações',deadline:'2026-09-12',createdAt:new Date().toISOString()},
-  {id:id(),title:'Revisar estratégia de conteúdo',desc:'Validar calendário e formatos.',who:'Flávio',area:'Conteúdo',project:'Conteúdo Instagram',priority:'Média',status:'Fazendo',deadline:new Date(Date.now()-172800000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
-  {id:id(),title:'Preparar novos criativos para tráfego pago',desc:'3 variações para teste A/B.',who:'João',area:'Marketing',project:'Site EPQ',priority:'Alta',status:'A fazer',deadline:new Date(Date.now()+259****0000).toISOString().slice(0,10),createdAt:new Date().toISOString()}
+  {id:id(),title:'Criar campanha de captação PMERJ',desc:'Brief e peças iniciais da campanha.',who:'Flávio',area:'Marketing',project:'Campanha PMERJ',priority:'Alta',status:'A Fazer',deadline:'2026-09-10',createdAt:new Date().toISOString()},
+  {id:id(),title:'Produzir criativos para anúncios',desc:'Versões para feed e stories.',who:'João',area:'Design',project:'Campanha PMERJ',priority:'Alta',status:'Em Andamento',deadline:new Date(Date.now()-86400000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
+  {id:id(),title:'Revisar conteúdo da área pedagógica',desc:'Ajustar textos e sequência das aulas.',who:'Clara',area:'Pedagógico',project:'Área Pedagógica',priority:'Média',status:'A Fazer',deadline:new Date(Date.now()+172800000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
+  {id:id(),title:'Criar post para Instagram',desc:'Copy e layout.',who:'Flávio',area:'Conteúdo',project:'Conteúdo Instagram',priority:'Média',status:'Aguardando',deadline:new Date(Date.now()+86400000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
+  {id:id(),title:'Organizar depoimentos de aprovados',desc:'Selecionar e revisar prints/textos.',who:'Rafaela',area:'Comercial',project:'Captação de Leads',priority:'Baixa',status:'A Fazer',deadline:'2026-09-15',createdAt:new Date().toISOString()},
+  {id:id(),title:'Atualizar página da turma',desc:'Ajustar agenda e novidades.',who:'Clara',area:'Pedagógico',project:'Área Pedagógica',priority:'Baixa',status:'Aguardando',deadline:'2026-09-12',createdAt:new Date().toISOString()},
+  {id:id(),title:'Revisar estratégia de conteúdo',desc:'Validar calendário e formatos.',who:'Flávio',area:'Conteúdo',project:'Conteúdo Instagram',priority:'Média',status:'Em Andamento',deadline:new Date(Date.now()-172800000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
+  {id:id(),title:'Preparar novos criativos para tráfego pago',desc:'3 variações para teste A/B.',who:'João',area:'Marketing',project:'Site EPQ',priority:'Alta',status:'A Fazer',deadline:new Date(Date.now()+259200000).toISOString().slice(0,10),createdAt:new Date().toISOString()}
 ];
 
 function load(){
@@ -334,6 +415,8 @@ let me='Flávio';
 let editing=null;
 let current='home';
 let dragTaskId=null;
+let role='member';
+let currentUser=null;
 
 const statuses=['Fila padrão','Aguardando informações','A fazer','Fazendo','Em aprovação','Concluído','Arquivo'];
 const colMap={['Fila padrão']:0,['Aguardando informações']:1,['A fazer']:2,['Fazendo']:3,['Em aprovação']:4,['Concluído']:5,['Arquivo']:6};
@@ -356,7 +439,7 @@ function counts(){
 }
 
 function alerts(){
-  const today=tasks.filter(t=>!t.done && t.deadline===new Date().toISOString().slice(0,10)).length;
+  const today=tasks.filter(t=>t.deadline===new Date().toISOString().slice(0,10) && t.status!=='Concluído' && t.status!=='Arquivo').length;
   const ov= tasks.filter(t=>overdue(t)).length;
   const week= tasks.filter(t=>t.status==='Concluído' && (Date.now()-new Date(t.createdAt).getTime())<7*86400000).length;
   const out=[];
@@ -422,7 +505,7 @@ function renderStats(){
   const c=counts();
   document.getElementById('stats').innerHTML=
     `<div class="stat" onclick="setFilter('all')"><div class="stat-label">Pendentes</div><div class="stat-value">${c.Pendentes}</div></div>
-     <div class="stat" onclick="setFilter('Em Andamento')"><div class="stat-label">Em andamento</div><div class="stat-value">${c['Em andamento']}</div></div>
+     <div class="stat" onclick="setFilter('Fazendo')"><div class="stat-label">Em andamento</div><div class="stat-value">${c['Em andamento']}</div></div>
      <div class="stat" onclick="setFilter('Concluído')"><div class="stat-label">Concluídas</div><div class="stat-value">${c.Concluídas}</div></div>
      <div class="stat" onclick="setFilter('overdue')"><div class="stat-label">Atrasadas</div><div class="stat-value">${c.Atrasadas}</div></div>`;
 }
@@ -459,20 +542,38 @@ function renderProjects(){
     list.appendChild(r);
   });
 }
-function renderTeam(){
+function renderUsers(){
   const list=document.getElementById('team-list');list.innerHTML='';
-  const map={};
-  tasks.forEach(t=>{
-    const key=t.who||'Sem responsável';
-    if(!map[key]) map[key]={name:key,pend:0,done:0};
-    if(t.status==='Concluído') map[key].done++; else map[key].pend++;
+  const users=loadUsers();
+  const q=(document.getElementById('team-search')?.value||'').toLowerCase();
+  const items=users.filter(u=>{
+    if(!q) return true;
+    return (u.name+u.email+u.function+u.role).toLowerCase().includes(q);
   });
-  Object.values(map).forEach(m=>{
+  if(!items.length){list.innerHTML='<div class="empty">Nenhum membro encontrado.</div>';return}
+  items.forEach(u=>{
     const r=document.createElement('div');r.className='row';
-    r.innerHTML=`<div class="row-main"><div class="row-title">${esc(m.name)}</div><div class="row-sub">${m.pend} pendentes • ${m.done} concluídas</div></div>`;
+    r.innerHTML=`<div class="row-main"><div class="row-title">${esc(u.name)}</div><div class="row-sub">${esc(u.email)} • ${esc(u.function||'-')} • ${esc(u.role||'Membro')}</div></div>
+      <div style="display:flex;gap:6px;align-items:center"><span class="pill ${u.active?'low':'overdue'}">${u.active?'Ativo':'Inativo'}</span>
+      <button class="btn sm ghost" onclick="openEditUser('${u.id}')">Editar</button>
+      <button class="btn sm danger" onclick="removeUser('${u.id}')">Remover</button></div>`;
     list.appendChild(r);
   });
 }
+function loadUsers(){
+  try{
+    const raw=localStorage.getItem(LS_USERS);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return [
+    {id:'u1',name:'Flávio',email:'flavio@epq.com',function:'Gestão / Marketing',role:'Admin',active:true},
+    {id:'u2',name:'João',email:'joao@epq.com',function:'Marketing',role:'Membro',active:true},
+    {id:'u3',name:'Maria',email:'maria@epq.com',function:'Pedagógico',role:'Membro',active:true}
+  ];
+}
+function saveUsers(users){localStorage.setItem(LS_USERS,JSON.stringify(users))}
+let userEditing=null;
+
 function renderHome(){
   renderAlerts();
   renderStats();
@@ -482,7 +583,7 @@ function renderAll(){
   if(current==='home') renderHome();
   if(current==='tasks') renderTasks();
   if(current==='projects') renderProjects();
-  if(current==='team') renderTeam();
+  if(current==='team') renderUsers();
   populateResponsibles();
 }
 function populateResponsibles(){
@@ -513,7 +614,7 @@ function openCreate(){
   ['m-title','m-desc','m-who','m-project'].forEach(x=>document.getElementById(x).value='');
   document.getElementById('m-area').value='';
   document.getElementById('m-prio').value='Média';
-  document.getElementById('m-status').value='A Fazer';
+  document.getElementById('m-status').value='Fila padrão';
   document.getElementById('m-deadline').value='';
   document.getElementById('modal').classList.add('show');
 }
@@ -569,13 +670,13 @@ function openDetail(id){
     <div class="field">
       <label>Status</label>
       <select id="d-status">
-        ${['Fila padrão','Aguardando informações','A fazer','Fazendo','Em aprovação','Concluído','Arquivo'].map(s=>`<option ${s===t.status?'selected':''}>${s}</option>`).join('')}
+        ${statuses.map(s=>`<option ${s===t.status?'selected':''}>${s}</option>`).join('')}
       </select>
     </div>
     <div class="modal-actions">
       <button class="btn" onclick="closeDrawer();openModalEdit()">Editar</button>
       <button class="btn primary" onclick="saveDetail()">Salvar</button>
-      <button class="btn danger" onclick="if(confirm('Excluir?')){tasks=tasks.filter(x=>x.id!=='${t.id}');save(tasks);renderAll();closeDrawer()}">Excluir</button>
+      ${role==='admin'?`<button class="btn danger" onclick="if(confirm('Excluir?')){tasks=tasks.filter(x=>x.id!=='${t.id}');save(tasks);renderAll();closeDrawer()}">Excluir</button>`:''}
     </div>
     <div style="margin-top:10px;font-size:11px;color:var(--muted)">Criado em: ${new Date(t.createdAt).toLocaleString('pt-BR')}</div>
   `;
@@ -598,7 +699,7 @@ function openModalEdit(){
   const t=tasks.find(x=>x.id===editing);if(!t)return;
   document.getElementById('modal-title').textContent='Editar Tarefa';
   document.getElementById('modal-save').textContent='Salvar';
-  document.getElementById('modal-delete').style.display='inline-flex';
+  document.getElementById('modal-delete').style.display=role==='admin'?'inline-flex':'none';
   document.getElementById('m-title').value=t.title;
   document.getElementById('m-desc').value=t.desc||'';
   document.getElementById('m-who').value=t.who||'';
@@ -612,9 +713,114 @@ function openModalEdit(){
 function openSidebar(){document.getElementById('sidebar').classList.add('open')}
 function closeSidebar(){document.getElementById('sidebar').classList.remove('open')}
 
-document.addEventListener('click',e=>{if(e.target.id==='modal')closeModal();if(e.target.id==='drawer')closeDrawer()});
+/* ================= AUTH ================= */
+function showLogin(){
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('app').classList.add('hidden');
+}
+function showApp(){
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+}
+async function sendMagicLink(){
+  const email=document.getElementById('login-email').value.trim();
+  const errEl=document.getElementById('login-error');
+  if(!email){errEl.textContent='Informe um e-mail.';errEl.style.display='block';return}
+  errEl.style.display='none';
+  const {error}=await supabase.auth.signInWithOtp({
+    email,
+    options:{emailRedirectTo:window.location.origin}
+  });
+  if(error){errEl.textContent=error.message||'Erro ao enviar link.';errEl.style.display='block';return}
+  alert('Link enviado! Verifique seu e-mail para acessar o painel.');
+}
+async function logout(){
+  await supabase.auth.signOut();
+  showLogin();
+}
+async function ensureSession(){
+  const {data:{session}}=await supabase.auth.getSession();
+  if(!session){showLogin();return}
+  currentUser=session.user;
+  me=currentUser.email||'usuário';
+  role='member';
+  const profile=await loadProfile(currentUser.id);
+  if(profile && profile.role==='Admin') role='admin';
+  document.getElementById('user-name').textContent=me;
+  document.getElementById('user-role').textContent=role==='admin'?'Administrador':'Membro';
+  applyRole();
+  showApp();
+  renderAll();
+}
+function applyRole(){
+  const isAdmin=role==='admin';
+  document.querySelectorAll('.admin-only').forEach(el=>{
+    if(!isAdmin) el.classList.add('hidden'); else el.classList.remove('hidden');
+  });
+  document.querySelectorAll('.member-only').forEach(el=>{
+    if(isAdmin) el.classList.add('hidden'); else el.classList.remove('hidden');
+  });
+}
+async function loadProfile(userId){
+  try{
+    const {data,error}=await supabase.from('profiles').select('*').eq('id',userId).single();
+    if(error || !data) return null;
+    return data;
+  }catch(e){return null}
+}
 
-// inicial
+/* ================= USERS ================= */
+function openCreateUser(){
+  userEditing=null;
+  document.getElementById('user-modal-title').textContent='Novo membro';
+  document.getElementById('u-name').value='';
+  document.getElementById('u-email').value='';
+  document.getElementById('u-func').value='';
+  document.getElementById('u-role').value='Membro';
+  document.getElementById('user-modal').classList.add('show');
+}
+function openEditUser(id){
+  const users=loadUsers();
+  const u=users.find(x=>x.id===id);if(!u)return;
+  userEditing=id;
+  document.getElementById('user-modal-title').textContent='Editar membro';
+  document.getElementById('u-name').value=u.name;
+  document.getElementById('u-email').value=u.email;
+  document.getElementById('u-func').value=u.function||'';
+  document.getElementById('u-role').value=u.role||'Membro';
+  document.getElementById('user-modal').classList.add('show');
+}
+function saveUser(){
+  const name=document.getElementById('u-name').value.trim();
+  const email=document.getElementById('u-email').value.trim();
+  const func=document.getElementById('u-func').value.trim();
+  const roleVal=document.getElementById('u-role').value;
+  if(!name||!email){alert('Informe nome e e-mail.');return}
+  const users=loadUsers();
+  if(userEditing){
+    const i=users.findIndex(x=>x.id===userEditing);
+    if(i>=0){users[i]={...users[i],name,email,function:func,role:roleVal}}
+  }else{
+    users.push({id:id(),name,email,function:func,role:roleVal,active:true});
+  }
+  saveUsers(users);closeUserModal();renderUsers();
+}
+function removeUser(id){
+  if(!confirm('Remover este membro?'))return;
+  const users=loadUsers().filter(x=>x.id!==id);
+  saveUsers(users);renderUsers();
+}
+function closeUserModal(){document.getElementById('user-modal').classList.remove('show');userEditing=null}
+
+document.addEventListener('click',e=>{if(e.target.id==='modal')closeModal();if(e.target.id==='drawer')closeDrawer();if(e.target.id==='user-modal')closeUserModal()});
+
+supabase.auth.getSession().then(({data:{session}})=>{
+  if(session){currentUser=session.user;me=currentUser.email||'usuário';ensureSession()}else{showLogin()}
+});
+supabase.auth.onAuthStateChange(async (event,session)=>{
+  if(session){currentUser=session.user;me=currentUser.email||'usuário';await ensureSession()}else{showLogin()}
+});
+
 go('home');
 </script>
 </body>
