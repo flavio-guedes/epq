@@ -314,12 +314,18 @@
   <section class="panel" v-if="!user">
     <div class="form" style="max-width:420px;margin:0 auto;">
       <label>Login</label>
-      <input v-model="loginForm.username" placeholder="seu.login" />
+      <input v-model="loginForm.username" placeholder="seu.login" autocomplete="username" />
       <label>Senha</label>
-      <input v-model="loginForm.password" :type="showPassword ? 'text' : 'password'" placeholder="••••••••" />
+      <input v-model="loginForm.password" :type="showPassword ? 'text' : 'password'" placeholder="••••••••" autocomplete="current-password" />
       <button type="button" class="btn" @click="showPassword = !showPassword" style="padding:8px 10px;font-size:12px;">{{ showPassword ? 'Ocultar' : 'Mostrar' }}</button>
-      <button class="btn primary" @click="doLogin()">Entrar</button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button type="button" class="btn" @click="fillLogin('flavio@epq.local')" style="font-size:12px;">Flávio</button>
+        <button type="button" class="btn" @click="fillLogin('ronan@epq.local')" style="font-size:12px;">Ronan</button>
+        <button type="button" class="btn" @click="fillLogin('clara@epq.local')" style="font-size:12px;">Clara</button>
+      </div>
+      <button class="btn primary" @click="doLogin()" :disabled="loginLoading">{{ loginLoading ? 'Entrando...' : 'Entrar' }}</button>
       <div style="color:#f87171;font-size:12px;">{{ loginError }}</div>
+      <div style="color:#7d9cbd;font-size:12px;">Primeiro acesso? Use a senha temporária e depois altere.</div>
     </div>
   </section>
 </div>
