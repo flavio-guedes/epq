@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: epq-crm
+    env: python
+    plan: free
+    runtime: python-3.11
+    buildCommand: pip install -r crm-backend/requirements.txt
+    startCommand: cd crm-backend && python3 flask_app.py
+    healthCheckPath: /health
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        value: sqlite:///./crm.db
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "60"
+      - key: FIRST_SUPERUSER_PASSWORD
+        generateValue: true
+      - key: FIRST_SUPERUSER_PASSWORD_RONAN
+        generateValue: true
+      - key: FIRST_SUPERUSER_PASSWORD_CLARA
+        generateValue: true
+    # Nota: Render Free adormece após inatividade.
+    # SQLite pode ser resetado; para produção, use disco persistente/PostgreSQL.
