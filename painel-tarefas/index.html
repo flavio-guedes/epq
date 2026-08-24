@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPQ Central de Tarefas</title>
+<style>
+  :root{
+    --navy:#0a1f3b;
+    --blue:#1b3a8a;
+    --gold:#d4a843;
+    --gold-2:#e9c96a;
+    --white:#ffffff;
+    --bg:#f4f6f8;
+    --text:#0b1a2e;
+    --muted:#4a5a6e;
+    --line:rgba(255,255,255,0.08);
+    --surface:rgba(255,255,255,0.85);
+    --shadow:rgba(10,31,59,0.18);
+    --danger:#e64545;
+    --ok:#2b9e5f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(180deg,#e6ecf2 0%,#f4f6f8 100%);color:var(--text);overflow:hidden}
+
+  .app{display:flex;height:100vh;width:100vw;overflow:hidden}
+  .sidebar{
+    width:240px;min-width:240px;background:var(--navy);
+    color:var(--white);padding:16px 14px;display:flex;flex-direction:column;gap:10px;
+    background-image:radial-gradient(circle at top left, rgba(212,168,67,0.25), transparent 40%);
+  }
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .brand-mark{
+    width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--gold),var(--gold-2));
+    display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--navy);letter-spacing:1px;
+  }
+  .brand-text{font-weight:800;font-size:16px;line-height:1.1}
+  .brand-sub{font-size:10px;color:rgba(255,255,255,0.7);letter-spacing:0.6px;text-transform:uppercase}
+
+  .nav{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+  .nav-item{
+    display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;
+    color:rgba(255,255,255,0.8);transition:.15s ease;user-select:none;
+  }
+  .nav-item:hover{background:rgba(255,255,255,0.08);color:white}
+  .nav-item.active{background:rgba(255,255,255,0.12);color:white;border:1px solid rgba(255,255,255,0.12)}
+  .nav-icon{width:18px;text-align:center;opacity:.95}
+
+  .main{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden}
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;
+    background:rgba(255,255,255,0.75);backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(10,31,59,0.08);z-index:5;
+  }
+  .topbar h1{font-size:18px;font-weight:700;color:var(--navy)}
+  .top-actions{display:flex;align-items:center;gap:8px}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;
+    font-weight:600;font-size:13px;cursor:pointer;border:0;transition:.15s ease;
+    background:var(--blue);color:white;
+  }
+  .btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .btn.primary{background:linear-gradient(180deg,var(--gold),var(--gold-2));color:var(--navy)}
+  .btn.ghost{background:rgba(255,255,255,0.7);color:var(--text);border:1px solid rgba(10,31,59,0.08)}
+  .btn.danger{background:var(--danger);color:white}
+  .btn.sm{padding:8px 10px;border-radius:8px;font-size:12px}
+
+  .page{display:none;flex:1;overflow:auto;padding:16px 18px}
+  .page.show{display:block}
+
+  .filters{
+    display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;align-items:center;
+  }
+  .search{
+    padding:10px 12px;border-radius:10px;border:1px solid rgba(10,31,59,0.08);
+    background:white;min-width:240px;flex:1;max-width:360px;
+  }
+  .chip{
+    padding:8px 12px;border-radius:999px;border:1px solid rgba(10,31,59,0.08);
+    background:white;cursor:pointer;user-select:none;font-weight:600;font-size:12px;
+  }
+  .chip.on{background:var(--blue);color:white;border-color:var(--blue)}
+
+  .stats{
+    display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:10px;margin-bottom:16px;
+  }
+  .stat{
+    background:white;border-radius:12px;padding:14px;border:1px solid rgba(10,31,59,0.06);
+    box-shadow:0 6px 18px rgba(10,31,59,0.06);cursor:pointer;
+  }
+  .stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+  .stat-value{font-size:22px;font-weight:800;color:var(--navy)}
+  .stat-sub{font-size:11px;color:var(--muted);margin-top:2px}
+
+  .board{display:grid;grid-template-columns:repeat(4,minmax(260px,1fr));gap:14px}
+  .col{background:rgba(255,255,255,0.6);border-radius:12px;border:1px solid rgba(10,31,59,0.06);padding:10px;display:flex;flex-direction:column;max-height:calc(100vh - 230px);min-height:240px}
+  .col-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .col-title{font-weight:700;font-size:13px;color:var(--navy);display:flex;align-items:center;gap:8px}
+  .col-count{
+    background:rgba(10,31,59,0.06);color:var(--navy);padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;
+  }
+  .col-body{display:flex;flex-direction:column;gap:10px;overflow:auto;padding:2px 2px 8px 2px;flex:1}
+  .card{
+    background:white;border-radius:10px;padding:12px;border:1px solid rgba(10,31,59,0.06);
+    box-shadow:0 6px 18px rgba(10,31,59,0.04);cursor:grab;transition:.12s ease;min-height:88px;
+  }
+  .card:active{cursor:grabbing}
+  .card.drag{opacity:.6;transform:scale(.98)}
+  .card-title{font-weight:700;font-size:13px;color:var(--navy);margin-bottom:6px;line-height:1.3}
+  .card-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:11px;color:var(--muted)}
+  .pill{padding:3px 8px;border-radius:999px;background:rgba(10,31,59,0.06);font-weight:700}
+  .pill.area{background:#e9eef5;color:#2a3754}
+  .pill.high{background:#fde8e8;color:#b52b2b}
+  .pill.medium{background:#fff4cc;color:#8a6d00}
+  .pill.low{background:#e7f7ee;color:#1f6e42}
+  .pill.overdue{background:#fde8e8;color:#b52b2b}
+  .pill.project{background:#eef2ff;color:#304878}
+
+  .section-title{font-weight:800;font-size:14px;color:var(--navy);margin:14px 0 8px}
+  .list{display:flex;flex-direction:column;gap:10px}
+  .row{
+    background:white;border-radius:10px;padding:12px;border:1px solid rgba(10,31,59,0.06);
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+  }
+  .row-main{min-width:0}
+  .row-title{font-weight:700;color:var(--navy);font-size:14px}
+  .row-sub{font-size:12px;color:var(--muted);margin-top:2px}
+
+  .progress-track{height:8px;background:rgba(10,31,59,0.08);border-radius:999px;overflow:hidden;margin-top:10px}
+  .progress-bar{height:100%;background:linear-gradient(90deg,var(--blue),var(--gold));border-radius:999px}
+
+  .empty{color:var(--muted);font-size:12px;padding:8px 4px;text-align:center}
+
+  /* Modal */
+  .modal-wrap{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(10,31,59,0.45);z-index:80}
+  .modal-wrap.show{display:flex}
+  .modal{
+    background:white;border-radius:14px;padding:16px;width:min(540px,100%);max-height:92vh;overflow:auto;
+    box-shadow:0 18px 50px rgba(10,31,59,0.25);
+  }
+  .modal-title{font-weight:800;color:var(--navy);margin-bottom:10px}
+  .field{margin-bottom:10px}
+  .field label{font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:6px}
+  .field input,.field select,.field textarea{
+    width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(10,31,59,0.08);background:#f9fafb;color:var(--text);
+  }
+  .field textarea{min-height:70px;resize:vertical}
+  .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:4px}
+
+  /* Detail panel */
+  .drawer-wrap{
+    position:fixed;right:0;top:0;bottom:0;width:min(420px,100%);background:white;
+    box-shadow:-10px 0 30px rgba(10,31,59,0.25);z-index:70;transform:translateX(100%);
+    transition:.2s ease;display:flex;flex-direction:column;
+  }
+  .drawer-wrap.open{transform:translateX(0)}
+  .drawer-head{padding:14px 16px;border-bottom:1px solid rgba(10,31,59,0.06);display:flex;justify-content:space-between;align-items:center}
+  .drawer-body{padding:14px 16px;overflow:auto}
+
+  .alerts{
+    display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;
+  }
+  .alert{
+    background:#fff8e6;border:1px solid #f5e0b3;color:#7a5200;padding:10px 12px;border-radius:10px;font-size:12px;font-weight:700;
+  }
+
+  .hamburger{display:none;background:transparent;border:0;font-size:22px;cursor:pointer;color:var(--navy)}
+
+  @media (max-width: 1100px){
+    .board{grid-template-columns:repeat(2,minmax(220px,1fr))}
+  }
+  @media (max-width: 780px){
+    .sidebar{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);transition:.2s ease;z-index:60}
+    .sidebar.open{transform:translateX(0)}
+    .hamburger{display:inline-flex}
+    .stats{grid-template-columns:repeat(2,minmax(120px,1fr))}
+    .board{grid-template-columns:1fr;max-height:none}
+    .col{max-height:60vh}
+    .search{max-width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark">EPQ</div>
+      <div>
+        <div class="brand-text">EPQ Central</div>
+        <div class="brand-sub">Gestão de Tarefas</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <div class="nav-item active" data-page="home" onclick="go('home')"><span class="nav-icon">▦</span> Visão Geral</div>
+      <div class="nav-item" data-page="tasks" onclick="go('tasks')"><span class="nav-icon">☰</span> Tarefas</div>
+      <div class="nav-item" data-page="projects" onclick="go('projects')"><span class="nav-icon">◫</span> Projetos</div>
+      <div class="nav-item" data-page="team" onclick="go('team')"><span class="nav-icon">◉</span> Equipe</div>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="hamburger" onclick="openSidebar()">☰</button>
+        <h1 id="page-title">Visão Geral</h1>
+      </div>
+      <div class="top-actions">
+        <button class="btn primary" onclick="openCreate()">+ Nova Tarefa</button>
+      </div>
+    </header>
+
+    <section class="page show" id="page-home">
+      <div class="alerts" id="alerts"></div>
+      <div class="filters">
+        <input class="search" id="home-search" placeholder="Buscar tarefa..." oninput="renderHome()"/>
+        <select class="chip" id="home-filter" onchange="renderHome()" style="min-width:auto;padding-right:24px">
+          <option value="all">Todos</option>
+          <option value="mine">Minhas tarefas</option>
+          <option value="today">Hoje</option>
+          <option value="overdue">Atrasadas</option>
+          <option value="done">Concluídas</option>
+        </select>
+      </div>
+      <div class="stats" id="stats"></div>
+      <div class="section-title">Resumo rápido</div>
+      <div class="board" id="board"></div>
+    </section>
+
+    <section class="page" id="page-tasks">
+      <div class="filters">
+        <input class="search" id="task-search" placeholder="Buscar tarefa..." oninput="renderTasks()"/>
+        <select class="chip" id="task-filter" onchange="renderTasks()" style="min-width:auto;padding-right:24px">
+          <option value="all">Todos</option>
+          <option value="mine">Minhas tarefas</option>
+          <option value="today">Hoje</option>
+          <option value="overdue">Atrasadas</option>
+          <option value="done">Concluídas</option>
+        </select>
+        <select class="chip" id="task-responsible" onchange="renderTasks()" style="min-width:auto;padding-right:24px">
+          <option value="all">Responsáveis</option>
+        </select>
+      </div>
+      <div class="list" id="task-list"></div>
+    </section>
+
+    <section class="page" id="page-projects">
+      <div id="project-list"></div>
+    </section>
+
+    <section class="page" id="page-team">
+      <div id="team-list"></div>
+    </section>
+  </div>
+</div>
+
+<!-- Modal tarefa -->
+<div class="modal-wrap" id="modal">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">Nova Tarefa</div>
+    <div class="field"><label>Título</label><input id="m-title"/></div>
+    <div class="field"><label>Descrição</label><textarea id="m-desc"></textarea></div>
+    <div class="field"><label>Responsável</label><input id="m-who"/></div>
+    <div class="field">
+      <label>Área</label>
+      <select id="m-area">
+        <option value="">Selecione</option>
+        <option>Marketing</option>
+        <option>Conteúdo</option>
+        <option>Design</option>
+        <option>Pedagógico</option>
+        <option>Comercial</option>
+        <option>Operação</option>
+        <option>Tecnologia</option>
+      </select>
+    </div>
+    <div class="field"><label>Projeto</label><input id="m-project"/></div>
+    <div class="field">
+      <label>Prioridade</label>
+      <select id="m-prio"><option>Média</option><option>Alta</option><option>Baixa</option></select>
+    </div>
+    <div class="field">
+      <label>Prazo</label>
+      <input id="m-deadline" type="date"/>
+    </div>
+    <div class="field">
+      <label>Status</label>
+      <select id="m-status"><option>A Fazer</option><option>Em Andamento</option><option>Aguardando</option><option>Concluído</option></select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn primary" id="modal-save" onclick="saveTask()">Criar Tarefa</button>
+      <button class="btn danger" id="modal-delete" style="display:none" onclick="deleteTask()">Excluir</button>
+    </div>
+  </div>
+</div>
+
+<!-- Detalhe -->
+<div class="drawer-wrap" id="drawer">
+  <div class="drawer-head">
+    <div style="font-weight:800;color:var(--navy)">Detalhe da Tarefa</div>
+    <button class="btn sm ghost" onclick="closeDrawer()">Fechar</button>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
+</div>
+
+<script>
+const LS_KEY='epq.tasks.v1';
+const NOW=()=>new Date();
+const fmt=d=>d?new Date(d+'T00:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'short'}).toUpperCase():'Sem prazo';
+const id=()=>Math.random().toString(36).slice(2,9);
+
+const defaults=[
+  {id:id(),title:'Criar campanha de captação PMERJ',desc:'Brief e peças iniciais da campanha.',who:'Flávio',area:'Marketing',project:'Campanha PMERJ',priority:'Alta',status:'A Fazer',deadline:'2026-09-10',createdAt:new Date().toISOString()},
+  {id:id(),title:'Produzir criativos para anúncios',desc:'Versões para feed e stories.',who:'João',area:'Design',project:'Campanha PMERJ',priority:'Alta',status:'Em Andamento',deadline:new Date(Date.now()-86400000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
+  {id:id(),title:'Revisar conteúdo da área pedagógica',desc:'Ajustar textos e sequência das aulas.',who:'Clara',area:'Pedagógico',project:'Área Pedagógica',priority:'Média',status:'A Fazer',deadline:new Date(Date.now()+172800000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
+  {id:id(),title:'Criar post para Instagram',desc:'Copy e layout.',who:'Flávio',area:'Conteúdo',project:'Conteúdo Instagram',priority:'Média',status:'Aguardando',deadline:new Date(Date.now()+86400000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
+  {id:id(),title:'Organizar depoimentos de aprovados',desc:'Selecionar e revisar prints/textos.',who:'Rafaela',area:'Comercial',project:'Captação de Leads',priority:'Baixa',status:'A Fazer',deadline:'2026-09-15',createdAt:new Date().toISOString()},
+  {id:id(),title:'Atualizar página da turma',desc:'Ajustar agenda e novidades.',who:'Clara',area:'Pedagógico',project:'Área Pedagógica',priority:'Baixa',status:'Aguardando',deadline:'2026-09-12',createdAt:new Date().toISOString()},
+  {id:id(),title:'Revisar estratégia de conteúdo',desc:'Validar calendário e formatos.',who:'Flávio',area:'Conteúdo',project:'Conteúdo Instagram',priority:'Média',status:'Em Andamento',deadline:new Date(Date.now()-172800000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
+  {id:id(),title:'Preparar novos criativos para tráfego pago',desc:'3 variações para teste A/B.',who:'João',area:'Marketing',project:'Site EPQ',priority:'Alta',status:'A Fazer',deadline:new Date(Date.now()+259200000).toISOString().slice(0,10),createdAt:new Date().toISOString()}
+];
+
+function load(){
+  try{
+    const raw=localStorage.getItem(LS_KEY);
+    if(raw){return JSON.parse(raw)}
+  }catch(e){}
+  return defaults;
+}
+function save(tasks){localStorage.setItem(LS_KEY,JSON.stringify(tasks))}
+let tasks=load();
+let me='Flávio';
+let editing=null;
+let current='home';
+let dragTaskId=null;
+
+const statuses=['A Fazer','Em Andamento','Aguardando','Concluído'];
+const colMap={['A Fazer']:0,['Em Andamento']:1,['Aguardando']:2,['Concluído']:3};
+
+function overdue(t){
+  if(t.status==='Concluído')return false;
+  if(!t.deadline)return false;
+  return new Date(t.deadline+'T00:00:00')<new Date(new Date().toDateString());
+}
+
+function counts(){
+  const c={Pendentes:0,'Em andamento':0,Concluídas:0,Atrasadas:0};
+  tasks.forEach(t=>{
+    if(t.status==='A Fazer' || t.status==='Aguardando') c.Pendentes++;
+    if(t.status==='Em Andamento') c['Em andamento']++;
+    if(t.status==='Concluído') c.Concluídas++;
+    if(overdue(t)) c.Atrasadas++;
+  });
+  return c;
+}
+
+function alerts(){
+  const today=tasks.filter(t=>!t.done && t.deadline===new Date().toISOString().slice(0,10)).length;
+  const ov= tasks.filter(t=>overdue(t)).length;
+  const week= tasks.filter(t=>t.status==='Concluído' && (Date.now()-new Date(t.createdAt).getTime())<7*86400000).length;
+  const out=[];
+  if(today) out.push(`⚠ ${today} tarefa(s) vence(m) hoje`);
+  if(ov) out.push(`⚠ ${ov} tarefa(s) atrasada(s)`);
+  if(week) out.push(`✓ ${week} tarefa(s) concluída(s) esta semana`);
+  return out;
+}
+
+function filterTasks(){
+  const pageFilter=document.getElementById(current==='home'?'home-filter':'task-filter').value;
+  const q=(document.getElementById(current==='home'?'home-search':'task-search').value||'').toLowerCase();
+  const whoFilter=(document.getElementById('task-responsible')?.value)||'all';
+  return tasks.filter(t=>{
+    const match=(x)=>x.toLowerCase().includes(q);
+    const txt=match(t.title)+match(t.who)+match(t.project)+match(t.area);
+    if(q && !txt) return false;
+    if(whoFilter!=='all' && t.who!==whoFilter) return false;
+    if(pageFilter==='mine') return t.who===me;
+    if(pageFilter==='today') return t.deadline===new Date().toISOString().slice(0,10);
+    if(pageFilter==='overdue') return overdue(t);
+    if(pageFilter==='done') return t.status==='Concluído';
+    return true;
+  });
+}
+
+function cardEl(t){
+  const div=document.createElement('div');
+  div.className='card';div.draggable=true;div.dataset.id=t.id;
+  const od=overdue(t)?'<span class="pill overdue">Atrasada</span>':'';
+  div.innerHTML=`<div class="card-title">${esc(t.title)}</div>
+    <div class="card-meta">${t.area?`<span class="pill area">${esc(t.area)}</span>`:''}${t.project?`<span class="pill project">${esc(t.project)}</span>`:''}${prioPill(t.priority)}${od}</div>
+    <div class="card-meta" style="margin-top:6px"><span>👤 ${esc(t.who||'-')}</span><span style="opacity:.7">•</span><span>📅 ${fmt(t.deadline)}</span></div>`;
+  div.addEventListener('dragstart',e=>{e.dataTransfer.effectAllowed='move';dragTaskId=div.dataset.id;div.classList.add('drag')});
+  div.addEventListener('dragend',()=>{dragTaskId=null;div.classList.remove('drag')});
+  div.addEventListener('click',()=>openDetail(t.id));
+  return div;
+}
+function prioPill(p){return`<span class="pill ${p.toLowerCase()}">${esc(p)}</span>`}
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+function renderBoard(){
+  const board=document.getElementById('board');board.innerHTML='';
+  const cols=['A Fazer','Em Andamento','Aguardando','Concluído'];
+  const groups={};cols.forEach(c=>groups[c]=[]);
+  filterTasks().forEach(t=>{groups[t.status]?.push(t)});
+  cols.forEach((c,i)=>{
+    const col=document.createElement('div');col.className='col';
+    const items=groups[c]||[];
+    const head=document.createElement('div');head.className='col-header';
+    head.innerHTML=`<div class="col-title">${c}<span class="col-count">${items.length}</span></div>`;
+    const body=document.createElement('div');body.className='col-body';
+    body.addEventListener('dragover',e=>{e.preventDefault();body.style.background='rgba(255,255,255,0.55)'});
+    body.addEventListener('dragleave',()=>body.style.background='');
+    body.addEventListener('drop',e=>{e.preventDefault();body.style.background='';const id=dragTaskId;dragTaskId=null;if(!id)return;const t=tasks.find(x=>x.id===id);if(!t)return;t.status=c;save(tasks);renderAll()});
+    items.forEach(t=>body.appendChild(cardEl(t)));
+    col.appendChild(head);col.appendChild(body);
+    board.appendChild(col);
+  });
+}
+
+function renderStats(){
+  const c=counts();
+  document.getElementById('stats').innerHTML=
+    `<div class="stat" onclick="setFilter('all')"><div class="stat-label">Pendentes</div><div class="stat-value">${c.Pendentes}</div></div>
+     <div class="stat" onclick="setFilter('Em Andamento')"><div class="stat-label">Em andamento</div><div class="stat-value">${c['Em andamento']}</div></div>
+     <div class="stat" onclick="setFilter('Concluído')"><div class="stat-label">Concluídas</div><div class="stat-value">${c.Concluídas}</div></div>
+     <div class="stat" onclick="setFilter('overdue')"><div class="stat-label">Atrasadas</div><div class="stat-value">${c.Atrasadas}</div></div>`;
+}
+function renderAlerts(){
+  document.getElementById('alerts').innerHTML=alerts().map(a=>`<div class="alert">${a}</div>`).join('')||'';
+}
+function renderTasks(){
+  const list=document.getElementById('task-list');list.innerHTML='';
+  const items=filterTasks();
+  if(!items.length){list.innerHTML='<div class="empty">Nenhuma tarefa encontrada.</div>';return}
+  items.forEach(t=>{
+    const r=document.createElement('div');r.className='row';
+    const od=overdue(t)?'<span class="pill overdue">Atrasada</span>':'';
+    r.innerHTML=`<div class="row-main"><div class="row-title">${esc(t.title)}</div><div class="row-sub">👤 ${esc(t.who||'-')} • 📅 ${fmt(t.deadline)} • ${esc(t.project||'-')}</div></div>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">${prioPill(t.priority)}${od}<button class="btn sm ghost" onclick="openDetail('${t.id}')">Abrir</button></div>`;
+    list.appendChild(r);
+  });
+}
+function renderProjects(){
+  const list=document.getElementById('project-list');list.innerHTML='';
+  const map={};
+  tasks.forEach(t=>{
+    const key=t.project||'Sem projeto';
+    if(!map[key]) map[key]={name:key,total:0,done:0};
+    map[key].total++;
+    if(t.status==='Concluído') map[key].done++;
+  });
+  const sorted=Object.values(map).sort((a,b)=>b.total-a.total);
+  if(!sorted.length){list.innerHTML='<div class="empty">Nenhum projeto.</div>';return}
+  sorted.forEach(p=>{
+    const pct=Math.round((p.done/p.total)*100);
+    const r=document.createElement('div');r.className='row';
+    r.innerHTML=`<div class="row-main"><div class="row-title">${esc(p.name)}</div><div class="row-sub">${p.total} tarefas • ${p.done} concluídas • ${pct}% concluído</div><div class="progress-track"><div class="progress-bar" style="width:${pct}%"></div></div></div>`;
+    list.appendChild(r);
+  });
+}
+function renderTeam(){
+  const list=document.getElementById('team-list');list.innerHTML='';
+  const map={};
+  tasks.forEach(t=>{
+    const key=t.who||'Sem responsável';
+    if(!map[key]) map[key]={name:key,pend:0,done:0};
+    if(t.status==='Concluído') map[key].done++; else map[key].pend++;
+  });
+  Object.values(map).forEach(m=>{
+    const r=document.createElement('div');r.className='row';
+    r.innerHTML=`<div class="row-main"><div class="row-title">${esc(m.name)}</div><div class="row-sub">${m.pend} pendentes • ${m.done} concluídas</div></div>`;
+    list.appendChild(r);
+  });
+}
+function renderHome(){
+  renderAlerts();
+  renderStats();
+  renderBoard();
+}
+function renderAll(){
+  if(current==='home') renderHome();
+  if(current==='tasks') renderTasks();
+  if(current==='projects') renderProjects();
+  if(current==='team') renderTeam();
+  populateResponsibles();
+}
+function populateResponsibles(){
+  const sel=document.getElementById('task-responsible');
+  const prev=sel.value;sel.innerHTML='<option value="all">Responsáveis</option>';
+  const people=[...new Set(tasks.map(t=>t.who).filter(Boolean))].sort();
+  people.forEach(p=>{const o=document.createElement('option');o.value=p;o.textContent=p;sel.appendChild(o)});
+  sel.value=prev;
+}
+function go(page){
+  current=page;
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.page===page));
+  document.querySelectorAll('.page').forEach(x=>x.classList.toggle('show',x.id==='page-'+page));
+  document.getElementById('page-title').textContent=({home:'Visão Geral',tasks:'Tarefas',projects:'Projetos',team:'Equipe'})[page];
+  renderAll();
+  closeSidebar();
+}
+function setFilter(v){
+  const sel=document.getElementById(current==='home'?'home-filter':'task-filter');
+  sel.value=v;
+  renderAll();
+}
+function openCreate(){
+  editing=null;
+  document.getElementById('modal-title').textContent='Nova Tarefa';
+  document.getElementById('modal-save').textContent='Criar Tarefa';
+  document.getElementById('modal-delete').style.display='none';
+  ['m-title','m-desc','m-who','m-project'].forEach(x=>document.getElementById(x).value='');
+  document.getElementById('m-area').value='';
+  document.getElementById('m-prio').value='Média';
+  document.getElementById('m-status').value='A Fazer';
+  document.getElementById('m-deadline').value='';
+  document.getElementById('modal').classList.add('show');
+}
+function saveTask(){
+  const title=document.getElementById('m-title').value.trim();
+  if(!title){alert('Informe o título');return}
+  const data={
+    id:editing||id(),
+    title,
+    desc:document.getElementById('m-desc').value.trim(),
+    who:document.getElementById('m-who').value.trim(),
+    area:document.getElementById('m-area').value,
+    project:document.getElementById('m-project').value.trim(),
+    priority:document.getElementById('m-prio').value,
+    status:document.getElementById('m-status').value,
+    deadline:document.getElementById('m-deadline').value,
+    createdAt:editing?(tasks.find(x=>x.id===editing)||{}).createdAt||new Date().toISOString():new Date().toISOString()
+  };
+  if(editing){const i=tasks.findIndex(x=>x.id===editing);tasks[i]=data}else tasks.push(data);
+  save(tasks);closeModal();renderAll();
+}
+function deleteTask(){
+  if(!editing)return;if(!confirm('Excluir esta tarefa?'))return;
+  tasks=tasks.filter(x=>x.id!==editing);save(tasks);closeModal();renderAll();
+}
+function closeModal(){document.getElementById('modal').classList.remove('show');editing=null}
+
+function openDetail(id){
+  const t=tasks.find(x=>x.id===id);if(!t)return;editing=t.id;
+  const body=document.getElementById('drawer-body');
+  body.innerHTML=`
+    <div class="field"><label>Título</label><input id="d-title" value="${esc(t.title)}"/></div>
+    <div class="field"><label>Descrição</label><textarea id="d-desc">${esc(t.desc||'')}</textarea></div>
+    <div class="field"><label>Responsável</label><input id="d-who" value="${esc(t.who||'')}"/></div>
+    <div class="field">
+      <label>Área</label>
+      <select id="d-area">
+        <option value="">Selecione</option>
+        ${['Marketing','Conteúdo','Design','Pedagógico','Comercial','Operação','Tecnologia'].map(a=>`<option ${a===t.area?'selected':''}>${a}</option>`).join('')}
+      </select>
+    </div>
+    <div class="field"><label>Projeto</label><input id="d-project" value="${esc(t.project||'')}"/></div>
+    <div class="field">
+      <label>Prioridade</label>
+      <select id="d-prio">
+        ${['Alta','Média','Baixa'].map(p=>`<option ${p===t.priority?'selected':''}>${p}</option>`).join('')}
+      </select>
+    </div>
+    <div class="field">
+      <label>Prazo</label>
+      <input id="d-deadline" type="date" value="${t.deadline||''}"/>
+    </div>
+    <div class="field">
+      <label>Status</label>
+      <select id="d-status">
+        ${['A Fazer','Em Andamento','Aguardando','Concluído'].map(s=>`<option ${s===t.status?'selected':''}>${s}</option>`).join('')}
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeDrawer();openModalEdit()">Editar</button>
+      <button class="btn primary" onclick="saveDetail()">Salvar</button>
+      <button class="btn danger" onclick="if(confirm('Excluir?')){tasks=tasks.filter(x=>x.id!=='${t.id}');save(tasks);renderAll();closeDrawer()}">Excluir</button>
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:var(--muted)">Criado em: ${new Date(t.createdAt).toLocaleString('pt-BR')}</div>
+  `;
+  document.getElementById('drawer').classList.add('open');
+}
+function closeDrawer(){document.getElementById('drawer').classList.remove('open');editing=null}
+function saveDetail(){
+  const t=tasks.find(x=>x.id===editing);if(!t)return;
+  t.title=document.getElementById('d-title').value.trim()||t.title;
+  t.desc=document.getElementById('d-desc').value.trim();
+  t.who=document.getElementById('d-who').value.trim();
+  t.area=document.getElementById('d-area').value;
+  t.project=document.getElementById('d-project').value.trim();
+  t.priority=document.getElementById('d-prio').value;
+  t.status=document.getElementById('d-status').value;
+  t.deadline=document.getElementById('d-deadline').value;
+  save(tasks);renderAll();closeDrawer();
+}
+function openModalEdit(){
+  const t=tasks.find(x=>x.id===editing);if(!t)return;
+  document.getElementById('modal-title').textContent='Editar Tarefa';
+  document.getElementById('modal-save').textContent='Salvar';
+  document.getElementById('modal-delete').style.display='inline-flex';
+  document.getElementById('m-title').value=t.title;
+  document.getElementById('m-desc').value=t.desc||'';
+  document.getElementById('m-who').value=t.who||'';
+  document.getElementById('m-area').value=t.area||'';
+  document.getElementById('m-project').value=t.project||'';
+  document.getElementById('m-prio').value=t.priority;
+  document.getElementById('m-status').value=t.status;
+  document.getElementById('m-deadline').value=t.deadline||'';
+  document.getElementById('modal').classList.add('show');
+}
+function openSidebar(){document.getElementById('sidebar').classList.add('open')}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open')}
+
+document.addEventListener('click',e=>{if(e.target.id==='modal')closeModal();if(e.target.id==='drawer')closeDrawer()});
+
+// inicial
+go('home');
+</script>
+</body>
+</html>
