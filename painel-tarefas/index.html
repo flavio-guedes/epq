@@ -381,8 +381,8 @@
    CONFIGURE AQUI os dados do seu projeto Supabase.
    NÃO comite a chave real em repositório público.
    ========================================================= */
-const SUPABASE_URL = window.SUPABASE_URL || 'SUA_URL_SUPABASE';
-const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'SUA_CHAVE_ANON';
+const SUPABASE_URL = window.SUPABASE_URL || 'https://ikrlnncahxxendyevecg.supabase.co';
+const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'sb_publishable_gtuhSdzBn2jzD90ITG1l5g_bTFXJTqy';
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const LS_KEY='epq.tasks.v1';
@@ -746,6 +746,13 @@ async function ensureSession(){
   role='member';
   const profile=await loadProfile(currentUser.id);
   if(profile && profile.role==='Admin') role='admin';
+  // fallback local para quando a tabela profiles ainda não existir
+  if(!profile){
+    try{
+      const local=(JSON.parse(localStorage.getItem(LS_USERS)||'[]')||[]).find(u=>u.email===me);
+      if(local && local.role==='Admin') role='admin';
+    }catch(e){}
+  }
   document.getElementById('user-name').textContent=me;
   document.getElementById('user-role').textContent=role==='admin'?'Administrador':'Membro';
   applyRole();
