@@ -93,7 +93,7 @@
   .stat-value{font-size:22px;font-weight:800;color:var(--navy)}
   .stat-sub{font-size:11px;color:var(--muted);margin-top:2px}
 
-  .board{display:grid;grid-template-columns:repeat(4,minmax(260px,1fr));gap:14px}
+  .board{display:grid;grid-template-columns:repeat(7,minmax(220px,1fr));gap:14px}
   .col{background:rgba(255,255,255,0.6);border-radius:12px;border:1px solid rgba(10,31,59,0.06);padding:10px;display:flex;flex-direction:column;max-height:calc(100vh - 230px);min-height:240px}
   .col-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
   .col-title{font-weight:700;font-size:13px;color:var(--navy);display:flex;align-items:center;gap:8px}
@@ -168,15 +168,15 @@
   .hamburger{display:none;background:transparent;border:0;font-size:22px;cursor:pointer;color:var(--navy)}
 
   @media (max-width: 1100px){
-    .board{grid-template-columns:repeat(2,minmax(220px,1fr))}
+    .board{grid-template-columns:repeat(4,minmax(220px,1fr));overflow-x:auto;padding-bottom:10px}
   }
   @media (max-width: 780px){
     .sidebar{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);transition:.2s ease;z-index:60}
     .sidebar.open{transform:translateX(0)}
     .hamburger{display:inline-flex}
     .stats{grid-template-columns:repeat(2,minmax(120px,1fr))}
-    .board{grid-template-columns:1fr;max-height:none}
-    .col{max-height:60vh}
+    .board{grid-template-columns:repeat(3,minmax(220px,1fr));overflow-x:auto;padding-bottom:10px}
+    .col{min-height:auto}
     .search{max-width:100%}
   }
 </style>
@@ -285,7 +285,7 @@
     </div>
     <div class="field">
       <label>Status</label>
-      <select id="m-status"><option>A Fazer</option><option>Em Andamento</option><option>Aguardando</option><option>Concluído</option></select>
+      <select id="m-status"><option>Fila padrão</option><option>Aguardando informações</option><option>A fazer</option><option>Fazendo</option><option>Em aprovação</option><option>Concluído</option><option>Arquivo</option></select>
     </div>
     <div class="modal-actions">
       <button class="btn ghost" onclick="closeModal()">Cancelar</button>
@@ -311,14 +311,14 @@ const fmt=d=>d?new Date(d+'T00:00:00').toLocaleDateString('pt-BR',{day:'2-digit'
 const id=()=>Math.random().toString(36).slice(2,9);
 
 const defaults=[
-  {id:id(),title:'Criar campanha de captação PMERJ',desc:'Brief e peças iniciais da campanha.',who:'Flávio',area:'Marketing',project:'Campanha PMERJ',priority:'Alta',status:'A Fazer',deadline:'2026-09-10',createdAt:new Date().toISOString()},
-  {id:id(),title:'Produzir criativos para anúncios',desc:'Versões para feed e stories.',who:'João',area:'Design',project:'Campanha PMERJ',priority:'Alta',status:'Em Andamento',deadline:new Date(Date.now()-86400000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
-  {id:id(),title:'Revisar conteúdo da área pedagógica',desc:'Ajustar textos e sequência das aulas.',who:'Clara',area:'Pedagógico',project:'Área Pedagógica',priority:'Média',status:'A Fazer',deadline:new Date(Date.now()+172800000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
-  {id:id(),title:'Criar post para Instagram',desc:'Copy e layout.',who:'Flávio',area:'Conteúdo',project:'Conteúdo Instagram',priority:'Média',status:'Aguardando',deadline:new Date(Date.now()+86400000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
-  {id:id(),title:'Organizar depoimentos de aprovados',desc:'Selecionar e revisar prints/textos.',who:'Rafaela',area:'Comercial',project:'Captação de Leads',priority:'Baixa',status:'A Fazer',deadline:'2026-09-15',createdAt:new Date().toISOString()},
-  {id:id(),title:'Atualizar página da turma',desc:'Ajustar agenda e novidades.',who:'Clara',area:'Pedagógico',project:'Área Pedagógica',priority:'Baixa',status:'Aguardando',deadline:'2026-09-12',createdAt:new Date().toISOString()},
-  {id:id(),title:'Revisar estratégia de conteúdo',desc:'Validar calendário e formatos.',who:'Flávio',area:'Conteúdo',project:'Conteúdo Instagram',priority:'Média',status:'Em Andamento',deadline:new Date(Date.now()-172800000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
-  {id:id(),title:'Preparar novos criativos para tráfego pago',desc:'3 variações para teste A/B.',who:'João',area:'Marketing',project:'Site EPQ',priority:'Alta',status:'A Fazer',deadline:new Date(Date.now()+259200000).toISOString().slice(0,10),createdAt:new Date().toISOString()}
+  {id:id(),title:'Criar campanha de captação PMERJ',desc:'Brief e peças iniciais da campanha.',who:'Flávio',area:'Marketing',project:'Campanha PMERJ',priority:'Alta',status:'A fazer',deadline:'2026-09-10',createdAt:new Date().toISOString()},
+  {id:id(),title:'Produzir criativos para anúncios',desc:'Versões para feed e stories.',who:'João',area:'Design',project:'Campanha PMERJ',priority:'Alta',status:'Fazendo',deadline:new Date(Date.now()-86400000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
+  {id:id(),title:'Revisar conteúdo da área pedagógica',desc:'Ajustar textos e sequência das aulas.',who:'Clara',area:'Pedagógico',project:'Área Pedagógica',priority:'Média',status:'A fazer',deadline:new Date(Date.now()+172****0000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
+  {id:id(),title:'Criar post para Instagram',desc:'Copy e layout.',who:'Flávio',area:'Conteúdo',project:'Conteúdo Instagram',priority:'Média',status:'Aguardando informações',deadline:new Date(Date.now()+864****0000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
+  {id:id(),title:'Organizar depoimentos de aprovados',desc:'Selecionar e revisar prints/textos.',who:'Rafaela',area:'Comercial',project:'Captação de Leads',priority:'Baixa',status:'A fazer',deadline:'2026-09-15',createdAt:new Date().toISOString()},
+  {id:id(),title:'Atualizar página da turma',desc:'Ajustar agenda e novidades.',who:'Clara',area:'Pedagógico',project:'Área Pedagógica',priority:'Baixa',status:'Aguardando informações',deadline:'2026-09-12',createdAt:new Date().toISOString()},
+  {id:id(),title:'Revisar estratégia de conteúdo',desc:'Validar calendário e formatos.',who:'Flávio',area:'Conteúdo',project:'Conteúdo Instagram',priority:'Média',status:'Fazendo',deadline:new Date(Date.now()-172800000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
+  {id:id(),title:'Preparar novos criativos para tráfego pago',desc:'3 variações para teste A/B.',who:'João',area:'Marketing',project:'Site EPQ',priority:'Alta',status:'A fazer',deadline:new Date(Date.now()+259****0000).toISOString().slice(0,10),createdAt:new Date().toISOString()}
 ];
 
 function load(){
@@ -335,8 +335,8 @@ let editing=null;
 let current='home';
 let dragTaskId=null;
 
-const statuses=['A Fazer','Em Andamento','Aguardando','Concluído'];
-const colMap={['A Fazer']:0,['Em Andamento']:1,['Aguardando']:2,['Concluído']:3};
+const statuses=['Fila padrão','Aguardando informações','A fazer','Fazendo','Em aprovação','Concluído','Arquivo'];
+const colMap={['Fila padrão']:0,['Aguardando informações']:1,['A fazer']:2,['Fazendo']:3,['Em aprovação']:4,['Concluído']:5,['Arquivo']:6};
 
 function overdue(t){
   if(t.status==='Concluído')return false;
@@ -347,8 +347,8 @@ function overdue(t){
 function counts(){
   const c={Pendentes:0,'Em andamento':0,Concluídas:0,Atrasadas:0};
   tasks.forEach(t=>{
-    if(t.status==='A Fazer' || t.status==='Aguardando') c.Pendentes++;
-    if(t.status==='Em Andamento') c['Em andamento']++;
+    if(t.status==='Fila padrão' || t.status==='Aguardando informações' || t.status==='A fazer') c.Pendentes++;
+    if(t.status==='Fazendo') c['Em andamento']++;
     if(t.status==='Concluído') c.Concluídas++;
     if(overdue(t)) c.Atrasadas++;
   });
@@ -400,7 +400,7 @@ function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 
 function renderBoard(){
   const board=document.getElementById('board');board.innerHTML='';
-  const cols=['A Fazer','Em Andamento','Aguardando','Concluído'];
+  const cols=['Fila padrão','Aguardando informações','A fazer','Fazendo','Em aprovação','Concluído','Arquivo'];
   const groups={};cols.forEach(c=>groups[c]=[]);
   filterTasks().forEach(t=>{groups[t.status]?.push(t)});
   cols.forEach((c,i)=>{
@@ -569,7 +569,7 @@ function openDetail(id){
     <div class="field">
       <label>Status</label>
       <select id="d-status">
-        ${['A Fazer','Em Andamento','Aguardando','Concluído'].map(s=>`<option ${s===t.status?'selected':''}>${s}</option>`).join('')}
+        ${['Fila padrão','Aguardando informações','A fazer','Fazendo','Em aprovação','Concluído','Arquivo'].map(s=>`<option ${s===t.status?'selected':''}>${s}</option>`).join('')}
       </select>
     </div>
     <div class="modal-actions">
