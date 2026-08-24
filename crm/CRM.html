@@ -316,7 +316,8 @@
       <label>Login</label>
       <input v-model="loginForm.username" placeholder="seu.login" />
       <label>Senha</label>
-      <input v-model="loginForm.password" type="password" placeholder="••••••••" />
+      <input v-model="loginForm.password" :type="showPassword ? 'text' : 'password'" placeholder="••••••••" />
+      <button type="button" class="btn" @click="showPassword = !showPassword" style="padding:8px 10px;font-size:12px;">{{ showPassword ? 'Ocultar' : 'Mostrar' }}</button>
       <button class="btn primary" @click="doLogin()">Entrar</button>
       <div style="color:#f87171;font-size:12px;">{{ loginError }}</div>
     </div>
@@ -336,7 +337,8 @@
       <label>Login</label>
       <input v-model="loginForm.username" placeholder="seu.login" />
       <label>Senha</label>
-      <input v-model="loginForm.password" type="password" placeholder="••••••••" />
+      <input v-model="loginForm.password" :type="showPassword ? 'text' : 'password'" placeholder="••••••••" />
+      <button type="button" class="btn" @click="showPassword = !showPassword" style="padding:8px 10px;font-size:12px;">{{ showPassword ? 'Ocultar' : 'Mostrar' }}</button>
       <button class="btn primary" @click="doLogin()">Entrar no sistema</button>
       <div class="hint" style="color:#f87171;font-size:12px;">{{ loginError }}</div>
     </div>
