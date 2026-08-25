@@ -163,6 +163,16 @@ body { font-family: var(--font-body); background: var(--epq-bg); color: var(--ep
   .sched-id, .today-flag { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+
+.status-inline { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232573be' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px !important; }
+.card.dragging { opacity: 0.4; transform: scale(0.98); }
+.kanban-body.drag-over { background: rgba(61,139,217,.06); }
+.progress-strip { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px; }
+.progress-item { flex:1; min-width:140px; background:var(--epq-white); border:1px solid var(--epq-gray-200); border-radius:var(--radius-lg); padding:14px 16px; box-shadow:var(--shadow-md); }
+.progress-label { font-family:var(--font-mono); font-size:9px; font-weight:700; color:var(--epq-blue-600); letter-spacing:.12em; text-transform:uppercase; margin-bottom:8px; }
+.progress-track { height:10px; background:var(--epq-gray-100); border-radius:100px; overflow:hidden; }
+.progress-fill { height:100%; background:linear-gradient(90deg, var(--epq-blue-600), var(--epq-blue-400)); border-radius:100px; transition: width 0.3s ease; }
+.progress-value { font-family:var(--font-mono); font-size:12px; font-weight:700; color:var(--epq-gray-900); margin-top:6px; }
 </style>
 </head>
 <body>
@@ -194,7 +204,9 @@ body { font-family: var(--font-body); background: var(--epq-bg); color: var(--ep
 
   <div class="page-body">
 
-    <div class="filter-bar">
+    
+<div class="progress-strip" id="progress-strip"></div>
+<div class="filter-bar">
       <input id="search" class="filter-input" placeholder="Buscar headline, tema, ID ou pilar..." />
       <select id="f-perfil" class="filter-chip"><option value="">Perfil</option>
         <option value="EPQ">EPQ</option><option value="Ronan">Ronan</option>
@@ -287,7 +299,8 @@ const MANIFEST = (() => {
     if (raw) return JSON.parse(raw);
   } catch (e) {}
   return {links: {}};
-})();"RON-AGO-001": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/05 - Ronan - Social Media/02 - Bastidores e Humanização", "INT-AGO-001": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/02 - Erros Comuns", "EPQ-AGO-002": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/06 - Comunidade", "RON-AGO-002": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/05 - Ronan - Social Media/05 - Opinião e Posicionamento", "EPQ-AGO-003": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/05 - Prova Social", "EPQ-AGO-004": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/01 - Estude Melhor", "RON-AGO-003": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/05 - Ronan - Social Media/01 - Autoridade e Método", "INT-AGO-002": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/07 - Editais e Oportunidades", "EPQ-AGO-005": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/07 - Editais e Oportunidades", "RON-AGO-004": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/05 - Ronan - Social Media/05 - Opinião e Posicionamento", "EPQ-AGO-006": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/01 - Estude Melhor", "EPQ-SET-001": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/01 - Estude Melhor", "RON-SET-001": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/05 - Ronan - Social Media/05 - Opinião e Posicionamento", "INT-SET-001": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/03 - Mito x Verdade", "EPQ-SET-002": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/05 - Prova Social", "RON-SET-002": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/05 - Ronan - Social Media/02 - Bastidores e Humanização", "EPQ-SET-003": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/07 - Editais e Oportunidades", "INT-SET-002": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/07 - Editais e Oportunidades", "EPQ-SET-004": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/01 - Estude Melhor", "RON-SET-003": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/05 - Ronan - Social Media/05 - Opinião e Posicionamento", "EPQ-SET-005": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/06 - Comunidade", "EPQ-SET-006": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/05 - Prova Social", "EPQ-OUT-001": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/01 - Estude Melhor", "RON-OUT-001": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/05 - Ronan - Social Media/05 - Opinião e Posicionamento", "INT-OUT-001": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/03 - Mito x Verdade", "EPQ-OUT-002": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/05 - Prova Social", "RON-OUT-002": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/05 - Ronan - Social Media/01 - Autoridade e Método", "EPQ-OUT-003": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/07 - Editais e Oportunidades", "INT-OUT-002": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/07 - Editais e Oportunidades", "EPQ-OUT-004": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/01 - Estude Melhor", "RON-OUT-003": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/05 - Ronan - Social Media/02 - Bastidores e Humanização", "EPQ-OUT-005": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/06 - Comunidade", "EPQ-NOV-001": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/01 - Estude Melhor", "RON-NOV-001": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/05 - Ronan - Social Media/02 - Bastidores e Humanização", "INT-NOV-001": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/03 - Mito x Verdade", "EPQ-NOV-002": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/05 - Prova Social", "RON-NOV-002": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/05 - Ronan - Social Media/01 - Autoridade e Método", "EPQ-NOV-003": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/07 - Editais e Oportunidades", "INT-NOV-002": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/09 - Conversão", "EPQ-NOV-004": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/01 - Estude Melhor", "RON-NOV-003": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/05 - Ronan - Social Media/02 - Bastidores e Humanização", "EPQ-DEZ-001": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/01 - Estude Melhor", "RON-DEZ-001": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/05 - Ronan - Social Media/05 - Opinião e Posicionamento", "INT-DEZ-001": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/03 - Mito x Verdade", "EPQ-DEZ-002": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/05 - Prova Social", "RON-DEZ-002": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/05 - Ronan - Social Media/02 - Bastidores e Humanização", "EPQ-DEZ-003": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/07 - Editais e Oportunidades"};;;
+})();
+
 
 function loadState() {
   try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; }
@@ -507,7 +520,14 @@ function init() {
       createBtn.textContent='Criar tarefa';
     }
   }
-  document.addEventListener('click', e => {
+  
+document.addEventListener('change', e => {{
+  if (e.target.classList.contains('status-inline')) {{
+    const id = e.target.dataset.id;
+    if (id) onStatusChange(id, e.target.value);
+  }}
+}});
+document.addEventListener('click', e => {
     const openBtn = e.target.closest('[data-action="open"]');
     if (openBtn) {
       const id = openBtn.dataset.id;
@@ -555,6 +575,53 @@ function init() {
   });
 }
 init();
+function initDragDrop() {{
+  document.querySelectorAll('.card[draggable]').forEach(card => {{
+    card.addEventListener('dragstart', e => {{
+      e.dataTransfer.setData('text/plain', card.dataset.id);
+      card.classList.add('dragging');
+    }});
+    card.addEventListener('dragend', () => card.classList.remove('dragging'));
+  }});
+  document.querySelectorAll('.kanban-body').forEach(col => {{
+    col.addEventListener('dragover', e => {{ e.preventDefault(); col.classList.add('drag-over'); }});
+    col.addEventListener('dragleave', () => col.classList.remove('drag-over'));
+    col.addEventListener('drop', e => {{
+      e.preventDefault(); col.classList.remove('drag-over');
+      const id = e.dataTransfer.getData('text/plain');
+      const it = RAW.find(x => x['ID'] === id);
+      const newStatus = col.parentElement.querySelector('.kanban-title').textContent;
+      if (it && newStatus) onStatusChange(id, newStatus);
+      initDragDrop();
+    }});
+  });
+}}
+
+function renderProgress(items) {{
+  const months = ['Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  const statuses = ['Ideia','Planejado','Publicar no mesmo dia','Aguardar depoimento em vídeo','Avaliar até 20/08','Avaliar até 17/09'];
+  const total = items.length || RAW.length;
+  const box = document.getElementById('progress-strip');
+  const make = (label, value, max) => {{
+    const pct = max ? Math.round((value/max)*100) : 0;
+    return `<div class="progress-item"><div class="progress-label">${{label}}</div><div class="progress-track"><div class="progress-fill" style="width:${{pct}}%"></div></div><div class="progress-value">${{value}} / ${{max}} (${{pct}}%)</div></div>`;
+  }};
+  let html = '';
+  statuses.forEach(st => {{
+    const count = items.filter(i => (i['Status']||'—') === st).length;
+    html += make(st, count, total);
+  }});
+  box.innerHTML = html;
+}}
+
+// override applyFilters to include progress and drag init
+const _applyFilters = applyFilters;
+applyFilters = function() {{
+  _applyFilters();
+  renderProgress(document.querySelector('.tab.active').dataset.tab === 'lista' ? document.querySelectorAll('#lista-rows .sched-row').length ? RAW.map(it => ({{...it, ...(loadState()[it['ID']] || {{}})}})).filter(it => {{ const f = getFilters(); if (f.search) {{ const hay=[it['ID'],it['Headline'],it['Tema / Campanha'],it['Pilar']].join(' ').toLowerCase(); if (!hay.includes(f.search)) return false; }} if (f.perfil && it['Perfil']!==f.perfil) return false; if (f.tipo && it['Tipo de distribuição']!==f.tipo) return false; if (f.mes && it['_month_name']!==f.mes) return false; if (f.status && (it['Status']||'')!==f.status) return false; if (f.pilar && it['Pilar']!==f.pilar) return false; if (f.formato && it['Formato']!==f.formato) return false; return true; }}) : [] : []);
+  initDragDrop();
+}}
+
 </script>
 </body>
 </html>
