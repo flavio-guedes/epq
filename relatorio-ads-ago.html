@@ -1,0 +1,2359 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPQ // Performance Command Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<style>
+:root {
+  --epq-white: #ffffff;
+  --epq-bg: #f4f7fa;
+  --epq-surface: rgba(255,255,255,.62);
+  --epq-surface-strong: rgba(255,255,255,.88);
+  --epq-gray-50: #f8fafc;
+  --epq-gray-100: #eef2f5;
+  --epq-gray-200: #e4eaf0;
+  --epq-gray-300: #d8e0e7;
+  --epq-gray-400: #adb9c5;
+  --epq-gray-500: #8a97a5;
+  --epq-gray-600: #687582;
+  --epq-gray-700: #4a5660;
+  --epq-gray-800: #2e3840;
+  --epq-gray-900: #17212b;
+  --epq-blue-50: #f0f7ff;
+  --epq-blue-100: #eaf3ff;
+  --epq-blue-200: #c5dcf5;
+  --epq-blue-300: #9bc5ef;
+  --epq-blue-400: #6aaae4;
+  --epq-blue-500: #3d8bd9;
+  --epq-blue-600: #2572be;
+  --epq-blue-700: #175a96;
+  --epq-blue-800: #0f3f6e;
+  --epq-blue-900: #0b3155;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --shadow-sm: 0 1px 3px rgba(15,40,65,.06), 0 1px 2px rgba(15,40,65,.04);
+  --shadow-md: 0 4px 16px rgba(15,40,65,.08), 0 2px 6px rgba(15,40,65,.05);
+  --shadow-lg: 0 20px 60px rgba(15,40,65,.09), 0 8px 24px rgba(15,40,65,.06);
+  --shadow-glass: 0 20px 60px rgba(15,40,65,.08), inset 0 1px 0 rgba(255,255,255,.75);
+  --glass-border: 1px solid rgba(61,139,217,.15);
+  --glass-bg: rgba(255,255,255,.62);
+  --glass-blur: blur(18px);
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --sidebar-w: 80px;
+  --sidebar-expanded: 220px;
+  --motion-fast: 0.2s;
+  --motion-med: 0.5s;
+  --motion-slow: 0.9s;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--epq-bg);
+  color: var(--epq-gray-900);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════════════ SIDEBAR */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: var(--sidebar-w);
+  background: var(--epq-gray-900);
+  border-right: 1px solid rgba(61,139,217,.15);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 0;
+  transition: width var(--motion-med) var(--ease-out);
+  overflow: hidden;
+}
+
+.sidebar:hover {
+  width: var(--sidebar-expanded);
+}
+
+.sidebar-logo {
+  width: 36px;
+  height: 36px;
+  background: var(--epq-blue-700);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  color: white;
+  letter-spacing: -0.5px;
+  flex-shrink: 0;
+  margin-bottom: 32px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  padding: 0 12px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--motion-fast);
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--epq-gray-500);
+}
+
+.nav-item:hover, .nav-item.active {
+  background: rgba(61,139,217,.12);
+  color: var(--epq-blue-300);
+}
+
+.nav-item.active { color: var(--epq-blue-400); }
+
+.nav-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity var(--motion-fast);
+}
+
+.sidebar:hover .nav-label { opacity: 1; }
+
+.sidebar-status {
+  margin-top: auto;
+  padding: 0 12px;
+  width: 100%;
+}
+
+.status-dot-live {
+  width: 6px;
+  height: 6px;
+  background: var(--epq-blue-400);
+  border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* ═══════════════════════════════════════ MAIN */
+.main-content {
+  margin-left: var(--sidebar-w);
+  min-height: 100vh;
+}
+
+/* ═══════════════════════════════════════ HEADER */
+.command-header {
+  position: relative;
+  height: 480px;
+  background: var(--epq-gray-900);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+/* Atmospheric layers */
+.atm-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.atm-gradient {
+  background:
+    radial-gradient(ellipse 80% 60% at 30% 40%, rgba(23,90,150,.22) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 50% at 70% 60%, rgba(11,49,85,.18) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 80% at 50% 0%, rgba(61,139,217,.06) 0%, transparent 50%);
+}
+
+#header-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Command Core */
+.command-core-wrapper {
+  position: absolute;
+  right: 15%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 240px;
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.core-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(61,139,217,.2);
+}
+
+.core-ring-1 { width: 100%; height: 100%; }
+.core-ring-2 { width: 74%; height: 74%; border-color: rgba(61,139,217,.3); }
+.core-ring-3 { width: 50%; height: 50%; border-color: rgba(61,139,217,.45); }
+
+.core-center {
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle, rgba(61,139,217,.35) 0%, rgba(23,90,150,.15) 60%, transparent 100%);
+  border-radius: 50%;
+  border: 1px solid rgba(61,139,217,.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.core-inner-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--epq-blue-400);
+  border-radius: 50%;
+}
+
+/* Scanline */
+.scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(61,139,217,.4), rgba(61,139,217,.6), rgba(61,139,217,.4), transparent);
+  top: 30%;
+  opacity: 0;
+}
+
+/* Header Content */
+.header-content {
+  position: relative;
+  z-index: 10;
+  padding: 48px 56px;
+  width: 100%;
+}
+
+.header-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--epq-blue-300);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  opacity: 0;
+}
+
+.header-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 700;
+  color: var(--epq-white);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin-bottom: 14px;
+  opacity: 0;
+}
+
+.header-subtitle {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--epq-gray-500);
+  letter-spacing: 0.01em;
+  margin-bottom: 32px;
+  opacity: 0;
+}
+
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  opacity: 0;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--epq-blue-400);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.status-badge-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--epq-blue-400);
+  border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+.period-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--epq-gray-600);
+  letter-spacing: 0.08em;
+  border-left: 1px solid rgba(255,255,255,.1);
+  padding-left: 24px;
+}
+
+/* Operation Info */
+.operation-info {
+  position: absolute;
+  top: 40px;
+  right: 56px;
+  z-index: 10;
+  opacity: 0;
+}
+
+.op-row {
+  margin-bottom: 16px;
+}
+
+.op-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 600;
+  color: var(--epq-blue-600);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.op-value {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--epq-blue-300);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.op-positive { color: #7ec8e3; }
+
+/* Coordinates floating */
+.coord-text {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: rgba(61,139,217,.35);
+  letter-spacing: 0.1em;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════ KPI STRIP */
+.kpi-strip {
+  background: var(--epq-white);
+  border-bottom: 1px solid var(--epq-gray-200);
+  padding: 0 56px;
+  display: flex;
+  align-items: stretch;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.kpi-strip::-webkit-scrollbar { display: none; }
+
+.kpi-item {
+  flex: 1;
+  min-width: 120px;
+  padding: 28px 24px;
+  border-right: 1px solid var(--epq-gray-200);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: default;
+  transition: background var(--motion-fast);
+  opacity: 0;
+}
+
+.kpi-item:first-child { padding-left: 0; }
+.kpi-item:last-child { border-right: none; }
+.kpi-item:hover { background: var(--epq-blue-50); }
+
+.kpi-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--epq-gray-500);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.kpi-value {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--epq-gray-900);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.kpi-value.featured { color: var(--epq-blue-700); }
+
+.kpi-sub {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--epq-gray-400);
+  letter-spacing: 0.05em;
+}
+
+/* ═══════════════════════════════════════ PAGE BODY */
+.page-body {
+  padding: 48px 56px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 1400px;
+}
+
+.full-width { grid-column: 1 / -1; }
+
+/* Section label */
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--epq-blue-500);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--epq-gray-900);
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+
+/* ═══════════════════════════════════════ GLASS CARD */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-glass);
+  padding: 28px;
+  opacity: 0;
+  transition: box-shadow var(--motion-med), transform var(--motion-med);
+}
+
+.glass-card:hover {
+  box-shadow: 0 24px 72px rgba(15,40,65,.12), inset 0 1px 0 rgba(255,255,255,.85);
+  transform: translateY(-2px);
+}
+
+.solid-card {
+  background: var(--epq-white);
+  border: 1px solid var(--epq-gray-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 28px;
+  opacity: 0;
+  transition: box-shadow var(--motion-med), transform var(--motion-med);
+}
+
+.solid-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════ CAMPAIGN OVERVIEW */
+.campaign-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.campaign-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(61,139,217,.08);
+  border: 1px solid rgba(61,139,217,.2);
+  border-radius: 100px;
+  padding: 5px 12px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--epq-blue-600);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.campaign-status-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--epq-blue-500);
+  border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+.campaign-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--epq-gray-200);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.camp-metric {
+  background: var(--epq-white);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.camp-metric-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--epq-gray-500);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.camp-metric-val {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--epq-gray-900);
+  letter-spacing: -0.02em;
+}
+
+/* Progress bar minimal */
+.mini-progress {
+  margin-top: 8px;
+}
+
+.mini-progress-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--epq-gray-500);
+  letter-spacing: 0.08em;
+}
+
+.mini-progress-bar {
+  height: 2px;
+  background: var(--epq-gray-200);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.mini-progress-fill {
+  height: 100%;
+  background: var(--epq-blue-500);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 1.2s var(--ease-out);
+}
+
+/* Funnel bar specific */
+.funnel-fill-orange { background: #e07a2c; }
+
+/* ═══════════════════════════════════════ HIERARCHY */
+.hierarchy-tree {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.hierarchy-level {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+.hierarchy-connector {
+  width: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.h-line-v {
+  width: 1px;
+  flex: 1;
+  background: rgba(61,139,217,.25);
+  margin-left: 15px;
+}
+
+.h-line-h {
+  width: 100%;
+  height: 1px;
+  background: rgba(61,139,217,.25);
+  margin-top: 22px;
+}
+
+.hierarchy-node {
+  flex: 1;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--epq-gray-200);
+  background: var(--epq-white);
+  margin-bottom: 8px;
+  cursor: default;
+  transition: border-color var(--motion-fast), background var(--motion-fast);
+}
+
+.hierarchy-node:hover {
+  border-color: rgba(61,139,217,.35);
+  background: var(--epq-blue-50);
+}
+
+.hierarchy-node.campaign-node {
+  background: var(--epq-gray-900);
+  border-color: var(--epq-gray-800);
+}
+
+.hierarchy-node.adset-node {
+  background: rgba(61,139,217,.06);
+  border-color: rgba(61,139,217,.2);
+}
+
+.h-node-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.h-node-label.dark { color: var(--epq-blue-400); }
+.h-node-label.blue { color: var(--epq-blue-600); }
+.h-node-label.default { color: var(--epq-gray-500); }
+
+.h-node-name {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.h-node-name.dark { color: var(--epq-white); }
+.h-node-name.blue { color: var(--epq-blue-700); }
+.h-node-name.default { color: var(--epq-gray-900); }
+
+.h-node-meta {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--epq-gray-500);
+  margin-top: 4px;
+  letter-spacing: 0.04em;
+}
+
+.h-node-meta.dark { color: var(--epq-gray-600); }
+
+.ads-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 0;
+  padding-left: 32px;
+}
+
+/* ═══════════════════════════════════════ CREATIVE INTELLIGENCE */
+.creative-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.creative-card {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--epq-gray-200);
+  background: var(--epq-white);
+  padding: 20px;
+  position: relative;
+  transition: all var(--motion-med);
+}
+
+.creative-card:hover {
+  border-color: rgba(61,139,217,.3);
+  box-shadow: var(--shadow-md);
+}
+
+.creative-card.leader {
+  border-color: rgba(61,139,217,.35);
+  background: rgba(61,139,217,.03);
+}
+
+.leader-badge {
+  position: absolute;
+  top: -1px;
+  left: 16px;
+  transform: translateY(-50%);
+  background: var(--epq-blue-700);
+  color: white;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+
+.creative-name {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--epq-gray-900);
+  margin-bottom: 4px;
+  margin-top: 8px;
+}
+
+.creative-leader .creative-name { color: var(--epq-blue-800); }
+
+.cpm-hero {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--epq-gray-900);
+  letter-spacing: -0.03em;
+  margin: 12px 0 4px;
+}
+
+.cpm-hero.leader { color: var(--epq-blue-700); }
+
+.cpm-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--epq-gray-500);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.creative-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.creative-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--epq-gray-100);
+}
+
+.creative-stat-row:last-child { border-bottom: none; }
+
+.cs-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--epq-gray-500);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cs-val {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--epq-gray-800);
+}
+
+.delta-positive {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: #2a8a5e;
+  background: rgba(42,138,94,.08);
+  border-radius: 4px;
+  padding: 2px 6px;
+  letter-spacing: 0.04em;
+}
+
+.delta-negative {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: #9b4a1a;
+  background: rgba(155,74,26,.08);
+  border-radius: 4px;
+  padding: 2px 6px;
+  letter-spacing: 0.04em;
+}
+
+.sample-warning {
+  margin-top: 16px;
+  padding: 10px 14px;
+  background: rgba(61,139,217,.06);
+  border-left: 2px solid var(--epq-blue-300);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--epq-blue-700);
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════ FUNNEL */
+.funnel-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.funnel-stage {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.funnel-bar-wrap {
+  flex: 1;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.funnel-bar {
+  height: 100%;
+  border-radius: var(--radius-sm);
+  background: rgba(61,139,217,.12);
+  border: 1px solid rgba(61,139,217,.2);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  transition: background var(--motion-fast);
+  width: 0%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.funnel-bar:hover { background: rgba(61,139,217,.18); }
+
+.funnel-bar.pending {
+  background: rgba(168,178,190,.08);
+  border-color: rgba(168,178,190,.2);
+  border-style: dashed;
+}
+
+.funnel-bar-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--epq-blue-700);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.funnel-bar.pending .funnel-bar-label { color: var(--epq-gray-400); }
+
+.funnel-val {
+  min-width: 80px;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--epq-gray-900);
+  letter-spacing: -0.02em;
+}
+
+.funnel-val.pending {
+  font-size: 11px;
+  color: var(--epq-gray-400);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.funnel-arrow {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--epq-gray-400);
+  padding: 2px 0;
+  letter-spacing: 0.06em;
+}
+
+.funnel-conversion {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--epq-gray-500);
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+}
+
+/* ═══════════════════════════════════════ DIAGNOSTIC */
+.diagnostic-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.diag-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  transition: all var(--motion-fast);
+}
+
+.diag-item:hover {
+  background: rgba(61,139,217,.04);
+  border-color: rgba(61,139,217,.12);
+}
+
+.diag-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.diag-icon.positive {
+  background: rgba(61,139,217,.1);
+  color: var(--epq-blue-600);
+  border: 1px solid rgba(61,139,217,.2);
+}
+
+.diag-icon.attention {
+  background: rgba(230,160,60,.08);
+  color: #b07218;
+  border: 1px solid rgba(230,160,60,.25);
+}
+
+.diag-icon.gap {
+  background: rgba(100,110,120,.08);
+  color: var(--epq-gray-500);
+  border: 1px solid rgba(100,110,120,.2);
+}
+
+.diag-content {}
+
+.diag-tag {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.diag-tag.positive { color: var(--epq-blue-600); }
+.diag-tag.attention { color: #b07218; }
+.diag-tag.gap { color: var(--epq-gray-500); }
+
+.diag-text {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--epq-gray-800);
+  line-height: 1.5;
+}
+
+.diag-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--epq-gray-500);
+  margin-top: 2px;
+  letter-spacing: 0.04em;
+}
+
+/* ═══════════════════════════════════════ RECOMMENDATIONS */
+.rec-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.rec-card {
+  padding: 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--epq-gray-200);
+  background: var(--epq-white);
+  transition: all var(--motion-fast);
+  cursor: default;
+}
+
+.rec-card:hover {
+  border-color: rgba(61,139,217,.3);
+  background: var(--epq-blue-50);
+  transform: translateY(-1px);
+}
+
+.rec-number {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--epq-blue-300);
+  letter-spacing: 0.15em;
+  margin-bottom: 6px;
+}
+
+.rec-action {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--epq-gray-900);
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.rec-desc {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--epq-gray-600);
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════ FOOTER */
+.page-footer {
+  padding: 32px 56px;
+  border-top: 1px solid var(--epq-gray-200);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 0;
+}
+
+.footer-brand {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--epq-gray-400);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.footer-timestamp {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--epq-gray-400);
+  letter-spacing: 0.08em;
+}
+
+/* ═══════════════════════════════════════ MOBILE NAV */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--epq-gray-900);
+  border-top: 1px solid rgba(61,139,217,.15);
+  z-index: 100;
+  padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+  justify-content: space-around;
+}
+
+.mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 12px;
+  color: var(--epq-gray-600);
+  cursor: pointer;
+  transition: color var(--motion-fast);
+}
+
+.mobile-nav-item.active { color: var(--epq-blue-400); }
+
+.mobile-nav-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════ DIVIDER */
+.section-divider {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0 4px;
+  opacity: 0;
+}
+
+.divider-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--epq-blue-500);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: var(--epq-gray-200);
+}
+
+/* ═══════════════════════════════════════ CHART PLACEHOLDER */
+.chart-placeholder {
+  height: 140px;
+  background: var(--epq-gray-50);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--epq-gray-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-lines {
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+}
+
+/* ═══════════════════════════════════════ RESPONSIVE */
+@media (max-width: 1100px) {
+  .page-body { grid-template-columns: 1fr; padding: 32px 32px; }
+  .campaign-metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  .creative-comparison { grid-template-columns: 1fr; }
+  .rec-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 767px) {
+  .sidebar { display: none; }
+  .mobile-nav { display: flex; }
+  .main-content { margin-left: 0; padding-bottom: 70px; }
+  .command-header { height: 320px; }
+  .header-content { padding: 32px 24px; }
+  .header-title { font-size: 26px; }
+  .operation-info { right: 24px; top: 24px; }
+  .kpi-strip { padding: 0 24px; }
+  .kpi-item { padding: 20px 16px; min-width: 100px; }
+  .kpi-value { font-size: 20px; }
+  .page-body { padding: 24px 24px; gap: 16px; }
+  .glass-card, .solid-card { padding: 20px; }
+  .command-core-wrapper { width: 160px; height: 160px; right: 5%; }
+  .page-footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
+  .ads-row { flex-direction: column; }
+}
+
+@media (max-width: 480px) {
+  .campaign-metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  .kpi-item { min-width: 90px; }
+  .creative-comparison { grid-template-columns: 1fr; }
+}
+
+/* ═══════════════════════════════════════ REDUCED MOTION */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ═══════════════════════════════════════ PDF EXPORT HELPERS */
+.pdf-export-bar {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 56px;
+  background: linear-gradient(to bottom, rgba(244,247,250,0.95), rgba(244,247,250,0));
+}
+
+.pdf-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--epq-blue-700);
+  background: rgba(61,139,217,0.1);
+  border: 1px solid rgba(61,139,217,0.25);
+  border-radius: var(--radius-md);
+  padding: 8px 14px;
+  cursor: pointer;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: background var(--motion-fast), border-color var(--motion-fast), transform var(--motion-fast);
+}
+
+.pdf-btn:hover {
+  background: rgba(61,139,217,0.16);
+  border-color: rgba(61,139,217,0.45);
+  transform: translateY(-1px);
+}
+
+.pdf-btn:active {
+  transform: translateY(0);
+}
+
+/* Print behavior */
+@media print {
+  .sidebar,
+  .mobile-nav,
+  .pdf-export-bar,
+  .operation-info,
+  #header-svg,
+  .command-core-wrapper,
+  .coord-text,
+  .scanline {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff;
+    color: #000;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .command-header {
+    height: auto;
+    background: #fff;
+    color: #000;
+    border-bottom: 1px solid #000;
+  }
+
+  .kpi-strip {
+    background: #fff;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .glass-card,
+  .solid-card {
+    background: #fff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+    border: 1px solid #ccc;
+    break-inside: avoid;
+  }
+
+  .mini-progress-fill,
+  .funnel-bar {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+/* ═══════════════════════════════════════ SCROLL REVEAL INIT */
+.reveal { opacity: 0; transform: translateY(24px); }
+
+/* Radar sweep */
+@keyframes radar-sweep {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.radar-sweep-group {
+  transform-origin: 120px 120px;
+  animation: radar-sweep 12s linear infinite;
+}
+
+/* ═══════════════════════════════════════ GRID OVERLAY */
+.grid-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Node blink */
+@keyframes node-blink {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 0.15; }
+}
+
+.data-node-anim {
+  animation: node-blink 3s ease-in-out infinite;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">EPQ</div>
+  <div class="sidebar-nav">
+    <a class="nav-item active" href="#overview">
+      <div class="nav-icon">
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.2"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.2"/></svg>
+      </div>
+      <span class="nav-label">Command</span>
+    </a>
+    <a class="nav-item" href="#campaign">
+      <div class="nav-icon">
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M2 12 L8 4 L14 12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8" cy="4" r="1.5" fill="currentColor"/></svg>
+      </div>
+      <span class="nav-label">Campaigns</span>
+    </a>
+    <a class="nav-item" href="#adsets">
+      <div class="nav-icon">
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 4h10M3 8h7M3 12h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      </div>
+      <span class="nav-label">Ad Sets</span>
+    </a>
+    <a class="nav-item" href="#creatives">
+      <div class="nav-icon">
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><rect x="1.5" y="1.5" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 10l2.5-3 2 2 1.5-2 2 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="nav-label">Creatives</span>
+    </a>
+    <a class="nav-item" href="#funnel">
+      <div class="nav-icon">
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M2 3h12l-4 5v5l-4-2V8L2 3z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="nav-label">Funnel</span>
+    </a>
+    <a class="nav-item" href="#diagnostic">
+      <div class="nav-icon">
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v3.5L10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      </div>
+      <span class="nav-label">Intelligence</span>
+    </a>
+    <a class="nav-item" href="#actions">
+      <div class="nav-icon">
+        <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8h8M9 5l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <span class="nav-label">Actions</span>
+    </a>
+  </div>
+  <div class="sidebar-status">
+    <div class="nav-item">
+      <div class="status-dot-live"></div>
+      <span class="nav-label" style="color: var(--epq-blue-400);">LIVE</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════ MAIN -->
+<main class="main-content">
+
+  <!-- COMMAND HEADER -->
+  <header class="command-header" id="overview">
+    <div class="atm-layer atm-gradient"></div>
+
+    <!-- SVG Animation Canvas -->
+    <svg id="header-svg" viewBox="0 0 1200 480" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- Grid layer -->
+      <g id="grid-layer" opacity="0.35">
+        <defs>
+          <pattern id="grid-pattern" width="60" height="60" patternUnits="userSpaceOnUse">
+            <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(61,139,217,0.18)" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid-pattern)"/>
+      </g>
+
+      <!-- Tactical Lines -->
+      <g id="tactical-lines">
+        <line class="tactical-line" x1="0" y1="80" x2="420" y2="80" stroke="rgba(61,139,217,0.25)" stroke-width="0.75" stroke-dasharray="1000" stroke-dashoffset="1000"/>
+        <line class="tactical-line" x1="0" y1="380" x2="350" y2="380" stroke="rgba(61,139,217,0.2)" stroke-width="0.5" stroke-dasharray="1000" stroke-dashoffset="1000"/>
+        <line class="tactical-line" x1="200" y1="0" x2="200" y2="480" stroke="rgba(61,139,217,0.12)" stroke-width="0.5" stroke-dasharray="1000" stroke-dashoffset="1000"/>
+        <line class="tactical-line" x1="400" y1="120" x2="750" y2="120" stroke="rgba(61,139,217,0.15)" stroke-width="0.5" stroke-dasharray="1000" stroke-dashoffset="1000"/>
+        <line class="tactical-line" x1="120" y1="280" x2="500" y2="280" stroke="rgba(61,139,217,0.18)" stroke-width="0.5" stroke-dasharray="1000" stroke-dashoffset="1000"/>
+        <path class="tactical-line" d="M 50 200 L 150 200 L 200 160" stroke="rgba(61,139,217,0.22)" stroke-width="0.75" fill="none" stroke-dasharray="1000" stroke-dashoffset="1000"/>
+        <path class="tactical-line" d="M 350 300 L 450 300 L 500 340" stroke="rgba(61,139,217,0.15)" stroke-width="0.5" fill="none" stroke-dasharray="1000" stroke-dashoffset="1000"/>
+      </g>
+
+      <!-- Radar system centered on core area -->
+      <g transform="translate(860, 200)">
+        <!-- Radar rings -->
+        <circle cx="0" cy="0" r="115" fill="none" stroke="rgba(61,139,217,0.12)" stroke-width="0.75"/>
+        <circle cx="0" cy="0" r="85" fill="none" stroke="rgba(61,139,217,0.15)" stroke-width="0.75"/>
+        <circle cx="0" cy="0" r="55" fill="none" stroke="rgba(61,139,217,0.2)" stroke-width="0.75"/>
+        <circle cx="0" cy="0" r="28" fill="none" stroke="rgba(61,139,217,0.3)" stroke-width="0.75"/>
+
+        <!-- Radar crosshairs -->
+        <line x1="-115" y1="0" x2="115" y2="0" stroke="rgba(61,139,217,0.1)" stroke-width="0.5"/>
+        <line x1="0" y1="-115" x2="0" y2="115" stroke="rgba(61,139,217,0.1)" stroke-width="0.5"/>
+
+        <!-- Sweep -->
+        <g class="radar-sweep-group">
+          <path d="M 0 0 L 0 -115 A 115 115 0 0 1 30 -111 Z" fill="url(#sweep-gradient)" opacity="0.5"/>
+          <defs>
+            <radialGradient id="sweep-gradient" cx="50%" cy="100%" r="100%">
+              <stop offset="0%" stop-color="rgba(61,139,217,0.35)"/>
+              <stop offset="100%" stop-color="rgba(61,139,217,0)"/>
+            </radialGradient>
+          </defs>
+        </g>
+
+        <!-- Core -->
+        <circle cx="0" cy="0" r="8" fill="rgba(61,139,217,0.4)" id="core-pulse"/>
+        <circle cx="0" cy="0" r="4" fill="rgba(61,139,217,0.8)"/>
+        <circle cx="0" cy="0" r="16" fill="none" stroke="rgba(61,139,217,0.35)" stroke-width="0.75"/>
+
+        <!-- Data nodes on radar -->
+        <circle class="data-node" cx="45" cy="-70" r="3" fill="rgba(61,139,217,0.6)" class="data-node-anim" style="animation-delay:0.5s"/>
+        <circle class="data-node" cx="-30" cy="50" r="2" fill="rgba(61,139,217,0.5)" class="data-node-anim" style="animation-delay:1.2s"/>
+        <circle class="data-node" cx="80" cy="20" r="2.5" fill="rgba(61,139,217,0.45)" class="data-node-anim" style="animation-delay:0.8s"/>
+        <circle class="data-node" cx="-60" cy="-35" r="2" fill="rgba(61,139,217,0.4)" class="data-node-anim" style="animation-delay:1.8s"/>
+        <circle class="data-node" cx="15" cy="80" r="2" fill="rgba(61,139,217,0.5)" class="data-node-anim" style="animation-delay:0.3s"/>
+
+        <!-- Blips -->
+        <circle cx="45" cy="-70" r="6" fill="none" stroke="rgba(61,139,217,0.3)" stroke-width="0.5" class="data-node-anim" style="animation-delay:0.5s"/>
+        <circle cx="80" cy="20" r="5" fill="none" stroke="rgba(61,139,217,0.25)" stroke-width="0.5" class="data-node-anim" style="animation-delay:0.8s"/>
+      </g>
+
+      <!-- Floating coordinates -->
+      <text class="coord-text" x="56" y="60" fill="rgba(61,139,217,0.3)" font-family="JetBrains Mono, monospace" font-size="9">EPQ-22.9068° S</text>
+      <text class="coord-text" x="56" y="74" fill="rgba(61,139,217,0.25)" font-family="JetBrains Mono, monospace" font-size="9">43.1729° W // RJ</text>
+      <text class="coord-text" x="56" y="420" fill="rgba(61,139,217,0.25)" font-family="JetBrains Mono, monospace" font-size="9">SIGNAL POSITIVE // EARLY PHASE</text>
+      <text class="coord-text" x="600" y="30" fill="rgba(61,139,217,0.2)" font-family="JetBrains Mono, monospace" font-size="8">INTEL-001 // PMERJ // 23.08.2026</text>
+
+      <!-- Corner brackets -->
+      <g stroke="rgba(61,139,217,0.3)" stroke-width="1" fill="none">
+        <path d="M 20 20 L 20 40 M 20 20 L 40 20"/>
+        <path d="M 1180 20 L 1180 40 M 1180 20 L 1160 20"/>
+        <path d="M 20 460 L 20 440 M 20 460 L 40 460"/>
+        <path d="M 1180 460 L 1180 440 M 1180 460 L 1160 460"/>
+      </g>
+
+      <!-- Scanline -->
+      <rect id="scanline" x="0" y="0" width="100%" height="1" fill="url(#scanline-grad)" opacity="0"/>
+      <defs>
+        <linearGradient id="scanline-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="transparent"/>
+          <stop offset="30%" stop-color="rgba(61,139,217,0.4)"/>
+          <stop offset="50%" stop-color="rgba(61,139,217,0.7)"/>
+          <stop offset="70%" stop-color="rgba(61,139,217,0.4)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <!-- Operation Info -->
+    <div class="operation-info" id="op-info">
+      <div class="op-row">
+        <div class="op-label">Operation</div>
+        <div class="op-value">PMERJ</div>
+      </div>
+      <div class="op-row">
+        <div class="op-label">Status</div>
+        <div class="op-value op-positive">Active</div>
+      </div>
+      <div class="op-row">
+        <div class="op-label">Signal</div>
+        <div class="op-value op-positive">Positive / Early</div>
+      </div>
+    </div>
+
+    <!-- Header Content -->
+    <div class="header-content">
+      <div class="header-eyebrow" id="h-eyebrow">EPQ // Performance Intelligence</div>
+      <h1 class="header-title" id="h-title">CAMPAIGN<br>COMMAND CENTER</h1>
+      <p class="header-subtitle" id="h-sub">Monitoramento estratégico de aquisição, mídia e conversão.</p>
+      <div class="header-meta" id="h-meta">
+        <div class="status-badge">
+          <div class="status-badge-dot"></div>
+          SYSTEM ONLINE
+        </div>
+        <div class="period-badge">23.08.2026 — 25.08.2026</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- KPI STRIP -->
+  <div class="kpi-strip" id="kpi-strip">
+    <div class="kpi-item">
+      <div class="kpi-label">Investimento</div>
+      <div class="kpi-value featured" id="kpi-invest">R$ 0</div>
+      <div class="kpi-sub">Total período</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-label">Conversas</div>
+      <div class="kpi-value" id="kpi-conv">0</div>
+      <div class="kpi-sub">Msg iniciadas</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-label">Custo / Conversa</div>
+      <div class="kpi-value" id="kpi-cpa">R$ 0</div>
+      <div class="kpi-sub">Média</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-label">Alcance</div>
+      <div class="kpi-value" id="kpi-reach">0</div>
+      <div class="kpi-sub">Pessoas únicas</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-label">Cliques</div>
+      <div class="kpi-value" id="kpi-clicks">0</div>
+      <div class="kpi-sub">Únicos no link</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-label">CPC</div>
+      <div class="kpi-value" id="kpi-cpc">R$ 0</div>
+      <div class="kpi-sub">Custo por clique</div>
+    </div>
+  </div>
+
+  <!-- PDF EXPORT -->
+  <div class="pdf-export-bar">
+    <button class="pdf-btn" id="pdf-export-btn" type="button">Exportar PDF</button>
+  </div>
+
+  <!-- PAGE BODY -->
+  <div class="page-body">
+
+    <!-- SECTION: CAMPAIGN -->
+    <div class="section-divider reveal" id="campaign">
+      <span class="divider-label">01 // Campaign Overview</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- Campaign Card -->
+    <div class="solid-card full-width reveal">
+      <div class="campaign-header-row">
+        <div>
+          <div class="section-eyebrow">Campanha Ativa</div>
+          <div class="section-title" style="margin-bottom:0">PMERJ — WhatsApp Leads</div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--epq-gray-500);margin-top:4px;letter-spacing:0.06em;">CA EPQ - Ronan // ID: 298968926901604</div>
+        </div>
+        <div class="campaign-status-pill">
+          <div class="campaign-status-dot"></div>
+          ACTIVE · 2 DIAS
+        </div>
+      </div>
+
+      <div class="campaign-metrics-grid">
+        <div class="camp-metric">
+          <div class="camp-metric-label">Valor Gasto</div>
+          <div class="camp-metric-val">R$ 45,06</div>
+        </div>
+        <div class="camp-metric">
+          <div class="camp-metric-label">Conversas</div>
+          <div class="camp-metric-val">13</div>
+        </div>
+        <div class="camp-metric">
+          <div class="camp-metric-label">CPM</div>
+          <div class="camp-metric-val">R$ 12,46</div>
+        </div>
+        <div class="camp-metric">
+          <div class="camp-metric-label">Cliques únicos</div>
+          <div class="camp-metric-val">33</div>
+        </div>
+      </div>
+
+      <!-- Mini chart bars showing ad split -->
+      <div>
+        <div style="font-family:var(--font-mono);font-size:9px;color:var(--epq-gray-500);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;">Distribuição do Gasto — Por Anúncio</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-family:var(--font-mono);font-size:10px;color:var(--epq-gray-700);">PMERJ — 2</span>
+              <span style="font-family:var(--font-mono);font-size:10px;color:var(--epq-gray-600);">R$ 21,17 · 47%</span>
+            </div>
+            <div class="mini-progress-bar"><div class="mini-progress-fill" data-width="47"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-family:var(--font-mono);font-size:10px;color:var(--epq-gray-700);">PMERJ</span>
+              <span style="font-family:var(--font-mono);font-size:10px;color:var(--epq-gray-600);">R$ 23,68 · 53%</span>
+            </div>
+            <div class="mini-progress-bar"><div class="mini-progress-fill" data-width="53"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: AD SETS -->
+    <div class="section-divider reveal" id="adsets">
+      <span class="divider-label">02 // Ad Set Structure</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- Hierarchy -->
+    <div class="glass-card reveal" style="grid-column: span 1;">
+      <div class="section-eyebrow">Estrutura Hierárquica</div>
+      <div class="section-title">Policia + Estudos</div>
+
+      <div class="hierarchy-tree">
+        <!-- Campaign -->
+        <div style="margin-bottom:8px;">
+          <div class="hierarchy-node campaign-node">
+            <div class="h-node-label dark">Campanha</div>
+            <div class="h-node-name dark">PMERJ — WhatsApp Leads</div>
+            <div class="h-node-meta dark">R$ 45,06 gasto · 13 conversas</div>
+          </div>
+        </div>
+
+        <!-- Connector -->
+        <div style="display:flex;padding-left:16px;margin-bottom:8px;">
+          <div style="width:1px;background:rgba(61,139,217,.3);margin-right:20px;min-height:8px;"></div>
+        </div>
+
+        <!-- Ad Set -->
+        <div style="padding-left:36px;margin-bottom:8px;">
+          <div class="hierarchy-node adset-node">
+            <div class="h-node-label blue">Conjunto de Anúncios</div>
+            <div class="h-node-name blue">Policia + Estudos</div>
+            <div class="h-node-meta">CPM: R$ 12,46 · CPC: R$ 1,29 · Alcance: 2.059</div>
+          </div>
+        </div>
+
+        <!-- Connector -->
+        <div style="display:flex;padding-left:52px;margin-bottom:8px;">
+          <div style="width:1px;background:rgba(61,139,217,.2);margin-right:20px;min-height:8px;"></div>
+        </div>
+
+        <!-- Ads -->
+        <div style="padding-left:72px;display:flex;flex-direction:column;gap:8px;">
+          <div class="hierarchy-node" style="position:relative;">
+            <div style="position:absolute;top:12px;right:14px;background:rgba(61,139,217,.1);border:1px solid rgba(61,139,217,.25);border-radius:100px;padding:2px 8px;font-family:var(--font-mono);font-size:7px;color:var(--epq-blue-600);letter-spacing:0.12em;text-transform:uppercase;">LÍDER</div>
+            <div class="h-node-label default">Anúncio</div>
+            <div class="h-node-name default">PMERJ — 2</div>
+            <div class="h-node-meta">8 conv · R$ 2,65/conv · 19 cliques · R$ 1,06 CPC</div>
+          </div>
+          <div class="hierarchy-node">
+            <div class="h-node-label default">Anúncio</div>
+            <div class="h-node-name default">PMERJ</div>
+            <div class="h-node-meta">5 conv · R$ 4,74/conv · 14 cliques · R$ 1,58 CPC</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ad Set Stats -->
+    <div class="glass-card reveal" style="grid-column: span 1;">
+      <div class="section-eyebrow">Métricas do Conjunto</div>
+      <div class="section-title">Desempenho Agregado</div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="padding:16px;background:var(--epq-blue-50);border:1px solid rgba(61,139,217,.2);border-radius:var(--radius-md);">
+          <div style="font-family:var(--font-mono);font-size:9px;color:var(--epq-blue-600);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px;">Custo / Resultado</div>
+          <div style="font-family:var(--font-mono);font-size:36px;font-weight:500;color:var(--epq-blue-800);letter-spacing:-0.03em;line-height:1;">R$ 3,47</div>
+          <div style="font-family:var(--font-mono);font-size:9px;color:var(--epq-gray-500);margin-top:4px;letter-spacing:0.06em;">Por conversa iniciada via mensagem</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div style="padding:14px;background:var(--epq-white);border:1px solid var(--epq-gray-200);border-radius:var(--radius-md);">
+            <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-500);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;">Alcance</div>
+            <div style="font-family:var(--font-mono);font-size:22px;font-weight:500;color:var(--epq-gray-900);letter-spacing:-0.02em;">2.059</div>
+          </div>
+          <div style="padding:14px;background:var(--epq-white);border:1px solid var(--epq-gray-200);border-radius:var(--radius-md);">
+            <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-500);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;">CPM</div>
+            <div style="font-family:var(--font-mono);font-size:22px;font-weight:500;color:var(--epq-gray-900);letter-spacing:-0.02em;">R$ 12,46</div>
+          </div>
+          <div style="padding:14px;background:var(--epq-white);border:1px solid var(--epq-gray-200);border-radius:var(--radius-md);">
+            <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-500);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;">Cliques Link</div>
+            <div style="font-family:var(--font-mono);font-size:22px;font-weight:500;color:var(--epq-gray-900);letter-spacing:-0.02em;">33</div>
+          </div>
+          <div style="padding:14px;background:var(--epq-white);border:1px solid var(--epq-gray-200);border-radius:var(--radius-md);">
+            <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-500);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;">CPC</div>
+            <div style="font-family:var(--font-mono);font-size:22px;font-weight:500;color:var(--epq-gray-900);letter-spacing:-0.02em;">R$ 1,29</div>
+          </div>
+        </div>
+
+        <!-- CTR visual -->
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--epq-gray-500);letter-spacing:0.1em;text-transform:uppercase;">Click-Through Rate (Cliques / Alcance)</div>
+            <div style="font-family:var(--font-mono);font-size:11px;font-weight:500;color:var(--epq-gray-700);">1,60%</div>
+          </div>
+          <div class="mini-progress-bar" style="height:3px;">
+            <div class="mini-progress-fill" data-width="32" style="background:var(--epq-blue-400);"></div>
+          </div>
+          <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-400);margin-top:4px;letter-spacing:0.06em;">Referência de mercado: 1–3%</div>
+        </div>
+
+        <!-- Conversion rate -->
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--epq-gray-500);letter-spacing:0.1em;text-transform:uppercase;">Conv. Rate (Conv / Cliques)</div>
+            <div style="font-family:var(--font-mono);font-size:11px;font-weight:500;color:var(--epq-gray-700);">39,4%</div>
+          </div>
+          <div class="mini-progress-bar" style="height:3px;">
+            <div class="mini-progress-fill" data-width="79" style="background:var(--epq-blue-600);"></div>
+          </div>
+          <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-400);margin-top:4px;letter-spacing:0.06em;">Alta taxa click-to-message</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: CREATIVE INTELLIGENCE -->
+    <div class="section-divider reveal" id="creatives">
+      <span class="divider-label">03 // Creative Intelligence</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="solid-card full-width reveal">
+      <div class="section-eyebrow">Comparação de Criativos</div>
+      <div class="section-title">Creative Intelligence — PMERJ</div>
+
+      <div class="creative-comparison">
+        <!-- Leader -->
+        <div class="creative-card leader">
+          <div class="leader-badge">CURRENT LEADER</div>
+          <div style="margin-top:12px;">
+            <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-500);letter-spacing:0.15em;text-transform:uppercase;">Anúncio</div>
+            <div class="creative-name">PMERJ — 2</div>
+          </div>
+          <div class="cpm-hero leader">R$ 2,65</div>
+          <div class="cpm-label">Custo por conversa iniciada</div>
+
+          <div class="creative-stats">
+            <div class="creative-stat-row">
+              <span class="cs-label">Conversas</span>
+              <span class="cs-val">8</span>
+            </div>
+            <div class="creative-stat-row">
+              <span class="cs-label">Valor gasto</span>
+              <span class="cs-val">R$ 21,17</span>
+            </div>
+            <div class="creative-stat-row">
+              <span class="cs-label">Alcance</span>
+              <span class="cs-val">1.169</span>
+            </div>
+            <div class="creative-stat-row">
+              <span class="cs-label">CPM</span>
+              <span class="cs-val">R$ 11,85</span>
+            </div>
+            <div class="creative-stat-row">
+              <span class="cs-label">Cliques únicos</span>
+              <span class="cs-val">19</span>
+            </div>
+            <div class="creative-stat-row">
+              <span class="cs-label">CPC</span>
+              <span class="cs-val">R$ 1,06</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Challenger -->
+        <div class="creative-card">
+          <div style="margin-top:4px;">
+            <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-500);letter-spacing:0.15em;text-transform:uppercase;">Anúncio</div>
+            <div class="creative-name">PMERJ</div>
+          </div>
+          <div class="cpm-hero">R$ 4,74</div>
+          <div class="cpm-label">Custo por conversa iniciada</div>
+
+          <div class="creative-stats">
+            <div class="creative-stat-row">
+              <span class="cs-label">Conversas</span>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="cs-val">5</span>
+                <span class="delta-negative">−37%</span>
+              </div>
+            </div>
+            <div class="creative-stat-row">
+              <span class="cs-label">Valor gasto</span>
+              <span class="cs-val">R$ 23,68</span>
+            </div>
+            <div class="creative-stat-row">
+              <span class="cs-label">Alcance</span>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="cs-val">1.184</span>
+                <span class="delta-positive">+1,3%</span>
+              </div>
+            </div>
+            <div class="creative-stat-row">
+              <span class="cs-label">CPM</span>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="cs-val">R$ 13,02</span>
+                <span class="delta-negative">+9,8%</span>
+              </div>
+            </div>
+            <div class="creative-stat-row">
+              <span class="cs-label">Cliques únicos</span>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="cs-val">14</span>
+                <span class="delta-negative">−26%</span>
+              </div>
+            </div>
+            <div class="creative-stat-row">
+              <span class="cs-label">CPC</span>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="cs-val">R$ 1,58</span>
+                <span class="delta-negative">+49%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sample-warning" style="margin-top:16px;">
+        ⚠ EARLY PHASE DATA — Amostra de apenas 2 dias. Diferença de desempenho é promissora mas ainda não estatisticamente conclusiva. Continue monitorando antes de escalar.
+      </div>
+    </div>
+
+    <!-- SECTION: FUNNEL -->
+    <div class="section-divider reveal" id="funnel">
+      <span class="divider-label">04 // Conversion Funnel</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="glass-card reveal" style="grid-column: span 1;">
+      <div class="section-eyebrow">Funil de Conversão</div>
+      <div class="section-title">Pipeline de Aquisição</div>
+
+      <div class="funnel-container">
+        <!-- Stage 1 -->
+        <div class="funnel-stage">
+          <div style="width:100px;text-align:right;flex-shrink:0;">
+            <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-500);letter-spacing:0.1em;text-transform:uppercase;">Alcance</div>
+          </div>
+          <div class="funnel-bar-wrap">
+            <div class="funnel-bar" data-width="100">
+              <span class="funnel-bar-label">2.059 pessoas</span>
+            </div>
+          </div>
+          <div class="funnel-val">2.059</div>
+        </div>
+
+        <div class="funnel-arrow" style="padding-left:116px;text-align:left;">↓ &nbsp;<span style="font-size:8px;color:var(--epq-gray-400);">1,60% CTR</span></div>
+
+        <!-- Stage 2 -->
+        <div class="funnel-stage">
+          <div style="width:100px;text-align:right;flex-shrink:0;">
+            <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-500);letter-spacing:0.1em;text-transform:uppercase;">Cliques</div>
+          </div>
+          <div class="funnel-bar-wrap">
+            <div class="funnel-bar" data-width="40">
+              <span class="funnel-bar-label">33 cliques únicos</span>
+            </div>
+          </div>
+          <div class="funnel-val">33</div>
+        </div>
+
+        <div class="funnel-arrow" style="padding-left:116px;text-align:left;">↓ &nbsp;<span style="font-size:8px;color:var(--epq-gray-400);">39,4% conv.</span></div>
+
+        <!-- Stage 3 -->
+        <div class="funnel-stage">
+          <div style="width:100px;text-align:right;flex-shrink:0;">
+            <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-500);letter-spacing:0.1em;text-transform:uppercase;">Conversas</div>
+          </div>
+          <div class="funnel-bar-wrap">
+            <div class="funnel-bar" data-width="20">
+              <span class="funnel-bar-label">13 iniciadas</span>
+            </div>
+          </div>
+          <div class="funnel-val">13</div>
+        </div>
+
+        <div class="funnel-arrow" style="padding-left:116px;text-align:left;">↓</div>
+
+        <!-- Stage 4 - Pending -->
+        <div class="funnel-stage">
+          <div style="width:100px;text-align:right;flex-shrink:0;">
+            <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-400);letter-spacing:0.1em;text-transform:uppercase;">Respondidas</div>
+          </div>
+          <div class="funnel-bar-wrap">
+            <div class="funnel-bar pending" data-width="15">
+              <span class="funnel-bar-label">—</span>
+            </div>
+          </div>
+          <div class="funnel-val pending">PENDING</div>
+        </div>
+
+        <div class="funnel-arrow" style="padding-left:116px;text-align:left;">↓</div>
+
+        <!-- Stage 5 -->
+        <div class="funnel-stage">
+          <div style="width:100px;text-align:right;flex-shrink:0;">
+            <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-400);letter-spacing:0.1em;text-transform:uppercase;">Qualificados</div>
+          </div>
+          <div class="funnel-bar-wrap">
+            <div class="funnel-bar pending" data-width="10">
+              <span class="funnel-bar-label">—</span>
+            </div>
+          </div>
+          <div class="funnel-val pending">PENDING</div>
+        </div>
+
+        <div class="funnel-arrow" style="padding-left:116px;text-align:left;">↓</div>
+
+        <!-- Stage 6 -->
+        <div class="funnel-stage">
+          <div style="width:100px;text-align:right;flex-shrink:0;">
+            <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-400);letter-spacing:0.1em;text-transform:uppercase;">Matrículas</div>
+          </div>
+          <div class="funnel-bar-wrap">
+            <div class="funnel-bar pending" data-width="5">
+              <span class="funnel-bar-label">—</span>
+            </div>
+          </div>
+          <div class="funnel-val pending">PENDING</div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;padding:10px 14px;background:rgba(100,110,120,.06);border-left:2px solid var(--epq-gray-300);border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-family:var(--font-mono);font-size:9px;color:var(--epq-gray-600);letter-spacing:0.04em;line-height:1.5;">
+        DATA PENDING — Dados das etapas inferiores do funil não disponíveis neste período. Configurar integração de CRM/vendas para visibilidade completa do pipeline.
+      </div>
+    </div>
+
+    <!-- SECTION: DIAGNOSTIC -->
+    <div class="glass-card reveal" id="diagnostic">
+      <div class="section-eyebrow">Análise do Sistema</div>
+      <div class="section-title">System Diagnostic</div>
+
+      <div class="diagnostic-items">
+        <div class="diag-item">
+          <div class="diag-icon positive">▲</div>
+          <div class="diag-content">
+            <div class="diag-tag positive">Signal Positive</div>
+            <div class="diag-text">Custo por conversa de R$ 3,47 é competitivo para captação via WhatsApp no segmento educacional de concursos. PMERJ — 2 mostrando eficiência superior com R$ 2,65/conv.</div>
+            <div class="diag-sub">Métrica principal dentro do esperado para fase inicial</div>
+          </div>
+        </div>
+
+        <div class="diag-item">
+          <div class="diag-icon attention">△</div>
+          <div class="diag-content">
+            <div class="diag-tag attention">Attention</div>
+            <div class="diag-text">Amostra de apenas 2 dias e 13 conversas totais. A diferença entre os criativos (R$ 2,65 vs R$ 4,74) é expressiva, mas pode ser resultado de variação aleatória com volume pequeno.</div>
+            <div class="diag-sub">Aguardar 50+ conversas por criativo para conclusão estatística</div>
+          </div>
+        </div>
+
+        <div class="diag-item">
+          <div class="diag-icon gap">○</div>
+          <div class="diag-content">
+            <div class="diag-tag gap">Data Gap</div>
+            <div class="diag-text">Sem dados de qualificação, taxa de resposta e conversão em matrículas. Não é possível calcular ROAS ou custo real por aluno captado sem essas métricas.</div>
+            <div class="diag-sub">Conectar CRM / acompanhamento de vendas para fechar o funil</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: RECOMMENDATIONS -->
+    <div class="section-divider reveal" id="actions">
+      <span class="divider-label">05 // Command Recommendations</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="solid-card full-width reveal">
+      <div class="section-eyebrow">Protocolo de Ação</div>
+      <div class="section-title">Command Recommendations</div>
+
+      <div class="rec-grid">
+        <div class="rec-card">
+          <div class="rec-number">01 // MAINTAIN</div>
+          <div class="rec-action">Manter Coleta</div>
+          <div class="rec-desc">Continue veiculando ambos os criativos pelos próximos 5–7 dias. É necessário acumular volume mínimo de dados antes de qualquer decisão de otimização.</div>
+        </div>
+
+        <div class="rec-card">
+          <div class="rec-number">02 // MONITOR</div>
+          <div class="rec-action">Monitorar Diferença</div>
+          <div class="rec-desc">Acompanhe diariamente a evolução do custo por conversa de cada criativo. Se PMERJ — 2 mantiver vantagem com 30+ conversas, considere aumentar seu orçamento gradualmente.</div>
+        </div>
+
+        <div class="rec-card">
+          <div class="rec-number">03 // VALIDATE</div>
+          <div class="rec-action">Validar Qualidade</div>
+          <div class="rec-desc">Quantidade de conversas iniciadas não garante qualidade de lead. Meça taxa de resposta, interesse real e progresso no funil de vendas para cada criativo.</div>
+        </div>
+
+        <div class="rec-card">
+          <div class="rec-number">04 // HOLD</div>
+          <div class="rec-action">Não Escalar Ainda</div>
+          <div class="rec-desc">Evite aumentar significativamente o budget ou criar novos conjuntos antes de validar a qualidade das conversas e entender o custo real por matrícula.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end page-body -->
+
+  <!-- FOOTER -->
+  <footer class="page-footer">
+    <div class="footer-brand">EPQ — Estudando por Questões // Performance Command Center</div>
+    <div class="footer-timestamp">Gerado em 25.08.2026 · Período: 23–25 ago 2026 · CA EPQ - Ronan</div>
+  </footer>
+
+</main>
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-item active">
+    <svg width="18" height="18" fill="none" viewBox="0 0 16 16"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.2"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.2"/></svg>
+    <span class="mobile-nav-label">Overview</span>
+  </div>
+  <div class="mobile-nav-item">
+    <svg width="18" height="18" fill="none" viewBox="0 0 16 16"><path d="M2 12 L8 4 L14 12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="mobile-nav-label">Campaign</span>
+  </div>
+  <div class="mobile-nav-item">
+    <svg width="18" height="18" fill="none" viewBox="0 0 16 16"><rect x="1.5" y="1.5" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4 10l2.5-3 2 2 1.5-2 2 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="mobile-nav-label">Creatives</span>
+  </div>
+  <div class="mobile-nav-item">
+    <svg width="18" height="18" fill="none" viewBox="0 0 16 16"><path d="M2 3h12l-4 5v5l-4-2V8L2 3z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+    <span class="mobile-nav-label">Funnel</span>
+  </div>
+  <div class="mobile-nav-item">
+    <svg width="18" height="18" fill="none" viewBox="0 0 16 16"><path d="M3 8h8M9 5l3 3-3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="mobile-nav-label">Actions</span>
+  </div>
+</nav>
+
+<script>
+// ═══════════════════════════════════════ GSAP ANIMATIONS
+gsap.registerPlugin(ScrollTrigger);
+
+// Check reduced motion preference
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (!prefersReducedMotion) {
+
+  // ── HEADER ENTRANCE
+  const headerTL = gsap.timeline({ delay: 0.1 });
+
+  // Tactical lines draw-in
+  headerTL.fromTo('.tactical-line',
+    { strokeDashoffset: 1000 },
+    { strokeDashoffset: 0, duration: 2.5, stagger: 0.25, ease: 'power2.out' },
+    0
+  );
+
+  // Data nodes fade in
+  headerTL.fromTo('.data-node',
+    { opacity: 0, scale: 0 },
+    { opacity: 1, scale: 1, duration: 0.6, stagger: 0.2, ease: 'back.out(2)' },
+    0.8
+  );
+
+  // Eyebrow
+  headerTL.fromTo('#h-eyebrow',
+    { opacity: 0, y: 10, filter: 'blur(4px)' },
+    { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.6, ease: 'power2.out' },
+    0.5
+  );
+
+  // Title
+  headerTL.fromTo('#h-title',
+    { opacity: 0, y: 20, filter: 'blur(6px)' },
+    { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.9, ease: 'power2.out' },
+    0.7
+  );
+
+  // Subtitle
+  headerTL.fromTo('#h-sub',
+    { opacity: 0, y: 15 },
+    { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' },
+    1.0
+  );
+
+  // Meta
+  headerTL.fromTo('#h-meta',
+    { opacity: 0, y: 10 },
+    { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
+    1.2
+  );
+
+  // Operation info
+  headerTL.fromTo('#op-info',
+    { opacity: 0, x: 20 },
+    { opacity: 1, x: 0, duration: 0.8, ease: 'power2.out' },
+    0.9
+  );
+
+  // ── CORE PULSE
+  gsap.to('#core-pulse', {
+    attr: { r: 12 },
+    opacity: 0.6,
+    duration: 2.5,
+    repeat: -1,
+    yoyo: true,
+    ease: 'sine.inOut'
+  });
+
+  // ── SCANLINE
+  const scanlineTL = gsap.timeline({ repeat: -1, repeatDelay: 8 });
+  scanlineTL
+    .set('#scanline', { opacity: 0, attr: { y: 0 } })
+    .to('#scanline', { opacity: 1, duration: 0.1 }, 15)
+    .to('#scanline', { attr: { y: 480 }, duration: 1.8, ease: 'none' }, 15.1)
+    .to('#scanline', { opacity: 0, duration: 0.2 }, 16.9);
+
+  // ── GRID DRIFT (subtle parallax feel)
+  gsap.to('#grid-layer', {
+    x: 15,
+    y: 8,
+    duration: 18,
+    repeat: -1,
+    yoyo: true,
+    ease: 'sine.inOut'
+  });
+
+  // ── MOUSE PARALLAX ON HEADER
+  const header = document.querySelector('.command-header');
+  if (header) {
+    const moveCore = gsap.quickTo('.command-core-wrapper', 'x', { duration: 0.8, ease: 'power2.out' });
+    const moveCoreY = gsap.quickTo('.command-core-wrapper', 'y', { duration: 0.8, ease: 'power2.out' });
+    const moveGrid = gsap.quickTo('#grid-layer', 'x', { duration: 1.2, ease: 'power2.out' });
+
+    header.addEventListener('mousemove', (e) => {
+      const rect = header.getBoundingClientRect();
+      const xPct = (e.clientX - rect.left) / rect.width - 0.5;
+      const yPct = (e.clientY - rect.top) / rect.height - 0.5;
+      moveCore(xPct * 14);
+      moveCoreY(yPct * 10);
+      moveGrid(xPct * 8);
+    });
+
+    header.addEventListener('mouseleave', () => {
+      gsap.to('.command-core-wrapper', { x: 0, y: 0, duration: 1.2, ease: 'power2.out' });
+      gsap.to('#grid-layer', { x: 0, duration: 1.5, ease: 'power2.out' });
+    });
+  }
+
+  // ── KPI STRIP REVEAL
+  gsap.fromTo('.kpi-item',
+    { opacity: 0, y: 20 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      stagger: 0.08,
+      ease: 'power2.out',
+      delay: 1.4
+    }
+  );
+
+  // ── KPI COUNTERS
+  function animateCounter(el, target, prefix = '', suffix = '', decimals = 0) {
+    const obj = { val: 0 };
+    gsap.to(obj, {
+      val: target,
+      duration: 1.6,
+      delay: 1.5,
+      ease: 'power2.out',
+      onUpdate: () => {
+        el.textContent = prefix + obj.val.toFixed(decimals) + suffix;
+      }
+    });
+  }
+
+  animateCounter(document.getElementById('kpi-invest'), 45.06, 'R$ ', '', 2);
+  animateCounter(document.getElementById('kpi-conv'), 13, '', '', 0);
+  animateCounter(document.getElementById('kpi-cpa'), 3.47, 'R$ ', '', 2);
+  animateCounter(document.getElementById('kpi-reach'), 2059, '', '', 0);
+  animateCounter(document.getElementById('kpi-clicks'), 33, '', '', 0);
+  animateCounter(document.getElementById('kpi-cpc'), 1.29, 'R$ ', '', 2);
+
+  // ── SCROLL REVEALS
+  gsap.utils.toArray('.reveal').forEach((el) => {
+    gsap.fromTo(el,
+      { opacity: 0, y: 30, filter: 'blur(6px)' },
+      {
+        opacity: 1,
+        y: 0,
+        filter: 'blur(0px)',
+        duration: 0.8,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 88%',
+          toggleActions: 'play none none none'
+        }
+      }
+    );
+  });
+
+  gsap.utils.toArray('.glass-card, .solid-card').forEach((el, i) => {
+    gsap.fromTo(el,
+      { opacity: 0, y: 32 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.75,
+        ease: 'power2.out',
+        delay: i * 0.05,
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 90%',
+          toggleActions: 'play none none none'
+        }
+      }
+    );
+  });
+
+  // ── PROGRESS BARS ANIMATE ON SCROLL
+  gsap.utils.toArray('.mini-progress-fill').forEach((el) => {
+    const targetWidth = el.dataset.width + '%';
+    gsap.fromTo(el,
+      { width: '0%' },
+      {
+        width: targetWidth,
+        duration: 1.2,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 92%',
+          toggleActions: 'play none none none'
+        }
+      }
+    );
+  });
+
+  // ── FUNNEL BARS ANIMATE
+  gsap.utils.toArray('.funnel-bar:not(.pending)').forEach((el) => {
+    const targetWidth = el.dataset.width + '%';
+    gsap.fromTo(el,
+      { width: '0%' },
+      {
+        width: targetWidth,
+        duration: 1.0,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 92%',
+          toggleActions: 'play none none none'
+        }
+      }
+    );
+  });
+
+  gsap.utils.toArray('.funnel-bar.pending').forEach((el) => {
+    const targetWidth = el.dataset.width + '%';
+    gsap.fromTo(el,
+      { width: '0%' },
+      {
+        width: targetWidth,
+        duration: 0.8,
+        ease: 'power2.out',
+        delay: 0.3,
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 92%',
+          toggleActions: 'play none none none'
+        }
+      }
+    );
+  });
+
+} else {
+  // Reduced motion: just show everything
+  document.querySelectorAll('.glass-card, .solid-card, .kpi-item, .reveal, #h-eyebrow, #h-title, #h-sub, #h-meta, #op-info').forEach(el => {
+    el.style.opacity = '1';
+    el.style.transform = 'none';
+    el.style.filter = 'none';
+  });
+
+  document.querySelectorAll('.kpi-item').forEach(el => el.style.opacity = '1');
+
+  document.getElementById('kpi-invest').textContent = 'R$ 45,06';
+  document.getElementById('kpi-conv').textContent = '13';
+  document.getElementById('kpi-cpa').textContent = 'R$ 3,47';
+  document.getElementById('kpi-reach').textContent = '2.059';
+  document.getElementById('kpi-clicks').textContent = '33';
+  document.getElementById('kpi-cpc').textContent = 'R$ 1,29';
+
+  document.querySelectorAll('.mini-progress-fill').forEach(el => {
+    el.style.width = el.dataset.width + '%';
+  });
+  document.querySelectorAll('.funnel-bar').forEach(el => {
+    el.style.width = el.dataset.width + '%';
+  });
+}
+
+// ── MOBILE NAV active state
+document.querySelectorAll('.mobile-nav-item').forEach((item, i) => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.mobile-nav-item').forEach(n => n.classList.remove('active'));
+    item.classList.add('active');
+  });
+});
+
+// ── SIDEBAR nav active on scroll
+const sections = ['overview', 'campaign', 'adsets', 'creatives', 'funnel', 'diagnostic', 'actions'];
+const navItems = document.querySelectorAll('.nav-item');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navItems.forEach(item => {
+        item.classList.toggle('active', item.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+
+sections.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) observer.observe(el);
+});
+
+// ── PDF EXPORT
+const pdfBtn = document.getElementById('pdf-export-btn');
+if (pdfBtn) {
+  pdfBtn.addEventListener('click', () => {
+    window.print();
+  });
+}
+
+</script>
+</body>
+</html>
