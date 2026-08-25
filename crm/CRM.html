@@ -341,11 +341,11 @@
     <div class="status" style="margin-bottom:14px"><span class="pulse"></span>Acesso restrito</div>
     <div class="form">
       <label>Login</label>
-      <input v-model="loginForm.username" placeholder="seu.login" />
+      <input v-model="loginForm.username" placeholder="seu.login" autocomplete="username" />
       <label>Senha</label>
-      <input v-model="loginForm.password" :type="showPassword ? 'text' : 'password'" placeholder="••••••••" />
+      <input v-model="loginForm.password" :type="showPassword ? 'text' : 'password'" placeholder="••••••••" autocomplete="current-password" />
       <button type="button" class="btn" @click="showPassword = !showPassword" style="padding:8px 10px;font-size:12px;">{{ showPassword ? 'Ocultar' : 'Mostrar' }}</button>
-      <button class="btn primary" @click="doLogin()">Entrar no sistema</button>
+      <button class="btn primary" @click="doLogin()" :disabled="loginLoading">{{ loginLoading ? 'Entrando...' : 'Entrar no sistema' }}</button>
       <div class="hint" style="color:#f87171;font-size:12px;">{{ loginError }}</div>
     </div>
     <div class="meta" style="margin-top:12px;font-family:var(--font-mono);font-size:10px;color:#5c6a82;text-align:center;letter-spacing:.08em;">ADMIN MASTER · GESTOR · OPERACIONAL</div>
@@ -483,7 +483,6 @@
       const loginError = ref('');
       const showPassword = ref(false);
       const loginLoading = ref(false);
-      const isOperational = computed(() => userProfile() === 'OPERACIONAL');
 
       function readSession(){
         try {
@@ -661,7 +660,7 @@
 
       return {
         search, filterStage, tab, leadModal, createModal, currentLead, newLead, stages, filtered, kpis, audit, users, byStage,
-        openLead, closeLead, saveLead, openCreate, closeCreate, createLead, logContact, advanceStage, formatDate, formatDateTime, logout, isAdmin, isOperational, user, loginForm, loginError, doLogin, showLoginModal, showPassword, loginLoading, fillLogin,
+        openLead, closeLead, saveLead, openCreate, closeCreate, createLead, logContact, advanceStage, formatDate, formatDateTime, logout, isAdmin, user, loginForm, loginError, doLogin, showLoginModal, showPassword, loginLoading, fillLogin,
       };
     }
   }).mount('#app');
