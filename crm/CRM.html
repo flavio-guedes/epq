@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <style>
   :root{
     --bg-deep:#04070f;
@@ -124,13 +125,13 @@
         <div class="sub">Painel comercial EPQ</div>
       </div>
     </div>
-    <div class="actions" v-if="user">
-      <span style="color:#7d9cbd;font-size:13px;">{{ user.nome }} · {{ user.perfil }}</span>
-      <button class="btn" @click="logout()">Sair</button>
+    <div class="actions">
+      <button class="btn primary" @click="openCreate()">Novo lead</button>
+      <button class="btn" @click="exportXLS()">Exportar XLS</button>
     </div>
   </header>
 
-  <section class="panel" v-if="isOperational">
+  <section class="panel">
     <div class="kpis">
       <div class="kpi"><div class="num">{{ kpis.total }}</div><div class="label">Total</div></div>
       <div class="kpi"><div class="num">{{ kpis.new }}</div><div class="label">Novos</div></div>
@@ -141,59 +142,21 @@
     </div>
   </section>
 
-  <section class="panel" v-if="isOperational">
-    <div class="agenda">
-      <div class="agenda-col">
-        <div class="agenda-title">Atrasados</div>
-        <div class="agenda-item" v-for="lead in agenda.late" :key="lead.id" @click="openLead(lead)">
-          <div class="name">{{ lead.name }}</div>
-          <div class="meta">{{ lead.course }} · {{ formatDate(lead.nextFollowUp) }}</div>
-        </div>
-        <div v-if="!agenda.late.length" style="color:#7d9cbd;font-size:13px;">Nenhum</div>
-      </div>
-      <div class="agenda-col">
-        <div class="agenda-title">Hoje</div>
-        <div class="agenda-item" v-for="lead in agenda.today" :key="lead.id" @click="openLead(lead)">
-          <div class="name">{{ lead.name }}</div>
-          <div class="meta">{{ lead.course }} · {{ formatDate(lead.nextFollowUp) }}</div>
-        </div>
-        <div v-if="!agenda.today.length" style="color:#7d9cbd;font-size:13px;">Nenhum</div>
-      </div>
-      <div class="agenda-col">
-        <div class="agenda-title">Próximos</div>
-        <div class="agenda-item" v-for="lead in agenda.upcoming" :key="lead.id" @click="openLead(lead)">
-          <div class="name">{{ lead.name }}</div>
-          <div class="meta">{{ lead.course }} · {{ formatDate(lead.nextFollowUp) }}</div>
-        </div>
-        <div v-if="!agenda.upcoming.length" style="color:#7d9cbd;font-size:13px;">Nenhum</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="panel" v-if="isAdmin">
-    <div class="kpis">
-      <div class="kpi"><div class="num">{{ kpis.total }}</div><div class="label">Total</div></div>
-      <div class="kpi"><div class="num">{{ kpis.new }}</div><div class="label">Novos</div></div>
-      <div class="kpi"><div class="num">{{ kpis.today }}</div><div class="label">Hoje</div></div>
-      <div class="kpi"><div class="num" style="color:#f87171">{{ kpis.late }}</div><div class="label">Atrasados</div></div>
-      <div class="kpi"><div class="num" style="color:#fbbf24">{{ kpis.hot }}</div><div class="label">Quentes</div></div>
-      <div class="kpi"><div class="num" style="color:#34d399">{{ kpis.converted }}</div><div class="label">Convertidos</div></div>
-    </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
-      <button class="btn primary" @click="exportXLS()">Exportar XLS</button>
-    </div>
-  </section>
-
-  <section class="panel" v-if="isAdmin">
+  <section class="panel">
     <div class="tabs">
       <div class="tab" :class="{active:tab==='leads'}" @click="tab='leads'">Leads</div>
       <div class="tab" :class="{active:tab==='funnel'}" @click="tab='funnel'">Funil</div>
-      <div class="tab" :class="{active:tab==='audit'}" @click="tab='audit'" v-if="isAdmin">Auditoria</div>
-      <div class="tab" :class="{active:tab==='users'}" @click="tab='users'" v-if="isAdmin">Usuários</div>
     </div>
 
     <div v-if="tab==='leads'">
-      <div class="table-wrap">
+      <div class="toolbar" style="margin-top:12px;">
+        <input class="search" v-model="search" placeholder="Buscar por nome, WhatsApp, curso ou origem..." />
+        <select class="filter-select" v-model="filterStage">
+          <option value="">Todas as etapas</option>
+          <option v-for="s in stages" :key="s" :value="s">{{ s }}</option>
+        </select>
+      </div>
+      <div class="table-wrap" style="margin-top:12px;">
         <table>
           <thead>
             <tr>
@@ -206,7 +169,6 @@
               <th>Temperatura</th>
               <th>Etapa</th>
               <th>Status</th>
-              <th>Responsável</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -221,7 +183,6 @@
               <td><span class="badge" :class="lead.temperature.toLowerCase()">{{ lead.temperature }}</span></td>
               <td>{{ lead.stage }}</td>
               <td>{{ lead.status }}</td>
-              <td>{{ lead.ownerName || lead.ownerId }}</td>
               <td><button class="btn" @click="openLead(lead)">Abrir</button></td>
             </tr>
           </tbody>
@@ -235,62 +196,6 @@
           <div class="name">{{ stage }}</div>
           <div class="count">{{ byStage(stage) }}</div>
         </div>
-      </div>
-    </div>
-
-    <div v-if="tab==='audit'">
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Data</th>
-              <th>Usuário</th>
-              <th>Ação</th>
-              <th>Lead</th>
-              <th>Campo</th>
-              <th>Antes</th>
-              <th>Depois</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="log in audit" :key="log.id">
-              <td>{{ formatDateTime(log.created_at) }}</td>
-              <td>{{ log.user_id }}</td>
-              <td>{{ log.acao }}</td>
-              <td>{{ log.lead_id }}</td>
-              <td>{{ log.campo }}</td>
-              <td>{{ log.valor_anterior }}</td>
-              <td>{{ log.valor_novo }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div v-if="tab==='users'">
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>E-mail</th>
-              <th>Perfil</th>
-              <th>Status</th>
-              <th>Criado em</th>
-              <th>Último acesso</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="u in users" :key="u.id">
-              <td>{{ u.nome }}</td>
-              <td>{{ u.email }}</td>
-              <td>{{ u.perfil }}</td>
-              <td>{{ u.status }}</td>
-              <td>{{ formatDate(u.created_at) }}</td>
-              <td>{{ formatDateTime(u.last_login) }}</td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
   </section>
@@ -412,22 +317,18 @@
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script>
   const { createApp, ref, computed, reactive } = Vue;
-  const API_BASE = (location.protocol === 'https:' && location.hostname !== '127.0.0.1' && location.hostname !== 'localhost') ? '' : 'http://127.0.0.1:5000';
+  const STORAGE_KEY = 'epq_crm_leads';
   const stages = ['Novo','Primeiro contato','Em conversa','Interessado','Negociação','Matriculado','Perdido'];
   function today(){ return new Date().toISOString().slice(0,10); }
-
-  async function api(path, options){
-    const res = await fetch(API_BASE + path, { ...options, headers: { 'content-type':'application/json', ...(options && options.headers ? options.headers : {}) } });
-    if (!res.ok){ const text = await res.text(); throw new Error(text || ('HTTP ' + res.status)); }
-    const ct = res.headers.get('content-type') || '';
-    return ct.includes('application/json') ? res.json() : res.text();
+  function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+  function readLeads(){
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
   }
+  function writeLeads(list){ localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
 
   createApp({
     setup(){
-      const leads = ref([]);
-      const users = ref([]);
-      const audit = ref([]);
+      const leads = ref(readLeads());
       const search = ref('');
       const filterStage = ref('');
       const tab = ref('leads');
@@ -435,53 +336,8 @@
       const createModal = ref(false);
       const currentLead = ref(null);
       const newLead = reactive({ name: '', whatsapp: '', course: '', source: '', stage: 'Novo', temperature: 'Morno', nextFollowUp: today(), nextTime: '09:00', nextType: 'WhatsApp', nextNote: '' });
-      const user = ref({ nome: 'Local', perfil: 'ADMIN_MASTER' });
-      const isAdmin = computed(() => true);
-      const isOperational = computed(() => false);
 
-      async function load(){
-        const data = await api('/leads');
-        leads.value = Array.isArray(data) ? data.map(fromApi) : [];
-      }
-      function fromApi(l){
-        return {
-          id: l.id,
-          name: l.nome,
-          phone: l.telefone || '',
-          email: l.email || '',
-          whatsapp: l.whatsapp || '',
-          course: l.produto || '',
-          source: l.origem || '',
-          createdAt: (l.created_at || '').slice(0,10),
-          lastContact: (l.updated_at || '').slice(0,10),
-          nextFollowUp: (l.proximo_followup || '').slice(0,10),
-          nextTime: '09:00',
-          nextType: l.proximo_tipo || '',
-          nextNote: l.proximo_nota || '',
-          temperature: l.temperatura || '',
-          stage: l.etapa || '',
-          status: l.status,
-          ownerId: l.responsavel_id,
-          ownerName: l.responsavel_id,
-          history: [],
-        };
-      }
-      function toApiPayload(lead){
-        return {
-          nome: lead.name,
-          telefone: lead.phone,
-          email: lead.email,
-          whatsapp: lead.whatsapp,
-          produto: lead.course,
-          origem: lead.source,
-          etapa: lead.stage,
-          temperatura: lead.temperature,
-          proximo_followup: lead.nextFollowUp || null,
-          proximo_tipo: lead.nextType || null,
-          proximo_nota: lead.nextNote || null,
-          status: lead.status,
-        };
-      }
+      function persist(){ writeLeads(leads.value); }
 
       const filtered = computed(()=>{
         const q = search.value.trim().toLowerCase();
@@ -517,18 +373,73 @@
       function formatDate(v){ return v || '—'; }
       function formatDateTime(v){ return v ? v.replace('T',' ').slice(0,19) : '—'; }
 
+      function fromApi(l){
+        return {
+          id: l.id || uid(),
+          name: l.nome || l.name || '',
+          phone: l.telefone || l.phone || '',
+          email: l.email || '',
+          whatsapp: l.whatsapp || '',
+          course: l.produto || l.course || '',
+          source: l.origem || l.source || '',
+          createdAt: (l.created_at || l.createdAt || '').slice(0,10),
+          lastContact: (l.updated_at || l.updatedAt || '').slice(0,10),
+          nextFollowUp: (l.proximo_followup || l.nextFollowUp || '').slice(0,10),
+          nextTime: l.nextTime || '09:00',
+          nextType: l.proximo_tipo || l.nextType || '',
+          nextNote: l.proximo_nota || l.nextNote || '',
+          temperature: l.temperatura || l.temperature || '',
+          stage: l.etapa || l.stage || '',
+          status: l.status || 'ativo',
+          ownerId: l.responsavel_id || l.ownerId || 'local',
+          ownerName: l.responsavel_id || l.ownerId || 'local',
+          history: Array.isArray(l.history) ? l.history : [],
+        };
+      }
+      function toLocalPayload(form){
+        return {
+          id: uid(),
+          name: form.name,
+          phone: form.phone || '',
+          email: form.email || '',
+          whatsapp: form.whatsapp,
+          course: form.course,
+          source: form.source,
+          createdAt: today(),
+          lastContact: today(),
+          nextFollowUp: form.nextFollowUp,
+          nextTime: form.nextTime,
+          nextType: form.nextType,
+          nextNote: form.nextNote,
+          temperature: form.temperature,
+          stage: form.stage,
+          status: 'ativo',
+          ownerId: 'local',
+          ownerName: 'local',
+          history: [],
+        };
+      }
+      function saveCurrent(){
+        if (!currentLead.value) return;
+        const idx = leads.value.findIndex(x => x.id === currentLead.value.id);
+        const payload = {
+          ...currentLead.value,
+          lastContact: today(),
+          updatedAt: today(),
+        };
+        if (idx >= 0){ leads.value[idx] = payload; } else { leads.value.unshift(payload); }
+        currentLead.value = payload;
+        persist();
+      }
+
       async function openLead(lead){
-        const full = await api('/leads/' + lead.id);
-        const loaded = fromApi(full);
-        loaded.history = await api('/interactions/' + loaded.id).catch(()=>[]);
-        currentLead.value = loaded;
+        const full = fromApi(lead);
+        currentLead.value = full;
         leadModal.value = true;
       }
       function closeLead(){ leadModal.value = false; currentLead.value = null; }
       async function saveLead(){
-        if (!currentLead.value) return;
-        await api('/leads/' + currentLead.value.id, { method:'PUT', body: JSON.stringify(toApiPayload(currentLead.value)) });
-        await load();
+        saveCurrent();
         closeLead();
       }
 
@@ -541,59 +452,65 @@
         Object.assign(newLead, { name:'', whatsapp:'', course:'', source:'', stage:'Novo', temperature:'Morno', nextFollowUp:today(), nextTime:'09:00', nextType:'WhatsApp', nextNote:'' });
       }
       async function createLead(){
-        const created = await api('/leads', { method:'POST', body: JSON.stringify(toApiPayload(newLead)) });
-        await load();
+        const payload = toLocalPayload(newLead);
+        leads.value.unshift(payload);
+        persist();
         resetForm();
         closeCreate();
       }
 
       async function logContact(type){
         if (!currentLead.value) return;
-        await api('/interactions', { method:'POST', body: JSON.stringify({ lead_id: currentLead.value.id, tipo: type, descricao: type + ' registrado' }) });
+        currentLead.value.history = currentLead.value.history || [];
+        currentLead.value.history.push({ id: uid(), date: today(), type, note: type + ' registrado' });
         currentLead.value.lastContact = today();
-        currentLead.value.history.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2,8), date: today(), type, note: type + ' registrado' });
+        persist();
       }
 
       async function advanceStage(){
         if (!currentLead.value) return;
         const idx = stages.indexOf(currentLead.value.stage);
-        if (idx < stages.length - 1){ currentLead.value.stage = stages[idx + 1]; await saveLead(); }
-      }
-
-      function logout(){
-        location.reload();
-      }
-
-      async function loadAdmin(){
-        if (isAdmin.value){
-          try { users.value = await api('/users'); } catch { users.value = []; }
-          try { audit.value = await api('/audit'); } catch { audit.value = []; }
+        if (idx < stages.length - 1){
+          currentLead.value.stage = stages[idx + 1];
+          await saveLead();
         }
       }
 
-      async function exportXLS(){
-        const res = await fetch(API_BASE + '/leads/export');
-        if (!res.ok) return;
-        const blob = await res.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'leads.xlsx';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        window.URL.revokeObjectURL(url);
+      function exportXLS(){
+        const ws = XLSX.utils.json_to_sheet(leads.value.map(l => ({
+          Nome: l.name,
+          WhatsApp: l.whatsapp,
+          Telefone: l.phone,
+          Email: l.email,
+          Curso: l.course,
+          Origem: l.source,
+          Entrada: l.createdAt,
+          'Próximo follow-up': l.nextFollowUp,
+          Hora: l.nextTime,
+          Temperatura: l.temperature,
+          Etapa: l.stage,
+          Status: l.status,
+          Observação: l.nextNote,
+        })));
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Leads');
+        XLSX.writeFile(wb, 'leads.xlsx');
       }
 
       async function init(){
-        await load();
-        await loadAdmin();
+        // seed simples se vazio
+        if (!leads.value.length){
+          leads.value = [
+            { id: uid(), name:'Exemplo A', phone:'', email:'', whatsapp:'', course:'Exemplo', source:'Manual', createdAt:today(), lastContact:today(), nextFollowUp:today(), nextTime:'09:00', nextType:'WhatsApp', nextNote:'Exemplo', temperature:'Morno', stage:'Novo', status:'ativo', ownerId:'local', ownerName:'local', history:[] }
+          ];
+          persist();
+        }
       }
       init();
 
       return {
-        search, filterStage, tab, leadModal, createModal, currentLead, newLead, stages, filtered, kpis, audit, users, byStage,
-        openLead, closeLead, saveLead, openCreate, closeCreate, createLead, logContact, advanceStage, formatDate, formatDateTime, logout, isAdmin, isOperational, user, exportXLS,
+        search, filterStage, tab, leadModal, createModal, currentLead, newLead, stages, filtered, kpis, agenda, byStage,
+        openLead, closeLead, saveLead, openCreate, closeCreate, createLead, logContact, advanceStage, formatDate, formatDateTime, exportXLS,
       };
     }
   }).mount('#app');
