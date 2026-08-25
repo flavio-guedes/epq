@@ -204,28 +204,7 @@
 </style>
 </head>
 <body>
-<div class="login-wrap" id="login-screen">
-  <div class="login-card">
-    <div class="brand" style="margin-bottom:14px">
-      <div class="brand-mark">EPQ</div>
-      <div>
-        <div class="brand-text">EPQ Central</div>
-        <div class="brand-sub">Gestão de Tarefas</div>
-      </div>
-    </div>
-    <div class="login-title">Central de Tarefas</div>
-    <div class="login-sub">Acesse com seu e-mail da equipe.</div>
-    <div class="login-field">
-      <label>E-mail</label>
-      <input id="login-email" type="email" placeholder="seu@email.com" autocomplete="email"/>
-    </div>
-    <button class="btn primary" style="width:100%;justify-content:center" id="login-submit" onclick="sendMagicLink()">Continuar</button>
-    <div class="login-error" id="login-error"></div>
-    <div class="login-hint">Enviaremos um link de acesso. Não pedimos senha nesta versão.</div>
-  </div>
-</div>
-
-<div class="app hidden" id="app">
+<div class="app" id="app">
   <aside class="sidebar" id="sidebar">
     <div class="brand">
       <div class="brand-mark">EPQ</div>
@@ -375,15 +354,22 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 /* =========================================================
    CONFIGURE AQUI os dados do seu projeto Supabase.
    NÃO comite a chave real em repositório público.
    ========================================================= */
-const SUPABASE_URL = window.SUPABASE_URL || 'https://ikrlnncahxxendyevecg.supabase.co';
-const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'sb_publishable_gtuhSdzBn2jzD90ITG1l5g_bTFXJTqy';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let supabase = null;
+try {
+  if (window.supabase && typeof window.supabase.createClient === 'function') {
+    const SUPABASE_URL = window.SUPABASE_URL || 'https://ikrlnncahxxendyevecg.supabase.co';
+    const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'sb_publishable_gtuhSdzBn2jzD90ITG1l5g_bTFXJTqy';
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+} catch (e) {
+  console.warn('Supabase indisponível; usando modo local.', e);
+}
 
 const LS_KEY='epq.tasks.v1';
 const LS_USERS='epq.users.v1';
@@ -482,23 +468,31 @@ function prioPill(p){return`<span class="pill ${p.toLowerCase()}">${esc(p)}</spa
 function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 
 function renderBoard(){
-  const board=document.getElementById('board');board.innerHTML='';
-  const cols=['Fila padrão','Aguardando informações','A fazer','Fazendo','Em aprovação','Concluído','Arquivo'];
-  const groups={};cols.forEach(c=>groups[c]=[]);
-  filterTasks().forEach(t=>{groups[t.status]?.push(t)});
-  cols.forEach((c,i)=>{
-    const col=document.createElement('div');col.className='col';
-    const items=groups[c]||[];
-    const head=document.createElement('div');head.className='col-header';
-    head.innerHTML=`<div class="col-title">${c}<span class="col-count">${items.length}</span></div>`;
-    const body=document.createElement('div');body.className='col-body';
-    body.addEventListener('dragover',e=>{e.preventDefault();body.style.background='rgba(255,255,255,0.55)'});
-    body.addEventListener('dragleave',()=>body.style.background='');
-    body.addEventListener('drop',e=>{e.preventDefault();body.style.background='';const id=dragTaskId;dragTaskId=null;if(!id)return;const t=tasks.find(x=>x.id===id);if(!t)return;t.status=c;save(tasks);renderAll()});
-    items.forEach(t=>body.appendChild(cardEl(t)));
-    col.appendChild(head);col.appendChild(body);
-    board.appendChild(col);
-  });
+  try{
+    const board=document.getElementById('board');board.innerHTML='';
+    const cols=['Fila padrão','Aguardando informações','A fazer','Fazendo','Em aprovação','Concluído','Arquivo'];
+    const groups={};cols.forEach(c=>groups[c]=[]);
+    filterTasks().forEach(t=>{groups[t.status]?.push(t)});
+    cols.forEach((c,i)=>{
+      const col=document.createElement('div');col.className='col';
+      const items=groups[c]||[];
+      const head=document.createElement('div');head.className='col-header';
+      head.innerHTML=`<div class="col-title">${c}<span class="col-count">${items.length}</span></div>`;
+      const body=document.createElement('div');body.className='col-body';
+      body.addEventListener('dragover',e=>{e.preventDefault();body.style.background='rgba(255,255,255,0.55)'});
+      body.addEventListener('dragleave',()=>body.style.background='');
+      body.addEventListener('drop',e=>{e.preventDefault();body.style.background='';const id=dragTaskId;dragTaskId=null;if(!id)return;const t=tasks.find(x=>x.id===id);if(!t)return;t.status=c;save(tasks);renderAll()});
+      items.forEach(t=>body.appendChild(cardEl(t)));
+      col.appendChild(head);col.appendChild(body);
+      board.appendChild(col);
+    });
+    if(!board.children.length){
+      board.innerHTML='<div class="empty">Nenhuma tarefa encontrada.</div>';
+    }
+  }catch(err){
+    const board=document.getElementById('board');
+    if(board) board.innerHTML='<div class="empty">Erro ao renderizar: '+esc(String(err))+'</div>';
+  }
 }
 
 function renderStats(){
@@ -575,9 +569,14 @@ function saveUsers(users){localStorage.setItem(LS_USERS,JSON.stringify(users))}
 let userEditing=null;
 
 function renderHome(){
-  renderAlerts();
-  renderStats();
-  renderBoard();
+  try{
+    renderAlerts();
+    renderStats();
+    renderBoard();
+  }catch(err){
+    const board=document.getElementById('board');
+    if(board) board.innerHTML='<div class="empty">Erro ao carregar: '+esc(String(err))+'</div>';
+  }
 }
 function renderAll(){
   if(current==='home') renderHome();
@@ -822,10 +821,12 @@ function closeUserModal(){document.getElementById('user-modal').classList.remove
 document.addEventListener('click',e=>{if(e.target.id==='modal')closeModal();if(e.target.id==='drawer')closeDrawer();if(e.target.id==='user-modal')closeUserModal()});
 
 (function initDefaultLocal(){
-  me='Flávio';
-  role='admin';
-  showApp();
-  renderAll();
+  try{
+    me='Flávio';
+    role='admin';
+    showApp();
+    renderHome();
+  }catch(err){ console.error(err); }
 })();
 
 (function initAuth(){
