@@ -26,7 +26,7 @@
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body { font-family: var(--font-body); background: var(--epq-bg); color: var(--epq-gray-800); min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+body { font-family: var(--font-body); background: var(--epq-bg); color: var(--epq-gray-900); min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 :focus-visible { outline: 2px solid var(--epq-blue-500); outline-offset: 2px; }
 
 .sidebar { position: fixed; left: 0; top: 0; height: 100vh; width: var(--sidebar-w); background: var(--epq-gray-900); border-right: 1px solid rgba(61,139,217,.15); z-index: 100; display: flex; flex-direction: column; padding: 24px 0; transition: width var(--motion-med) var(--ease-out); overflow: hidden; }
@@ -77,7 +77,7 @@ body { font-family: var(--font-body); background: var(--epq-bg); color: var(--ep
 .kpi-item { flex: 1; min-width: 130px; padding: 22px 24px; border-right: 1px solid var(--epq-gray-200); display: flex; flex-direction: column; gap: 5px; }
 .kpi-item:last-child { border-right: none; }
 .kpi-label { font-family: var(--font-mono); font-size: 9px; font-weight: 500; color: var(--epq-blue-600); letter-spacing: .13em; text-transform: uppercase; }
-.kpi-value { font-family: var(--font-mono); font-size: 26px; font-weight: 700; color: var(--epq-gray-800); letter-spacing: -.03em; }
+.kpi-value { font-family: var(--font-mono); font-size: 26px; font-weight: 700; color: var(--epq-gray-900); letter-spacing: -.03em; }
 .kpi-value.featured { color: var(--epq-blue-700); }
 
 /* ══════════ SCHEDULE TABLE ══════════ */
@@ -91,7 +91,7 @@ body { font-family: var(--font-body); background: var(--epq-bg); color: var(--ep
 .sched-row.is-past { opacity: .55; }
 .sched-row:not(.sched-head):hover { background: var(--epq-blue-50); }
 .sched-date { font-family: var(--font-mono); display: flex; flex-direction: column; gap: 1px; position: relative; }
-.sched-dd { font-size: 14px; font-weight: 600; color: var(--epq-gray-800); }
+.sched-dd { font-size: 14px; font-weight: 600; color: var(--epq-gray-900); }
 .sched-dow { font-size: 9px; color: var(--epq-gray-500); text-transform: uppercase; letter-spacing: .08em; }
 .today-flag { position: absolute; top: -12px; left: 0; font-family: var(--font-mono); font-size: 7.5px; font-weight: 700; color: var(--epq-blue-700); background: rgba(61,139,217,.14); border: 1px solid rgba(61,139,217,.3); border-radius: 100px; padding: 1px 6px; letter-spacing: .1em; }
 .sched-id { font-family: var(--font-mono); font-size: 10px; color: var(--epq-gray-500); letter-spacing: .02em; }
@@ -100,7 +100,7 @@ body { font-family: var(--font-body); background: var(--epq-bg); color: var(--ep
 .perfil-ronan { background: var(--epq-gray-900); color: var(--epq-blue-300); border: 1px solid var(--epq-gray-800); }
 .sched-formato { font-size: 12px; color: var(--epq-gray-600); }
 .sched-main { min-width: 0; }
-.sched-headline { font-family: var(--font-display); font-size: 13.5px; font-weight: 600; color: var(--epq-gray-800); line-height: 1.35; margin-bottom: 2px; }
+.sched-headline { font-family: var(--font-display); font-size: 13.5px; font-weight: 600; color: var(--epq-gray-900); line-height: 1.35; margin-bottom: 2px; }
 .sched-tema { font-size: 11px; color: var(--epq-gray-600); line-height: 1.4; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .sched-pilar { font-family: var(--font-mono); font-size: 9.5px; color: var(--epq-blue-600); letter-spacing: .04em; }
 .sched-status { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 9px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: 5px 11px; border-radius: 100px; width: fit-content; }
