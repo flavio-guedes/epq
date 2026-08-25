@@ -821,12 +821,27 @@ function closeUserModal(){document.getElementById('user-modal').classList.remove
 
 document.addEventListener('click',e=>{if(e.target.id==='modal')closeModal();if(e.target.id==='drawer')closeDrawer();if(e.target.id==='user-modal')closeUserModal()});
 
-supabase.auth.getSession().then(({data:{session}})=>{
-  if(session){currentUser=session.user;me=currentUser.email||'usuário';ensureSession()}else{showLogin()}
-});
-supabase.auth.onAuthStateChange(async (event,session)=>{
-  if(session){currentUser=session.user;me=currentUser.email||'usuário';await ensureSession()}else{showLogin()}
-});
+(function initDefaultLocal(){
+  me='Flávio';
+  role='admin';
+  showApp();
+  renderAll();
+})();
+
+(function initAuth(){
+  const auth = supabase && supabase.auth;
+  if(!auth){ return; }
+  auth.getSession().then(({data:{session}})=>{
+    if(!session){ return; }
+    currentUser=session.user;
+    me=currentUser.email||me;
+    ensureSession();
+  });
+  auth.onAuthStateChange(async (event,session)=>{
+    if(session){currentUser=session.user;me=currentUser.email||me;await ensureSession();showApp();renderAll();}
+    else{showApp();renderAll();}
+  });
+})();
 
 go('home');
 </script>
