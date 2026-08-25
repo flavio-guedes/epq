@@ -109,25 +109,6 @@
   .agenda-item:hover{border-color:rgba(34,211,238,0.4)}
   .agenda-item .name{font-size:13px;color:#ffffff;font-weight:500}
   .agenda-item .meta{font-size:12px;color:#7d9cbd;margin-top:4px}
-  .login-card{
-    position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:200;padding:24px;
-    background:radial-gradient(1200px 700px at 10% -10%, rgba(56,189,248,0.12), transparent 60%),
-      radial-gradient(1000px 600px at 110% 10%, rgba(99,102,241,0.12), transparent 55%),
-      linear-gradient(180deg,#05080f,#0b1428);
-  }
-  .login-card.show{display:flex}
-  .login-inner{
-    width:100%;max-width:420px;position:relative;z-index:1;
-    background:rgba(255,255,255,0.06);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);
-    border:1px solid rgba(255,255,255,0.12);border-radius:22px;padding:26px;
-    box-shadow:0 0 0 1px rgba(80,180,255,0.08),0 24px 60px -20px rgba(80,160,255,0.35);
-  }
-  .login-inner::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:1px;
-    background:linear-gradient(90deg,transparent,rgba(80,180,255,0.35) 40%,transparent 80%);opacity:.9;
-  }
-  .login-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
-  .login-actions a{color:#7dd3fc;font-size:12px;text-decoration:none}
   @media (max-width:1024px){.kpis{grid-template-columns:repeat(3,1fr)}.funnel{grid-template-columns:repeat(4,1fr)}.agenda{grid-template-columns:1fr}}
   @media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}.funnel{grid-template-columns:repeat(3,1fr)}.row{grid-template-columns:1fr}}
 </style>
@@ -197,6 +178,9 @@
       <div class="kpi"><div class="num" style="color:#f87171">{{ kpis.late }}</div><div class="label">Atrasados</div></div>
       <div class="kpi"><div class="num" style="color:#fbbf24">{{ kpis.hot }}</div><div class="label">Quentes</div></div>
       <div class="kpi"><div class="num" style="color:#34d399">{{ kpis.converted }}</div><div class="label">Convertidos</div></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
+      <button class="btn primary" @click="exportXLS()">Exportar XLS</button>
     </div>
   </section>
 
@@ -311,45 +295,30 @@
     </div>
   </section>
 
-  <section class="panel" v-if="!user">
+  <section class="panel">
     <div class="form" style="max-width:420px;margin:0 auto;">
-      <label>Login</label>
-      <input v-model="loginForm.username" placeholder="seu.login" autocomplete="username" />
-      <label>Senha</label>
-      <input v-model="loginForm.password" :type="showPassword ? 'text' : 'password'" placeholder="••••••••" autocomplete="current-password" />
-      <button type="button" class="btn" @click="showPassword = !showPassword" style="padding:8px 10px;font-size:12px;">{{ showPassword ? 'Ocultar' : 'Mostrar' }}</button>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button type="button" class="btn" @click="fillLogin('flavio@epq.local')" style="font-size:12px;">Flávio</button>
-        <button type="button" class="btn" @click="fillLogin('ronan@epq.local')" style="font-size:12px;">Ronan</button>
-        <button type="button" class="btn" @click="fillLogin('clara@epq.local')" style="font-size:12px;">Clara</button>
+      <label>Nome</label>
+      <input v-model="newLead.name" placeholder="Nome do lead" />
+      <label>WhatsApp</label>
+      <input v-model="newLead.whatsapp" placeholder="(00) 00000-0000" />
+      <label>Curso/Turma</label>
+      <input v-model="newLead.course" placeholder="Curso ou turma" />
+      <label>Origem</label>
+      <input v-model="newLead.source" placeholder="Origem do lead" />
+      <label>Estágio</label>
+      <select v-model="newLead.stage">
+        <option v-for="s in stages" :key="s" :value="s">{{ s }}</option>
+      </select>
+      <label>Temperatura</label>
+      <select v-model="newLead.temperature">
+        <option>Frio</option><option>Morno</option><option>Quente</option>
+      </select>
+      <div class="actions" style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn primary" @click="createLead()">Criar lead</button>
+        <button class="btn" @click="resetForm()">Limpar</button>
       </div>
-      <button class="btn primary" @click="doLogin()" :disabled="loginLoading">{{ loginLoading ? 'Entrando...' : 'Entrar' }}</button>
-      <div style="color:#f87171;font-size:12px;">{{ loginError }}</div>
-      <div style="color:#7d9cbd;font-size:12px;">Primeiro acesso? Use a senha temporária e depois altere.</div>
     </div>
   </section>
-</div>
-
-<div class="login-card" v-if="showLoginModal" :class="{show: showLoginModal}">
-  <div class="login-inner">
-    <div class="brand" style="margin-bottom:16px">
-      <img src="https://flavio-guedes.github.io/epq-central/logo.jpg" alt="EPQ" />
-      <div class="brand-text">
-        <div class="title">Central <strong>EPQ</strong></div>
-      </div>
-    </div>
-    <div class="status" style="margin-bottom:14px"><span class="pulse"></span>Acesso restrito</div>
-    <div class="form">
-      <label>Login</label>
-      <input v-model="loginForm.username" placeholder="seu.login" autocomplete="username" />
-      <label>Senha</label>
-      <input v-model="loginForm.password" :type="showPassword ? 'text' : 'password'" placeholder="••••••••" autocomplete="current-password" />
-      <button type="button" class="btn" @click="showPassword = !showPassword" style="padding:8px 10px;font-size:12px;">{{ showPassword ? 'Ocultar' : 'Mostrar' }}</button>
-      <button class="btn primary" @click="doLogin()" :disabled="loginLoading">{{ loginLoading ? 'Entrando...' : 'Entrar no sistema' }}</button>
-      <div class="hint" style="color:#f87171;font-size:12px;">{{ loginError }}</div>
-    </div>
-    <div class="meta" style="margin-top:12px;font-family:var(--font-mono);font-size:10px;color:#5c6a82;text-align:center;letter-spacing:.08em;">ADMIN MASTER · GESTOR · OPERACIONAL</div>
-  </div>
 </div>
 
 <div class="modal-backdrop" v-if="leadModal" @click.self="closeLead">
@@ -447,19 +416,8 @@
   const stages = ['Novo','Primeiro contato','Em conversa','Interessado','Negociação','Matriculado','Perdido'];
   function today(){ return new Date().toISOString().slice(0,10); }
 
-  function authHeaders(){
-    const token = localStorage.getItem('epq_crm_token');
-    return token ? { Authorization: 'Bearer ' + token } : {};
-  }
-  function userProfile(){
-    try { return JSON.parse(localStorage.getItem('epq_crm_user')||'{}').perfil || ''; } catch { return ''; }
-  }
-  function isOperational(){ return userProfile() === 'OPERACIONAL'; }
-  const isAdmin = computed(() => ['ADMIN_MASTER','GESTOR'].includes(userProfile()));
-
   async function api(path, options){
-    const res = await fetch(API_BASE + path, { ...options, headers: { 'content-type':'application/json', ...authHeaders(), ...(options && options.headers ? options.headers : {}) } });
-    if (res.status === 401){ localStorage.removeItem('epq_crm_token'); localStorage.removeItem('epq_crm_user'); location.reload(); }
+    const res = await fetch(API_BASE + path, { ...options, headers: { 'content-type':'application/json', ...(options && options.headers ? options.headers : {}) } });
     if (!res.ok){ const text = await res.text(); throw new Error(text || ('HTTP ' + res.status)); }
     const ct = res.headers.get('content-type') || '';
     return ct.includes('application/json') ? res.json() : res.text();
@@ -477,23 +435,9 @@
       const createModal = ref(false);
       const currentLead = ref(null);
       const newLead = reactive({ name: '', whatsapp: '', course: '', source: '', stage: 'Novo', temperature: 'Morno', nextFollowUp: today(), nextTime: '09:00', nextType: 'WhatsApp', nextNote: '' });
-      const user = ref(null);
-      const showLoginModal = ref(false);
-      const loginForm = reactive({ username: '', password: '' });
-      const loginError = ref('');
-      const showPassword = ref(false);
-      const loginLoading = ref(false);
-
-      function readSession(){
-        try {
-          const raw = localStorage.getItem('epq_crm_user');
-          if (!raw){ showLoginModal.value = true; return; }
-          user.value = JSON.parse(raw);
-        } catch {
-          showLoginModal.value = true;
-        }
-      }
-      function fillLogin(username){ loginForm.username = username; }
+      const user = ref({ nome: 'Local', perfil: 'ADMIN_MASTER' });
+      const isAdmin = computed(() => true);
+      const isOperational = computed(() => false);
 
       async function load(){
         const data = await api('/leads');
@@ -591,11 +535,15 @@
       function openCreate(){ createModal.value = true; }
       function closeCreate(){
         createModal.value = false;
+        resetForm();
+      }
+      function resetForm(){
         Object.assign(newLead, { name:'', whatsapp:'', course:'', source:'', stage:'Novo', temperature:'Morno', nextFollowUp:today(), nextTime:'09:00', nextType:'WhatsApp', nextNote:'' });
       }
       async function createLead(){
         const created = await api('/leads', { method:'POST', body: JSON.stringify(toApiPayload(newLead)) });
         await load();
+        resetForm();
         closeCreate();
       }
 
@@ -612,25 +560,7 @@
         if (idx < stages.length - 1){ currentLead.value.stage = stages[idx + 1]; await saveLead(); }
       }
 
-      async function doLogin(){
-        loginError.value = '';
-        loginLoading.value = true;
-        try {
-          const res = await fetch(API_BASE + '/auth/login', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ username: loginForm.username, password: loginForm.password }) });
-          const data = await res.json();
-          if (!res.ok){ loginError.value = data.detail || 'Credenciais inválidas'; return; }
-          localStorage.setItem('epq_crm_token', data.access_token);
-          localStorage.setItem('epq_crm_user', JSON.stringify({ id: data.user_id, nome: data.nome, perfil: data.perfil, must_change_password: data.must_change_password }));
-          if (data.must_change_password){ location.href = 'change-password.html'; return; }
-          showLoginModal.value = false;
-          location.reload();
-        } catch (err) { loginError.value = 'Erro de conexão'; }
-        finally { loginLoading.value = false; }
-      }
-
       function logout(){
-        localStorage.removeItem('epq_crm_token');
-        localStorage.removeItem('epq_crm_user');
         location.reload();
       }
 
@@ -641,26 +571,29 @@
         }
       }
 
+      async function exportXLS(){
+        const res = await fetch(API_BASE + '/leads/export');
+        if (!res.ok) return;
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'leads.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      }
+
       async function init(){
-        readSession();
-        if (!user.value){ return; }
-        const perfil = userProfile();
-        if (perfil === 'OPERACIONAL'){
-          await load();
-          return;
-        }
-        if (perfil === 'ADMIN_MASTER' || perfil === 'GESTOR'){
-          await load();
-          await loadAdmin();
-          return;
-        }
-        showLoginModal.value = true;
+        await load();
+        await loadAdmin();
       }
       init();
 
       return {
         search, filterStage, tab, leadModal, createModal, currentLead, newLead, stages, filtered, kpis, audit, users, byStage,
-        openLead, closeLead, saveLead, openCreate, closeCreate, createLead, logContact, advanceStage, formatDate, formatDateTime, logout, isAdmin, user, loginForm, loginError, doLogin, showLoginModal, showPassword, loginLoading, fillLogin,
+        openLead, closeLead, saveLead, openCreate, closeCreate, createLead, logContact, advanceStage, formatDate, formatDateTime, logout, isAdmin, isOperational, user, exportXLS,
       };
     }
   }).mount('#app');
