@@ -124,8 +124,8 @@ body { font-family: var(--font-body); background: var(--epq-bg); color: var(--ep
 .kanban-title { font-family: var(--font-display); font-size: 14px; font-weight: 600; }
 .kanban-count { font-family: var(--font-mono); font-size: 10px; color: var(--epq-gray-500); background: var(--epq-gray-100); padding: 3px 8px; border-radius: 100px; }
 .kanban-body { padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-.card { background: var(--epq-white); border: 1px solid rgba(61,139,217,.32); border-radius: var(--radius-md); padding: 14px; box-shadow: var(--shadow-md); cursor: pointer; transition: transform var(--motion-fast), box-shadow var(--motion-fast); }
-.card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(15,40,65,.12); }
+.card { background: var(--epq-white); border: 1px solid rgba(61,139,217,.32); border-radius: var(--radius-md); padding: 18px; box-shadow: var(--shadow-md); cursor: grab; transition: transform var(--motion-fast), box-shadow var(--motion-fast); }
+.card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(15,40,65,.14); }
 .card-title { font-family: var(--font-display); font-size: 13.5px; font-weight: 600; color: var(--epq-gray-900); line-height: 1.35; margin-bottom: 6px; }
 .card-meta { font-family: var(--font-mono); font-size: 10px; color: var(--epq-gray-700); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .card-pillar { color: var(--epq-blue-600); }
@@ -170,9 +170,9 @@ body { font-family: var(--font-body); background: var(--epq-bg); color: var(--ep
 .progress-strip { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px; }
 .progress-item { flex:1; min-width:140px; background:var(--epq-white); border:1px solid var(--epq-gray-200); border-radius:var(--radius-lg); padding:14px 16px; box-shadow:var(--shadow-md); }
 .progress-label { font-family:var(--font-mono); font-size:9px; font-weight:700; color:var(--epq-blue-600); letter-spacing:.12em; text-transform:uppercase; margin-bottom:8px; }
-.progress-track { height:10px; background:var(--epq-gray-100); border-radius:100px; overflow:hidden; }
+.progress-track { height:12px; background:var(--epq-gray-100); border-radius:100px; overflow:hidden; }
 .progress-fill { height:100%; background:linear-gradient(90deg, var(--epq-blue-600), var(--epq-blue-400)); border-radius:100px; transition: width 0.3s ease; }
-.progress-value { font-family:var(--font-mono); font-size:12px; font-weight:700; color:var(--epq-gray-900); margin-top:6px; }
+.progress-value { font-family:var(--font-mono); font-size:13px; font-weight:700; color:var(--epq-gray-900); margin-top:8px; }
 </style>
 </head>
 <body>
