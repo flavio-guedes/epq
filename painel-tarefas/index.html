@@ -136,7 +136,9 @@ body {
 /* ===== COVER ===== */
 .cover-wrap {
   position: fixed; inset: 0; z-index: 200;
-  background: linear-gradient(160deg, #0a1f3b 0%, #1b3a8a 60%, #0f2a52 100%);
+  background:
+    linear-gradient(160deg, rgba(10,31,59,0.92) 0%, rgba(27,58,138,0.92) 60%, rgba(15,42,82,0.92) 100%),
+    url('cover-art.png') right center / auto 100% no-repeat;
   display: flex; align-items: center; justify-content: center; padding: 24px;
 }
 .cover-card {
@@ -733,6 +735,8 @@ function go(page){
   closeSidebar();
 }
 function openApp(){
+  if(window._appOpened) return;
+  window._appOpened = true;
   try{ document.getElementById('cover').style.display='none'; }catch(e){}
   try{ document.getElementById('app').classList.remove('hidden'); }catch(e){}
   renderHome();
