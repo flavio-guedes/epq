@@ -55,8 +55,8 @@ body { font-family: var(--font-body); background: var(--epq-bg); color: var(--ep
 .cb-tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
 .cb-tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
 .header-content { position: relative; z-index: 10; padding: 0 56px; width: 100%; max-width: 760px; }
-.header-eyebrow { font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--epq-blue-300); letter-spacing: .2em; text-transform: uppercase; margin-bottom: 16px; }
-.header-title { font-family: var(--font-display); font-size: clamp(30px, 4.6vw, 54px); font-weight: 700; color: #fff; letter-spacing: -.03em; line-height: 1.04; margin-bottom: 14px; text-shadow: 0 2px 24px rgba(0,0,0,.35); }
+.header-eyebrow { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--epq-blue-300); letter-spacing: .2em; text-transform: uppercase; margin-bottom: 16px; }
+.header-title { font-family: var(--font-display); font-size: clamp(32px, 4.8vw, 60px); font-weight: 700; color: #fff; letter-spacing: -.03em; line-height: 1.04; margin-bottom: 14px; text-shadow: 0 2px 24px rgba(0,0,0,.4); }
 .header-title em { color: var(--epq-blue-400); font-style: normal; }
 .header-subtitle { font-size: 14px; font-weight: 400; color: var(--epq-gray-300); line-height: 1.6; max-width: 480px; margin-bottom: 28px; }
 .header-meta { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
@@ -68,9 +68,9 @@ body { font-family: var(--font-body); background: var(--epq-bg); color: var(--ep
 .doc-section { margin-bottom: 60px; scroll-margin-top: 24px; }
 .section-divider { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
 .divider-label { font-family: var(--font-mono); font-size: 9px; font-weight: 600; color: var(--epq-blue-500); letter-spacing: .2em; text-transform: uppercase; white-space: nowrap; }
-.divider-line { flex: 1; height: 1px; background: var(--epq-gray-200); }
+.divider-line { flex: 1; height: 2px; background: rgba(61,139,217,.25); }
 .month-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin: 10px 0 18px; }
-.section-title { font-family: var(--font-display); font-size: 26px; font-weight: 700; letter-spacing: -.02em; }
+.section-title { font-family: var(--font-display); font-size: 28px; font-weight: 700; letter-spacing: -.02em; }
 .month-count { font-family: var(--font-mono); font-size: 10px; color: var(--epq-blue-600); letter-spacing: .06em; }
 
 .kpi-strip { background: var(--epq-white); border: 1px solid rgba(61,139,217,.32); border-radius: var(--radius-lg); display: flex; overflow-x: auto; margin-bottom: 56px; box-shadow: var(--shadow-md); }
@@ -84,26 +84,26 @@ body { font-family: var(--font-body); background: var(--epq-bg); color: var(--ep
 .sched-table { background: var(--epq-white); border: 1px solid rgba(61,139,217,.32); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); }
 .sched-row {
   display: grid; grid-template-columns: 74px 108px 76px 108px 1fr 168px 128px;
-  align-items: center; gap: 14px; padding: 15px 20px; border-bottom: 1px solid rgba(61,139,217,.55);
+  align-items: center; gap: 14px; padding: 15px 20px; border-bottom: 2px solid rgba(61,139,217,.55);
 }
 .sched-row:last-child { border-bottom: none; }
 .sched-row.sched-head { background: var(--epq-gray-50); font-family: var(--font-mono); font-size: 9px; font-weight: 600; color: var(--epq-gray-500); letter-spacing: .1em; text-transform: uppercase; padding-top: 13px; padding-bottom: 13px; }
 .sched-row.is-past { opacity: .55; }
 .sched-row:not(.sched-head):hover { background: var(--epq-blue-50); }
 .sched-date { font-family: var(--font-mono); display: flex; flex-direction: column; gap: 1px; position: relative; }
-.sched-dd { font-size: 14px; font-weight: 600; color: var(--epq-gray-900); }
-.sched-dow { font-size: 9px; color: var(--epq-gray-500); text-transform: uppercase; letter-spacing: .08em; }
+.sched-dd { font-size: 15px; font-weight: 700; color: var(--epq-gray-900); }
+.sched-dow { font-size: 10px; color: var(--epq-blue-700); font-weight: 600; text-transform: uppercase; letter-spacing: .08em; }
 .today-flag { position: absolute; top: -12px; left: 0; font-family: var(--font-mono); font-size: 7.5px; font-weight: 700; color: var(--epq-blue-700); background: rgba(61,139,217,.14); border: 1px solid rgba(61,139,217,.3); border-radius: 100px; padding: 1px 6px; letter-spacing: .1em; }
-.sched-id { font-family: var(--font-mono); font-size: 10px; color: var(--epq-gray-500); letter-spacing: .02em; }
-.sched-perfil { font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 4px 9px; border-radius: 100px; text-align: center; width: fit-content; }
+.sched-id { font-family: var(--font-mono); font-size: 11px; color: var(--epq-gray-700); font-weight: 600; letter-spacing: .02em; }
+.sched-perfil { font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 5px 10px; border-radius: 100px; text-align: center; width: fit-content; }
 .perfil-epq { background: rgba(61,139,217,.1); color: var(--epq-blue-700); border: 1px solid rgba(61,139,217,.25); }
 .perfil-ronan { background: var(--epq-gray-900); color: var(--epq-blue-300); border: 1px solid var(--epq-gray-800); }
-.sched-formato { font-size: 12px; color: var(--epq-gray-600); }
+.sched-formato { font-size: 12px; color: var(--epq-gray-800); font-weight: 500; }
 .sched-main { min-width: 0; }
 .sched-headline { font-family: var(--font-display); font-size: 13.5px; font-weight: 600; color: var(--epq-gray-900); line-height: 1.35; margin-bottom: 2px; }
-.sched-tema { font-size: 11px; color: var(--epq-gray-600); line-height: 1.4; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.sched-pilar { font-family: var(--font-mono); font-size: 9.5px; color: var(--epq-blue-600); letter-spacing: .04em; }
-.sched-status { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 9px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: 5px 11px; border-radius: 100px; width: fit-content; }
+.sched-tema { font-size: 12px; color: var(--epq-blue-800); line-height: 1.4; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sched-pilar { font-family: var(--font-mono); font-size: 10px; color: var(--epq-blue-700); font-weight: 700; letter-spacing: .04em; }
+.sched-status { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 6px 12px; border-radius: 100px; width: fit-content; }
 .status-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
 .st-positive { background: rgba(42,138,94,.08); color: var(--epq-positive); border: 1px solid rgba(42,138,94,.22); }
 .st-positive .status-dot { background: var(--epq-positive); }
@@ -189,7 +189,7 @@ body { font-family: var(--font-body); background: var(--epq-bg); color: var(--ep
         <div class="month-count">12 conteúdos · 8 EPQ · 4 Ronan</div>
       </div>
       <div class="sched-table">
-        <div class="sched-row sched-head" style="border-top: 1px solid rgba(61,139,217,.45);">
+        <div class="sched-row sched-head" style="border-top: 2px solid rgba(61,139,217,.55);">
           <div class="sched-date">Data</div>
           <div class="sched-id">ID</div>
           <div class="sched-perfil">Perfil</div>
@@ -351,7 +351,7 @@ body { font-family: var(--font-body); background: var(--epq-bg); color: var(--ep
         <div class="month-count">11 conteúdos · 8 EPQ · 3 Ronan</div>
       </div>
       <div class="sched-table">
-        <div class="sched-row sched-head" style="border-top: 1px solid rgba(61,139,217,.45);">
+        <div class="sched-row sched-head" style="border-top: 2px solid rgba(61,139,217,.55);">
           <div class="sched-date">Data</div>
           <div class="sched-id">ID</div>
           <div class="sched-perfil">Perfil</div>
@@ -501,7 +501,7 @@ body { font-family: var(--font-body); background: var(--epq-bg); color: var(--ep
         <div class="month-count">10 conteúdos · 7 EPQ · 3 Ronan</div>
       </div>
       <div class="sched-table">
-        <div class="sched-row sched-head" style="border-top: 1px solid rgba(61,139,217,.45);">
+        <div class="sched-row sched-head" style="border-top: 2px solid rgba(61,139,217,.55);">
           <div class="sched-date">Data</div>
           <div class="sched-id">ID</div>
           <div class="sched-perfil">Perfil</div>
@@ -639,7 +639,7 @@ body { font-family: var(--font-body); background: var(--epq-bg); color: var(--ep
         <div class="month-count">9 conteúdos · 6 EPQ · 3 Ronan</div>
       </div>
       <div class="sched-table">
-        <div class="sched-row sched-head" style="border-top: 1px solid rgba(61,139,217,.45);">
+        <div class="sched-row sched-head" style="border-top: 2px solid rgba(61,139,217,.55);">
           <div class="sched-date">Data</div>
           <div class="sched-id">ID</div>
           <div class="sched-perfil">Perfil</div>
@@ -765,7 +765,7 @@ body { font-family: var(--font-body); background: var(--epq-bg); color: var(--ep
         <div class="month-count">6 conteúdos · 4 EPQ · 2 Ronan</div>
       </div>
       <div class="sched-table">
-        <div class="sched-row sched-head" style="border-top: 1px solid rgba(61,139,217,.45);">
+        <div class="sched-row sched-head" style="border-top: 2px solid rgba(61,139,217,.55);">
           <div class="sched-date">Data</div>
           <div class="sched-id">ID</div>
           <div class="sched-perfil">Perfil</div>
