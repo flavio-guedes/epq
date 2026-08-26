@@ -186,6 +186,20 @@ tr:hover td{background:rgba(234,243,255,.35);}
 .gantt-weekend{background:rgba(11,49,85,.035);}
 .gantt-today{position:absolute;top:0;bottom:0;width:1px;background:rgba(217,59,59,.55);z-index:3;pointer-events:none;}
 .gantt-today::after{content:'Hoje';position:absolute;top:-14px;left:0;font-size:10px;color:#d93b3b;font-weight:700;white-space:nowrap;}
+
+.editorias-section { margin-top: 18px; }
+.editorias-section h3 { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin: 18px 0 10px; color: var(--epq-blue-800); }
+.gantt-wrap { background: var(--epq-white); border: 1px solid var(--epq-gray-200); border-radius: var(--radius-lg); padding: 18px; box-shadow: var(--shadow-md); }
+.gantt { display: grid; gap: 10px; }
+.gantt-row { display: grid; grid-template-columns: 220px 1fr; gap: 14px; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(61,139,217,.12); }
+.gantt-row:last-child { border-bottom: none; }
+.gantt-label { font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--epq-gray-900); }
+.gantt-track { position: relative; height: 28px; background: var(--epq-gray-100); border-radius: 100px; overflow: hidden; }
+.gantt-fill { position: absolute; top: 0; bottom: 0; left: 0; background: linear-gradient(90deg, var(--epq-blue-700), var(--epq-blue-400)); border-radius: 100px; opacity: .85; }
+.gantt-milestone { position: absolute; top: 0; bottom: 0; width: 6px; background: var(--epq-positive); border-radius: 100px; box-shadow: 0 0 0 3px rgba(42,138,94,.15); }
+.gantt-meta { font-family: var(--font-mono); font-size: 10px; color: var(--epq-gray-600); margin-top: 6px; }
+.gantt-legend-item { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 10px; color: var(--epq-gray-700); }
+.gantt-legend-swatch { width: 12px; height: 12px; border-radius: 3px; }
 </style>
 </head>
 <body>
@@ -345,6 +359,82 @@ function useFallback(){
   }
   enriched = normalize(plan);
   init();
+function renderEditorias(items) {
+  const box = document.getElementById('editorias-rows');
+  const by = {};
+  items.forEach(it => {
+    const p = it['Pilar'] || '—';
+    by[p] = by[p] || [];
+    by[p].push(it);
+  });
+  let html = '';
+  Object.keys(by).sort().forEach(p => {
+    html += '<div class="editorias-section"><h3>' + p + '</h3>';
+    by[p].forEach(it => {
+      html += '<div class="sched-row' + (it['_is_past'] ? ' is-past' : '') + '" data-id="' + it['ID'] + '">';
+      html += '<div class="sched-date"><span class="sched-dd">' + it['_date_dd'] + '</span><span class="sched-dow">' + it['_date_dow'] + '</span>' + (it['_is_today'] ? '<span class="today-flag">HOJE</span>' : '') + '</div>';
+      html += '<div class="sched-id">' + it['ID'] + '</div>';
+      html += '<div class="sched-perfil ' + (it['Perfil']==='EPQ'?'perfil-epq':'perfil-ronan') + '">' + it['Perfil'] + '</div>';
+      html += '<div class="sched-formato">' + it['Formato'] + '</div>';
+      html += '<div class="sched-main"><div class="sched-headline">' + it['Headline'] + '</div><div class="sched-tema">' + it['Tema / Campanha'] + '</div></div>';
+      html += '<div class="sched-pilar">' + it['Pilar'] + '</div>';
+      html += '<div class="sched-status ' + statusMeta(it['Status']||'').cls + '" data-action="open" data-id="' + it['ID'] + '"><span class="status-dot"></span>' + (it['Status'] || '—') + '</div>';
+      html += '<div><button class="btn btn-ghost" data-action="open" data-id="' + it['ID'] + '" style="font-family:var(--font-mono);font-size:10px;padding:6px 10px;">Abrir</button></div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+  box.innerHTML = html || '<div style="padding:18px;color:var(--epq-gray-500);font-size:13px;">Nenhuma editoria encontrada.</div>';
+}
+
+function daterange(start, end) {
+  const s = new Date(start); const e = new Date(end);
+  const ms = (e - s) / 86400000;
+  const arr = [];
+  for (let i = 0; i <= Math.max(ms,0); i++) arr.push(new Date(s.getTime() + i*86400000).toISOString().slice(0,10));
+  return arr;
+}
+
+function fmtDate(iso) {
+  const d = new Date(iso + 'T00:00:00');
+  return ('0' + d.getDate()).slice(-2) + '/' + ('0' + (d.getMonth()+1)).slice(-2);
+}
+
+function renderCampanhas(items) {
+  const board = document.getElementById('gantt-board');
+  const legend = document.querySelector('.gantt-legend');
+  const campanhas = items.filter(it => it['Formato'] === 'Campanha' || /bols/i.test(it['Tema / Campanha'] || ''));
+  if (!campanhas.length) {
+    board.innerHTML = '<div style="padding:18px;color:var(--epq-gray-500);font-size:13px;">Nenhuma campanha cadastrada.</div>';
+    legend.innerHTML = '';
+    return;
+  }
+
+  // timeframe
+  let allDates = [];
+  campanhas.forEach(c => allDates.push(...daterange(c['_date_iso'], c['_date_iso'])));
+  const min = allDates[0], max = allDates[allDates.length-1];
+  const days = daterange(min, max);
+  const dayWidth = 34;
+  const trackW = days.length * dayWidth;
+
+  legend.innerHTML = '<div class="gantt-legend-item"><span class="gantt-legend-swatch" style="background:linear-gradient(90deg, var(--epq-blue-700), var(--epq-blue-400));"></span>Duração</div>' +
+    '<div class="gantt-legend-item"><span class="gantt-legend-swatch" style="background:var(--epq-positive);"></span>Checkpoint</div>';
+
+  let rows = '';
+  campanhas.forEach(c => {
+    const idx = days.indexOf(c['_date_iso']);
+    const left = Math.max(idx, 0) * dayWidth;
+    rows += '<div class="gantt-row"><div class="gantt-label">' + c['Headline'] + '</div>';
+    rows += '<div class="gantt-track" style="width:' + trackW + 'px;">';
+    rows += '<div class="gantt-fill" style="width:' + (days.length * dayWidth) + 'px;"></div>';
+    rows += '<div class="gantt-milestone" style="left:' + left + 'px;" title="' + c['_date_dd'] + '"></div>';
+    rows += '</div></div>';
+    rows += '<div class="gantt-meta">' + c['ID'] + ' · ' + fmtDate(min) + ' → ' + fmtDate(max) + ' · Checkpoint: ' + fmtDate(c['_date_iso']) + '</div>';
+  });
+  board.innerHTML = rows;
+}
+
 }
 function retryLoad(){
   window.__epqFallbackUsed = false;
