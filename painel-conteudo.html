@@ -403,7 +403,7 @@ function fmtDate(iso) {
 function renderCampanhas(items) {
   const board = document.getElementById('gantt-board');
   const legend = document.querySelector('.gantt-legend');
-  const campanhas = items.filter(it => it['Formato'] === 'Campanha' || /bols/i.test(it['Tema / Campanha'] || ''));
+  const campanhas = items.filter(it => (it['Campanha'] || '') === 'Bolsão' || it['Formato'] === 'Campanha');
   if (!campanhas.length) {
     board.innerHTML = '<div style="padding:18px;color:var(--epq-gray-500);font-size:13px;">Nenhuma campanha cadastrada.</div>';
     legend.innerHTML = '';
@@ -430,7 +430,7 @@ function renderCampanhas(items) {
     rows += '<div class="gantt-fill" style="width:' + (days.length * dayWidth) + 'px;"></div>';
     rows += '<div class="gantt-milestone" style="left:' + left + 'px;" title="' + c['_date_dd'] + '"></div>';
     rows += '</div></div>';
-    rows += '<div class="gantt-meta">' + c['ID'] + ' · ' + fmtDate(min) + ' → ' + fmtDate(max) + ' · Checkpoint: ' + fmtDate(c['_date_iso']) + '</div>';
+    rows += '<div class="gantt-meta">' + c['ID'] + ' · ' + fmtDate(min) + ' → ' + fmtDate(max) + ' · Checkpoint: ' + fmtDate(c['Checkpoint'] || c['_date_iso']) + '</div>';
   });
   board.innerHTML = rows;
 }
