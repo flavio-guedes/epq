@@ -235,6 +235,7 @@
       <div class="top-actions">
         <button class="btn" onclick="exportTasks()">Exportar</button>
         <button class="btn" onclick="importTasks()">Importar</button>
+        <button class="btn" onclick="sendWhatsAppSummary()">Enviar resumo</button>
         <button class="btn primary" onclick="openCreate()">+ Nova Tarefa</button>
       </div>
     </header>
@@ -389,6 +390,32 @@ function importTasks(){
     reader.readAsText(file);
   };
   document.body.appendChild(input);input.click();document.body.removeChild(input);
+}
+function whatsappLink(text){
+  return 'https://wa.me/?text=' + encodeURIComponent(text);
+}
+function sendWhatsAppSummary(){
+  const groups={};
+  tasks.forEach(t=>{
+    const key=t.status||'Sem status';
+    groups[key]=groups[key]||[];
+    groups[key].push(t);
+  });
+  const order=['A Fazer','Hoje','Em aprovação','Concluído','Publicado agendado','Arquivo'];
+  let text='📋 EPQ - Resumo de Tarefas\n\n';
+  order.forEach(k=>{
+    const items=groups[k];
+    if(!items||!items.length) return;
+    text+=`• ${k}\n`;
+    items.forEach(t=>{
+      const who=t.who||'-';
+      const dl=t.deadline?new Date(t.deadline+'T00:00:00').toLocaleDateString('pt-BR'):'-';
+      text+=`- ${t.title}\n  👤 ${who} • 📅 ${dl}\n`;
+    });
+    text+='\n';
+  });
+  if(!text.trim()) text='Sem tarefas no momento.';
+  window.open(whatsappLink(text),'_blank');
 }
 let tasks=load();
 let me='Flávio';
