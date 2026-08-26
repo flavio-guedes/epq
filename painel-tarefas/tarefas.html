@@ -233,6 +233,8 @@
         <h1 id="page-title">Visão Geral</h1>
       </div>
       <div class="top-actions">
+        <button class="btn" onclick="exportTasks()">Exportar</button>
+        <button class="btn" onclick="importTasks()">Importar</button>
         <button class="btn primary" onclick="openCreate()">+ Nova Tarefa</button>
       </div>
     </header>
@@ -361,6 +363,33 @@ function load(){
   return defaults;
 }
 function save(tasks){localStorage.setItem(LS_KEY,JSON.stringify(tasks))}
+function exportTasks(){
+  const data=JSON.stringify(tasks,null,2);
+  const blob=new Blob([data],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='epq-tarefas.json';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+}
+function importTasks(){
+  const input=document.createElement('input');input.type='file';input.accept='application/json';
+  input.onchange=e=>{
+    const file=e.target.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      try{
+        const imported=JSON.parse(ev.target.result);
+        if(!Array.isArray(imported)){alert('Arquivo inválido.');return}
+        const merged=[...tasks];
+        imported.forEach(it=>{
+          const idx=merged.findIndex(x=>x.id===it.id);
+          if(idx>=0) merged[idx]=it; else merged.push(it);
+        });
+        tasks=merged;save(tasks);renderAll();alert('Importado com sucesso.');
+      }catch(err){alert('Erro ao importar arquivo.')}
+    };
+    reader.readAsText(file);
+  };
+  document.body.appendChild(input);input.click();document.body.removeChild(input);
+}
 let tasks=load();
 let me='Flávio';
 let editing=null;
