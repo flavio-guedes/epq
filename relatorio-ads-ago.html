@@ -1184,18 +1184,19 @@ body {
   .sidebar { display: none; }
   .mobile-nav { display: flex; }
   .main-content { margin-left: 0; padding-bottom: 70px; }
-  .command-header { height: 320px; }
-  .header-content { padding: 32px 24px; }
-  .header-title { font-size: 26px; }
-  .operation-info { right: 24px; top: 24px; }
-  .kpi-strip { padding: 0 24px; }
-  .kpi-item { padding: 20px 16px; min-width: 100px; }
-  .kpi-value { font-size: 20px; }
-  .page-body { padding: 24px 24px; gap: 16px; }
-  .glass-card, .solid-card { padding: 20px; }
-  .command-core-wrapper { width: 160px; height: 160px; right: 5%; }
-  .page-footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
+  .command-header { height: 280px; }
+  .header-content { padding: 24px; }
+  .header-title { font-size: 22px; }
+  .operation-info { right: 16px; top: 16px; }
+  .kpi-strip { padding: 0 16px; gap: 10px; overflow-x: auto; }
+  .kpi-item { padding: 16px; min-width: 120px; }
+  .kpi-value { font-size: 18px; }
+  .page-body { padding: 20px 16px; gap: 16px; }
+  .glass-card, .solid-card { padding: 16px; }
+  .command-core-wrapper { width: 140px; height: 140px; right: 4%; }
+  .page-footer { padding: 20px; flex-direction: column; gap: 8px; text-align: center; }
   .ads-row { flex-direction: column; }
+  .data-table { display: block; overflow-x: auto; }
 }
 
 @media (max-width: 480px) {
@@ -1468,7 +1469,7 @@ body {
       <text class="coord-text" x="56" y="60" fill="rgba(61,139,217,0.3)" font-family="JetBrains Mono, monospace" font-size="9">EPQ-22.9068° S</text>
       <text class="coord-text" x="56" y="74" fill="rgba(61,139,217,0.25)" font-family="JetBrains Mono, monospace" font-size="9">43.1729° W // RJ</text>
       <text class="coord-text" x="56" y="420" fill="rgba(61,139,217,0.25)" font-family="JetBrains Mono, monospace" font-size="9">SIGNAL POSITIVE // EARLY PHASE</text>
-      <text class="coord-text" x="600" y="30" fill="rgba(61,139,217,0.2)" font-family="JetBrains Mono, monospace" font-size="8">INTEL-001 // PMERJ // 23.08.2026</text>
+      <text class="coord-text" x="600" y="30" fill="rgba(61,139,217,0.2)" font-family="JetBrains Mono, monospace" font-size="8">INTEL-001 // PMERJ // 25.08.2026</text>
 
       <!-- Corner brackets -->
       <g stroke="rgba(61,139,217,0.3)" stroke-width="1" fill="none">
@@ -1517,7 +1518,7 @@ body {
           <div class="status-badge-dot"></div>
           SYSTEM ONLINE
         </div>
-        <div class="period-badge">23.08.2026 — 25.08.2026</div>
+        <div class="period-badge">20.08.2026 — 25.08.2026</div>
       </div>
     </div>
   </header>
@@ -1580,26 +1581,26 @@ body {
         </div>
         <div class="campaign-status-pill">
           <div class="campaign-status-dot"></div>
-          ACTIVE · 2 DIAS
+          ACTIVE · 6 DIAS
         </div>
       </div>
 
       <div class="campaign-metrics-grid">
         <div class="camp-metric">
           <div class="camp-metric-label">Valor Gasto</div>
-          <div class="camp-metric-val">R$ 45,06</div>
+          <div class="camp-metric-val">R$ 79,96</div>
         </div>
         <div class="camp-metric">
           <div class="camp-metric-label">Conversas</div>
-          <div class="camp-metric-val">13</div>
+          <div class="camp-metric-val">20</div>
         </div>
         <div class="camp-metric">
           <div class="camp-metric-label">CPM</div>
-          <div class="camp-metric-val">R$ 12,46</div>
+          <div class="camp-metric-val">R$ 12,20</div>
         </div>
         <div class="camp-metric">
           <div class="camp-metric-label">Cliques únicos</div>
-          <div class="camp-metric-val">33</div>
+          <div class="camp-metric-val">48</div>
         </div>
       </div>
 
@@ -1610,16 +1611,16 @@ body {
           <div>
             <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
               <span style="font-family:var(--font-mono);font-size:10px;color:var(--epq-gray-700);">PMERJ — 2</span>
-              <span style="font-family:var(--font-mono);font-size:10px;color:var(--epq-gray-600);">R$ 21,17 · 47%</span>
+              <span style="font-family:var(--font-mono);font-size:10px;color:var(--epq-gray-600);">R$ 41,29 · 51,6%</span>
             </div>
-            <div class="mini-progress-bar"><div class="mini-progress-fill" data-width="47"></div></div>
+            <div class="mini-progress-bar"><div class="mini-progress-fill" data-width="51.6"></div></div>
           </div>
           <div>
             <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
               <span style="font-family:var(--font-mono);font-size:10px;color:var(--epq-gray-700);">PMERJ</span>
-              <span style="font-family:var(--font-mono);font-size:10px;color:var(--epq-gray-600);">R$ 23,68 · 53%</span>
+              <span style="font-family:var(--font-mono);font-size:10px;color:var(--epq-gray-600);">R$ 38,67 · 48,4%</span>
             </div>
-            <div class="mini-progress-bar"><div class="mini-progress-fill" data-width="53"></div></div>
+            <div class="mini-progress-bar"><div class="mini-progress-fill" data-width="48.4"></div></div>
           </div>
         </div>
       </div>
@@ -1642,7 +1643,7 @@ body {
           <div class="hierarchy-node campaign-node">
             <div class="h-node-label dark">Campanha</div>
             <div class="h-node-name dark">PMERJ — WhatsApp Leads</div>
-            <div class="h-node-meta dark">R$ 45,06 gasto · 13 conversas</div>
+            <div class="h-node-meta dark">R$ 79,96 gasto · 20 conversas</div>
           </div>
         </div>
 
@@ -1656,7 +1657,7 @@ body {
           <div class="hierarchy-node adset-node">
             <div class="h-node-label blue">Conjunto de Anúncios</div>
             <div class="h-node-name blue">Policia + Estudos</div>
-            <div class="h-node-meta">CPM: R$ 12,46 · CPC: R$ 1,29 · Alcance: 2.059</div>
+            <div class="h-node-meta">CPM: R$ 12,20 · CPC: R$ 1,67 · Alcance: ~3.207</div>
           </div>
         </div>
 
@@ -1671,12 +1672,12 @@ body {
             <div style="position:absolute;top:12px;right:14px;background:rgba(61,139,217,.1);border:1px solid rgba(61,139,217,.25);border-radius:100px;padding:2px 8px;font-family:var(--font-mono);font-size:7px;color:var(--epq-blue-600);letter-spacing:0.12em;text-transform:uppercase;">LÍDER</div>
             <div class="h-node-label default">Anúncio</div>
             <div class="h-node-name default">PMERJ — 2</div>
-            <div class="h-node-meta">8 conv · R$ 2,65/conv · 19 cliques · R$ 1,06 CPC</div>
+            <div class="h-node-meta">13 conv · R$ 3,18/conv · 29 cliques · R$ 1,42 CPC</div>
           </div>
           <div class="hierarchy-node">
             <div class="h-node-label default">Anúncio</div>
             <div class="h-node-name default">PMERJ</div>
-            <div class="h-node-meta">5 conv · R$ 4,74/conv · 14 cliques · R$ 1,58 CPC</div>
+            <div class="h-node-meta">7 conv · R$ 5,52/conv · 19 cliques · R$ 2,04 CPC</div>
           </div>
         </div>
       </div>
@@ -1690,26 +1691,26 @@ body {
       <div style="display:flex;flex-direction:column;gap:16px;">
         <div style="padding:16px;background:var(--epq-blue-50);border:1px solid rgba(61,139,217,.2);border-radius:var(--radius-md);">
           <div style="font-family:var(--font-mono);font-size:9px;color:var(--epq-blue-600);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px;">Custo / Resultado</div>
-          <div style="font-family:var(--font-mono);font-size:36px;font-weight:500;color:var(--epq-blue-800);letter-spacing:-0.03em;line-height:1;">R$ 3,47</div>
+          <div style="font-family:var(--font-mono);font-size:36px;font-weight:500;color:var(--epq-blue-800);letter-spacing:-0.03em;line-height:1;">R$ 4,00</div>
           <div style="font-family:var(--font-mono);font-size:9px;color:var(--epq-gray-500);margin-top:4px;letter-spacing:0.06em;">Por conversa iniciada via mensagem</div>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
           <div style="padding:14px;background:var(--epq-white);border:1px solid var(--epq-gray-200);border-radius:var(--radius-md);">
             <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-500);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;">Alcance</div>
-            <div style="font-family:var(--font-mono);font-size:22px;font-weight:500;color:var(--epq-gray-900);letter-spacing:-0.02em;">2.059</div>
+            <div style="font-family:var(--font-mono);font-size:22px;font-weight:500;color:var(--epq-gray-900);letter-spacing:-0.02em;">~3.207</div>
           </div>
           <div style="padding:14px;background:var(--epq-white);border:1px solid var(--epq-gray-200);border-radius:var(--radius-md);">
             <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-500);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;">CPM</div>
-            <div style="font-family:var(--font-mono);font-size:22px;font-weight:500;color:var(--epq-gray-900);letter-spacing:-0.02em;">R$ 12,46</div>
+            <div style="font-family:var(--font-mono);font-size:22px;font-weight:500;color:var(--epq-gray-900);letter-spacing:-0.02em;">R$ 12,20</div>
           </div>
           <div style="padding:14px;background:var(--epq-white);border:1px solid var(--epq-gray-200);border-radius:var(--radius-md);">
             <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-500);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;">Cliques Link</div>
-            <div style="font-family:var(--font-mono);font-size:22px;font-weight:500;color:var(--epq-gray-900);letter-spacing:-0.02em;">33</div>
+            <div style="font-family:var(--font-mono);font-size:22px;font-weight:500;color:var(--epq-gray-900);letter-spacing:-0.02em;">48</div>
           </div>
           <div style="padding:14px;background:var(--epq-white);border:1px solid var(--epq-gray-200);border-radius:var(--radius-md);">
             <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-500);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;">CPC</div>
-            <div style="font-family:var(--font-mono);font-size:22px;font-weight:500;color:var(--epq-gray-900);letter-spacing:-0.02em;">R$ 1,29</div>
+            <div style="font-family:var(--font-mono);font-size:22px;font-weight:500;color:var(--epq-gray-900);letter-spacing:-0.02em;">R$ 1,67</div>
           </div>
         </div>
 
@@ -1717,10 +1718,10 @@ body {
         <div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
             <div style="font-family:var(--font-mono);font-size:9px;color:var(--epq-gray-500);letter-spacing:0.1em;text-transform:uppercase;">Click-Through Rate (Cliques / Alcance)</div>
-            <div style="font-family:var(--font-mono);font-size:11px;font-weight:500;color:var(--epq-gray-700);">1,60%</div>
+            <div style="font-family:var(--font-mono);font-size:11px;font-weight:500;color:var(--epq-gray-700);">1,50%</div>
           </div>
           <div class="mini-progress-bar" style="height:3px;">
-            <div class="mini-progress-fill" data-width="32" style="background:var(--epq-blue-400);"></div>
+            <div class="mini-progress-fill" data-width="30" style="background:var(--epq-blue-400);"></div>
           </div>
           <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-400);margin-top:4px;letter-spacing:0.06em;">Referência de mercado: 1–3%</div>
         </div>
@@ -1729,10 +1730,10 @@ body {
         <div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
             <div style="font-family:var(--font-mono);font-size:9px;color:var(--epq-gray-500);letter-spacing:0.1em;text-transform:uppercase;">Conv. Rate (Conv / Cliques)</div>
-            <div style="font-family:var(--font-mono);font-size:11px;font-weight:500;color:var(--epq-gray-700);">39,4%</div>
+            <div style="font-family:var(--font-mono);font-size:11px;font-weight:500;color:var(--epq-gray-700);">41,7%</div>
           </div>
           <div class="mini-progress-bar" style="height:3px;">
-            <div class="mini-progress-fill" data-width="79" style="background:var(--epq-blue-600);"></div>
+            <div class="mini-progress-fill" data-width="83.4" style="background:var(--epq-blue-600);"></div>
           </div>
           <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-400);margin-top:4px;letter-spacing:0.06em;">Alta taxa click-to-message</div>
         </div>
@@ -1757,33 +1758,33 @@ body {
             <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-500);letter-spacing:0.15em;text-transform:uppercase;">Anúncio</div>
             <div class="creative-name">PMERJ — 2</div>
           </div>
-          <div class="cpm-hero leader">R$ 2,65</div>
+          <div class="cpm-hero leader">R$ 3,18</div>
           <div class="cpm-label">Custo por conversa iniciada</div>
 
           <div class="creative-stats">
             <div class="creative-stat-row">
               <span class="cs-label">Conversas</span>
-              <span class="cs-val">8</span>
+              <span class="cs-val">13</span>
             </div>
             <div class="creative-stat-row">
               <span class="cs-label">Valor gasto</span>
-              <span class="cs-val">R$ 21,17</span>
+              <span class="cs-val">R$ 41,29</span>
             </div>
             <div class="creative-stat-row">
               <span class="cs-label">Alcance</span>
-              <span class="cs-val">1.169</span>
+              <span class="cs-val">1.919</span>
             </div>
             <div class="creative-stat-row">
               <span class="cs-label">CPM</span>
-              <span class="cs-val">R$ 11,85</span>
+              <span class="cs-val">R$ 12,14</span>
             </div>
             <div class="creative-stat-row">
               <span class="cs-label">Cliques únicos</span>
-              <span class="cs-val">19</span>
+              <span class="cs-val">29</span>
             </div>
             <div class="creative-stat-row">
               <span class="cs-label">CPC</span>
-              <span class="cs-val">R$ 1,06</span>
+              <span class="cs-val">R$ 1,42</span>
             </div>
           </div>
         </div>
@@ -1794,55 +1795,43 @@ body {
             <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-500);letter-spacing:0.15em;text-transform:uppercase;">Anúncio</div>
             <div class="creative-name">PMERJ</div>
           </div>
-          <div class="cpm-hero">R$ 4,74</div>
+          <div class="cpm-hero">R$ 5,52</div>
           <div class="cpm-label">Custo por conversa iniciada</div>
 
           <div class="creative-stats">
             <div class="creative-stat-row">
               <span class="cs-label">Conversas</span>
               <div style="display:flex;align-items:center;gap:8px;">
-                <span class="cs-val">5</span>
-                <span class="delta-negative">−37%</span>
+                <span class="cs-val">7</span>
+                <span class="delta-negative">−46%</span>
               </div>
             </div>
             <div class="creative-stat-row">
               <span class="cs-label">Valor gasto</span>
-              <span class="cs-val">R$ 23,68</span>
+              <span class="cs-val">R$ 38,67</span>
             </div>
             <div class="creative-stat-row">
               <span class="cs-label">Alcance</span>
-              <div style="display:flex;align-items:center;gap:8px;">
-                <span class="cs-val">1.184</span>
-                <span class="delta-positive">+1,3%</span>
-              </div>
+              <span class="cs-val">1.746</span>
             </div>
             <div class="creative-stat-row">
               <span class="cs-label">CPM</span>
-              <div style="display:flex;align-items:center;gap:8px;">
-                <span class="cs-val">R$ 13,02</span>
-                <span class="delta-negative">+9,8%</span>
-              </div>
+              <span class="cs-val">R$ 12,25</span>
             </div>
             <div class="creative-stat-row">
               <span class="cs-label">Cliques únicos</span>
-              <div style="display:flex;align-items:center;gap:8px;">
-                <span class="cs-val">14</span>
-                <span class="delta-negative">−26%</span>
-              </div>
+              <span class="cs-val">19</span>
             </div>
             <div class="creative-stat-row">
               <span class="cs-label">CPC</span>
-              <div style="display:flex;align-items:center;gap:8px;">
-                <span class="cs-val">R$ 1,58</span>
-                <span class="delta-negative">+49%</span>
-              </div>
+              <span class="cs-val">R$ 2,04</span>
             </div>
           </div>
         </div>
       </div>
 
       <div class="sample-warning" style="margin-top:16px;">
-        ⚠ EARLY PHASE DATA — Amostra de apenas 2 dias. Diferença de desempenho é promissora mas ainda não estatisticamente conclusiva. Continue monitorando antes de escalar.
+        ⚠ EARLY PHASE DATA — Amostra ampliada para 20 conversas. Diferença entre criativos ainda é promissora, mas volume insuficiente para decisão definitiva de otimização.
       </div>
     </div>
 
@@ -1864,13 +1853,13 @@ body {
           </div>
           <div class="funnel-bar-wrap">
             <div class="funnel-bar" data-width="100">
-              <span class="funnel-bar-label">2.059 pessoas</span>
+              <span class="funnel-bar-label">~3.207 pessoas</span>
             </div>
           </div>
-          <div class="funnel-val">2.059</div>
+          <div class="funnel-val">~3.207</div>
         </div>
 
-        <div class="funnel-arrow" style="padding-left:116px;text-align:left;">↓ &nbsp;<span style="font-size:8px;color:var(--epq-gray-400);">1,60% CTR</span></div>
+        <div class="funnel-arrow" style="padding-left:116px;text-align:left;">↓ &nbsp;<span style="font-size:8px;color:var(--epq-gray-400);">1,50% CTR</span></div>
 
         <!-- Stage 2 -->
         <div class="funnel-stage">
@@ -1878,14 +1867,14 @@ body {
             <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-500);letter-spacing:0.1em;text-transform:uppercase;">Cliques</div>
           </div>
           <div class="funnel-bar-wrap">
-            <div class="funnel-bar" data-width="40">
-              <span class="funnel-bar-label">33 cliques únicos</span>
+            <div class="funnel-bar" data-width="37.5">
+              <span class="funnel-bar-label">48 cliques únicos</span>
             </div>
           </div>
-          <div class="funnel-val">33</div>
+          <div class="funnel-val">48</div>
         </div>
 
-        <div class="funnel-arrow" style="padding-left:116px;text-align:left;">↓ &nbsp;<span style="font-size:8px;color:var(--epq-gray-400);">39,4% conv.</span></div>
+        <div class="funnel-arrow" style="padding-left:116px;text-align:left;">↓ &nbsp;<span style="font-size:8px;color:var(--epq-gray-400);">41,7% conv.</span></div>
 
         <!-- Stage 3 -->
         <div class="funnel-stage">
@@ -1893,11 +1882,11 @@ body {
             <div style="font-family:var(--font-mono);font-size:8px;color:var(--epq-gray-500);letter-spacing:0.1em;text-transform:uppercase;">Conversas</div>
           </div>
           <div class="funnel-bar-wrap">
-            <div class="funnel-bar" data-width="20">
-              <span class="funnel-bar-label">13 iniciadas</span>
+            <div class="funnel-bar" data-width="20.8">
+              <span class="funnel-bar-label">20 iniciadas</span>
             </div>
           </div>
-          <div class="funnel-val">13</div>
+          <div class="funnel-val">20</div>
         </div>
 
         <div class="funnel-arrow" style="padding-left:116px;text-align:left;">↓</div>
@@ -1961,7 +1950,7 @@ body {
           <div class="diag-icon positive">▲</div>
           <div class="diag-content">
             <div class="diag-tag positive">Signal Positive</div>
-            <div class="diag-text">Custo por conversa de R$ 3,47 é competitivo para captação via WhatsApp no segmento educacional de concursos. PMERJ — 2 mostrando eficiência superior com R$ 2,65/conv.</div>
+            <div class="diag-text">Custo por conversa de R$ 4,00 está competitivo para captação via WhatsApp no segmento educacional de concursos. PMERJ — 2 mantém eficiência superior com R$ 3,18/conv.</div>
             <div class="diag-sub">Métrica principal dentro do esperado para fase inicial</div>
           </div>
         </div>
@@ -1970,8 +1959,8 @@ body {
           <div class="diag-icon attention">△</div>
           <div class="diag-content">
             <div class="diag-tag attention">Attention</div>
-            <div class="diag-text">Amostra de apenas 2 dias e 13 conversas totais. A diferença entre os criativos (R$ 2,65 vs R$ 4,74) é expressiva, mas pode ser resultado de variação aleatória com volume pequeno.</div>
-            <div class="diag-sub">Aguardar 50+ conversas por criativo para conclusão estatística</div>
+            <div class="diag-text">Amostra ampliada para 20 conversas totais. A diferença entre os criativos permanece expressiva, mas ainda recomenda-se cautela antes de escalar.</div>
+            <div class="diag-sub">Aguardar 30–50 conversas por criativo para decisão de otimização</div>
           </div>
         </div>
 
@@ -2006,7 +1995,7 @@ body {
         <div class="rec-card">
           <div class="rec-number">02 // MONITOR</div>
           <div class="rec-action">Monitorar Diferença</div>
-          <div class="rec-desc">Acompanhe diariamente a evolução do custo por conversa de cada criativo. Se PMERJ — 2 mantiver vantagem com 30+ conversas, considere aumentar seu orçamento gradualmente.</div>
+          <div class="rec-desc">Acompanhe diariamente a evolução do custo por conversa de cada criativo. Se PMERJ — 2 mantiver vantagem com 25+ conversas, reavalie a redistribuição gradual do orçamento.</div>
         </div>
 
         <div class="rec-card">
@@ -2028,7 +2017,7 @@ body {
   <!-- FOOTER -->
   <footer class="page-footer">
     <div class="footer-brand">EPQ — Estudando por Questões // Performance Command Center</div>
-    <div class="footer-timestamp">Gerado em 25.08.2026 · Período: 23–25 ago 2026 · CA EPQ - Ronan</div>
+    <div class="footer-timestamp">Gerado em 25.08.2026 · Período: 20–25 ago 2026 · CA EPQ - Ronan</div>
   </footer>
 
 </main>
@@ -2195,12 +2184,12 @@ if (!prefersReducedMotion) {
     });
   }
 
-  animateCounter(document.getElementById('kpi-invest'), 45.06, 'R$ ', '', 2);
-  animateCounter(document.getElementById('kpi-conv'), 13, '', '', 0);
-  animateCounter(document.getElementById('kpi-cpa'), 3.47, 'R$ ', '', 2);
-  animateCounter(document.getElementById('kpi-reach'), 2059, '', '', 0);
-  animateCounter(document.getElementById('kpi-clicks'), 33, '', '', 0);
-  animateCounter(document.getElementById('kpi-cpc'), 1.29, 'R$ ', '', 2);
+  animateCounter(document.getElementById('kpi-invest'), 79.96, 'R$ ', '', 2);
+  animateCounter(document.getElementById('kpi-conv'), 20, '', '', 0);
+  animateCounter(document.getElementById('kpi-cpa'), 4.00, 'R$ ', '', 2);
+  animateCounter(document.getElementById('kpi-reach'), 3207, '', '', 0);
+  animateCounter(document.getElementById('kpi-clicks'), 48, '', '', 0);
+  animateCounter(document.getElementById('kpi-cpc'), 1.67, 'R$ ', '', 2);
 
   // ── SCROLL REVEALS
   gsap.utils.toArray('.reveal').forEach((el) => {
@@ -2303,12 +2292,12 @@ if (!prefersReducedMotion) {
 
   document.querySelectorAll('.kpi-item').forEach(el => el.style.opacity = '1');
 
-  document.getElementById('kpi-invest').textContent = 'R$ 45,06';
-  document.getElementById('kpi-conv').textContent = '13';
-  document.getElementById('kpi-cpa').textContent = 'R$ 3,47';
-  document.getElementById('kpi-reach').textContent = '2.059';
-  document.getElementById('kpi-clicks').textContent = '33';
-  document.getElementById('kpi-cpc').textContent = 'R$ 1,29';
+  document.getElementById('kpi-invest').textContent = 'R$ 79,96';
+  document.getElementById('kpi-conv').textContent = '20';
+  document.getElementById('kpi-cpa').textContent = 'R$ 4,00';
+  document.getElementById('kpi-reach').textContent = '3.207';
+  document.getElementById('kpi-clicks').textContent = '48';
+  document.getElementById('kpi-cpc').textContent = 'R$ 1,67';
 
   document.querySelectorAll('.mini-progress-fill').forEach(el => {
     el.style.width = el.dataset.width + '%';
