@@ -110,6 +110,7 @@
   .agenda-item:hover{border-color:rgba(34,211,238,0.4)}
   .agenda-item .name{font-size:13px;color:#ffffff;font-weight:500}
   .agenda-item .meta{font-size:12px;color:#7d9cbd;margin-top:4px}
+  .status-pill{font-size:11px;padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);color:#e6f3ff;background:rgba(255,255,255,0.08)}
   @media (max-width:1024px){.kpis{grid-template-columns:repeat(3,1fr)}.funnel{grid-template-columns:repeat(4,1fr)}.agenda{grid-template-columns:1fr}}
   @media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}.funnel{grid-template-columns:repeat(3,1fr)}.row{grid-template-columns:1fr}}
 </style>
@@ -126,6 +127,7 @@
       </div>
     </div>
     <div class="actions">
+      <span class="status-pill">{{ mode === 'cloud' ? '☁️ Online' : '💾 Offline' }}</span>
       <button class="btn primary" @click="openCreate()">Novo lead</button>
       <button class="btn" @click="exportXLS()">Exportar XLS</button>
     </div>
@@ -317,13 +319,12 @@
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script>
   const { createApp, ref, computed, reactive } = Vue;
-  const STORAGE_KEY = 'epq_crm_leads';
+  const STORAGE_KEY = 'epq_crm_leads_v2';
+  const API_BASE = 'https://epq-dd56.onrender.com';
   const stages = ['Novo','Primeiro contato','Em conversa','Interessado','Negociação','Matriculado','Perdido'];
   function today(){ return new Date().toISOString().slice(0,10); }
   function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
-  function readLeads(){
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
-  }
+  function readLeads(){ try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; } }
   function writeLeads(list){ localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
 
   createApp({
@@ -336,8 +337,94 @@
       const createModal = ref(false);
       const currentLead = ref(null);
       const newLead = reactive({ name: '', whatsapp: '', course: '', source: '', stage: 'Novo', temperature: 'Morno', nextFollowUp: today(), nextTime: '09:00', nextType: 'WhatsApp', nextNote: '' });
+      const mode = ref('cloud');
+      const syncStatus = ref('');
+      const errorMsg = ref('');
 
       function persist(){ writeLeads(leads.value); }
+      function setMode(next){ mode.value = next; localStorage.setItem('epq_crm_mode', next); }
+      async function safeApi(path, options){
+        const url = API_BASE + path;
+        const res = await fetch(url, { ...options, headers: { 'content-type':'application/json', ...(options && options.headers ? options.headers : {}) } });
+        if (!res.ok){ const text = await res.text(); throw new Error(text || ('HTTP ' + res.status)); }
+        const ct = res.headers.get('content-type') || '';
+        return ct.includes('application/json') ? res.json() : res.text();
+      }
+      async function loadCloud(){
+        errorMsg.value = '';
+        try {
+          const data = await safeApi('/leads');
+          leads.value = Array.isArray(data) ? data.map(fromApi) : [];
+          persist();
+          syncStatus.value = 'Sincronizado em ' + new Date().toLocaleTimeString();
+          setMode('cloud');
+        } catch (e) {
+          errorMsg.value = 'Não foi possível sincronizar com o servidor.';
+          setMode('offline');
+        }
+      }
+      function fromApi(l){
+        return {
+          id: l.id || uid(),
+          name: l.nome || l.name || '',
+          phone: l.telefone || l.phone || '',
+          email: l.email || '',
+          whatsapp: l.whatsapp || '',
+          course: l.produto || l.course || '',
+          source: l.origem || l.source || '',
+          createdAt: (l.created_at || l.createdAt || '').slice(0,10),
+          lastContact: (l.updated_at || l.updatedAt || '').slice(0,10),
+          nextFollowUp: (l.proximo_followup || l.nextFollowUp || '').slice(0,10),
+          nextTime: l.nextTime || '09:00',
+          nextType: l.proximo_tipo || l.nextType || '',
+          nextNote: l.proximo_nota || l.nextNote || '',
+          temperature: l.temperatura || l.temperature || '',
+          stage: l.etapa || l.stage || '',
+          status: l.status || 'ativo',
+          ownerId: l.responsavel_id || l.ownerId || 'local',
+          ownerName: l.responsavel_id || l.ownerId || 'local',
+          history: Array.isArray(l.history) ? l.history : [],
+        };
+      }
+      function toApiPayload(lead){
+        return {
+          nome: lead.name,
+          telefone: lead.phone,
+          email: lead.email,
+          whatsapp: lead.whatsapp,
+          produto: lead.course,
+          origem: lead.source,
+          etapa: lead.stage,
+          temperatura: lead.temperature,
+          proximo_followup: lead.nextFollowUp || null,
+          proximo_tipo: lead.nextType || null,
+          proximo_nota: lead.nextNote || null,
+          status: lead.status,
+        };
+      }
+      function toLocalPayload(form){
+        return {
+          id: uid(),
+          name: form.name,
+          phone: form.phone || '',
+          email: form.email || '',
+          whatsapp: form.whatsapp,
+          course: form.course,
+          source: form.source,
+          createdAt: today(),
+          lastContact: today(),
+          nextFollowUp: form.nextFollowUp,
+          nextTime: form.nextTime,
+          nextType: form.nextType,
+          nextNote: form.nextNote,
+          temperature: form.temperature,
+          stage: form.stage,
+          status: 'ativo',
+          ownerId: 'local',
+          ownerName: 'local',
+          history: [],
+        };
+      }
 
       const filtered = computed(()=>{
         const q = search.value.trim().toLowerCase();
@@ -373,88 +460,36 @@
       function formatDate(v){ return v || '—'; }
       function formatDateTime(v){ return v ? v.replace('T',' ').slice(0,19) : '—'; }
 
-      function fromApi(l){
-        return {
-          id: l.id || uid(),
-          name: l.nome || l.name || '',
-          phone: l.telefone || l.phone || '',
-          email: l.email || '',
-          whatsapp: l.whatsapp || '',
-          course: l.produto || l.course || '',
-          source: l.origem || l.source || '',
-          createdAt: (l.created_at || l.createdAt || '').slice(0,10),
-          lastContact: (l.updated_at || l.updatedAt || '').slice(0,10),
-          nextFollowUp: (l.proximo_followup || l.nextFollowUp || '').slice(0,10),
-          nextTime: l.nextTime || '09:00',
-          nextType: l.proximo_tipo || l.nextType || '',
-          nextNote: l.proximo_nota || l.nextNote || '',
-          temperature: l.temperatura || l.temperature || '',
-          stage: l.etapa || l.stage || '',
-          status: l.status || 'ativo',
-          ownerId: l.responsavel_id || l.ownerId || 'local',
-          ownerName: l.responsavel_id || l.ownerId || 'local',
-          history: Array.isArray(l.history) ? l.history : [],
-        };
-      }
-      function toLocalPayload(form){
-        return {
-          id: uid(),
-          name: form.name,
-          phone: form.phone || '',
-          email: form.email || '',
-          whatsapp: form.whatsapp,
-          course: form.course,
-          source: form.source,
-          createdAt: today(),
-          lastContact: today(),
-          nextFollowUp: form.nextFollowUp,
-          nextTime: form.nextTime,
-          nextType: form.nextType,
-          nextNote: form.nextNote,
-          temperature: form.temperature,
-          stage: form.stage,
-          status: 'ativo',
-          ownerId: 'local',
-          ownerName: 'local',
-          history: [],
-        };
-      }
-      function saveCurrent(){
-        if (!currentLead.value) return;
-        const idx = leads.value.findIndex(x => x.id === currentLead.value.id);
-        const payload = {
-          ...currentLead.value,
-          lastContact: today(),
-          updatedAt: today(),
-        };
-        if (idx >= 0){ leads.value[idx] = payload; } else { leads.value.unshift(payload); }
-        currentLead.value = payload;
-        persist();
-      }
-
-      async function openLead(lead){
-        const full = fromApi(lead);
-        currentLead.value = full;
-        leadModal.value = true;
-      }
+      async function openLead(lead){ currentLead.value = lead; leadModal.value = true; }
       function closeLead(){ leadModal.value = false; currentLead.value = null; }
       async function saveLead(){
-        saveCurrent();
+        if (!currentLead.value) return;
+        const payload = toApiPayload(currentLead.value);
+        try {
+          if (mode.value === 'cloud') await safeApi('/leads/' + currentLead.value.id, { method:'PUT', body: JSON.stringify(payload) });
+          const idx = leads.value.findIndex(x => x.id === currentLead.value.id);
+          const merged = { ...currentLead.value, ...payload, lastContact: today() };
+          if (idx >= 0) leads.value[idx] = merged; else leads.value.unshift(merged);
+          currentLead.value = merged;
+          persist();
+        } catch { errorMsg.value = 'Falha ao salvar no modo online.'; }
         closeLead();
       }
 
       function openCreate(){ createModal.value = true; }
-      function closeCreate(){
-        createModal.value = false;
-        resetForm();
-      }
-      function resetForm(){
-        Object.assign(newLead, { name:'', whatsapp:'', course:'', source:'', stage:'Novo', temperature:'Morno', nextFollowUp:today(), nextTime:'09:00', nextType:'WhatsApp', nextNote:'' });
-      }
+      function closeCreate(){ createModal.value = false; resetForm(); }
+      function resetForm(){ Object.assign(newLead, { name:'', whatsapp:'', course:'', source:'', stage:'Novo', temperature:'Morno', nextFollowUp:today(), nextTime:'09:00', nextType:'WhatsApp', nextNote:'' }); }
       async function createLead(){
         const payload = toLocalPayload(newLead);
-        leads.value.unshift(payload);
-        persist();
+        try {
+          if (mode.value === 'cloud'){
+            const created = await safeApi('/leads', { method:'POST', body: JSON.stringify(toApiPayload(payload)) });
+            leads.value.unshift(fromApi(created));
+          } else {
+            leads.value.unshift(payload);
+          }
+          persist();
+        } catch { errorMsg.value = 'Falha ao criar no modo online. Usando armazenamento local.'; leads.value.unshift(payload); persist(); }
         resetForm();
         closeCreate();
       }
@@ -466,15 +501,13 @@
         currentLead.value.lastContact = today();
         persist();
       }
-
       async function advanceStage(){
         if (!currentLead.value) return;
         const idx = stages.indexOf(currentLead.value.stage);
-        if (idx < stages.length - 1){
-          currentLead.value.stage = stages[idx + 1];
-          await saveLead();
-        }
+        if (idx < stages.length - 1){ currentLead.value.stage = stages[idx + 1]; await saveLead(); }
       }
+      async function syncNow(){ await loadCloud(); }
+      function switchToOffline(){ setMode('offline'); syncStatus.value = ''; }
 
       function exportXLS(){
         const ws = XLSX.utils.json_to_sheet(leads.value.map(l => ({
@@ -498,19 +531,15 @@
       }
 
       async function init(){
-        // seed simples se vazio
-        if (!leads.value.length){
-          leads.value = [
-            { id: uid(), name:'Exemplo A', phone:'', email:'', whatsapp:'', course:'Exemplo', source:'Manual', createdAt:today(), lastContact:today(), nextFollowUp:today(), nextTime:'09:00', nextType:'WhatsApp', nextNote:'Exemplo', temperature:'Morno', stage:'Novo', status:'ativo', ownerId:'local', ownerName:'local', history:[] }
-          ];
-          persist();
-        }
+        const saved = localStorage.getItem('epq_crm_mode');
+        if (saved) mode.value = saved;
+        await loadCloud();
       }
       init();
 
       return {
-        search, filterStage, tab, leadModal, createModal, currentLead, newLead, stages, filtered, kpis, agenda, byStage,
-        openLead, closeLead, saveLead, openCreate, closeCreate, createLead, logContact, advanceStage, formatDate, formatDateTime, exportXLS,
+        search, filterStage, tab, leadModal, createModal, currentLead, newLead, stages, filtered, kpis, agenda, byStage, mode, syncStatus, errorMsg,
+        openLead, closeLead, saveLead, openCreate, closeCreate, createLead, logContact, advanceStage, formatDate, formatDateTime, exportXLS, syncNow, switchToOffline,
       };
     }
   }).mount('#app');
