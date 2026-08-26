@@ -472,10 +472,14 @@ function cardEl(t){
   const od=overdue(t)?'<span class="pill overdue">Atrasada</span>':'';
   div.innerHTML=`<div class="card-title">${esc(t.title)}</div>
     <div class="card-meta">${t.area?`<span class="pill area">${esc(t.area)}</span>`:''}${t.project?`<span class="pill project">${esc(t.project)}</span>`:''}${prioPill(t.priority)}${od}</div>
-    <div class="card-meta" style="margin-top:6px"><span>👤 ${esc(t.who||'-')}</span><span style="opacity:.7">•</span><span>📅 ${fmt(t.deadline)}</span></div>`;
+    <div class="card-meta" style="margin-top:6px"><span>👤 ${esc(t.who||'-')}</span><span style="opacity:.7">•</span><span>📅 ${fmt(t.deadline)}</span></div>
+    <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:6px">
+      <button class="btn sm ghost" title="Mover para cima" onclick="moveCard('${t.id}',-1)">▲</button>
+      <button class="btn sm ghost" title="Mover para baixo" onclick="moveCard('${t.id}',1)">▼</button>
+    </div>`;
   div.addEventListener('dragstart',e=>{e.dataTransfer.effectAllowed='move';dragTaskId=div.dataset.id;div.classList.add('drag')});
   div.addEventListener('dragend',()=>{dragTaskId=null;div.classList.remove('drag')});
-  div.addEventListener('click',()=>openDetail(t.id));
+  div.addEventListener('click',e=>{if(e.target.closest('button'))return;openDetail(t.id)});
   return div;
 }
 function prioPill(p){return`<span class="pill ${p.toLowerCase()}">${esc(p)}</span>`}

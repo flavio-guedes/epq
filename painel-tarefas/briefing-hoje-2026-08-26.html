@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPQ — Briefings da coluna Hoje</title>
+<style>
+  @page { size: A4; margin: 18mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    color: #1f2937;
+    background: #ffffff;
+    padding: 24px;
+  }
+  .page { max-width: 900px; margin: 0 auto; }
+  .header {
+    border-bottom: 3px solid #111827;
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .header h1 { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
+  .header .meta { font-size: 11px; color: #6b7280; text-align: right; }
+  .section {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 14px;
+    page-break-inside: avoid;
+  }
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .section-title { font-size: 14px; font-weight: 700; }
+  .section-tag {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #1e40af;
+    border: 1px solid #dbeafe;
+    white-space: nowrap;
+  }
+  .meta-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 10px; }
+  .meta-item { font-size: 12px; color: #374151; }
+  .meta-item span { color: #6b7280; }
+  .briefing { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 10px; }
+  .briefing-title { font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 6px; }
+  .briefing-item { font-size: 12px; color: #111827; margin-bottom: 4px; }
+  .briefing-item b { color: #374151; }
+  .footer { margin-top: 18px; font-size: 11px; color: #9ca3af; text-align: center; }
+  @media print {
+    body { padding: 0; }
+    .section { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div>
+      <div style="font-size:11px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:0.14em;margin-bottom:6px">EPQ</div>
+      <h1>Briefings da coluna Hoje</h1>
+    </div>
+    <div class="meta">
+      <div>Data: 26/08/2026</div>
+      <div>Fonte: Painel de Tarefas</div>
+      <div>Coluna: Hoje</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">1. Você estuda muito, mas aprende pouco?</div>
+      <div class="section-tag">Conteúdo</div>
+    </div>
+    <div class="meta-row">
+      <div class="meta-item"><span>Responsável:</span> Clara</div>
+      <div class="meta-item"><span>Data:</span> 26/08/2026</div>
+      <div class="meta-item"><span>Status:</span> Hoje</div>
+    </div>
+    <div class="briefing">
+      <div class="briefing-title">Briefing</div>
+      <div class="briefing-item"><b>Headline:</b> Você estuda muito, mas aprende pouco?</div>
+      <div class="briefing-item"><b>Pilar:</b> Erro: só ler sem praticar questões</div>
+      <div class="briefing-item"><b>Copy:</b> Ler não é estudar. A prática com questões muda o resultado.</div>
+      <div class="briefing-item"><b>Roteiro:</b> Hook com pergunta, exemplo do erro, solução em 3 passos, call to action.</div>
+      <div class="briefing-item"><b>Legenda:</b> Pare de só ler. Comece a praticar.</div>
+      <div class="briefing-item"><b>Fluxo:</b> Criação → Aprovação → Agendamento</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">2. RON-AGO-001 — O que ninguém mostra sobre corrigir provas</div>
+      <div class="section-tag">Conteúdo</div>
+    </div>
+    <div class="meta-row">
+      <div class="meta-item"><span>Responsável:</span> Clara</div>
+      <div class="meta-item"><span>Data:</span> 28/08/2026</div>
+      <div class="meta-item"><span>Status:</span> Hoje</div>
+    </div>
+    <div class="briefing">
+      <div class="briefing-title">Briefing</div>
+      <div class="briefing-item"><b>Headline:</b> O que ninguém mostra sobre corrigir provas</div>
+      <div class="briefing-item"><b>Pilar:</b> Rotina de quem corrige provas</div>
+      <div class="briefing-item"><b>Copy:</b> Mostramos os bastidores reais da correção.</div>
+      <div class="briefing-item"><b>Roteiro:</b> Abertura com café, pilha de provas, dica rápida, fechamento humanizado.</div>
+      <div class="briefing-item"><b>Legenda:</b> Rotina real de quem corrige provas.</div>
+      <div class="briefing-item"><b>Fluxo:</b> Criação → Aprovação → Agendamento</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">3. Post anúncio Bolsão</div>
+      <div class="section-tag">Conteúdo / Marketing</div>
+    </div>
+    <div class="meta-row">
+      <div class="meta-item"><span>Responsável:</span> Clara</div>
+      <div class="meta-item"><span>Data:</span> 26/08/2026</div>
+      <div class="meta-item"><span>Status:</span> Hoje</div>
+    </div>
+    <div class="briefing">
+      <div class="briefing-title">Briefing</div>
+      <div class="briefing-item"><b>Tema:</b> campanha de bolsão para captação de novos alunos</div>
+      <div class="briefing-item"><b>Público:</b> interessados em turmas preparatórias de concursos militares</div>
+      <div class="briefing-item"><b>Destaques:</b> estrutura da unidade, equipe especializada, ambiente motivador e disciplinador, preparação intelectual e física no mesmo ambiente, muitos simulados, metodologia com resultado real, bolsas de até 50%</div>
+      <div class="briefing-item"><b>Uso:</b> anúncio</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">4. Post banner — Campanha de bolsão para captação de novos alunos</div>
+      <div class="section-tag">Design</div>
+    </div>
+    <div class="meta-row">
+      <div class="meta-item"><span>Responsável:</span> Clara</div>
+      <div class="meta-item"><span>Data:</span> 26/08/2026</div>
+      <div class="meta-item"><span>Status:</span> Hoje</div>
+    </div>
+    <div class="briefing">
+      <div class="briefing-title">Briefing</div>
+      <div class="briefing-item"><b>Entregável:</b> banner</div>
+      <div class="briefing-item"><b>Tema:</b> captação de novos alunos</div>
+      <div class="briefing-item"><b>Contexto:</b> mesmo evento/campanha do item 3</div>
+    </div>
+  </div>
+
+  <div class="footer">Gerado automaticamente a partir do Painel de Tarefas EPQ</div>
+</div>
+</body>
+</html>
