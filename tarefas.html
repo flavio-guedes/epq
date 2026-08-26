@@ -93,8 +93,8 @@
   .stat-value{font-size:22px;font-weight:800;color:var(--navy)}
   .stat-sub{font-size:11px;color:var(--muted);margin-top:2px}
 
-  .board{display:grid;grid-template-columns:repeat(4,minmax(260px,1fr));gap:14px}
-  .col{background:rgba(255,255,255,0.6);border-radius:12px;border:1px solid rgba(10,31,59,0.06);padding:10px;display:flex;flex-direction:column;max-height:calc(100vh - 230px);min-height:240px}
+  .board{display:flex;gap:14px;overflow-x:auto;overflow-y:hidden;padding-bottom:8px}
+  .col{background:rgba(255,255,255,0.6);border-radius:12px;border:1px solid rgba(10,31,59,0.06);padding:10px;display:flex;flex-direction:column;min-width:260px;max-height:calc(100vh - 230px);min-height:240px}
   .col-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
   .col-title{font-weight:700;font-size:13px;color:var(--navy);display:flex;align-items:center;gap:8px}
   .col-count{
@@ -131,6 +131,11 @@
   .progress-bar{height:100%;background:linear-gradient(90deg,var(--blue),var(--gold));border-radius:999px}
 
   .empty{color:var(--muted);font-size:12px;padding:8px 4px;text-align:center}
+
+  /* Cover */
+  .cover-wrap{position:fixed;inset:0;z-index:200;background:linear-gradient(160deg, rgba(10,31,59,0.85), rgba(27,58,138,0.75), rgba(15,42,82,0.88));display:flex;align-items:center;justify-content:center}
+  .cover-card{background:#ffffff;border-radius:16px;padding:24px;width:min(520px, 92vw);box-shadow:0 20px 60px rgba(0,0,0,.35);border:1px solid rgba(10,31,59,0.06)}
+  .cover-row{display:flex;justify-content:flex-end;margin-top:18px}
 
   /* Modal */
   .modal-wrap{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(10,31,59,0.45);z-index:80}
@@ -182,7 +187,24 @@
 </style>
 </head>
 <body>
-<div class="app">
+  <div class="cover-wrap" id="cover">
+    <div class="cover-card">
+      <div class="brand">
+        <div class="brand-mark">EPQ</div>
+        <div>
+          <div class="brand-text">EPQ Central</div>
+          <div class="brand-sub">Gestão de Tarefas</div>
+        </div>
+      </div>
+      <div style="margin-top:8px;font-weight:700;font-size:18px;color:var(--navy)">Painel de Tarefas</div>
+      <div style="color:var(--muted);font-size:13px;margin-top:6px">Acesso direto para a equipe. Sem login.</div>
+      <div class="cover-row">
+        <button class="btn primary" onclick="openApp()">Abrir painel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="app hidden" id="app">
   <aside class="sidebar" id="sidebar">
     <div class="brand">
       <div class="brand-mark">EPQ</div>
@@ -293,7 +315,7 @@
     </div>
     <div class="field">
       <label>Status</label>
-      <select id="m-status"><option>A Fazer</option><option>Em Andamento</option><option>Aguardando</option><option>Concluído</option></select>
+      <select id="m-status"><option>A Fazer</option><option>Hoje</option><option>Em aprovação</option><option>Concluído</option><option>Publicado agendado</option><option>Arquivo</option></select>
     </div>
     <div class="modal-actions">
       <button class="btn ghost" onclick="closeModal()">Cancelar</button>
@@ -323,8 +345,8 @@ const defaults=[
   {id:id(),title:'O que ninguém mostra sobre corrigir provas',desc:'Headline: O que ninguém mostra sobre corrigir provas\nPilar: Rotina de quem corrige provas\nCopy: Mostramos os bastidores reais da correção.\nRoteiro: Abertura com café, pilha de provas, dica rápida, fechamento humanizado.\nLegenda: Rotina real de quem corrige provas.\nFluxo: Criação → Aprovação → Agendamento',who:'Clara',area:'Conteúdo',project:'Ronan',priority:'Média',status:'A Fazer',deadline:'2026-08-05',createdAt:new Date().toISOString()},
   {id:id(),title:'Você estuda muito, mas aprende pouco?',desc:'Headline: Você estuda muito, mas aprende pouco?\nPilar: Erro: só ler sem praticar questões\nCopy: Ler não é estudar. A prática com questões muda o resultado.\nRoteiro: Hook com pergunta, exemplo do erro, solução em 3 passos, call to action.\nLegenda: Pare de só ler. Comece a praticar.\nFluxo: Criação → Aprovação → Agendamento',who:'Clara',area:'Conteúdo',project:'EPQ',priority:'Média',status:'A Fazer',deadline:'2026-08-06',createdAt:new Date().toISOString()},
   {id:id(),title:'Revisar conteúdo da área pedagógica',desc:'Ajustar textos e sequência das aulas.',who:'Clara',area:'Pedagógico',project:'Área Pedagógica',priority:'Média',status:'A Fazer',deadline:'2026-08-26',createdAt:new Date().toISOString()},
-  {id:id(),title:'Atualizar página da turma',desc:'Ajustar agenda e novidades.',who:'Clara',area:'Pedagógico',project:'Área Pedagógica',priority:'Baixa',status:'Aguardando',deadline:'2026-08-12',createdAt:new Date().toISOString()},
-  {id:id(),title:'Criar post para Instagram',desc:'Copy e layout.',who:'Clara',area:'Conteúdo',project:'Conteúdo Instagram',priority:'Média',status:'Aguardando',deadline:'2026-08-25',createdAt:new Date().toISOString()}
+  {id:id(),title:'Atualizar página da turma',desc:'Ajustar agenda e novidades.',who:'Clara',area:'Pedagógico',project:'Área Pedagógica',priority:'Baixa',status:'A Fazer',deadline:'2026-08-12',createdAt:new Date().toISOString()},
+  {id:id(),title:'Criar post para Instagram',desc:'Copy e layout.',who:'Clara',area:'Conteúdo',project:'Conteúdo Instagram',priority:'Média',status:'A Fazer',deadline:'2026-08-25',createdAt:new Date().toISOString()}
 ];
 
 function load(){
@@ -341,9 +363,14 @@ let editing=null;
 let current='home';
 let dragTaskId=null;
 
-const statuses=['A Fazer','Em Andamento','Aguardando','Concluído'];
-const colMap={['A Fazer']:0,['Em Andamento']:1,['Aguardando']:2,['Concluído']:3};
+const statuses=['A Fazer','Hoje','Em aprovação','Concluído','Publicado agendado','Arquivo'];
+const colMap={['A Fazer']:0,['Hoje']:1,['Em aprovação']:2,['Concluído']:3,['Publicado agendado']:4,['Arquivo']:5};
 
+function openApp(){
+  try{ document.getElementById('cover').style.display='none'; }catch(e){}
+  try{ document.getElementById('app').classList.remove('hidden'); }catch(e){}
+  renderHome();
+}
 function overdue(t){
   if(t.status==='Concluído')return false;
   if(!t.deadline)return false;
@@ -353,9 +380,9 @@ function overdue(t){
 function counts(){
   const c={Pendentes:0,'Em andamento':0,Concluídas:0,Atrasadas:0};
   tasks.forEach(t=>{
-    if(t.status==='A Fazer' || t.status==='Aguardando') c.Pendentes++;
-    if(t.status==='Em Andamento') c['Em andamento']++;
-    if(t.status==='Concluído') c.Concluídas++;
+    if(t.status==='A Fazer' || t.status==='Hoje') c.Pendentes++;
+    if(t.status==='Em aprovação') c['Em andamento']++;
+    if(t.status==='Concluído' || t.status==='Publicado agendado' || t.status==='Arquivo') c.Concluídas++;
     if(overdue(t)) c.Atrasadas++;
   });
   return c;
@@ -406,7 +433,7 @@ function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 
 function renderBoard(){
   const board=document.getElementById('board');board.innerHTML='';
-  const cols=['A Fazer','Em Andamento','Aguardando','Concluído'];
+  const cols=['A Fazer','Hoje','Em aprovação','Concluído','Publicado agendado','Arquivo'];
   const groups={};cols.forEach(c=>groups[c]=[]);
   filterTasks().forEach(t=>{groups[t.status]?.push(t)});
   cols.forEach((c,i)=>{
@@ -611,7 +638,7 @@ function openDetail(id){
     <div class="field">
       <label>Status</label>
       <select id="d-status">
-        ${['A Fazer','Em Andamento','Aguardando','Concluído'].map(s=>`<option ${s===t.status?'selected':''}>${s}</option>`).join('')}
+        ${['A Fazer','Hoje','Em aprovação','Concluído','Publicado agendado','Arquivo'].map(s=>`<option ${s===t.status?'selected':''}>${s}</option>`).join('')}
       </select>
     </div>
     <div class="modal-actions">
