@@ -1053,6 +1053,7 @@ document.addEventListener('click',e=>{if(e.target.id==='modal')closeModal();if(e
     role='admin';
     showApp();
     renderHome();
+    try{ document.getElementById('cover').style.display='none'; }catch(e){}
     const hash = location.hash.replace('#','');
     if(hash){
       const contentId = decodeURIComponent(hash);
