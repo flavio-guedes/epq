@@ -194,6 +194,7 @@
     <nav class="nav">
       <div class="nav-item active" data-page="home" onclick="go('home')"><span class="nav-icon">▦</span> Visão Geral</div>
       <div class="nav-item" data-page="tasks" onclick="go('tasks')"><span class="nav-icon">☰</span> Tarefas</div>
+      <div class="nav-item" data-page="days" onclick="go('days')"><span class="nav-icon">📅</span> Dias</div>
       <div class="nav-item" data-page="projects" onclick="go('projects')"><span class="nav-icon">◫</span> Projetos</div>
       <div class="nav-item" data-page="team" onclick="go('team')"><span class="nav-icon">◉</span> Equipe</div>
     </nav>
@@ -242,6 +243,13 @@
         </select>
       </div>
       <div class="list" id="task-list"></div>
+    </section>
+
+    <section class="page" id="page-days">
+      <div class="filters">
+        <input class="search" id="day-search" placeholder="Buscar tarefa do dia..." oninput="renderDays()"/>
+      </div>
+      <div class="list" id="day-list"></div>
     </section>
 
     <section class="page" id="page-projects">
@@ -311,14 +319,12 @@ const fmt=d=>d?new Date(d+'T00:00:00').toLocaleDateString('pt-BR',{day:'2-digit'
 const id=()=>Math.random().toString(36).slice(2,9);
 
 const defaults=[
-  {id:id(),title:'Criar campanha de captação PMERJ',desc:'Brief e peças iniciais da campanha.',who:'Flávio',area:'Marketing',project:'Campanha PMERJ',priority:'Alta',status:'A Fazer',deadline:'2026-09-10',createdAt:new Date().toISOString()},
-  {id:id(),title:'Produzir criativos para anúncios',desc:'Versões para feed e stories.',who:'João',area:'Design',project:'Campanha PMERJ',priority:'Alta',status:'Em Andamento',deadline:new Date(Date.now()-86400000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
-  {id:id(),title:'Revisar conteúdo da área pedagógica',desc:'Ajustar textos e sequência das aulas.',who:'Clara',area:'Pedagógico',project:'Área Pedagógica',priority:'Média',status:'A Fazer',deadline:new Date(Date.now()+172800000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
-  {id:id(),title:'Criar post para Instagram',desc:'Copy e layout.',who:'Flávio',area:'Conteúdo',project:'Conteúdo Instagram',priority:'Média',status:'Aguardando',deadline:new Date(Date.now()+86400000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
-  {id:id(),title:'Organizar depoimentos de aprovados',desc:'Selecionar e revisar prints/textos.',who:'Rafaela',area:'Comercial',project:'Captação de Leads',priority:'Baixa',status:'A Fazer',deadline:'2026-09-15',createdAt:new Date().toISOString()},
-  {id:id(),title:'Atualizar página da turma',desc:'Ajustar agenda e novidades.',who:'Clara',area:'Pedagógico',project:'Área Pedagógica',priority:'Baixa',status:'Aguardando',deadline:'2026-09-12',createdAt:new Date().toISOString()},
-  {id:id(),title:'Revisar estratégia de conteúdo',desc:'Validar calendário e formatos.',who:'Flávio',area:'Conteúdo',project:'Conteúdo Instagram',priority:'Média',status:'Em Andamento',deadline:new Date(Date.now()-172800000).toISOString().slice(0,10),createdAt:new Date().toISOString()},
-  {id:id(),title:'Preparar novos criativos para tráfego pago',desc:'3 variações para teste A/B.',who:'João',area:'Marketing',project:'Site EPQ',priority:'Alta',status:'A Fazer',deadline:new Date(Date.now()+259200000).toISOString().slice(0,10),createdAt:new Date().toISOString()}
+  {id:id(),title:'3 passos para usar questões como ferramenta de estudo',desc:'Headline: 3 passos para usar questões como ferramenta de estudo\nPilar: Estudo por questões: por onde começar\nCopy: Use questões para estudar de forma ativa. Em vez de só ler, pratique.\nRoteiro: 1. Escolha o assunto 2. Responda sem consulta 3. Revise o erro\nLegenda: Salva para estudar melhor!\nFluxo: Criação → Aprovação → Agendamento',who:'Clara',area:'Conteúdo',project:'EPQ',priority:'Média',status:'A Fazer',deadline:'2026-08-04',createdAt:new Date().toISOString()},
+  {id:id(),title:'O que ninguém mostra sobre corrigir provas',desc:'Headline: O que ninguém mostra sobre corrigir provas\nPilar: Rotina de quem corrige provas\nCopy: Mostramos os bastidores reais da correção.\nRoteiro: Abertura com café, pilha de provas, dica rápida, fechamento humanizado.\nLegenda: Rotina real de quem corrige provas.\nFluxo: Criação → Aprovação → Agendamento',who:'Clara',area:'Conteúdo',project:'Ronan',priority:'Média',status:'A Fazer',deadline:'2026-08-05',createdAt:new Date().toISOString()},
+  {id:id(),title:'Você estuda muito, mas aprende pouco?',desc:'Headline: Você estuda muito, mas aprende pouco?\nPilar: Erro: só ler sem praticar questões\nCopy: Ler não é estudar. A prática com questões muda o resultado.\nRoteiro: Hook com pergunta, exemplo do erro, solução em 3 passos, call to action.\nLegenda: Pare de só ler. Comece a praticar.\nFluxo: Criação → Aprovação → Agendamento',who:'Clara',area:'Conteúdo',project:'EPQ',priority:'Média',status:'A Fazer',deadline:'2026-08-06',createdAt:new Date().toISOString()},
+  {id:id(),title:'Revisar conteúdo da área pedagógica',desc:'Ajustar textos e sequência das aulas.',who:'Clara',area:'Pedagógico',project:'Área Pedagógica',priority:'Média',status:'A Fazer',deadline:'2026-08-26',createdAt:new Date().toISOString()},
+  {id:id(),title:'Atualizar página da turma',desc:'Ajustar agenda e novidades.',who:'Clara',area:'Pedagógico',project:'Área Pedagógica',priority:'Baixa',status:'Aguardando',deadline:'2026-08-12',createdAt:new Date().toISOString()},
+  {id:id(),title:'Criar post para Instagram',desc:'Copy e layout.',who:'Clara',area:'Conteúdo',project:'Conteúdo Instagram',priority:'Média',status:'Aguardando',deadline:'2026-08-25',createdAt:new Date().toISOString()}
 ];
 
 function load(){
@@ -441,6 +447,40 @@ function renderTasks(){
     list.appendChild(r);
   });
 }
+function renderDays(){
+  const list=document.getElementById('day-list');list.innerHTML='';
+  const q=(document.getElementById('day-search')?.value||'').toLowerCase();
+  const groups={};
+  tasks.forEach(t=>{
+    const key=t.deadline||'Sem prazo';
+    if(q){
+      const text=(t.title+' '+t.who+' '+t.project+' '+t.status+' '+key).toLowerCase();
+      if(!text.includes(q)) return;
+    }
+    groups[key]=groups[key]||[];
+    groups[key].push(t);
+  });
+  const sorted=Object.keys(groups).sort((a,b)=>{
+    if(a==='Sem prazo') return 1;
+    if(b==='Sem prazo') return -1;
+    return a.localeCompare(b);
+  });
+  if(!sorted.length){list.innerHTML='<div class="empty">Nenhuma tarefa para este filtro.</div>';return}
+  sorted.forEach(day=>{
+    const items=groups[day];
+    const header=document.createElement('div');
+    header.className='section-title';
+    header.textContent=day + ' — ' + items.length + ' tarefa(s)';
+    list.appendChild(header);
+    items.forEach(t=>{
+      const r=document.createElement('div');r.className='row';
+      const od=overdue(t)?'<span class="pill overdue">Atrasada</span>':'';
+      r.innerHTML=`<div class="row-main"><div class="row-title">${esc(t.title)}</div><div class="row-sub">👤 ${esc(t.who||'-')} • ${esc(t.project||'-')} • ${esc(t.status)}</div></div>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">${prioPill(t.priority)}${od}<button class="btn sm ghost" onclick="openDetail('${t.id}')">Abrir</button></div>`;
+      list.appendChild(r);
+    });
+  });
+}
 function renderProjects(){
   const list=document.getElementById('project-list');list.innerHTML='';
   const map={};
@@ -481,6 +521,7 @@ function renderHome(){
 function renderAll(){
   if(current==='home') renderHome();
   if(current==='tasks') renderTasks();
+  if(current==='days') renderDays();
   if(current==='projects') renderProjects();
   if(current==='team') renderTeam();
   populateResponsibles();
@@ -496,7 +537,7 @@ function go(page){
   current=page;
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x.dataset.page===page));
   document.querySelectorAll('.page').forEach(x=>x.classList.toggle('show',x.id==='page-'+page));
-  document.getElementById('page-title').textContent=({home:'Visão Geral',tasks:'Tarefas',projects:'Projetos',team:'Equipe'})[page];
+  document.getElementById('page-title').textContent=({home:'Visão Geral',tasks:'Tarefas',days:'Dias',projects:'Projetos',team:'Equipe'})[page];
   renderAll();
   closeSidebar();
 }
@@ -510,7 +551,8 @@ function openCreate(){
   document.getElementById('modal-title').textContent='Nova Tarefa';
   document.getElementById('modal-save').textContent='Criar Tarefa';
   document.getElementById('modal-delete').style.display='none';
-  ['m-title','m-desc','m-who','m-project'].forEach(x=>document.getElementById(x).value='');
+  ['m-title','m-desc','m-project'].forEach(x=>document.getElementById(x).value='');
+  document.getElementById('m-who').value='Clara';
   document.getElementById('m-area').value='';
   document.getElementById('m-prio').value='Média';
   document.getElementById('m-status').value='A Fazer';
@@ -601,7 +643,7 @@ function openModalEdit(){
   document.getElementById('modal-delete').style.display='inline-flex';
   document.getElementById('m-title').value=t.title;
   document.getElementById('m-desc').value=t.desc||'';
-  document.getElementById('m-who').value=t.who||'';
+  document.getElementById('m-who').value='Clara';
   document.getElementById('m-area').value=t.area||'';
   document.getElementById('m-project').value=t.project||'';
   document.getElementById('m-prio').value=t.priority;
