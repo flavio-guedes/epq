@@ -164,6 +164,7 @@
         </div>
       </div>
       <div class="actions">
+        <span class="status-pill">{{ user?.nome }} · {{ user?.perfil }}</span>
         <span class="status-pill">{{ mode === 'cloud' ? '☁️ Online' : '💾 Offline' }}</span>
         <button class="btn primary" @click="openCreate()">Novo lead</button>
         <button class="btn" @click="exportXLS()">Exportar XLS</button>
@@ -402,6 +403,7 @@
   const { createApp, ref, computed, reactive } = Vue;
   const API_BASE = 'https://epq-dd56.onrender.com';
   const TOKEN_KEY = 'epq_crm_token';
+  const USER_KEY = 'epq_crm_user';
   const STORAGE_KEY = 'epq_crm_leads_v2';
   const stages = ['Novo','Primeiro contato','Em conversa','Interessado','Negociação','Matriculado','Perdido'];
   function today(){ return new Date().toISOString().slice(0,10); }
@@ -427,9 +429,11 @@
       const loginError = ref('');
       const loginLoading = ref(false);
       const showPassword = ref(false);
-      const user = ref(null);
+      const user = ref(() => {
+        try { return JSON.parse(localStorage.getItem(USER_KEY) || 'null'); } catch { return null; }
+      }());
 
-      const isAuthenticated = computed(() => !!token.value);
+      const isAuthenticated = computed(() => !!token.value && !!user.value);
       const isAdmin = computed(() => !!(user.value && ['ADMIN_MASTER','GESTOR'].includes(user.value.perfil)));
       const isOperational = computed(() => !!(user.value && user.value.perfil === 'OPERACIONAL'));
 
@@ -441,7 +445,7 @@
       async function safeApi(path, options){
         const url = API_BASE + path;
         const res = await fetch(url, { ...options, headers: { 'content-type':'application/json', ...authHeaders(), ...(options && options.headers ? options.headers : {}) } });
-        if (res.status === 401){ localStorage.removeItem(TOKEN_KEY); token.value = ''; user.value = null; location.reload(); return; }
+        if (res.status === 401){ localStorage.removeItem(TOKEN_KEY); localStorage.removeItem(USER_KEY); token.value = ''; user.value = null; location.reload(); return; }
         if (!res.ok){ const text = await res.text(); throw new Error(text || ('HTTP ' + res.status)); }
         const ct = res.headers.get('content-type') || '';
         return ct.includes('application/json') ? res.json() : res.text();
@@ -564,14 +568,17 @@
           const data = await res.json();
           if (!res.ok){ loginError.value = data.detail || 'Credenciais inválidas'; return; }
           token.value = data.access_token || '';
-          user.value = { nome: data.nome, perfil: data.perfil };
+          const profile = { nome: data.nome, perfil: data.perfil };
+          user.value = profile;
           localStorage.setItem(TOKEN_KEY, token.value);
+          localStorage.setItem(USER_KEY, JSON.stringify(profile));
           loginError.value = '';
         } catch (err) { loginError.value = 'Erro de conexão'; }
         finally { loginLoading.value = false; }
       }
       function logout(){
         localStorage.removeItem(TOKEN_KEY);
+        localStorage.removeItem(USER_KEY);
         token.value = '';
         user.value = null;
       }
