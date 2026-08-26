@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "updatedAt": "2026-08-25T00:00:00-03:00",
+  "links": {
+    "EPQ-AGO-001": {
+      "taskId": null,
+      "owner": "Ana Clara",
+      "area": "Conteúdo",
+      "deadline": null,
+      "taskStatus": null,
+      "contentStatus": "Planejado",
+      "drivePath": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/01 - Estude Melhor"
+    },
+    "RON-AGO-001": {
+      "taskId": null,
+      "owner": "Ana Clara",
+      "area": "Conteúdo",
+      "deadline": null,
+      "taskStatus": null,
+      "contentStatus": "Ideia",
+      "drivePath": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/05 - Ronan - Social Media/02 - Bastidores e Humanização"
+    },
+    "INT-AGO-001": {
+      "taskId": null,
+      "owner": "Ana Clara",
+      "area": "Conteúdo",
+      "deadline": null,
+      "taskStatus": null,
+      "contentStatus": "Planejado",
+      "drivePath": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/01 - Criação e Marketing/02 - EPQ Social Media/02 - Erros Comuns"
+    }
+  }
+}

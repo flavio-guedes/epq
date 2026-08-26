@@ -521,12 +521,12 @@ function init() {
     }
   }
   
-document.addEventListener('change', e => {{
-  if (e.target.classList.contains('status-inline')) {{
+document.addEventListener('change', e => {
+  if (e.target.classList.contains('status-inline')) {
     const id = e.target.dataset.id;
     if (id) onStatusChange(id, e.target.value);
-  }}
-}});
+  }
+});
 document.addEventListener('click', e => {
     const openBtn = e.target.closest('[data-action="open"]');
     if (openBtn) {
@@ -575,52 +575,52 @@ document.addEventListener('click', e => {
   });
 }
 init();
-function initDragDrop() {{
-  document.querySelectorAll('.card[draggable]').forEach(card => {{
-    card.addEventListener('dragstart', e => {{
+function initDragDrop() {
+  document.querySelectorAll('.card[draggable]').forEach(card => {
+    card.addEventListener('dragstart', e => {
       e.dataTransfer.setData('text/plain', card.dataset.id);
       card.classList.add('dragging');
-    }});
+    });
     card.addEventListener('dragend', () => card.classList.remove('dragging'));
-  }});
-  document.querySelectorAll('.kanban-body').forEach(col => {{
-    col.addEventListener('dragover', e => {{ e.preventDefault(); col.classList.add('drag-over'); }});
+  });
+  document.querySelectorAll('.kanban-body').forEach(col => {
+    col.addEventListener('dragover', e => { e.preventDefault(); col.classList.add('drag-over'); });
     col.addEventListener('dragleave', () => col.classList.remove('drag-over'));
-    col.addEventListener('drop', e => {{
+    col.addEventListener('drop', e => {
       e.preventDefault(); col.classList.remove('drag-over');
       const id = e.dataTransfer.getData('text/plain');
       const it = RAW.find(x => x['ID'] === id);
       const newStatus = col.parentElement.querySelector('.kanban-title').textContent;
       if (it && newStatus) onStatusChange(id, newStatus);
       initDragDrop();
-    }});
+    });
   });
-}}
+}
 
-function renderProgress(items) {{
+function renderProgress(items) {
   const months = ['Agosto','Setembro','Outubro','Novembro','Dezembro'];
   const statuses = ['Ideia','Planejado','Publicar no mesmo dia','Aguardar depoimento em vídeo','Avaliar até 20/08','Avaliar até 17/09'];
   const total = items.length || RAW.length;
   const box = document.getElementById('progress-strip');
-  const make = (label, value, max) => {{
+  const make = (label, value, max) => {
     const pct = max ? Math.round((value/max)*100) : 0;
-    return `<div class="progress-item"><div class="progress-label">${{label}}</div><div class="progress-track"><div class="progress-fill" style="width:${{pct}}%"></div></div><div class="progress-value">${{value}} / ${{max}} (${{pct}}%)</div></div>`;
-  }};
+    return `<div class="progress-item"><div class="progress-label">${label}</div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="progress-value">${value} / ${max} (${pct}%)</div></div>`;
+  };
   let html = '';
-  statuses.forEach(st => {{
+  statuses.forEach(st => {
     const count = items.filter(i => (i['Status']||'—') === st).length;
     html += make(st, count, total);
-  }});
+  });
   box.innerHTML = html;
-}}
+}
 
 // override applyFilters to include progress and drag init
 const _applyFilters = applyFilters;
-applyFilters = function() {{
+applyFilters = function() {
   _applyFilters();
-  renderProgress(document.querySelector('.tab.active').dataset.tab === 'lista' ? document.querySelectorAll('#lista-rows .sched-row').length ? RAW.map(it => ({{...it, ...(loadState()[it['ID']] || {{}})}})).filter(it => {{ const f = getFilters(); if (f.search) {{ const hay=[it['ID'],it['Headline'],it['Tema / Campanha'],it['Pilar']].join(' ').toLowerCase(); if (!hay.includes(f.search)) return false; }} if (f.perfil && it['Perfil']!==f.perfil) return false; if (f.tipo && it['Tipo de distribuição']!==f.tipo) return false; if (f.mes && it['_month_name']!==f.mes) return false; if (f.status && (it['Status']||'')!==f.status) return false; if (f.pilar && it['Pilar']!==f.pilar) return false; if (f.formato && it['Formato']!==f.formato) return false; return true; }}) : [] : []);
+  renderProgress(document.querySelector('.tab.active').dataset.tab === 'lista' ? document.querySelectorAll('#lista-rows .sched-row').length ? RAW.map(it => ({...it, ...(loadState()[it['ID']] || {})})).filter(it => { const f = getFilters(); if (f.search) { const hay=[it['ID'],it['Headline'],it['Tema / Campanha'],it['Pilar']].join(' ').toLowerCase(); if (!hay.includes(f.search)) return false; } if (f.perfil && it['Perfil']!==f.perfil) return false; if (f.tipo && it['Tipo de distribuição']!==f.tipo) return false; if (f.mes && it['_month_name']!==f.mes) return false; if (f.status && (it['Status']||'')!==f.status) return false; if (f.pilar && it['Pilar']!==f.pilar) return false; if (f.formato && it['Formato']!==f.formato) return false; return true; }) : [] : []);
   initDragDrop();
-}}
+}
 
 </script>
 </body>
