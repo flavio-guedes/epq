@@ -147,7 +147,9 @@ body {
   background: linear-gradient(160deg, rgba(10,31,59,0.55) 0%, rgba(27,58,138,0.35) 60%, rgba(15,42,82,0.65) 100%);
 }
 .cover-card {
-  background: rgba(255,255,255,.92); backdrop-filter: blur(16px);
+  background: #ffffff;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border-radius: 16px; padding: 24px; width: min(520px, 100%);
   box-shadow: 0 20px 60px rgba(0,0,0,.35);
   border: 1px solid rgba(255,255,255,.4);
@@ -189,8 +191,26 @@ body {
 .stat-value.featured { color: var(--epq-blue-700); }
 .stat-sub { font-size: 11px; color: var(--epq-gray-400); margin-top: 2px; }
 
-.board { display: grid; grid-template-columns: repeat(4,minmax(260px,1fr)); gap: 14px; }
-.col { background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border: var(--glass-border); border-radius: 12px; padding: 10px; display: flex; flex-direction: column; max-height: calc(100vh - 230px); min-height: 240px; }
+.board {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 8px;
+  min-height: 240px;
+}
+.col {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  min-width: 260px;
+  max-height: calc(100vh - 230px);
+}
 .col-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px }
 .col-title { font-weight: 700; font-size: 13px; color: var(--epq-gray-900); display: flex; align-items: center; gap: 8px; }
 .col-count { background: rgba(10,31,59,.06); color: var(--epq-gray-900); padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; }
@@ -267,15 +287,16 @@ body {
 .hidden { display: none !important }
 
 @media (max-width: 1100px) {
-  .board { grid-template-columns: repeat(2,minmax(220px,1fr)) }
+  .board { flex-wrap: nowrap; }
+  .col { min-width: 220px; }
 }
 @media (max-width: 780px) {
   .sidebar { position: fixed; left: 0; top: 0; bottom: 0; transform: translateX(-100%); transition: transform var(--motion-med) var(--ease-out); z-index: 60 }
   .sidebar.open { transform: translateX(0) }
   .hamburger { display: inline-flex }
   .stats { grid-template-columns: repeat(2,minmax(120px,1fr)) }
-  .board { grid-template-columns: 1fr; max-height: none }
-  .col { max-height: 60vh }
+  .board { flex-wrap: nowrap; }
+  .col { min-width: 220px; max-height: 60vh }
   .search { max-width: 100% }
   .page-body { padding: 40px 24px 80px; }
   .header-content { padding: 0 24px; }
@@ -617,6 +638,9 @@ function renderBoard(){
       col.appendChild(head);col.appendChild(body);
       board.appendChild(col);
     });
+    const addCol=document.createElement('div');addCol.className='col';addCol.style.minWidth='220px';addCol.style.justifyContent='center';addCol.style.alignItems='center';addCol.style.display='flex';
+    addCol.innerHTML=`<button class="btn secondary" onclick="addColumnPrompt()" style="width:100%">+ Adicionar coluna</button>`;
+    board.appendChild(addCol);
     if(!board.children.length){
       board.innerHTML='<div class="empty">Nenhuma tarefa encontrada.</div>';
     }
@@ -624,6 +648,16 @@ function renderBoard(){
     const board=document.getElementById('board');
     if(board) board.innerHTML='<div class="empty">Erro ao renderizar: '+esc(String(err))+'</div>';
   }
+}
+function addColumnPrompt(){
+  const name=prompt('Nome da nova coluna:');
+  if(!name) return;
+  const trimmed=name.trim();
+  if(!trimmed){ return; }
+  if(statuses.includes(trimmed)){ alert('Essa coluna já existe.'); return; }
+  statuses.push(trimmed);
+  colMap[trimmed]=statuses.length-1;
+  renderAll();
 }
 
 function renderStats(){
