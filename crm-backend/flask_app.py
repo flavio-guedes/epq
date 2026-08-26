@@ -101,20 +101,77 @@ def change_password():
 
 @app.route('/users/me', methods=['GET'])
 def me():
-    return jsonify({'id':'local','nome':'Local','email':'local@local','perfil':'ADMIN_MASTER','status':'ativo','must_change_password':False,'last_login':None,'created_at':None})
+    db = next(get_db())
+    try:
+        user = require_auth(db)
+        if not user:
+            return jsonify({'detail': 'Token ausente'}), 401
+        return jsonify({
+            'id': user.id,
+            'nome': user.nome,
+            'email': user.email,
+            'perfil': user.perfil.value,
+            'status': user.status,
+            'must_change_password': bool(user.must_change_password),
+            'last_login': user.last_login.isoformat() if user.last_login else None,
+            'created_at': user.created_at.isoformat() if user.created_at else None,
+        })
+    finally:
+        db.close()
 
 @app.route('/users', methods=['GET'])
 def list_users():
-    return jsonify([])
+    db = next(get_db())
+    try:
+        requester = require_auth(db)
+        if not requester or not require_profile(requester, [UserProfile.ADMIN_MASTER, UserProfile.GESTOR]):
+            return jsonify({'detail': 'Sem permissão'}), 403
+        users = db.query(User).all()
+        return jsonify([
+            {
+                'id': u.id,
+                'nome': u.nome,
+                'email': u.email,
+                'perfil': u.perfil.value,
+                'status': u.status,
+                'created_at': u.created_at.isoformat() if u.created_at else None,
+                'last_login': u.last_login.isoformat() if u.last_login else None,
+            }
+            for u in users
+        ])
+    finally:
+        db.close()
 
 @app.route('/users', methods=['POST'])
 def create_user():
-    return jsonify({'detail':'Sem permissão'}), 403
+    db = next(get_db())
+    try:
+        requester = require_auth(db)
+        if not requester or not require_profile(requester, [UserProfile.ADMIN_MASTER]):
+            return jsonify({'detail': 'Sem permissão'}), 403
+        data = request.get_json(force=True) or {}
+        user = User(
+            nome=data.get('nome', ''),
+            email=data.get('email', ''),
+            hashed_password=hash_password(data.get('password', '')),
+            perfil=UserProfile(data.get('perfil', UserProfile.OPERACIONAL.value)),
+            status=data.get('status', 'ativo'),
+            must_change_password=bool(data.get('must_change_password', True)),
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+        return jsonify({'id': user.id, 'nome': user.nome, 'email': user.email, 'perfil': user.perfil.value, 'status': user.status}), 201
+    finally:
+        db.close()
 
 @app.route('/leads', methods=['POST'])
 def create_lead():
     db = next(get_db())
     try:
+        requester = require_auth(db)
+        if not requester:
+            return jsonify({'detail': 'Token ausente'}), 401
         data = request.get_json(force=True) or {}
         lead = Lead(
             nome=data.get('nome', ''),
@@ -129,14 +186,17 @@ def create_lead():
             proximo_followup=datetime.fromisoformat(data['proximo_followup']) if data.get('proximo_followup') else None,
             proximo_tipo=data.get('proximo_tipo'),
             proximo_nota=data.get('proximo_nota'),
-            responsavel_id='local',
+            responsavel_id=data.get('responsavel_id') or requester.id,
             status=data.get('status', 'ativo'),
+            created_by=requester.id,
+            updated_by=requester.id,
             created_at=datetime.utcnow(),
             updated_at=datetime.utcnow(),
         )
         db.add(lead)
         db.commit()
         db.refresh(lead)
+        log_audit(db, requester.id, 'Criou lead', lead_id=lead.id, campo='nome', valor_novo=lead.nome)
         return jsonify({
             'id': lead.id,
             'nome': lead.nome,
@@ -155,8 +215,8 @@ def create_lead():
             'status': lead.status,
             'created_at': lead.created_at.isoformat() if lead.created_at else None,
             'updated_at': lead.updated_at.isoformat() if lead.updated_at else None,
-            'created_by': None,
-            'updated_by': None,
+            'created_by': lead.created_by,
+            'updated_by': lead.updated_by,
         }), 201
     finally:
         db.close()
@@ -165,7 +225,13 @@ def create_lead():
 def list_leads():
     db = next(get_db())
     try:
-        leads = db.query(Lead).all()
+        requester = require_auth(db)
+        if not requester:
+            return jsonify({'detail': 'Token ausente'}), 401
+        query = db.query(Lead)
+        if requester.perfil == UserProfile.OPERACIONAL.value:
+            query = query.filter(Lead.responsavel_id == requester.id)
+        leads = query.all()
         return jsonify([
             {
                 'id': l.id,
@@ -197,9 +263,14 @@ def list_leads():
 def get_lead(lead_id):
     db = next(get_db())
     try:
+        requester = require_auth(db)
+        if not requester:
+            return jsonify({'detail': 'Token ausente'}), 401
         lead = db.query(Lead).filter(Lead.id == lead_id).first()
         if not lead:
             return jsonify({'detail': 'Lead não encontrado'}), 404
+        if requester.perfil == UserProfile.OPERACIONAL.value and lead.responsavel_id != requester.id:
+            return jsonify({'detail': 'Sem permissão'}), 403
         return jsonify({
             'id': lead.id,
             'nome': lead.nome,
@@ -228,18 +299,47 @@ def get_lead(lead_id):
 def update_lead(lead_id):
     db = next(get_db())
     try:
+        requester = require_auth(db)
+        if not requester:
+            return jsonify({'detail': 'Token ausente'}), 401
         lead = db.query(Lead).filter(Lead.id == lead_id).first()
         if not lead:
             return jsonify({'detail': 'Lead não encontrado'}), 404
+        if requester.perfil == UserProfile.OPERACIONAL.value and lead.responsavel_id != requester.id:
+            return jsonify({'detail': 'Sem permissão'}), 403
         data = request.get_json(force=True) or {}
-        for field in ['nome', 'telefone', 'email', 'whatsapp', 'empresa', 'origem', 'produto', 'etapa', 'temperatura', 'proximo_tipo', 'proximo_nota', 'status']:
+        previous = {
+            'nome': lead.nome,
+            'telefone': lead.telefone,
+            'email': lead.email,
+            'whatsapp': lead.whatsapp,
+            'empresa': lead.empresa,
+            'origem': lead.origem,
+            'produto': lead.produto,
+            'etapa': lead.etapa,
+            'temperatura': lead.temperatura,
+            'proximo_followup': lead.proximo_followup.isoformat() if lead.proximo_followup else None,
+            'proximo_tipo': lead.proximo_tipo,
+            'proximo_nota': lead.proximo_nota,
+            'responsavel_id': lead.responsavel_id,
+            'status': lead.status,
+        }
+        for field in ['nome', 'telefone', 'email', 'whatsapp', 'empresa', 'origem', 'produto', 'etapa', 'temperatura', 'proximo_tipo', 'proximo_nota', 'responsavel_id', 'status']:
             if field in data:
                 setattr(lead, field, data.get(field))
         if 'proximo_followup' in data and data.get('proximo_followup'):
             lead.proximo_followup = datetime.fromisoformat(data['proximo_followup'])
+        lead.updated_by = requester.id
         lead.updated_at = datetime.utcnow()
         db.commit()
         db.refresh(lead)
+        for field in previous.keys():
+            old = previous.get(field)
+            new = getattr(lead, field)
+            if isinstance(new, datetime):
+                new = new.isoformat() if new else None
+            if old != new:
+                log_audit(db, requester.id, 'Alterou lead', lead_id=lead.id, campo=field, valor_anterior=str(old), valor_novo=str(new))
         return jsonify({
             'id': lead.id,
             'nome': lead.nome,
@@ -264,18 +364,51 @@ def update_lead(lead_id):
     finally:
         db.close()
 
+@app.route('/leads/export', methods=['GET'])
+def export_leads():
+    db = next(get_db())
+    try:
+        requester = require_auth(db)
+        if not requester:
+            return jsonify({'detail': 'Token ausente'}), 401
+        query = db.query(Lead)
+        if requester.perfil == UserProfile.OPERACIONAL.value:
+            query = query.filter(Lead.responsavel_id == requester.id)
+        leads = query.all()
+        wb = Workbook()
+        ws = wb.active
+        ws.title = 'Leads'
+        headers = ['Nome','Telefone','E-mail','WhatsApp','Empresa','Origem','Produto','Etapa','Temperatura','Próximo Follow-up','Tipo','Observação','Status']
+        ws.append(headers)
+        for l in leads:
+            ws.append([
+                l.nome, l.telefone, l.email, l.whatsapp, l.empresa, l.origem, l.produto, l.etapa, l.temperatura,
+                l.proximo_followup.isoformat() if l.proximo_followup else None,
+                l.proximo_tipo, l.proximo_nota, l.status
+            ])
+        stream = BytesIO()
+        wb.save(stream)
+        stream.seek(0)
+        return Response(stream.read(), mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers={'Content-Disposition':'attachment; filename="leads.xlsx"'})
+    finally:
+        db.close()
+
 @app.route('/interactions', methods=['POST'])
 def create_interaction():
     db = next(get_db())
     try:
+        requester = require_auth(db)
+        if not requester:
+            return jsonify({'detail': 'Token ausente'}), 401
         data = request.get_json(force=True) or {}
-        interaction = Interaction(lead_id=data.get('lead_id'), user_id=None, tipo=InteractionType(data.get('tipo')), descricao=data.get('descricao'), created_at=datetime.utcnow())
+        interaction = Interaction(lead_id=data.get('lead_id'), user_id=requester.id, tipo=InteractionType(data.get('tipo')), descricao=data.get('descricao'), created_at=datetime.utcnow())
         db.add(interaction)
         lead = db.query(Lead).filter(Lead.id == data.get('lead_id')).first()
         if lead:
-            lead.updated_at = datetime.utcnow()
+            lead.updated_by = requester.id
         db.commit()
         db.refresh(interaction)
+        log_audit(db, requester.id, 'Registrou interação', lead_id=data.get('lead_id'), campo='tipo', valor_novo=data.get('tipo'))
         return jsonify({
             'id': interaction.id,
             'lead_id': interaction.lead_id,
@@ -291,6 +424,9 @@ def create_interaction():
 def list_interactions(lead_id):
     db = next(get_db())
     try:
+        requester = require_auth(db)
+        if not requester:
+            return jsonify({'detail': 'Token ausente'}), 401
         interactions = db.query(Interaction).filter(Interaction.lead_id == lead_id).order_by(Interaction.created_at.desc()).all()
         return jsonify([
             {
@@ -308,13 +444,39 @@ def list_interactions(lead_id):
 
 @app.route('/audit', methods=['GET'])
 def list_audit():
-    return jsonify([])
+    db = next(get_db())
+    try:
+        requester = require_auth(db)
+        if not requester or requester.perfil != UserProfile.ADMIN_MASTER.value:
+            return jsonify({'detail': 'Sem permissão'}), 403
+        logs = db.query(AuditLog).order_by(AuditLog.created_at.desc()).limit(200).all()
+        return jsonify([
+            {
+                'id': log.id,
+                'user_id': log.user_id,
+                'lead_id': log.lead_id,
+                'acao': log.acao,
+                'campo': log.campo,
+                'valor_anterior': log.valor_anterior,
+                'valor_novo': log.valor_novo,
+                'created_at': log.created_at.isoformat() if log.created_at else None,
+            }
+            for log in logs
+        ])
+    finally:
+        db.close()
 
 @app.route('/kpis', methods=['GET'])
 def kpis():
     db = next(get_db())
     try:
-        leads = db.query(Lead).all()
+        requester = require_auth(db)
+        if not requester:
+            return jsonify({'detail': 'Token ausente'}), 401
+        query = db.query(Lead)
+        if requester.perfil == UserProfile.OPERACIONAL.value:
+            query = query.filter(Lead.responsavel_id == requester.id)
+        leads = query.all()
         today_str = datetime.utcnow().date().isoformat()
         return jsonify({
             'total': len(leads),
@@ -326,29 +488,6 @@ def kpis():
             'perdidos': sum(1 for l in leads if l.status == LeadStatus.PERDIDO.value),
             'arquivados': sum(1 for l in leads if l.status == LeadStatus.ARQUIVADO.value),
         })
-    finally:
-        db.close()
-
-@app.route('/leads/export', methods=['GET'])
-def export_leads():
-    db = next(get_db())
-    try:
-        leads = db.query(Lead).all()
-        wb = Workbook()
-        ws = wb.active
-        ws.title = 'Leads'
-        headers = ['Nome','Telefone','E-mail','WhatsApp','Empresa','Origem','Produto','Etapa','Temperatura','Próximo Follow-up','Tipo','Observação','Status']
-        ws.append(headers)
-        for l in leads:
-            ws.append([
-                l.nome, l.telefone, l.email, l.whatsapp, l.empresa, l.origem, l.produto, l.etapa, l.temperatura,
-                l.proximo_followup.isoformat() if l.proximo_followup else None,
-                l.proximo_tipo, l.proximo_nota, l.status
-            ])
-        stream = BytesIO()
-        wb.save(stream)
-        stream.seek(0)
-        return Response(stream.read(), mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', headers={'Content-Disposition':'attachment; filename="leads.xlsx"'})
     finally:
         db.close()
 

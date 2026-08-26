@@ -111,216 +111,298 @@
   .agenda-item .name{font-size:13px;color:#ffffff;font-weight:500}
   .agenda-item .meta{font-size:12px;color:#7d9cbd;margin-top:4px}
   .status-pill{font-size:11px;padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);color:#e6f3ff;background:rgba(255,255,255,0.08)}
+  .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+  .login-card{
+    width:100%;max-width:420px;
+    background:rgba(255,255,255,0.06);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);
+    border:1px solid rgba(255,255,255,0.12);border-radius:22px;padding:26px;
+    box-shadow:0 0 0 1px rgba(80,180,255,0.08),0 24px 60px -20px rgba(80,160,255,0.35);
+  }
+  .login-card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(80,180,255,0.35) 40%,transparent 80%);opacity:.9;
+  }
+  .login-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+  .login-actions a{color:#7dd3fc;font-size:12px;text-decoration:none}
+  .empty-state{color:#7d9cbd;font-size:13px;padding:18px 10px;text-align:center;}
   @media (max-width:1024px){.kpis{grid-template-columns:repeat(3,1fr)}.funnel{grid-template-columns:repeat(4,1fr)}.agenda{grid-template-columns:1fr}}
   @media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}.funnel{grid-template-columns:repeat(3,1fr)}.row{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="noise"></div>
-<div id="app" class="container">
-  <header>
-    <div class="brand">
-      <img src="https://flavio-guedes.github.io/epq-central/logo.jpg" alt="EPQ" />
-      <div>
-        <h1>CRM</h1>
-        <div class="sub">Painel comercial EPQ</div>
-      </div>
-    </div>
-    <div class="actions">
-      <span class="status-pill">{{ mode === 'cloud' ? '☁️ Online' : '💾 Offline' }}</span>
-      <button class="btn primary" @click="openCreate()">Novo lead</button>
-      <button class="btn" @click="exportXLS()">Exportar XLS</button>
-    </div>
-  </header>
-
-  <section class="panel">
-    <div class="kpis">
-      <div class="kpi"><div class="num">{{ kpis.total }}</div><div class="label">Total</div></div>
-      <div class="kpi"><div class="num">{{ kpis.new }}</div><div class="label">Novos</div></div>
-      <div class="kpi"><div class="num">{{ kpis.today }}</div><div class="label">Hoje</div></div>
-      <div class="kpi"><div class="num" style="color:#f87171">{{ kpis.late }}</div><div class="label">Atrasados</div></div>
-      <div class="kpi"><div class="num" style="color:#fbbf24">{{ kpis.hot }}</div><div class="label">Quentes</div></div>
-      <div class="kpi"><div class="num" style="color:#34d399">{{ kpis.converted }}</div><div class="label">Convertidos</div></div>
-    </div>
-  </section>
-
-  <section class="panel">
-    <div class="tabs">
-      <div class="tab" :class="{active:tab==='leads'}" @click="tab='leads'">Leads</div>
-      <div class="tab" :class="{active:tab==='funnel'}" @click="tab='funnel'">Funil</div>
-    </div>
-
-    <div v-if="tab==='leads'">
-      <div class="toolbar" style="margin-top:12px;">
-        <input class="search" v-model="search" placeholder="Buscar por nome, WhatsApp, curso ou origem..." />
-        <select class="filter-select" v-model="filterStage">
-          <option value="">Todas as etapas</option>
-          <option v-for="s in stages" :key="s" :value="s">{{ s }}</option>
-        </select>
-      </div>
-      <div class="table-wrap" style="margin-top:12px;">
-        <table>
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>WhatsApp</th>
-              <th>Curso/Turma</th>
-              <th>Origem</th>
-              <th>Entrada</th>
-              <th>Próximo follow-up</th>
-              <th>Temperatura</th>
-              <th>Etapa</th>
-              <th>Status</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="lead in filtered" :key="lead.id">
-              <td><a href="#" @click.prevent="openLead(lead)" style="color:#7dd3fc;text-decoration:none;">{{ lead.name }}</a></td>
-              <td><a :href="'https://wa.me/' + lead.whatsapp" target="_blank" rel="noopener" style="color:#7dd3fc;text-decoration:none;">{{ lead.whatsapp }}</a></td>
-              <td>{{ lead.course }}</td>
-              <td>{{ lead.source }}</td>
-              <td>{{ formatDate(lead.createdAt) }}</td>
-              <td>{{ formatDate(lead.nextFollowUp) }}</td>
-              <td><span class="badge" :class="lead.temperature.toLowerCase()">{{ lead.temperature }}</span></td>
-              <td>{{ lead.stage }}</td>
-              <td>{{ lead.status }}</td>
-              <td><button class="btn" @click="openLead(lead)">Abrir</button></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div v-if="tab==='funnel'">
-      <div class="funnel">
-        <div class="stage" v-for="stage in stages" :key="stage">
-          <div class="name">{{ stage }}</div>
-          <div class="count">{{ byStage(stage) }}</div>
+<div id="app">
+  <div v-if="!isAuthenticated" class="login-wrap">
+    <div class="login-card">
+      <div class="brand" style="margin-bottom:16px">
+        <img src="https://flavio-guedes.github.io/epq-central/logo.jpg" alt="EPQ" />
+        <div class="brand-text">
+          <div class="title">Central <strong>EPQ</strong></div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="panel">
-    <div class="form" style="max-width:420px;margin:0 auto;">
-      <label>Nome</label>
-      <input v-model="newLead.name" placeholder="Nome do lead" />
-      <label>WhatsApp</label>
-      <input v-model="newLead.whatsapp" placeholder="(00) 00000-0000" />
-      <label>Curso/Turma</label>
-      <input v-model="newLead.course" placeholder="Curso ou turma" />
-      <label>Origem</label>
-      <input v-model="newLead.source" placeholder="Origem do lead" />
-      <label>Estágio</label>
-      <select v-model="newLead.stage">
-        <option v-for="s in stages" :key="s" :value="s">{{ s }}</option>
-      </select>
-      <label>Temperatura</label>
-      <select v-model="newLead.temperature">
-        <option>Frio</option><option>Morno</option><option>Quente</option>
-      </select>
-      <div class="actions" style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
-        <button class="btn primary" @click="createLead()">Criar lead</button>
-        <button class="btn" @click="resetForm()">Limpar</button>
+      <div class="status" style="margin-bottom:14px"><span class="pulse"></span>Acesso restrito</div>
+      <div class="form">
+        <label>Login</label>
+        <input v-model="loginForm.username" placeholder="seu.login" autocomplete="username" />
+        <label>Senha</label>
+        <input v-model="loginForm.password" :type="showPassword ? 'text' : 'password'" placeholder="••••••••" autocomplete="current-password" />
+        <button type="button" class="btn" @click="showPassword = !showPassword" style="padding:8px 10px;font-size:12px;">{{ showPassword ? 'Ocultar' : 'Mostrar' }}</button>
+        <button class="btn primary" @click="doLogin()" :disabled="loginLoading">{{ loginLoading ? 'Entrando...' : 'Entrar no sistema' }}</button>
+        <div class="hint" style="color:#f87171;font-size:12px;">{{ loginError }}</div>
       </div>
-    </div>
-  </section>
-</div>
-
-<div class="modal-backdrop" v-if="leadModal" @click.self="closeLead">
-  <div class="modal" v-if="currentLead">
-    <h3>{{ currentLead.name }}</h3>
-    <div class="row">
-      <div><label>Telefone</label><input v-model="currentLead.phone" /></div>
-      <div><label>E-mail</label><input v-model="currentLead.email" /></div>
-      <div><label>Curso/Turma</label><input v-model="currentLead.course" /></div>
-      <div><label>Origem</label><input v-model="currentLead.source" /></div>
-      <div><label>Estágio</label>
-        <select v-model="currentLead.stage">
-          <option v-for="s in stages" :key="s" :value="s">{{ s }}</option>
-        </select>
-      </div>
-      <div><label>Temperatura</label>
-        <select v-model="currentLead.temperature">
-          <option>Frio</option><option>Morno</option><option>Quente</option>
-        </select>
-      </div>
-    </div>
-    <div class="row" style="margin-top:10px;">
-      <div><label>Próximo follow-up</label><input type="date" v-model="currentLead.nextFollowUp" /></div>
-      <div><label>Hora</label><input type="time" v-model="currentLead.nextTime" /></div>
-      <div><label>Tipo de ação</label>
-        <select v-model="currentLead.nextType">
-          <option>WhatsApp</option><option>Ligação</option><option>Visita</option><option>Proposta</option><option>Follow-up</option>
-        </select>
-      </div>
-    </div>
-    <label style="margin-top:10px;display:block;">Observação</label>
-    <textarea v-model="currentLead.nextNote" placeholder="Descreva a próxima ação..."></textarea>
-    <div class="actions" style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
-      <button class="btn primary" @click="saveLead()">Salvar</button>
-      <button class="btn" @click="logContact('WhatsApp')">Registrar WhatsApp</button>
-      <button class="btn" @click="logContact('Ligação')">Registrar Ligação</button>
-      <button class="btn" @click="logContact('Follow-up')">Registrar Follow-up</button>
-      <button class="btn" @click="advanceStage()">Avançar etapa</button>
-      <button class="btn" @click="closeLead">Fechar</button>
-    </div>
-    <div style="margin-top:18px;">
-      <div style="font-size:12px;color:#7d9cbd;text-transform:uppercase;letter-spacing:.14em;margin-bottom:8px;">Histórico</div>
-      <div class="timeline">
-        <div class="timeline-item" v-for="item in currentLead.history.slice().reverse()" :key="item.id">
-          <div class="timeline-meta">{{ formatDate(item.date) }} · {{ item.type }}</div>
-          <div class="timeline-body">{{ item.note }}</div>
-        </div>
-      </div>
+      <div class="meta" style="margin-top:12px;font-family:var(--font-mono);font-size:10px;color:#5c6a82;text-align:center;letter-spacing:.08em;">ADMIN MASTER · GESTOR · OPERACIONAL</div>
     </div>
   </div>
-</div>
 
-<div class="modal-backdrop" v-if="createModal" @click.self="closeCreate">
-  <div class="modal">
-    <h3>Novo Lead</h3>
-    <div class="form">
-      <div class="row">
-        <div><label>Nome</label><input v-model="newLead.name" /></div>
-        <div><label>WhatsApp</label><input v-model="newLead.whatsapp" /></div>
+  <div v-else class="container">
+    <header>
+      <div class="brand">
+        <img src="https://flavio-guedes.github.io/epq-central/logo.jpg" alt="EPQ" />
+        <div>
+          <h1>CRM</h1>
+          <div class="sub">Painel comercial EPQ</div>
+        </div>
       </div>
-      <div class="row">
-        <div><label>Curso/Turma</label><input v-model="newLead.course" /></div>
-        <div><label>Origem</label><input v-model="newLead.source" /></div>
+      <div class="actions">
+        <span class="status-pill">{{ mode === 'cloud' ? '☁️ Online' : '💾 Offline' }}</span>
+        <button class="btn primary" @click="openCreate()">Novo lead</button>
+        <button class="btn" @click="exportXLS()">Exportar XLS</button>
+        <button class="btn" @click="logout()">Sair</button>
       </div>
+    </header>
+
+    <section class="panel" v-if="isOperational">
+      <div class="kpis">
+        <div class="kpi"><div class="num">{{ kpis.total }}</div><div class="label">Total</div></div>
+        <div class="kpi"><div class="num">{{ kpis.new }}</div><div class="label">Novos</div></div>
+        <div class="kpi"><div class="num">{{ kpis.today }}</div><div class="label">Hoje</div></div>
+        <div class="kpi"><div class="num" style="color:#f87171">{{ kpis.late }}</div><div class="label">Atrasados</div></div>
+        <div class="kpi"><div class="num" style="color:#fbbf24">{{ kpis.hot }}</div><div class="label">Quentes</div></div>
+        <div class="kpi"><div class="num" style="color:#34d399">{{ kpis.converted }}</div><div class="label">Convertidos</div></div>
+      </div>
+    </section>
+
+    <section class="panel" v-if="isOperational">
+      <div class="agenda">
+        <div class="agenda-col">
+          <div class="agenda-title">Atrasados</div>
+          <div class="agenda-item" v-for="lead in agenda.late" :key="lead.id" @click="openLead(lead)">
+            <div class="name">{{ lead.name }}</div>
+            <div class="meta">{{ lead.course }} · {{ formatDate(lead.nextFollowUp) }}</div>
+          </div>
+          <div v-if="!agenda.late.length" class="empty-state">Nenhum</div>
+        </div>
+        <div class="agenda-col">
+          <div class="agenda-title">Hoje</div>
+          <div class="agenda-item" v-for="lead in agenda.today" :key="lead.id" @click="openLead(lead)">
+            <div class="name">{{ lead.name }}</div>
+            <div class="meta">{{ lead.course }} · {{ formatDate(lead.nextFollowUp) }}</div>
+          </div>
+          <div v-if="!agenda.today.length" class="empty-state">Nenhum</div>
+        </div>
+        <div class="agenda-col">
+          <div class="agenda-title">Próximos</div>
+          <div class="agenda-item" v-for="lead in agenda.upcoming" :key="lead.id" @click="openLead(lead)">
+            <div class="name">{{ lead.name }}</div>
+            <div class="meta">{{ lead.course }} · {{ formatDate(lead.nextFollowUp) }}</div>
+          </div>
+          <div v-if="!agenda.upcoming.length" class="empty-state">Nenhum</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" v-if="isAdmin">
+      <div class="kpis">
+        <div class="kpi"><div class="num">{{ kpis.total }}</div><div class="label">Total</div></div>
+        <div class="kpi"><div class="num">{{ kpis.new }}</div><div class="label">Novos</div></div>
+        <div class="kpi"><div class="num">{{ kpis.today }}</div><div class="label">Hoje</div></div>
+        <div class="kpi"><div class="num" style="color:#f87171">{{ kpis.late }}</div><div class="label">Atrasados</div></div>
+        <div class="kpi"><div class="num" style="color:#fbbf24">{{ kpis.hot }}</div><div class="label">Quentes</div></div>
+        <div class="kpi"><div class="num" style="color:#34d399">{{ kpis.converted }}</div><div class="label">Convertidos</div></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
+        <button class="btn primary" @click="exportXLS()">Exportar XLS</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="tabs">
+        <div class="tab" :class="{active:tab==='leads'}" @click="tab='leads'">Leads</div>
+        <div class="tab" :class="{active:tab==='funnel'}" @click="tab='funnel'">Funil</div>
+      </div>
+
+      <div v-if="tab==='leads'">
+        <div class="toolbar" style="margin-top:12px;">
+          <input class="search" v-model="search" placeholder="Buscar por nome, WhatsApp, curso ou origem..." />
+          <select class="filter-select" v-model="filterStage">
+            <option value="">Todas as etapas</option>
+            <option v-for="s in stages" :key="s" :value="s">{{ s }}</option>
+          </select>
+        </div>
+        <div class="table-wrap" style="margin-top:12px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>WhatsApp</th>
+                <th>Curso/Turma</th>
+                <th>Origem</th>
+                <th>Entrada</th>
+                <th>Próximo follow-up</th>
+                <th>Temperatura</th>
+                <th>Etapa</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="lead in filtered" :key="lead.id">
+                <td><a href="#" @click.prevent="openLead(lead)" style="color:#7dd3fc;text-decoration:none;">{{ lead.name }}</a></td>
+                <td><a :href="'https://wa.me/' + lead.whatsapp" target="_blank" rel="noopener" style="color:#7dd3fc;text-decoration:none;">{{ lead.whatsapp }}</a></td>
+                <td>{{ lead.course }}</td>
+                <td>{{ lead.source }}</td>
+                <td>{{ formatDate(lead.createdAt) }}</td>
+                <td>{{ formatDate(lead.nextFollowUp) }}</td>
+                <td><span class="badge" :class="lead.temperature.toLowerCase()">{{ lead.temperature }}</span></td>
+                <td>{{ lead.stage }}</td>
+                <td>{{ lead.status }}</td>
+                <td><button class="btn" @click="openLead(lead)">Abrir</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div v-if="tab==='funnel'">
+        <div class="funnel">
+          <div class="stage" v-for="stage in stages" :key="stage">
+            <div class="name">{{ stage }}</div>
+            <div class="count">{{ byStage(stage) }}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="form" style="max-width:420px;margin:0 auto;">
+        <label>Nome</label>
+        <input v-model="newLead.name" placeholder="Nome do lead" />
+        <label>WhatsApp</label>
+        <input v-model="newLead.whatsapp" placeholder="(00) 00000-0000" />
+        <label>Curso/Turma</label>
+        <input v-model="newLead.course" placeholder="Curso ou turma" />
+        <label>Origem</label>
+        <input v-model="newLead.source" placeholder="Origem do lead" />
+        <label>Estágio</label>
+        <select v-model="newLead.stage">
+          <option v-for="s in stages" :key="s" :value="s">{{ s }}</option>
+        </select>
+        <label>Temperatura</label>
+        <select v-model="newLead.temperature">
+          <option>Frio</option><option>Morno</option><option>Quente</option>
+        </select>
+        <div class="actions" style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn primary" @click="createLead()">Criar lead</button>
+          <button class="btn" @click="resetForm()">Limpar</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" v-if="leadModal" @click.self="closeLead">
+    <div class="modal" v-if="currentLead">
+      <h3>{{ currentLead.name }}</h3>
       <div class="row">
+        <div><label>Telefone</label><input v-model="currentLead.phone" /></div>
+        <div><label>E-mail</label><input v-model="currentLead.email" /></div>
+        <div><label>Curso/Turma</label><input v-model="currentLead.course" /></div>
+        <div><label>Origem</label><input v-model="currentLead.source" /></div>
         <div><label>Estágio</label>
-          <select v-model="newLead.stage">
+          <select v-model="currentLead.stage">
             <option v-for="s in stages" :key="s" :value="s">{{ s }}</option>
           </select>
         </div>
         <div><label>Temperatura</label>
-          <select v-model="newLead.temperature">
+          <select v-model="currentLead.temperature">
             <option>Frio</option><option>Morno</option><option>Quente</option>
           </select>
         </div>
       </div>
-      <div class="row">
-        <div><label>Próximo follow-up</label><input type="date" v-model="newLead.nextFollowUp" /></div>
-        <div><label>Hora</label><input type="time" v-model="newLead.nextTime" /></div>
+      <div class="row" style="margin-top:10px;">
+        <div><label>Próximo follow-up</label><input type="date" v-model="currentLead.nextFollowUp" /></div>
+        <div><label>Hora</label><input type="time" v-model="currentLead.nextTime" /></div>
+        <div><label>Tipo de ação</label>
+          <select v-model="currentLead.nextType">
+            <option>WhatsApp</option><option>Ligação</option><option>Visita</option><option>Proposta</option><option>Follow-up</option>
+          </select>
+        </div>
       </div>
-      <label>Observação inicial</label>
-      <textarea v-model="newLead.nextNote"></textarea>
-    </div>
-    <div class="actions" style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
-      <button class="btn primary" @click="createLead()">Criar</button>
-      <button class="btn" @click="closeCreate">Cancelar</button>
+      <label style="margin-top:10px;display:block;">Observação</label>
+      <textarea v-model="currentLead.nextNote" placeholder="Descreva a próxima ação..."></textarea>
+      <div class="actions" style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn primary" @click="saveLead()">Salvar</button>
+        <button class="btn" @click="logContact('WhatsApp')">Registrar WhatsApp</button>
+        <button class="btn" @click="logContact('Ligação')">Registrar Ligação</button>
+        <button class="btn" @click="logContact('Follow-up')">Registrar Follow-up</button>
+        <button class="btn" @click="advanceStage()">Avançar etapa</button>
+        <button class="btn" @click="closeLead">Fechar</button>
+      </div>
+      <div style="margin-top:18px;">
+        <div style="font-size:12px;color:#7d9cbd;text-transform:uppercase;letter-spacing:.14em;margin-bottom:8px;">Histórico</div>
+        <div class="timeline">
+          <div class="timeline-item" v-for="item in currentLead.history.slice().reverse()" :key="item.id">
+            <div class="timeline-meta">{{ formatDate(item.date) }} · {{ item.type }}</div>
+            <div class="timeline-body">{{ item.note }}</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+
+  <div class="modal-backdrop" v-if="createModal" @click.self="closeCreate">
+    <div class="modal">
+      <h3>Novo Lead</h3>
+      <div class="form">
+        <div class="row">
+          <div><label>Nome</label><input v-model="newLead.name" /></div>
+          <div><label>WhatsApp</label><input v-model="newLead.whatsapp" /></div>
+        </div>
+        <div class="row">
+          <div><label>Curso/Turma</label><input v-model="newLead.course" /></div>
+          <div><label>Origem</label><input v-model="newLead.source" /></div>
+        </div>
+        <div class="row">
+          <div><label>Estágio</label>
+            <select v-model="newLead.stage">
+              <option v-for="s in stages" :key="s" :value="s">{{ s }}</option>
+            </select>
+          </div>
+          <div><label>Temperatura</label>
+            <select v-model="newLead.temperature">
+              <option>Frio</option><option>Morno</option><option>Quente</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div><label>Próximo follow-up</label><input type="date" v-model="newLead.nextFollowUp" /></div>
+          <div><label>Hora</label><input type="time" v-model="newLead.nextTime" /></div>
+        </div>
+        <label>Observação inicial</label>
+        <textarea v-model="newLead.nextNote"></textarea>
+      </div>
+      <div class="actions" style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn primary" @click="createLead()">Criar</button>
+        <button class="btn" @click="closeCreate">Cancelar</button>
+      </div>
+    </div>
+  </div>
 
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script>
   const { createApp, ref, computed, reactive } = Vue;
-  const STORAGE_KEY = 'epq_crm_leads_v2';
   const API_BASE = 'https://epq-dd56.onrender.com';
+  const TOKEN_KEY = 'epq_crm_token';
+  const STORAGE_KEY = 'epq_crm_leads_v2';
   const stages = ['Novo','Primeiro contato','Em conversa','Interessado','Negociação','Matriculado','Perdido'];
   function today(){ return new Date().toISOString().slice(0,10); }
   function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
@@ -329,6 +411,7 @@
 
   createApp({
     setup(){
+      const token = ref(localStorage.getItem(TOKEN_KEY) || '');
       const leads = ref(readLeads());
       const search = ref('');
       const filterStage = ref('');
@@ -340,12 +423,25 @@
       const mode = ref('cloud');
       const syncStatus = ref('');
       const errorMsg = ref('');
+      const loginForm = reactive({ username: '', password: '' });
+      const loginError = ref('');
+      const loginLoading = ref(false);
+      const showPassword = ref(false);
+      const user = ref(null);
+
+      const isAuthenticated = computed(() => !!token.value);
+      const isAdmin = computed(() => !!(user.value && ['ADMIN_MASTER','GESTOR'].includes(user.value.perfil)));
+      const isOperational = computed(() => !!(user.value && user.value.perfil === 'OPERACIONAL'));
 
       function persist(){ writeLeads(leads.value); }
       function setMode(next){ mode.value = next; localStorage.setItem('epq_crm_mode', next); }
+      function authHeaders(){
+        return token.value ? { Authorization: 'Bearer ' + token.value } : {};
+      }
       async function safeApi(path, options){
         const url = API_BASE + path;
-        const res = await fetch(url, { ...options, headers: { 'content-type':'application/json', ...(options && options.headers ? options.headers : {}) } });
+        const res = await fetch(url, { ...options, headers: { 'content-type':'application/json', ...authHeaders(), ...(options && options.headers ? options.headers : {}) } });
+        if (res.status === 401){ localStorage.removeItem(TOKEN_KEY); token.value = ''; user.value = null; location.reload(); return; }
         if (!res.ok){ const text = await res.text(); throw new Error(text || ('HTTP ' + res.status)); }
         const ct = res.headers.get('content-type') || '';
         return ct.includes('application/json') ? res.json() : res.text();
@@ -460,7 +556,31 @@
       function formatDate(v){ return v || '—'; }
       function formatDateTime(v){ return v ? v.replace('T',' ').slice(0,19) : '—'; }
 
-      async function openLead(lead){ currentLead.value = lead; leadModal.value = true; }
+      async function doLogin(){
+        loginError.value = '';
+        loginLoading.value = true;
+        try {
+          const res = await fetch(API_BASE + '/auth/login', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ username: loginForm.username, password: loginForm.password }) });
+          const data = await res.json();
+          if (!res.ok){ loginError.value = data.detail || 'Credenciais inválidas'; return; }
+          token.value = data.access_token || '';
+          user.value = { nome: data.nome, perfil: data.perfil };
+          localStorage.setItem(TOKEN_KEY, token.value);
+          loginError.value = '';
+        } catch (err) { loginError.value = 'Erro de conexão'; }
+        finally { loginLoading.value = false; }
+      }
+      function logout(){
+        localStorage.removeItem(TOKEN_KEY);
+        token.value = '';
+        user.value = null;
+      }
+
+      async function openLead(lead){
+        const full = fromApi(lead);
+        currentLead.value = full;
+        leadModal.value = true;
+      }
       function closeLead(){ leadModal.value = false; currentLead.value = null; }
       async function saveLead(){
         if (!currentLead.value) return;
@@ -531,15 +651,14 @@
       }
 
       async function init(){
-        const saved = localStorage.getItem('epq_crm_mode');
-        if (saved) mode.value = saved;
         await loadCloud();
       }
       init();
 
       return {
-        search, filterStage, tab, leadModal, createModal, currentLead, newLead, stages, filtered, kpis, agenda, byStage, mode, syncStatus, errorMsg,
-        openLead, closeLead, saveLead, openCreate, closeCreate, createLead, logContact, advanceStage, formatDate, formatDateTime, exportXLS, syncNow, switchToOffline,
+        isAuthenticated, isAdmin, isOperational, user, mode, syncStatus, errorMsg, loginForm, loginError, loginLoading, showPassword,
+        search, filterStage, tab, leadModal, createModal, currentLead, newLead, stages, filtered, kpis, agenda, byStage,
+        openLead, closeLead, saveLead, openCreate, closeCreate, createLead, logContact, advanceStage, formatDate, formatDateTime, exportXLS, syncNow, switchToOffline, doLogin, logout,
       };
     }
   }).mount('#app');
