@@ -488,7 +488,7 @@ function renderBoard(){
   filterTasks().forEach(t=>{groups[t.status]?.push(t)});
   cols.forEach((c,i)=>{
     const col=document.createElement('div');col.className='col';
-    const items=groups[c]||[];
+    const items=sortGroup(groups[c]||[]);
     const head=document.createElement('div');head.className='col-header';
     head.innerHTML=`<div class="col-title">${c}<span class="col-count">${items.length}</span></div>`;
     const body=document.createElement('div');body.className='col-body';
@@ -499,6 +499,20 @@ function renderBoard(){
     col.appendChild(head);col.appendChild(body);
     board.appendChild(col);
   });
+}
+function sortGroup(items){return items.slice().sort((a,b)=>{if(!a.deadline&&!b.deadline)return 0;if(!a.deadline)return 1;if(!b.deadline)return -1;return new Date(a.deadline)-new Date(b.deadline)})}
+function moveCard(id,dir){
+  const card=document.querySelector('.card[draggable][data-id="'+id+'"]');
+  if(!card)return;
+  const colBody=card.closest('.col-body');if(!colBody)return;
+  const cards=Array.from(colBody.querySelectorAll('.card'));
+  const idx=cards.indexOf(card);
+  const targetIdx=idx+dir;if(targetIdx<0||targetIdx>=cards.length)return;
+  const tA=tasks.find(x=>x.id===id);
+  const tB=tasks.find(x=>x.id===cards[targetIdx].dataset.id);
+  if(!tA||!tB)return;
+  const tmp=tA.deadline;tA.deadline=tB.deadline;tB.deadline=tmp;
+  save(tasks);renderBoard();
 }
 
 function renderStats(){
