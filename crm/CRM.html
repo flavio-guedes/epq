@@ -111,17 +111,6 @@
   .agenda-item .name{font-size:13px;color:#ffffff;font-weight:500}
   .agenda-item .meta{font-size:12px;color:#7d9cbd;margin-top:4px}
   .status-pill{font-size:11px;padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);color:#e6f3ff;background:rgba(255,255,255,0.08)}
-  .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
-  .login-card{
-    width:100%;max-width:420px;
-    background:rgba(255,255,255,0.06);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);
-    border:1px solid rgba(255,255,255,0.12);border-radius:22px;padding:26px;
-    box-shadow:0 0 0 1px rgba(80,180,255,0.08),0 24px 60px -20px rgba(80,160,255,0.35);
-  }
-  .login-card::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:1px;
-    background:linear-gradient(90deg,transparent,rgba(80,180,255,0.35) 40%,transparent 80%);opacity:.9;
-  }
   .empty-state{color:#7d9cbd;font-size:13px;padding:18px 10px;text-align:center;}
   @media (max-width:1024px){.kpis{grid-template-columns:repeat(3,1fr)}.funnel{grid-template-columns:repeat(4,1fr)}.agenda{grid-template-columns:1fr}}
   @media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}.funnel{grid-template-columns:repeat(3,1fr)}.row{grid-template-columns:1fr}}
@@ -146,7 +135,7 @@
       </div>
     </header>
 
-    <section class="panel" v-if="isOperational">
+    <section class="panel">
       <div class="kpis">
         <div class="kpi"><div class="num">{{ kpis.total }}</div><div class="label">Total</div></div>
         <div class="kpi"><div class="num">{{ kpis.new }}</div><div class="label">Novos</div></div>
@@ -157,7 +146,7 @@
       </div>
     </section>
 
-    <section class="panel" v-if="isOperational">
+    <section class="panel">
       <div class="agenda">
         <div class="agenda-col">
           <div class="agenda-title">Atrasados</div>
@@ -183,20 +172,6 @@
           </div>
           <div v-if="!agenda.upcoming.length" class="empty-state">Nenhum</div>
         </div>
-      </div>
-    </section>
-
-    <section class="panel" v-if="isAdmin">
-      <div class="kpis">
-        <div class="kpi"><div class="num">{{ kpis.total }}</div><div class="label">Total</div></div>
-        <div class="kpi"><div class="num">{{ kpis.new }}</div><div class="label">Novos</div></div>
-        <div class="kpi"><div class="num">{{ kpis.today }}</div><div class="label">Hoje</div></div>
-        <div class="kpi"><div class="num" style="color:#f87171">{{ kpis.late }}</div><div class="label">Atrasados</div></div>
-        <div class="kpi"><div class="num" style="color:#fbbf24">{{ kpis.hot }}</div><div class="label">Quentes</div></div>
-        <div class="kpi"><div class="num" style="color:#34d399">{{ kpis.converted }}</div><div class="label">Convertidos</div></div>
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
-        <button class="btn primary" @click="exportXLS()">Exportar XLS</button>
       </div>
     </section>
 
@@ -376,8 +351,6 @@
 <script>
   const { createApp, ref, computed, reactive } = Vue;
   const API_BASE = 'https://epq-dd56.onrender.com';
-  const TOKEN_KEY = 'epq_crm_token';
-  const USER_KEY = 'epq_crm_user';
   const STORAGE_KEY = 'epq_crm_leads_v2';
   const stages = ['Novo','Primeiro contato','Em conversa','Interessado','Negociação','Matriculado','Perdido'];
   function today(){ return new Date().toISOString().slice(0,10); }
@@ -387,7 +360,6 @@
 
   createApp({
     setup(){
-      const token = ref(localStorage.getItem(TOKEN_KEY) || '');
       const leads = ref(readLeads());
       const search = ref('');
       const filterStage = ref('');
@@ -399,34 +371,15 @@
       const mode = ref('cloud');
       const syncStatus = ref('');
       const errorMsg = ref('');
-      const loginForm = reactive({ username: '', password: '' });
-      const loginError = ref('');
-      const loginLoading = ref(false);
-      const showPassword = ref(false);
-      const user = ref(() => {
-        try { return JSON.parse(localStorage.getItem(USER_KEY) || 'null'); } catch { return null; }
-      }());
-
-      const isAuthenticated = computed(() => !!token.value && !!user.value);
-      const isAdmin = computed(() => !!(user.value && ['ADMIN_MASTER','GESTOR'].includes(user.value.perfil)));
-      const isOperational = computed(() => !!(user.value && user.value.perfil === 'OPERACIONAL'));
 
       function persist(){ writeLeads(leads.value); }
       function setMode(next){ mode.value = next; localStorage.setItem('epq_crm_mode', next); }
-      function authHeaders(){
-        return token.value ? { Authorization: 'Bearer ' + token.value } : {};
-      }
       async function safeApi(path, options){
         const url = API_BASE + path;
-        const res = await fetch(url, { ...options, headers: { 'content-type':'application/json', ...authHeaders(), ...(options && options.headers ? options.headers : {}) } });
-        if (res.status === 401){ localStorage.removeItem(TOKEN_KEY); localStorage.removeItem(USER_KEY); token.value = ''; user.value = null; location.reload(); return; }
+        const res = await fetch(url, { ...options, headers: { 'content-type':'application/json', ...(options && options.headers ? options.headers : {}) } });
         if (!res.ok){ const text = await res.text(); throw new Error(text || ('HTTP ' + res.status)); }
         const ct = res.headers.get('content-type') || '';
         return ct.includes('application/json') ? res.json() : res.text();
-      }
-      async function apiJson(path, method, body){
-        try { return await safeApi(path, { method, body: JSON.stringify(body) }); }
-        catch (e){ mode.value = 'offline'; throw e; }
       }
       async function loadCloud(){
         errorMsg.value = '';
@@ -538,45 +491,6 @@
       function formatDate(v){ return v || '—'; }
       function formatDateTime(v){ return v ? v.replace('T',' ').slice(0,19) : '—'; }
 
-      async function doLogin(){
-        loginError.value = '';
-        loginLoading.value = true;
-        try {
-          const res = await fetch(API_BASE + '/auth/login', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ username: loginForm.username, password: loginForm.password }) });
-          const data = await res.json().catch(() => ({}));
-          if (!res.ok){ loginError.value = data.detail || 'Credenciais inválidas'; return; }
-          token.value = data.access_token || '';
-          const profile = { nome: data.nome, perfil: data.perfil };
-          user.value = profile;
-          localStorage.setItem(TOKEN_KEY, token.value);
-          localStorage.setItem(USER_KEY, JSON.stringify(profile));
-          mode.value = 'cloud';
-          errorMsg.value = '';
-        } catch (err) {
-          if (loginForm.username.trim()){
-            const profile = { nome: loginForm.username, perfil: 'ADMIN_MASTER' };
-            token.value = 'local-offline';
-            user.value = profile;
-            localStorage.setItem(TOKEN_KEY, token.value);
-            localStorage.setItem(USER_KEY, JSON.stringify(profile));
-            mode.value = 'offline';
-            loginError.value = '';
-          } else {
-            loginError.value = 'Servidor offline. Informe um login para acesso local.';
-            mode.value = 'offline';
-          }
-        } finally {
-          loginLoading.value = false;
-        }
-      }
-      function logout(){
-        localStorage.removeItem(TOKEN_KEY);
-        localStorage.removeItem(USER_KEY);
-        token.value = '';
-        user.value = null;
-        mode.value = 'offline';
-      }
-
       async function openLead(lead){
         const full = fromApi(lead);
         currentLead.value = full;
@@ -657,9 +571,9 @@
       init();
 
       return {
-        isAuthenticated, isAdmin, isOperational, user, mode, syncStatus, errorMsg, loginForm, loginError, loginLoading, showPassword,
+        mode, syncStatus, errorMsg,
         search, filterStage, tab, leadModal, createModal, currentLead, newLead, stages, filtered, kpis, agenda, byStage,
-        openLead, closeLead, saveLead, openCreate, closeCreate, createLead, logContact, advanceStage, formatDate, formatDateTime, exportXLS, syncNow, switchToOffline, doLogin, logout,
+        openLead, closeLead, saveLead, openCreate, closeCreate, createLead, logContact, advanceStage, formatDate, formatDateTime, exportXLS, syncNow, switchToOffline,
       };
     }
   }).mount('#app');
