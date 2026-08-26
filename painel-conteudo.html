@@ -186,6 +186,20 @@ tr:hover td{background:rgba(234,243,255,.35);}
 .gantt-weekend{background:rgba(11,49,85,.035);}
 .gantt-today{position:absolute;top:0;bottom:0;width:1px;background:rgba(217,59,59,.55);z-index:3;pointer-events:none;}
 .gantt-today::after{content:'Hoje';position:absolute;top:-14px;left:0;font-size:10px;color:#d93b3b;font-weight:700;white-space:nowrap;}
+
+.editorias-section { margin-top: 18px; }
+.editorias-section h3 { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin: 18px 0 10px; color: var(--epq-blue-800); }
+.gantt-wrap { background: var(--epq-white); border: 1px solid var(--epq-gray-200); border-radius: var(--radius-lg); padding: 18px; box-shadow: var(--shadow-md); }
+.gantt { display: grid; gap: 10px; }
+.gantt-row { display: grid; grid-template-columns: 220px 1fr; gap: 14px; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(61,139,217,.12); }
+.gantt-row:last-child { border-bottom: none; }
+.gantt-label { font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--epq-gray-900); }
+.gantt-track { position: relative; height: 28px; background: var(--epq-gray-100); border-radius: 100px; overflow: hidden; }
+.gantt-fill { position: absolute; top: 0; bottom: 0; left: 0; background: linear-gradient(90deg, var(--epq-blue-700), var(--epq-blue-400)); border-radius: 100px; opacity: .85; }
+.gantt-milestone { position: absolute; top: 0; bottom: 0; width: 6px; background: var(--epq-positive); border-radius: 100px; box-shadow: 0 0 0 3px rgba(42,138,94,.15); }
+.gantt-meta { font-family: var(--font-mono); font-size: 10px; color: var(--epq-gray-600); margin-top: 6px; }
+.gantt-legend-item { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 10px; color: var(--epq-gray-700); }
+.gantt-legend-swatch { width: 12px; height: 12px; border-radius: 3px; }
 </style>
 </head>
 <body>
@@ -210,7 +224,7 @@ tr:hover td{background:rgba(234,243,255,.35);}
         <h1 class="type-display">CAMPAIGN COMMAND CENTER</h1>
         <div class="meta">
           <span class="badge ok">● SYSTEM ONLINE</span>
-          <span class="badge">PERÍODO: SET → DEZ 2026</span>
+          <span class="badge">PERÍODO: AGO → DEZ 2026</span>
           <span class="badge" id="source-badge">FONTE: GOOGLE SHEETS</span>
         </div>
         <div style="margin-top:10px;font-size:11px;color:var(--muted);" id="header-source">Carregando planejamento…</div>
@@ -232,16 +246,12 @@ tr:hover td{background:rgba(234,243,255,.35);}
         <select id="f-format"><option value="">Formato</option></select>
         <select id="f-status"><option value="">Status</option></select>
         <select id="f-month"><option value="">Mês</option></select>
-        <select id="f-editoria"><option value="">Editoria</option></select>
-        <select id="f-campanha"><option value="">Campanha</option></select>
         <button onclick="clearFilters()">Limpar filtros</button>
         <span class="count-chip" id="count-label">0 / 0</span>
       </div>
 
       <div class="tabs">
-        <button class="tab active" onclick="setViewMode('calendario',this)">Calendário</button>
-        <button class="tab" onclick="setViewMode('gantt',this)">Gantt</button>
-        <button class="tab" onclick="setViewMode('lista',this)">Lista</button>
+        <button class="tab active" onclick="switchTab('calendario',this)">Calendário</button>
         <button class="tab" onclick="switchTab('gantt',this)">Gantt</button>
         <button class="tab" onclick="switchTab('semana',this)">Semanal</button>
         <button class="tab" onclick="switchTab('tabela',this)">Tabela</button>
@@ -252,8 +262,8 @@ tr:hover td{background:rgba(234,243,255,.35);}
 
       <section class="view" id="view-calendario"></section>
       <section class="view" id="view-gantt" style="display:none;"></section>
-      <section class="view" id="view-lista" style="display:none;"></section>
       <section class="view" id="view-semana" style="display:none;"></section>
+      <section class="view" id="view-tabela" style="display:none;"></section>
       <section class="view" id="view-kanban" style="display:none;"></section>
       <section class="view" id="view-campanhas" style="display:none;"></section>
       <section class="view" id="view-alertas" style="display:none;"></section>
@@ -349,6 +359,82 @@ function useFallback(){
   }
   enriched = normalize(plan);
   init();
+function renderEditorias(items) {
+  const box = document.getElementById('editorias-rows');
+  const by = {};
+  items.forEach(it => {
+    const p = it['Pilar'] || '—';
+    by[p] = by[p] || [];
+    by[p].push(it);
+  });
+  let html = '';
+  Object.keys(by).sort().forEach(p => {
+    html += '<div class="editorias-section"><h3>' + p + '</h3>';
+    by[p].forEach(it => {
+      html += '<div class="sched-row' + (it['_is_past'] ? ' is-past' : '') + '" data-id="' + it['ID'] + '">';
+      html += '<div class="sched-date"><span class="sched-dd">' + it['_date_dd'] + '</span><span class="sched-dow">' + it['_date_dow'] + '</span>' + (it['_is_today'] ? '<span class="today-flag">HOJE</span>' : '') + '</div>';
+      html += '<div class="sched-id">' + it['ID'] + '</div>';
+      html += '<div class="sched-perfil ' + (it['Perfil']==='EPQ'?'perfil-epq':'perfil-ronan') + '">' + it['Perfil'] + '</div>';
+      html += '<div class="sched-formato">' + it['Formato'] + '</div>';
+      html += '<div class="sched-main"><div class="sched-headline">' + it['Headline'] + '</div><div class="sched-tema">' + it['Tema / Campanha'] + '</div></div>';
+      html += '<div class="sched-pilar">' + it['Pilar'] + '</div>';
+      html += '<div class="sched-status ' + statusMeta(it['Status']||'').cls + '" data-action="open" data-id="' + it['ID'] + '"><span class="status-dot"></span>' + (it['Status'] || '—') + '</div>';
+      html += '<div><button class="btn btn-ghost" data-action="open" data-id="' + it['ID'] + '" style="font-family:var(--font-mono);font-size:10px;padding:6px 10px;">Abrir</button></div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+  box.innerHTML = html || '<div style="padding:18px;color:var(--epq-gray-500);font-size:13px;">Nenhuma editoria encontrada.</div>';
+}
+
+function daterange(start, end) {
+  const s = new Date(start); const e = new Date(end);
+  const ms = (e - s) / 86400000;
+  const arr = [];
+  for (let i = 0; i <= Math.max(ms,0); i++) arr.push(new Date(s.getTime() + i*86400000).toISOString().slice(0,10));
+  return arr;
+}
+
+function fmtDate(iso) {
+  const d = new Date(iso + 'T00:00:00');
+  return ('0' + d.getDate()).slice(-2) + '/' + ('0' + (d.getMonth()+1)).slice(-2);
+}
+
+function renderCampanhas(items) {
+  const board = document.getElementById('gantt-board');
+  const legend = document.querySelector('.gantt-legend');
+  const campanhas = items.filter(it => (it['Campanha'] || '') === 'Bolsão' || it['Formato'] === 'Campanha');
+  if (!campanhas.length) {
+    board.innerHTML = '<div style="padding:18px;color:var(--epq-gray-500);font-size:13px;">Nenhuma campanha cadastrada.</div>';
+    legend.innerHTML = '';
+    return;
+  }
+
+  // timeframe
+  let allDates = [];
+  campanhas.forEach(c => allDates.push(...daterange(c['_date_iso'], c['_date_iso'])));
+  const min = allDates[0], max = allDates[allDates.length-1];
+  const days = daterange(min, max);
+  const dayWidth = 34;
+  const trackW = days.length * dayWidth;
+
+  legend.innerHTML = '<div class="gantt-legend-item"><span class="gantt-legend-swatch" style="background:linear-gradient(90deg, var(--epq-blue-700), var(--epq-blue-400));"></span>Duração</div>' +
+    '<div class="gantt-legend-item"><span class="gantt-legend-swatch" style="background:var(--epq-positive);"></span>Checkpoint</div>';
+
+  let rows = '';
+  campanhas.forEach(c => {
+    const idx = days.indexOf(c['_date_iso']);
+    const left = Math.max(idx, 0) * dayWidth;
+    rows += '<div class="gantt-row"><div class="gantt-label">' + c['Headline'] + '</div>';
+    rows += '<div class="gantt-track" style="width:' + trackW + 'px;">';
+    rows += '<div class="gantt-fill" style="width:' + (days.length * dayWidth) + 'px;"></div>';
+    rows += '<div class="gantt-milestone" style="left:' + left + 'px;" title="' + c['_date_dd'] + '"></div>';
+    rows += '</div></div>';
+    rows += '<div class="gantt-meta">' + c['ID'] + ' · ' + fmtDate(min) + ' → ' + fmtDate(max) + ' · Checkpoint: ' + fmtDate(c['Checkpoint'] || c['_date_iso']) + '</div>';
+  });
+  board.innerHTML = rows;
+}
+
 }
 function retryLoad(){
   window.__epqFallbackUsed = false;
@@ -358,7 +444,7 @@ function retryLoad(){
 }
 
 /* ============== Filters ============== */
-const filters = { q:'', profile:'', type:'', format:'', status:'', month:'', editoria:'', campanha:'' };
+const filters = { q:'', profile:'', type:'', format:'', status:'', month:'' };
 function populateFilters(){
   const mk=(id,vals)=>vals.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
   document.getElementById('f-profile').innerHTML = '<option value="">Perfil</option>'+mk('f-profile',[...new Set(enriched.map(r=>r['Perfil']))]);
@@ -366,8 +452,6 @@ function populateFilters(){
   document.getElementById('f-format').innerHTML = '<option value="">Formato</option>'+mk('f-format',[...new Set(enriched.map(r=>r['Formato']))]);
   document.getElementById('f-status').innerHTML = '<option value="">Status</option>'+mk('f-status',[...new Set(enriched.map(r=>r['Status']||'PENDENTE'))]);
   document.getElementById('f-month').innerHTML = '<option value="">Mês</option>'+months.map(m=>`<option value="${m}">${m}</option>`).join('');
-  document.getElementById('f-editoria').innerHTML = '<option value="">Editoria</option>'+mk('f-editoria',[...new Set(enriched.map(r=>r['Pilar']))]);
-  document.getElementById('f-campanha').innerHTML = '<option value="">Campanha</option>'+mk('f-campanha',[...new Set(enriched.map(r=>r['Tema / Campanha']))]);
 }
 function currentFiltered(){
   return enriched.filter(r=>{
@@ -379,18 +463,16 @@ function currentFiltered(){
     if(filters.format && r['Formato']!==filters.format) return false;
     if(filters.status){ const s=r['Status']||'PENDENTE'; if(s!==filters.status) return false; }
     if(filters.month && r._monthName!==filters.month) return false;
-    if(filters.editoria && r['Pilar']!==filters.editoria) return false;
-    if(filters.campanha && r['Tema / Campanha']!==filters.campanha) return false;
     return true;
   });
 }
 function clearFilters(){
-  filters.q=''; filters.profile=''; filters.type=''; filters.format=''; filters.status=''; filters.month=''; filters.editoria=''; filters.campanha='';
+  filters.q=''; filters.profile=''; filters.type=''; filters.format=''; filters.status=''; filters.month='';
   document.getElementById('search').value='';
-  ['f-profile','f-type','f-format','f-status','f-month','f-editoria','f-campanha'].forEach(id=>document.getElementById(id).value='');
+  ['f-profile','f-type','f-format','f-status','f-month'].forEach(id=>document.getElementById(id).value='');
   refresh();
 }
-['search','f-profile','f-type','f-format','f-status','f-month','f-editoria','f-campanha'].forEach(id=>{
+['search','f-profile','f-type','f-format','f-status','f-month'].forEach(id=>{
   const el=document.getElementById(id);
   if(!el) return;
   el.addEventListener('input',e=>{
@@ -400,22 +482,13 @@ function clearFilters(){
   });
 });
 
-/* ============== View Mode ============== */
-let viewMode = 'calendario';
-function setViewMode(mode,btn){
-  viewMode = mode;
+/* ============== Tabs ============== */
+function switchTab(name,btn){
   document.querySelectorAll('.view').forEach(v=>v.style.display='none');
-  const map = { calendario:'view-calendario', gantt:'view-gantt', lista:'view-lista', semana:'view-semana', kanban:'view-kanban', campanhas:'view-campanhas', alertas:'view-alertas' };
-  const target = document.getElementById(map[mode]);
-  if(target) target.style.display='block';
+  document.getElementById('view-'+name).style.display='block';
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
   refresh();
-}
-
-/* ============== Tabs ============== */
-function switchTab(name,btn){
-  setViewMode(name,btn);
 }
 
 /* ============== Dashboard ============== */
@@ -468,30 +541,6 @@ function renderCalendar(){
   box.innerHTML=html;
 }
 
-/* ============== List ============== */
-function renderList(){
-  const box=document.getElementById('view-lista');
-  const items=currentFiltered();
-  const cols=['Data da ação','Perfil','Tipo de distribuição','Formato','Tema / Campanha','Pilar','Objetivo','Status','Responsável'];
-  let html=`<div class="table-wrap"><table><thead><tr>${cols.map(c=>`<th>${esc(c)}</th>`).join('')}<th></th></tr></thead><tbody>`;
-  items.forEach(r=>{
-    const s=statusMeta(r['Status']);
-    html+=`<tr>
-      <td>${esc(r['Data da ação'])}</td>
-      <td><span class="pill ${profileClass(r['Perfil'])}">${esc(r['Perfil'])}</span></td>
-      <td>${esc(r['Tipo de distribuição'])}</td>
-      <td>${esc(r['Formato'])}</td>
-      <td>${esc(r['Tema / Campanha'])}</td>
-      <td>${esc(r['Pilar'])}</td>
-      <td>${esc(r['Objetivo'])}</td>
-      <td><span class="pill ${s.cls}">${esc(s.label)}</span></td>
-      <td>${esc(r['Responsável'])}</td>
-      <td><button onclick="openDetail(${r.idx})" class="secondary" style="background:rgba(255,255,255,.7);border:1px solid var(--line-strong);padding:5px 9px;border-radius:8px;cursor:pointer;font-size:12px;backdrop-filter:blur(10px);">Detalhe</button></td>
-    </tr>`;
-  });
-  html+='</tbody></table></div>';
-  box.innerHTML=html;
-}
 /* ============== Week ============== */
 function renderWeek(){
   const box=document.getElementById('view-semana');
@@ -665,13 +714,13 @@ function renderGantt(){
 /* ============== Refresh ============== */
 function refresh(){
   renderDashboard();
-  if(viewMode==='calendario') renderCalendar();
-  else if(viewMode==='gantt') renderGantt();
-  else if(viewMode==='lista') renderList();
-  else if(viewMode==='semana') renderWeek();
-  else if(viewMode==='kanban') renderKanban();
-  else if(viewMode==='campanhas') renderCampaigns();
-  else if(viewMode==='alertas') renderAlerts();
+  renderCalendar();
+  renderGantt();
+  renderWeek();
+  renderTable();
+  renderKanban();
+  renderCampaigns();
+  renderAlerts();
   document.getElementById('count-label').textContent=`${currentFiltered().length} / ${enriched.length} conteúdos`;
 }
 
