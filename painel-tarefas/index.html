@@ -108,16 +108,6 @@ body {
   position: relative; min-height: 280px; background: var(--epq-gray-900);
   overflow: hidden; display: flex; align-items: flex-end; padding-bottom: 36px;
 }
-.command-header::after {
-  content: '';
-  position: absolute; inset: 0; pointer-events: none;
-  background:
-    linear-gradient(160deg, rgba(10,31,59,0.88) 0%, rgba(27,58,138,0.72) 60%, rgba(15,42,82,0.9) 100%),
-    url('cover-art.png') right center / contain no-repeat;
-  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.85));
-  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.85));
-  opacity: 0.35;
-}
 .atm-gradient {
   position: absolute; inset: 0; pointer-events: none;
   background:
@@ -146,15 +136,15 @@ body {
 /* ===== COVER ===== */
 .cover-wrap {
   position: fixed; inset: 0; z-index: 200;
-  background: linear-gradient(160deg, rgba(10,31,59,0.88) 0%, rgba(27,58,138,0.78) 60%, rgba(15,42,82,0.88) 100%);
-  display: flex; align-items: center; justify-content: flex-start; padding: 24px;
+  background:
+    linear-gradient(160deg, rgba(10,31,59,0.82) 0%, rgba(27,58,138,0.72) 60%, rgba(15,42,82,0.88) 100%),
+    url('cover-art.png') right center / cover no-repeat;
+  display: flex; align-items: center; justify-content: center; padding: 24px;
 }
 .cover-wrap::after {
   content: '';
-  position: absolute; right: 0; top: 0; bottom: 0; width: 100%;
-  background: url('cover-art.png') right center / contain no-repeat;
-  opacity: 0.35;
-  pointer-events: none;
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(160deg, rgba(10,31,59,0.55) 0%, rgba(27,58,138,0.35) 60%, rgba(15,42,82,0.65) 100%);
 }
 .cover-card {
   background: rgba(255,255,255,.92); backdrop-filter: blur(16px);
