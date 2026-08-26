@@ -395,26 +395,16 @@ function whatsappLink(text){
   return 'https://wa.me/?text=' + encodeURIComponent(text);
 }
 function sendWhatsAppSummary(){
-  const groups={};
-  tasks.forEach(t=>{
-    const key=t.status||'Sem status';
-    groups[key]=groups[key]||[];
-    groups[key].push(t);
-  });
-  const order=['A Fazer','Hoje','Em aprovação','Concluído','Publicado agendado','Arquivo'];
-  let text='📋 EPQ - Resumo de Tarefas\n\n';
-  order.forEach(k=>{
-    const items=groups[k];
-    if(!items||!items.length) return;
-    text+=`• ${k}\n`;
+  const items=tasks.filter(t=>t.status==='Hoje');
+  let text='📋 EPQ - Tarefas de Hoje\n\n';
+  if(!items.length){ text+='Sem tarefas para hoje.'; }
+  else{
     items.forEach(t=>{
       const who=t.who||'-';
       const dl=t.deadline?new Date(t.deadline+'T00:00:00').toLocaleDateString('pt-BR'):'-';
       text+=`- ${t.title}\n  👤 ${who} • 📅 ${dl}\n`;
     });
-    text+='\n';
-  });
-  if(!text.trim()) text='Sem tarefas no momento.';
+  }
   window.open(whatsappLink(text),'_blank');
 }
 let tasks=load();
