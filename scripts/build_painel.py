@@ -2,6 +2,7 @@
 import json
 from pathlib import Path
 import datetime
+import base64
 
 ITEMS_PATH = Path('/Users/mac/HermesWorkspace/EPQ/plan-data-clean.json')
 OUT_PATH = Path('/Users/mac/repo-epq/painel-conteudo.html')
@@ -37,13 +38,10 @@ for it in items:
 
 json_text = json.dumps(rows, ensure_ascii=False, indent=2)
 
-# Extract unique filter values
 editorias = sorted(set(it['Pilar'] for it in rows if it.get('Pilar')))
 campanhas = sorted(set(it.get('Formato','') for it in rows if it.get('Formato')))
 status_values = sorted(set(it.get('Status','') for it in rows if it.get('Status')))
 
-# Read banner and convert to base64
-import base64
 banner_b64 = ''
 if BANNER_PATH.exists():
     banner_b64 = base64.b64encode(BANNER_PATH.read_bytes()).decode('utf-8')
@@ -164,13 +162,40 @@ body {{ font-family:var(--font-body); background:var(--epq-bg); color:var(--epq-
 @media (max-width:900px) {{
   .page-body {{ padding:32px 24px 80px; }}
   .header-content {{ padding:0 24px; }}
+  .filter-bar {{ gap:8px; }}
+  .filter-input {{ min-width:180px; }}
 }}
 @media (max-width:640px) {{
   .sidebar {{ display:none; }}
   .main-content {{ margin-left:0; }}
-  .header-title {{ font-size:28px; }}
-  .sched-row {{ grid-template-columns: 40px 56px 1fr 96px; }}
-  .sched-id, .today-flag {{ display:none; }}
+  .command-header {{ min-height:320px; padding-bottom:28px; }}
+  .header-title {{ font-size:26px; }}
+  .header-subtitle {{ font-size:13px; }}
+  .header-meta {{ gap:12px; }}
+  .period-badge {{ padding-left:12px; }}
+  .filter-bar {{ flex-direction:column; align-items:stretch; }}
+  .filter-input {{ min-width:auto; width:100%; }}
+  .filter-chip {{ width:100%; height:40px; }}
+  .tabs {{ gap:6px; }}
+  .tab {{ padding:8px 12px; font-size:9px; }}
+  .sched-row {{
+    grid-template-columns: 40px 1fr 64px;
+    grid-template-rows: auto auto;
+    gap: 6px 10px;
+    padding: 14px 14px;
+  }}
+  .sched-row.sched-head {{ display:none; }}
+  .sched-row > .sched-id,
+  .sched-row > .sched-formato,
+  .sched-row > .sched-pilar,
+  .sched-row > .sched-status,
+  .sched-row > .sched-copywriter {{ display:none !important; }}
+  .sched-row > div:first-child {{ grid-row: 1 / 3; align-self:center; }}
+  .sched-date {{ grid-row: 1 / 3; align-self:center; }}
+  .sched-main {{ grid-column: 2 / 4; }}
+  .sched-detail .detail-content {{ padding:14px; }}
+  .expand-btn {{ width:40px; height:40px; }}
+  .copy-btn {{ width:100%; justify-content:center; }}
 }}
 @media (prefers-reduced-motion:reduce) {{
   *, *::before, *::after {{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }}
