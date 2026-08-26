@@ -450,6 +450,10 @@ body {
       <input id="m-deadline" type="date"/>
     </div>
     <div class="field">
+      <label>Tags</label>
+      <input id="m-tags" placeholder="ex: design, revisão, urgente"/>
+    </div>
+    <div class="field">
       <label>Status</label>
       <select id="m-status"><option>Fila padrão</option><option>Aguardando informações</option><option>A fazer</option><option>Fazendo</option><option>Em aprovação</option><option>Concluído</option><option>Arquivo</option></select>
     </div>
@@ -610,7 +614,8 @@ function cardEl(t){
   const od=overdue(t)?'<span class="pill overdue">Atrasada</span>':'';
   div.innerHTML=`<div class="card-title">${esc(t.title)}</div>
     <div class="card-meta">${t.area?`<span class="pill area">${esc(t.area)}</span>`:''}${t.project?`<span class="pill project">${esc(t.project)}</span>`:''}${prioPill(t.priority)}${od}</div>
-    <div class="card-meta" style="margin-top:6px"><span>👤 ${esc(t.who||'-')}</span><span style="opacity:.7">•</span><span>📅 ${fmt(t.deadline)}</span></div>`;
+    <div class="card-meta" style="margin-top:6px"><span>👤 ${esc(t.who||'-')}</span><span style="opacity:.7">•</span><span>📅 ${fmt(t.deadline)}</span></div>
+    ${t.tags?.length?`<div class="card-meta" style="margin-top:6px">${t.tags.map(x=>`<span class="pill area">${esc(x)}</span>`).join('')}</div>`:''}`;
   div.addEventListener('dragstart',e=>{e.dataTransfer.effectAllowed='move';dragTaskId=div.dataset.id;div.classList.add('drag')});
   div.addEventListener('dragend',()=>{dragTaskId=null;div.classList.remove('drag')});
   div.addEventListener('click',()=>openDetail(t.id));
@@ -678,7 +683,7 @@ function renderTasks(){
   items.forEach(t=>{
     const r=document.createElement('div');r.className='row';
     const od=overdue(t)?'<span class="pill overdue">Atrasada</span>':'';
-    r.innerHTML=`<div class="row-main"><div class="row-title">${esc(t.title)}</div><div class="row-sub">👤 ${esc(t.who||'-')} • 📅 ${fmt(t.deadline)} • ${esc(t.project||'-')}</div></div>
+    r.innerHTML=`<div class="row-main"><div class="row-title">${esc(t.title)}</div><div class="row-sub">👤 ${esc(t.who||'-')} • 📅 ${fmt(t.deadline)} • ${esc(t.project||'-')}</div>${(t.tags||[]).length?`<div class="row-sub">${t.tags.map(x=>`<span class="pill area">${esc(x)}</span>`).join(' ')}</div>`:''}</div>`;
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">${prioPill(t.priority)}${od}<button class="btn sm ghost" onclick="openDetail('${t.id}')">Abrir</button></div>`;
     list.appendChild(r);
   });
@@ -826,6 +831,7 @@ function saveTask(){
     priority:document.getElementById('m-prio').value,
     status:document.getElementById('m-status').value,
     deadline:document.getElementById('m-deadline').value,
+    tags:document.getElementById('m-tags').value.split(',').map(s=>s.trim()).filter(Boolean),
     createdAt:editing?(tasks.find(x=>x.id===editing)||{}).createdAt||new Date().toISOString():new Date().toISOString()
   };
   if(editing){const i=tasks.findIndex(x=>x.id===editing);tasks[i]=data}else tasks.push(data);
@@ -877,6 +883,10 @@ function openDetail(id){
       <input id="d-deadline" type="date" value="${t.deadline||''}"/>
     </div>
     <div class="field">
+      <label>Tags</label>
+      <input id="d-tags" value="${(t.tags||[]).join(', ')}"/>
+    </div>
+    <div class="field">
       <label>Status</label>
       <select id="d-status">
         ${statuses.map(s=>`<option ${s===t.status?'selected':''}>${s}</option>`).join('')}
@@ -905,6 +915,7 @@ function saveDetail(){
   t.priority=document.getElementById('d-prio').value;
   t.status=document.getElementById('d-status').value;
   t.deadline=document.getElementById('d-deadline').value;
+  t.tags=document.getElementById('d-tags').value.split(',').map(s=>s.trim()).filter(Boolean);
   save(tasks);
   const cid = getContentIdForTask(t);
   if(cid) syncContentStatus(cid, t.status);
@@ -923,6 +934,7 @@ function openModalEdit(){
   document.getElementById('m-prio').value=t.priority;
   document.getElementById('m-status').value=t.status;
   document.getElementById('m-deadline').value=t.deadline||'';
+  document.getElementById('m-tags').value=(t.tags||[]).join(', ');
   document.getElementById('modal').classList.add('show');
 }
 function openSidebar(){document.getElementById('sidebar').classList.add('open')}
