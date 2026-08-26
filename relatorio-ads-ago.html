@@ -1197,6 +1197,8 @@ body {
   .page-footer { padding: 20px; flex-direction: column; gap: 8px; text-align: center; }
   .ads-row { flex-direction: column; }
   .data-table { display: block; overflow-x: auto; }
+  .campaign-header-row { flex-direction: column; gap: 10px; }
+  .campaign-metrics-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 480px) {
@@ -1576,14 +1578,42 @@ body {
       <div class="campaign-header-row">
         <div>
           <div class="section-eyebrow">Campanha Ativa</div>
-          <div class="section-title" style="margin-bottom:0">PMERJ — WhatsApp Leads</div>
-          <div style="font-family:var(--font-mono);font-size:10px;color:var(--epq-gray-500);margin-top:4px;letter-spacing:0.06em;">CA EPQ - Ronan // ID: 298968926901604</div>
+          <div class="section-title" style="margin-bottom:0">PMERJ + SES RJ — WhatsApp Leads</div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--epq-gray-500);margin-top:4px;letter-spacing:0.06em;">2 campanhas ativas // Captação de leads via WhatsApp</div>
         </div>
         <div class="campaign-status-pill">
           <div class="campaign-status-dot"></div>
           ACTIVE · 6 DIAS
         </div>
-      </div>
+        </div>
+
+        <!-- Mobile summary -->
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px;">
+        <div class="camp-metric">
+          <div class="camp-metric-label">Campanhas</div>
+          <div class="camp-metric-val">PMERJ + SES RJ</div>
+        </div>
+        <div class="camp-metric">
+          <div class="camp-metric-label">Meta conversas</div>
+          <div class="camp-metric-val">10 / 10 atingida</div>
+        </div>
+        <div class="camp-metric">
+          <div class="camp-metric-label">Gasto total</div>
+          <div class="camp-metric-val">R$ 97,10</div>
+        </div>
+        <div class="camp-metric">
+          <div class="camp-metric-label">Custo / conversa</div>
+          <div class="camp-metric-val">R$ 9,71</div>
+        </div>
+        <div class="camp-metric">
+          <div class="camp-metric-label">Visualizações</div>
+          <div class="camp-metric-val">3.969</div>
+        </div>
+        <div class="camp-metric">
+          <div class="camp-metric-label">Faixa principal</div>
+          <div class="camp-metric-val">35-44 · 34%</div>
+        </div>
+        </div>
 
       <div class="campaign-metrics-grid">
         <div class="camp-metric">
@@ -1672,12 +1702,12 @@ body {
             <div style="position:absolute;top:12px;right:14px;background:rgba(61,139,217,.1);border:1px solid rgba(61,139,217,.25);border-radius:100px;padding:2px 8px;font-family:var(--font-mono);font-size:7px;color:var(--epq-blue-600);letter-spacing:0.12em;text-transform:uppercase;">LÍDER</div>
             <div class="h-node-label default">Anúncio</div>
             <div class="h-node-name default">PMERJ — 2</div>
-            <div class="h-node-meta">13 conv · R$ 3,18/conv · 29 cliques · R$ 1,42 CPC</div>
+            <div class="h-node-meta">13 conv · R$ 3,18/conv · 29 cliques · R$ 1,33 CPC</div>
           </div>
           <div class="hierarchy-node">
             <div class="h-node-label default">Anúncio</div>
             <div class="h-node-name default">PMERJ</div>
-            <div class="h-node-meta">7 conv · R$ 5,52/conv · 19 cliques · R$ 2,04 CPC</div>
+            <div class="h-node-meta">7 conv · R$ 5,52/conv · 19 cliques · R$ 1,84 CPC</div>
           </div>
         </div>
       </div>
@@ -1784,7 +1814,7 @@ body {
             </div>
             <div class="creative-stat-row">
               <span class="cs-label">CPC</span>
-              <span class="cs-val">R$ 1,42</span>
+              <span class="cs-val">R$ 1,33</span>
             </div>
           </div>
         </div>
@@ -1824,7 +1854,7 @@ body {
             </div>
             <div class="creative-stat-row">
               <span class="cs-label">CPC</span>
-              <span class="cs-val">R$ 2,04</span>
+              <span class="cs-val">R$ 1,84</span>
             </div>
           </div>
         </div>

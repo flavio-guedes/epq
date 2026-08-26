@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+
 :root {
   --epq-white:#ffffff; --epq-bg:#f4f7fa; --epq-gray-50:#f8fafc; --epq-gray-100:#eef2f5; --epq-gray-200:#e4eaf0;
   --epq-gray-300:#d8e0e7; --epq-gray-400:#adb9c5; --epq-gray-500:#8a97a5; --epq-gray-600:#687582;
@@ -21,1420 +22,314 @@
   --font-display:'Space Grotesk',sans-serif; --font-body:'Inter',sans-serif; --font-mono:'JetBrains Mono',monospace;
 }
 * { box-sizing:border-box; margin:0; padding:0; }
-body { font-family:var(--font-body); background:var(--epq-bg); color:var(--epq-gray-900); }
-.page-body { padding:24px; }
+body { font-family:var(--font-body); background:var(--epq-bg); color:var(--epq-gray-900); min-height:100vh; overflow-x:hidden; -webkit-font-smoothing:antialiased; }
+:focus-visible { outline:2px solid var(--epq-blue-500); outline-offset:2px; }
+
+.sidebar { position:fixed; left:0; top:0; height:100vh; width:84px; background:var(--epq-gray-900); border-right:1px solid rgba(61,139,217,.15); z-index:100; display:flex; flex-direction:column; padding:24px 0; transition:width .5s cubic-bezier(0.16, 1, 0.3, 1); overflow:hidden; }
+.sidebar:hover { width:240px; }
+.sidebar-logo { width:36px; height:36px; margin:0 0 28px 23px; flex-shrink:0; background:var(--epq-blue-700); border-radius:8px; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:700; font-size:12px; color:#fff; }
+.sidebar-nav { display:flex; flex-direction:column; gap:3px; padding:0 12px; overflow-y:auto; }
+.nav-item { display:flex; align-items:center; gap:12px; padding:9px 11px; border-radius:var(--radius-sm); cursor:pointer; white-space:nowrap; text-decoration:none; color:var(--epq-gray-500); transition:background .2s, color .2s; }
+.nav-item:hover, .nav-item.active { background:rgba(61,139,217,.12); color:var(--epq-blue-300); }
+.nav-item.active { color:var(--epq-blue-400); }
+.nav-num { font-family:var(--font-mono); font-size:9px; flex-shrink:0; width:16px; }
+.nav-label { font-family:var(--font-mono); font-size:10px; font-weight:500; letter-spacing:.07em; text-transform:uppercase; opacity:0; transition:opacity .2s; }
+.sidebar:hover .nav-label { opacity:1; }
+.sidebar-status { margin-top:auto; padding:14px 12px 0; display:flex; align-items:center; gap:8px; }
+.status-dot-live { width:6px; height:6px; background:var(--epq-blue-400); border-radius:50%; animation:pulse-dot 2s ease-in-out infinite; flex-shrink:0; }
+@keyframes pulse-dot { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.5; transform:.8; } }
+
+.main-content { margin-left:84px; min-height:100vh; }
+.command-header {
+  position:relative; min-height:420px; background:var(--epq-gray-900);
+  background-image:linear-gradient(100deg, rgba(11,20,32,.92) 0%, rgba(11,20,32,.78) 38%, rgba(11,49,85,.45) 65%, rgba(11,49,85,.18) 100%), url('data:image/png;base64,__BANNER__');
+  background-size:cover; background-position:center; overflow:hidden; display:flex; align-items:flex-end; padding-bottom:44px;
+}
+.grid-overlay { position:absolute; inset:0; pointer-events:none; opacity:.35; background-image:linear-gradient(rgba(61,139,217,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(61,139,217,.07) 1px, transparent 1px); background-size:44px 44px; mask-image:radial-gradient(ellipse 70% 90% at 30% 40%, black 30%, transparent 75%); }
+.corner-brackets span { position:absolute; width:20px; height:20px; border:1px solid rgba(61,139,217,.35); }
+.cb-tl { top:20px; left:20px; border-right:none; border-bottom:none; }
+.cb-tr { top:20px; right:20px; border-left:none; border-bottom:none; }
+.header-content { position:relative; z-index:10; padding:0 56px; width:100%; max-width:900px; }
+.header-eyebrow { font-family:var(--font-mono); font-size:10px; font-weight:500; color:var(--epq-blue-300); letter-spacing:.2em; text-transform:uppercase; margin-bottom:16px; }
+.header-title { font-family:var(--font-display); font-size:clamp(30px, 4.6vw, 54px); font-weight:700; color:#fff; letter-spacing:-.03em; line-height:1.04; margin-bottom:14px; text-shadow:0 2px 24px rgba(0,0,0,.35); }
+.header-title em { color:var(--epq-blue-400); font-style:normal; }
+.header-subtitle { font-size:14px; font-weight:400; color:var(--epq-gray-300); line-height:1.6; max-width:560px; margin-bottom:28px; }
+.header-meta { display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
+.status-badge { display:flex; align-items:center; gap:7px; font-family:var(--font-mono); font-size:10px; font-weight:500; color:var(--epq-blue-400); letter-spacing:.12em; text-transform:uppercase; }
+.status-badge-dot { width:6px; height:6px; background:var(--epq-blue-400); border-radius:50%; animation:pulse-dot 2s ease-in-out infinite; }
+.period-badge { font-family:var(--font-mono); font-size:10px; color:var(--epq-gray-400); letter-spacing:.08em; border-left:1px solid rgba(255,255,255,.12); padding-left:24px; }
+
+.page-body { padding:40px 56px 100px; max-width:1400px; }
+.filter-bar { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:24px; }
+.filter-chip { height:36px; padding:0 14px; border-radius:var(--radius-xl); border:1px solid var(--epq-gray-200); background:var(--epq-white); font-family:var(--font-mono); font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--epq-gray-700); cursor:pointer; transition:all .2s; white-space:nowrap; }
+.filter-chip:hover { border-color:var(--epq-blue-400); color:var(--epq-blue-700); }
+.filter-input { height:36px; padding:0 14px; border-radius:var(--radius-xl); border:1px solid var(--epq-gray-200); background:var(--epq-white); font-family:var(--font-body); font-size:13px; color:var(--epq-gray-900); min-width:220px; }
+.filter-input:focus { border-color:var(--epq-blue-500); outline:none; box-shadow:0 0 0 3px rgba(61,139,217,.12); }
+
+.tabs { display:flex; gap:8px; margin-bottom:18px; }
+.tab { padding:10px 16px; border-radius:var(--radius-sm); font-family:var(--font-mono); font-size:10px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--epq-gray-600); cursor:pointer; border:1px solid transparent; background:transparent; }
+.tab.active { background:var(--epq-white); color:var(--epq-blue-700); border-color:var(--epq-gray-200); box-shadow:var(--shadow-md); }
+
+.kpi-strip { background:var(--epq-white); border:1px solid var(--epq-gray-200); border-radius:var(--radius-lg); display:flex; overflow-x:auto; margin-bottom:24px; box-shadow:var(--shadow-md); }
+.kpi-item { flex:1; min-width:130px; padding:22px 24px; border-right:1px solid var(--epq-gray-200); display:flex; flex-direction:column; gap:5px; }
+.kpi-item:last-child { border-right:none; }
+.kpi-label { font-family:var(--font-mono); font-size:9px; font-weight:500; color:var(--epq-gray-500); letter-spacing:.13em; text-transform:uppercase; }
+.kpi-value { font-family:var(--font-mono); font-size:26px; font-weight:500; color:var(--epq-gray-900); letter-spacing:-.03em; }
+.kpi-value.featured { color:var(--epq-blue-700); }
+
+.table-wrap { background:linear-gradient(180deg,#ffffff,#f8fafc); border:1px solid var(--epq-gray-200); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-md); }
+.sched-row { display:grid; grid-template-columns: 40px 78px 108px 80px 108px 1fr 140px 148px 64px; align-items:center; gap:14px; padding:14px 20px; border-bottom:1px solid transparent; border-image:linear-gradient(90deg, var(--epq-gray-200), rgba(61,139,217,.35), var(--epq-gray-200)) 1; }
+.sched-row:last-child { border-bottom:none; }
+.sched-row.sched-head { background:linear-gradient(180deg,var(--epq-gray-50),#eef2f5); font-family:var(--font-mono); font-size:9px; font-weight:600; color:var(--epq-gray-500); letter-spacing:.1em; text-transform:uppercase; padding-top:12px; padding-bottom:12px; cursor:default; border-bottom:1px solid var(--epq-gray-200); }
+.sched-row.is-past { opacity:.6; }
+.sched-row:not(.sched-head):hover { background:linear-gradient(180deg,var(--epq-blue-50),rgba(61,139,217,.04)); cursor:pointer; }
+
+.sched-date { font-family:var(--font-mono); font-size:11px; font-weight:700; color:var(--epq-blue-700); letter-spacing:.06em; }
+.sched-id { font-family:var(--font-mono); font-size:10px; font-weight:700; color:var(--epq-gray-800); }
+.sched-perfil { font-family:var(--font-mono); font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; padding:4px 8px; border-radius:999px; display:inline-block; }
+.perfil-epq { color:#064e3b; background:#d1fae5; border:1px solid #34d399; }
+.perfil-ronan { color:#1e3a8a; background:#dbeafe; border:1px solid #93c5fd; }
+.sched-formato { font-family:var(--font-mono); font-size:10px; font-weight:700; color:#7c3aed; letter-spacing:.08em; text-transform:uppercase; }
+.sched-main { min-width:0; }
+.sched-headline { font-family:var(--font-display); font-size:13px; font-weight:700; color:var(--epq-blue-900); line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.sched-tema { font-size:11px; color:var(--epq-gray-600); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.sched-pilar { font-family:var(--font-mono); font-size:10px; font-weight:700; color:#0f3f6e; letter-spacing:.08em; text-transform:uppercase; }
+.sched-status { font-family:var(--font-mono); font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:5px 10px; border-radius:999px; border:1px solid transparent; }
+.st-positive { color:#14532d; background:#dcfce7; border-color:#86efac; }
+.st-blue { color:#0f3f6e; background:#dbeafe; border-color:#93c5fd; }
+.st-neutral { color:#374151; background:#f3f4f6; border-color:#d1d5db; }
+.st-attention { color:#7a5200; background:#fff4cc; border-color:#fde68a; }
+.st-gap { color:#431407; background:#ffe4e6; border-color:#fca5a5; }
+.st-alert { color:#7f1d1d; background:#fee2e2; border-color:#f87171; }
+.status-dot { width:7px; height:7px; border-radius:50%; display:inline-block; margin-right:8px; }
+.st-positive .status-dot { background:#16a34a; box-shadow:0 0 0 3px rgba(22,163,74,.15); }
+.st-blue .status-dot { background:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,.15); }
+.st-neutral .status-dot { background:#6b7280; box-shadow:0 0 0 3px rgba(107,114,128,.15); }
+.st-attention .status-dot { background:#d97706; box-shadow:0 0 0 3px rgba(217,119,6,.15); }
+.st-gap .status-dot { background:#e11d48; box-shadow:0 0 0 3px rgba(225,29,72,.15); }
+.st-alert .status-dot { background:#dc2626; box-shadow:0 0 0 3px rgba(220,38,38,.15); }
+
+.expand-btn { width:32px; height:32px; border-radius:var(--radius-sm); border:1px solid var(--epq-gray-200); background:var(--epq-white); cursor:pointer; font-family:var(--font-mono); font-size:12px; color:var(--epq-gray-700); display:flex; align-items:center; justify-content:center; transition:all .2s; }
+.expand-btn:hover { border-color:var(--epq-blue-400); color:var(--epq-blue-700); background:var(--epq-blue-50); }
+.expand-btn.expanded { background:var(--epq-blue-700); color:#fff; border-color:var(--epq-blue-700); }
+.sched-detail { display:none; background:var(--epq-gray-50); border-bottom:1px solid var(--epq-gray-200); }
+.sched-detail.open { display:block; }
+.detail-content { padding:18px 20px; }
+.detail-section { margin-bottom:14px; }
+.detail-section:last-child { margin-bottom:0; }
+.detail-label { font-family:var(--font-mono); font-size:9px; font-weight:600; color:var(--epq-gray-500); letter-spacing:.12em; text-transform:uppercase; margin-bottom:4px; }
+.detail-value { font-size:13px; color:var(--epq-gray-900); line-height:1.5; }
+.headline { font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--epq-blue-900); }
+.tags { font-family:var(--font-mono); font-size:12px; color:var(--epq-blue-700); }
+.briefing { background:var(--epq-white); padding:12px; border-radius:var(--radius-sm); border:1px solid var(--epq-gray-200); }
+.copy-btn { display:inline-flex; align-items:center; gap:6px; margin-top:6px; padding:6px 12px; border-radius:var(--radius-sm); border:1px solid var(--epq-gray-200); background:var(--epq-white); font-family:var(--font-mono); font-size:10px; font-weight:600; color:var(--epq-gray-700); cursor:pointer; }
+.copy-btn:hover { border-color:var(--epq-blue-400); color:var(--epq-blue-700); }
+
+.page-footer { padding:32px 56px; border-top:1px solid var(--epq-gray-200); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+.footer-brand, .footer-timestamp { font-family:var(--font-mono); font-size:9px; color:var(--epq-gray-400); letter-spacing:.12em; text-transform:uppercase; }
+
+@media (max-width:1100px) {
+  .sched-row { grid-template-columns: 40px 64px 90px 66px 1fr 110px 56px; }
+  .sched-formato, .sched-pilar { display:none; }
+}
+@media (max-width:900px) {
+  .page-body { padding:32px 24px 80px; }
+  .header-content { padding:0 24px; }
+  .filter-bar { gap:8px; }
+  .filter-input { min-width:180px; }
+}
+@media (max-width:640px) {
+  .sidebar { display:none; }
+  .main-content { margin-left:0; }
+  .command-header { min-height:320px; padding-bottom:28px; }
+  .header-title { font-size:26px; }
+  .header-subtitle { font-size:13px; }
+  .header-meta { gap:12px; }
+  .period-badge { padding-left:12px; }
+  .filter-bar { flex-direction:column; align-items:stretch; }
+  .filter-input { min-width:auto; width:100%; }
+  .filter-chip { width:100%; height:40px; }
+  .tabs { gap:6px; }
+  .tab { padding:8px 12px; font-size:9px; }
+  .sched-row {
+    grid-template-columns: 40px 1fr 64px;
+    grid-template-rows: auto auto;
+    gap: 6px 10px;
+    padding: 14px 14px;
+  }
+  .sched-row.sched-head { display:none; }
+  .sched-row > .sched-id,
+  .sched-row > .sched-formato,
+  .sched-row > .sched-pilar,
+  .sched-row > .sched-status,
+  .sched-row > .sched-copywriter { display:none !important; }
+  .sched-row > div:first-child { grid-row: 1 / 3; align-self:center; }
+  .sched-date { grid-row: 1 / 3; align-self:center; }
+  .sched-main { grid-column: 2 / 4; }
+  .sched-detail .detail-content { padding:14px; }
+  .expand-btn { width:40px; height:40px; }
+  .copy-btn { width:100%; justify-content:center; }
+}
+@media (prefers-reduced-motion:reduce) {
+  *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
+}
+
 </style>
 </head>
 <body>
-<div class="page-body">
-  <h1>Painel de Conteúdo</h1>
-  <pre id="debug" style="margin-top:12px; color:#334155;"></pre>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">EQ</div>
+  <div class="sidebar-nav">
+    <a class="nav-item active" href="#"><span class="nav-num">01</span><span class="nav-label">Painel</span></a>
+    <a class="nav-item" href="cronograma.html"><span class="nav-num">02</span><span class="nav-label">Cronograma</span></a>
+  </div>
+  <div class="sidebar-status"><div class="status-dot-live"></div><span class="nav-label" style="opacity:1;color:var(--epq-gray-500)">v1.0</span></div>
+</nav>
+
+<div class="main-content">
+
+  <header class="command-header">
+    <div class="grid-overlay"></div>
+    <div class="corner-brackets"><span class="cb-tl"></span><span class="cb-tr"></span></div>
+    <div class="header-content">
+      <div class="header-eyebrow">EPQ // Content Ops</div>
+      <h1 class="header-title">Painel de <em>Acompanhamento</em></h1>
+      <p class="header-subtitle">Visão operacional do conteúdo de agosto a dezembro — EPQ e Ronan. Filtre por editoria, campanha e status.</p>
+      <div class="header-meta">
+        <div class="status-badge"><div class="status-badge-dot"></div>System Online</div>
+        <div class="period-badge">01.08.2026 — 31.12.2026</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-body">
+
+    <div class="filter-bar">
+      <input id="search" class="filter-input" placeholder="Buscar headline, tema, ID ou pilar..." />
+      <select id="f-editoria" class="filter-chip"><option value="">Editoria</option>{editoria_opts}</select>
+      <select id="f-campanha" class="filter-chip"><option value="">Campanha</option>{campanha_opts}</select>
+      <select id="f-status" class="filter-chip"><option value="">Status</option>{status_opts}</select>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="lista">Lista</button>
+    </div>
+
+    <div class="kpi-strip" id="kpis"></div>
+
+    <div id="tab-lista">
+      <div class="table-wrap">
+        <div class="sched-row sched-head">
+          <div></div>
+          <div class="sched-date">Data</div>
+          <div class="sched-id">ID</div>
+          <div class="sched-perfil">Perfil</div>
+          <div class="sched-formato">Formato</div>
+          <div class="sched-main">Headline / Tema</div>
+          <div class="sched-pilar">Pilar</div>
+          <div class="sched-status">Status</div>
+          <div></div>
+        </div>
+        <div id="lista-rows"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="page-footer">
+    <div class="footer-brand">EPQ // Painel de Conteúdo</div>
+    <div class="footer-timestamp">v1.0 · 25.08.2026</div>
+  </footer>
 </div>
+
 <script>
-const RAW = [
-  {
-    "ID": "EPQ-AGO-001",
-    "Data da ação": "04/08/2026",
-    "Semana": "P1",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Post",
-    "Tema / Campanha": "Estudo por questões: por onde começar",
-    "Pilar": "Estude Melhor",
-    "Objetivo": "Educação",
-    "Headline": "3 passos para usar questões como ferramenta de estudo",
-    "Texto de apoio": "",
-    "Legenda": "Comece pelo erro, não pelo conteúdo.",
-    "CTA": "Comece hoje",
-    "Tags / Hashtags": "#EstudoPorQuestões #EPQ",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "Carrossel: passo 1, passo 2, passo 3",
-    "Link para arquivo": "",
-    "Responsável": "Conteúdo",
-    "Status": "Planejado",
-    "OBS": "Sincronizar com semana do PMERJ",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "04",
-    "_date_dow": "08",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "RON-AGO-001",
-    "Data da ação": "05/08/2026",
-    "Semana": "P1",
-    "Perfil": "Ronan",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Reel",
-    "Tema / Campanha": "Rotina de quem corrige provas",
-    "Pilar": "Bastidores e Humanização",
-    "Objetivo": "Relacionamento",
-    "Headline": "O que ninguém mostra sobre corrigir provas",
-    "Texto de apoio": "",
-    "Legenda": "A correção também ensina.",
-    "CTA": "",
-    "Tags / Hashtags": "#RotinaDeProfessor #Ronan",
-    "Roteiro": "Roteiro 15s",
-    "Ideia de arte / Thumb": "Ambiente: sala de correção, luz natural.",
-    "Link para arquivo": "",
-    "Responsável": "Conteúdo",
-    "Status": "Ideia",
-    "OBS": "Grabar terça à noite",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "05",
-    "_date_dow": "08",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "INT-AGO-001",
-    "Data da ação": "06/08/2026",
-    "Semana": "P1",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Integrado",
-    "Formato": "Carrossel + Reel",
-    "Tema / Campanha": "Erro: só ler sem praticar questões",
-    "Pilar": "Erros Comuns",
-    "Objetivo": "Educação",
-    "Headline": "Você estuda muito, mas aprende pouco?",
-    "Texto de apoio": "",
-    "Legenda": "EPQ: o método. Ronan: a experiência.",
-    "CTA": "",
-    "Tags / Hashtags": "#ErroComum #EstudoInteligente",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "Publicar no mesmo dia",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "Bolsão",
-    "Checkpoint": "06/08/2026",
-    "_date_dd": "06",
-    "_date_dow": "08",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-AGO-002",
-    "Data da ação": "07/08/2026",
-    "Semana": "P1",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Story",
-    "Tema / Campanha": "Desafio: 50 questões hoje",
-    "Pilar": "Comunidade",
-    "Objetivo": "Engajamento",
-    "Headline": "Desafio EPQ da semana",
-    "Texto de apoio": "",
-    "Legenda": "Marque quem vai aceitar.",
-    "CTA": "Aceito",
-    "Tags / Hashtags": "#TimeEPQ #Desafio",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Aprovação",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "07",
-    "_date_dow": "08",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "RON-AGO-002",
-    "Data da ação": "12/08/2026",
-    "Semana": "P2",
-    "Perfil": "Ronan",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Reel",
-    "Tema / Campanha": "Fazer questões sem revisar: mito ou verdade",
-    "Pilar": "Mito x Verdade",
-    "Objetivo": "Alcance",
-    "Headline": "Revisar o erro é mais importante que acertar",
-    "Texto de apoio": "",
-    "Legenda": "Eu vejo isso todo dia em sala.",
-    "CTA": "",
-    "Tags / Hashtags": "#MitoVerdade #Ronan",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "12",
-    "_date_dow": "08",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-AGO-003",
-    "Data da ação": "13/08/2026",
-    "Semana": "P2",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Post",
-    "Tema / Campanha": "Aluno aprovado: Gustavo — PMERJ",
-    "Pilar": "Prova Social",
-    "Objetivo": "Educação",
-    "Headline": "Gustavo saiu do zero à aprovação em 8 meses",
-    "Texto de apoio": "",
-    "Legenda": "História real, método EPQ.",
-    "CTA": "Conheça o método",
-    "Tags / Hashtags": "#Aprovado #PMERJ #ProvaSocial",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Ideia",
-    "Status": "Aguardar depoimento em vídeo",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "13",
-    "_date_dow": "08",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-AGO-004",
-    "Data da ação": "14/08/2026",
-    "Semana": "P2",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Carrossel",
-    "Tema / Campanha": "Como revisar erros sem repeti-los",
-    "Pilar": "Estude Melhor",
-    "Objetivo": "Educação",
-    "Headline": "Revisão inteligente em 4 passos",
-    "Texto de apoio": "",
-    "Legenda": "Revisão não é repetir: é atualizar.",
-    "CTA": "",
-    "Tags / Hashtags": "#Revisão #EPQ",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Ajuste",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "14",
-    "_date_dow": "08",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "RON-AGO-003",
-    "Data da ação": "19/08/2026",
-    "Semana": "P3",
-    "Perfil": "Ronan",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Vídeo",
-    "Tema / Campanha": "O que eu vejo em sala antes do aluno perceber",
-    "Pilar": "Autoridade e Método",
-    "Objetivo": "Autoridade",
-    "Headline": "Antes do aluno chegar à conclusão, eu já vi o padrão",
-    "Texto de apoio": "",
-    "Legenda": "Professor vê padrões.",
-    "CTA": "",
-    "Tags / Hashtags": "#ProfessorRonan #Autoridade",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Publicado",
-    "Status": "Avaliar até 20/08",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "19",
-    "_date_dow": "08",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "INT-AGO-002",
-    "Data da ação": "20/08/2026",
-    "Semana": "P3",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Integrado",
-    "Formato": "Campanha",
-    "Tema / Campanha": "PMERJ: últimos dias até a prova",
-    "Pilar": "Editais e Oportunidades",
-    "Objetivo": "Conversão",
-    "Headline": "PMERJ: última semana para fechar ciclo",
-    "Texto de apoio": "",
-    "Legenda": "EPQ: cronograma. Ronan: motivação.",
-    "CTA": "",
-    "Tags / Hashtags": "#PMERJ #Oportunidade",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Comercial",
-    "Responsável": "Agendar",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "Bolsão",
-    "Checkpoint": "20/08/2026",
-    "_date_dd": "20",
-    "_date_dow": "08",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-AGO-005",
-    "Data da ação": "21/08/2026",
-    "Semana": "P3",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Post",
-    "Tema / Campanha": "PMERJ: cronograma oficial até o dia da prova",
-    "Pilar": "Editais e Oportunidades",
-    "Objetivo": "Alcance",
-    "Headline": "Datas, locais e regras atualizadas",
-    "Texto de apoio": "",
-    "Legenda": "Salve para não perder prazos.",
-    "CTA": "Ver edital",
-    "Tags / Hashtags": "#PMERJ #Edital #Oportunidades",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Comercial",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "21",
-    "_date_dow": "08",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "RON-AGO-004",
-    "Data da ação": "26/08/2026",
-    "Semana": "P4",
-    "Perfil": "Ronan",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Vídeo",
-    "Tema / Campanha": "Minha análise do edital da PMERJ",
-    "Pilar": "Editais e Oportunidades",
-    "Objetivo": "Autoridade",
-    "Headline": "O que realmente importa no edital da PMERJ",
-    "Texto de apoio": "",
-    "Legenda": "Visão prática do professor.",
-    "CTA": "",
-    "Tags / Hashtags": "#PMERJ #Ronan",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Comercial",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "26",
-    "_date_dow": "08",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-AGO-006",
-    "Data da ação": "27/08/2026",
-    "Semana": "P4",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Carrossel",
-    "Tema / Campanha": "Planejamento semanal sem queimar etapas",
-    "Pilar": "Estude Melhor",
-    "Objetivo": "Educação",
-    "Headline": "Planeje a semana sem ansiedade",
-    "Texto de apoio": "",
-    "Legenda": "Distribua matérias, não apenas horas.",
-    "CTA": "",
-    "Tags / Hashtags": "#Planejamento #EPQ",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "27",
-    "_date_dow": "08",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-SET-001",
-    "Data da ação": "02/09/2026",
-    "Semana": "P1",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Post",
-    "Tema / Campanha": "Estudo por questões: rotina de 1 semana",
-    "Pilar": "Estude Melhor",
-    "Objetivo": "Educação",
-    "Headline": "Segunda a sexta usando questões",
-    "Texto de apoio": "",
-    "Legenda": "Rotina curta, repetível.",
-    "CTA": "",
-    "Tags / Hashtags": "#Rotina #EPQ",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "02",
-    "_date_dow": "09",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "RON-SET-001",
-    "Data da ação": "03/09/2026",
-    "Semana": "P1",
-    "Perfil": "Ronan",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Reel",
-    "Tema / Campanha": "Aluno que não escuta e repete o mesmo erro",
-    "Pilar": "Erros Comuns",
-    "Objetivo": "Educação",
-    "Headline": "O erro que eu canso de ver na correção",
-    "Texto de apoio": "",
-    "Legenda": "Espontâneo, sem roteiro.",
-    "CTA": "",
-    "Tags / Hashtags": "#ErrosComuns #Ronan",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Ideia",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "03",
-    "_date_dow": "09",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "INT-SET-001",
-    "Data da ação": "04/09/2026",
-    "Semana": "P1",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Integrado",
-    "Formato": "Carrossel + Reel",
-    "Tema / Campanha": "Resolver questões sem entender o erro: mito ou verdade",
-    "Pilar": "Mito x Verdade",
-    "Objetivo": "Alcance",
-    "Headline": "Quantidade sem qualidade não aprova",
-    "Texto de apoio": "",
-    "Legenda": "EPQ explica, Ronan exemplifica.",
-    "CTA": "",
-    "Tags / Hashtags": "#MitoVerdade #Estudo",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "Bolsão",
-    "Checkpoint": "04/09/2026",
-    "_date_dd": "04",
-    "_date_dow": "09",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-SET-002",
-    "Data da ação": "05/09/2026",
-    "Semana": "P1",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Prova Social",
-    "Tema / Campanha": "Depoimento: antes e depois do aluno Lucas",
-    "Pilar": "Prova Social",
-    "Objetivo": "Educação",
-    "Headline": "Lucas começou em março, mudou a estratégia",
-    "Texto de apoio": "",
-    "Legenda": "Do método para a aprovação.",
-    "CTA": "Conheça o método",
-    "Tags / Hashtags": "#Aprovado #PMERJ #ProvaSocial",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Aprovação",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "05",
-    "_date_dow": "09",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "RON-SET-002",
-    "Data da ação": "09/09/2026",
-    "Semana": "P2",
-    "Perfil": "Ronan",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Vídeo",
-    "Tema / Campanha": "O que eu digo no primeiro minuto de aula",
-    "Pilar": "Bastidores e Humanização",
-    "Objetivo": "Relacionamento",
-    "Headline": "O primeiro minuto define o foco da semana",
-    "Texto de apoio": "",
-    "Legenda": "Rotina de aula.",
-    "CTA": "",
-    "Tags / Hashtags": "#Bastidores #Ronan",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "09",
-    "_date_dow": "09",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-SET-003",
-    "Data da ação": "10/09/2026",
-    "Semana": "P2",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Post",
-    "Tema / Campanha": "Oportunidade: novos editais na região",
-    "Pilar": "Editais e Oportunidades",
-    "Objetivo": "Alcance",
-    "Headline": "Editais abertos: semana 37",
-    "Texto de apoio": "",
-    "Legenda": "Filtre por objetivo e estado.",
-    "CTA": "Ver editais",
-    "Tags / Hashtags": "#Editais #Oportunidades",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Comercial",
-    "Responsável": "Publicado",
-    "Status": "Avaliar até 17/09",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "10",
-    "_date_dow": "09",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "INT-SET-002",
-    "Data da ação": "11/09/2026",
-    "Semana": "P2",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Integrado",
-    "Formato": "Campanha",
-    "Tema / Campanha": "SES: semana de inscrição aberta",
-    "Pilar": "Editais e Oportunidades",
-    "Objetivo": "Conversão",
-    "Headline": "SES com inscrição aberta: última chance",
-    "Texto de apoio": "",
-    "Legenda": "EPQ orienta. Ronan estimula.",
-    "CTA": "",
-    "Tags / Hashtags": "#SES #Edital",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Comercial",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "Bolsão",
-    "Checkpoint": "11/09/2026",
-    "_date_dd": "11",
-    "_date_dow": "09",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-SET-004",
-    "Data da ação": "12/09/2026",
-    "Semana": "P2",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Carrossel",
-    "Tema / Campanha": "Matéria difícil: como dividir a semana",
-    "Pilar": "Estude Melhor",
-    "Objetivo": "Educação",
-    "Headline": "Matéria difícil sem travar o cronograma",
-    "Texto de apoio": "",
-    "Legenda": "Rotação + revisão espaçada.",
-    "CTA": "",
-    "Tags / Hashtags": "#Estudo #EPQ",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "12",
-    "_date_dow": "09",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "RON-SET-003",
-    "Data da ação": "16/09/2026",
-    "Semana": "P3",
-    "Perfil": "Ronan",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Reel",
-    "Tema / Campanha": "Por que alguns alunos passam e outros param na metade",
-    "Pilar": "Mito x Verdade",
-    "Objetivo": "Alcance",
-    "Headline": "A diferença não é sorte, é consistência",
-    "Texto de apoio": "",
-    "Legenda": "Direto, opinativo.",
-    "CTA": "",
-    "Tags / Hashtags": "#Consistência #Ronan",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "16",
-    "_date_dow": "09",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-SET-005",
-    "Data da ação": "17/09/2026",
-    "Semana": "P3",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Story",
-    "Tema / Campanha": "Enquete: qual edital você segue?",
-    "Pilar": "Comunidade",
-    "Objetivo": "Engajamento",
-    "Headline": "PMERJ, Guarda, SES ou outro?",
-    "Texto de apoio": "",
-    "Legenda": "Use a enquete do Stories.",
-    "CTA": "",
-    "Tags / Hashtags": "#TimeEPQ",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "17",
-    "_date_dow": "09",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-SET-006",
-    "Data da ação": "18/09/2026",
-    "Semana": "P3",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Post",
-    "Tema / Campanha": "Prova social: 12 alunos aprovados em julho",
-    "Pilar": "Prova Social",
-    "Objetivo": "Educação",
-    "Headline": "Resultados reais em editais de segurança",
-    "Texto de apoio": "",
-    "Legenda": "Números e breve contexto.",
-    "CTA": "Conheça o método",
-    "Tags / Hashtags": "#Aprovados #Resultados",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Agendar",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "18",
-    "_date_dow": "09",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-OUT-001",
-    "Data da ação": "01/10/2026",
-    "Semana": "P1",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Post",
-    "Tema / Campanha": "Outubro: foco, revisão e prova social",
-    "Pilar": "Estude Melhor",
-    "Objetivo": "Educação",
-    "Headline": "Comece outubro sem carregar erros",
-    "Texto de apoio": "",
-    "Legenda": "Revisão primeiro, conteúdo depois.",
-    "CTA": "",
-    "Tags / Hashtags": "#Outubro #EPQ",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "01",
-    "_date_dow": "10",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "RON-OUT-001",
-    "Data da ação": "02/10/2026",
-    "Semana": "P1",
-    "Perfil": "Ronan",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Reel",
-    "Tema / Campanha": "Erro que derruba ritmo de estudos",
-    "Pilar": "Erros Comuns",
-    "Objetivo": "Educação",
-    "Headline": "O erro que mais atrasa alunos",
-    "Texto de apoio": "",
-    "Legenda": "Direto e pessoal.",
-    "CTA": "",
-    "Tags / Hashtags": "#ErrosComuns #Ronan",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Ideia",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "02",
-    "_date_dow": "10",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "INT-OUT-001",
-    "Data da ação": "03/10/2026",
-    "Semana": "P1",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Integrado",
-    "Formato": "Carrossel + Reel",
-    "Tema / Campanha": "Motivação não sustenta estudo longo",
-    "Pilar": "Mito x Verdade",
-    "Objetivo": "Alcance",
-    "Headline": "Motivação ajuda, mas método sustenta",
-    "Texto de apoio": "",
-    "Legenda": "EPQ mostra método. Ronan diz por quê.",
-    "CTA": "",
-    "Tags / Hashtags": "#MitoVerdade #Estudo",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "Bolsão",
-    "Checkpoint": "03/10/2026",
-    "_date_dd": "03",
-    "_date_dow": "10",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-OUT-002",
-    "Data da ação": "06/10/2026",
-    "Semana": "P2",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Prova Social",
-    "Tema / Campanha": "Depoimento em vídeo: Giovana — SES",
-    "Pilar": "Prova Social",
-    "Objetivo": "Educação",
-    "Headline": "Giovana mudou de área e passou",
-    "Texto de apoio": "",
-    "Legenda": "Depoimento real + foto.",
-    "CTA": "Conheça o método",
-    "Tags / Hashtags": "#ProvaSocial #SES",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "06",
-    "_date_dow": "10",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "RON-OUT-002",
-    "Data da ação": "07/10/2026",
-    "Semana": "P2",
-    "Perfil": "Ronan",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Vídeo",
-    "Tema / Campanha": "O método por trás da correção de questões",
-    "Pilar": "Autoridade e Método",
-    "Objetivo": "Autoridade",
-    "Headline": "Corrigir questões também é ensinar padrões",
-    "Texto de apoio": "",
-    "Legenda": "Mostrar um exemplo real.",
-    "CTA": "",
-    "Tags / Hashtags": "#Método #Ronan",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "07",
-    "_date_dow": "10",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-OUT-003",
-    "Data da ação": "08/10/2026",
-    "Semana": "P2",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Post",
-    "Tema / Campanha": "Oportunidade: novos editais outubro",
-    "Pilar": "Editais e Oportunidades",
-    "Objetivo": "Alcance",
-    "Headline": "Editais abertos: semana 40",
-    "Texto de apoio": "",
-    "Legenda": "Salve e compartilhe.",
-    "CTA": "Ver editais",
-    "Tags / Hashtags": "#Editais #Outubro",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Comercial",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "08",
-    "_date_dow": "10",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "INT-OUT-002",
-    "Data da ação": "09/10/2026",
-    "Semana": "P2",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Integrado",
-    "Formato": "Campanha",
-    "Tema / Campanha": "Guarda Municipal: último mês de inscrição",
-    "Pilar": "Editais e Oportunidades",
-    "Objetivo": "Conversão",
-    "Headline": "GM: inscrição encerra no fim do mês",
-    "Texto de apoio": "",
-    "Legenda": "EPQ: prazo. Ronan: orientação.",
-    "CTA": "",
-    "Tags / Hashtags": "#GuardaMunicipal #Edital",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Comercial",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "Bolsão",
-    "Checkpoint": "09/10/2026",
-    "_date_dd": "09",
-    "_date_dow": "10",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-OUT-004",
-    "Data da ação": "13/10/2026",
-    "Semana": "P3",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Carrossel",
-    "Tema / Campanha": "Ritmo de estudos sem travar no fim de semana",
-    "Pilar": "Estude Melhor",
-    "Objetivo": "Educação",
-    "Headline": "Fim de semana sem perder ritmo",
-    "Texto de apoio": "",
-    "Legenda": "Sem exagero, sem culpa.",
-    "CTA": "",
-    "Tags / Hashtags": "#Rotina #EPQ",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "13",
-    "_date_dow": "10",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "RON-OUT-003",
-    "Data da ação": "14/10/2026",
-    "Semana": "P3",
-    "Perfil": "Ronan",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Reel",
-    "Tema / Campanha": "Bastidores: preparando uma aula ao vivo",
-    "Pilar": "Bastidores e Humanização",
-    "Objetivo": "Relacionamento",
-    "Headline": "O que acontece antes da live",
-    "Texto de apoio": "",
-    "Legenda": "Humano, simples, direto.",
-    "CTA": "",
-    "Tags / Hashtags": "#Bastidores #Live",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "14",
-    "_date_dow": "10",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-OUT-005",
-    "Data da ação": "15/10/2026",
-    "Semana": "P3",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Story",
-    "Tema / Campanha": "Quiz: qual seu maior erro de estudo?",
-    "Pilar": "Comunidade",
-    "Objetivo": "Engajamento",
-    "Headline": "Descubra seu perfil de erro",
-    "Texto de apoio": "",
-    "Legenda": "Use stickers de quiz.",
-    "CTA": "",
-    "Tags / Hashtags": "#TimeEPQ",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "15",
-    "_date_dow": "10",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-NOV-001",
-    "Data da ação": "04/11/2026",
-    "Semana": "P1",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Post",
-    "Tema / Campanha": "Novembro: revisão e provas próximas",
-    "Pilar": "Estude Melhor",
-    "Objetivo": "Educação",
-    "Headline": "Mês de revisão e provas: organize agora",
-    "Texto de apoio": "",
-    "Legenda": "Menos conteúdo, mais revisão.",
-    "CTA": "",
-    "Tags / Hashtags": "#Novembro #Revisão",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "04",
-    "_date_dow": "11",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "RON-NOV-001",
-    "Data da ação": "05/11/2026",
-    "Semana": "P1",
-    "Perfil": "Ronan",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Reel",
-    "Tema / Campanha": "Ansiedade na véspera: o que eu faço",
-    "Pilar": "Bastidores e Humanização",
-    "Objetivo": "Relacionamento",
-    "Headline": "Véspera de prova: dica pessoal",
-    "Texto de apoio": "",
-    "Legenda": "Simples e calmo.",
-    "CTA": "",
-    "Tags / Hashtags": "#Véspera #Ronan",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Ideia",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "05",
-    "_date_dow": "11",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "INT-NOV-001",
-    "Data da ação": "06/11/2026",
-    "Semana": "P1",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Integrado",
-    "Formato": "Carrossel + Reel",
-    "Tema / Campanha": "Ansiedade não melhora desempenho? mito ou verdade",
-    "Pilar": "Mito x Verdade",
-    "Objetivo": "Alcance",
-    "Headline": "Ansiedade atrapalha, mas pode ser controlada",
-    "Texto de apoio": "",
-    "Legenda": "EPQ: técnica. Ronan: vivência.",
-    "CTA": "",
-    "Tags / Hashtags": "#Ansiedade #MitoVerdade",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "Bolsão",
-    "Checkpoint": "06/11/2026",
-    "_date_dd": "06",
-    "_date_dow": "11",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-NOV-002",
-    "Data da ação": "07/11/2026",
-    "Semana": "P1",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Prova Social",
-    "Tema / Campanha": "História: de reprovado a aprovado em 6 meses",
-    "Pilar": "Prova Social",
-    "Objetivo": "Educação",
-    "Headline": "Ele trocou método e mudou o resultado",
-    "Texto de apoio": "",
-    "Legenda": "Números e sensação.",
-    "CTA": "Conheça o método",
-    "Tags / Hashtags": "#ProvaSocial #História",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "07",
-    "_date_dow": "11",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "RON-NOV-002",
-    "Data da ação": "11/11/2026",
-    "Semana": "P2",
-    "Perfil": "Ronan",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Vídeo",
-    "Tema / Campanha": "O que eu diria para quem estuda há meses sem passar",
-    "Pilar": "Autoridade e Método",
-    "Objetivo": "Autoridade",
-    "Headline": "A mensagem que falta para muitos alunos",
-    "Texto de apoio": "",
-    "Legenda": "Sem julgamento, com direção.",
-    "CTA": "",
-    "Tags / Hashtags": "#Autoridade #Ronan",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "11",
-    "_date_dow": "11",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-NOV-003",
-    "Data da ação": "12/11/2026",
-    "Semana": "P2",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Post",
-    "Tema / Campanha": "Oportunidade: editais de fim de ano",
-    "Pilar": "Editais e Oportunidades",
-    "Objetivo": "Alcance",
-    "Headline": "Editais até dezembro: organize-se",
-    "Texto de apoio": "",
-    "Legenda": "Filtre por data e estado.",
-    "CTA": "Ver editais",
-    "Tags / Hashtags": "#Editais #Oportunidades",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Comercial",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "12",
-    "_date_dow": "11",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "INT-NOV-002",
-    "Data da ação": "13/11/2026",
-    "Semana": "P2",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Integrado",
-    "Formato": "Campanha",
-    "Tema / Campanha": "Black Friday EPQ: condições especiais",
-    "Pilar": "Conversão",
-    "Objetivo": "Conversão",
-    "Headline": "Black Friday com benefício para alunos",
-    "Texto de apoio": "",
-    "Legenda": "EPQ: regras. Ronan: por que vale a pena.",
-    "CTA": "",
-    "Tags / Hashtags": "#BlackFriday #EPQ",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Comercial",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "Bolsão",
-    "Checkpoint": "13/11/2026",
-    "_date_dd": "13",
-    "_date_dow": "11",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-NOV-004",
-    "Data da ação": "14/11/2026",
-    "Semana": "P2",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Carrossel",
-    "Tema / Campanha": "Últimos dias: como revisar sem pânico",
-    "Pilar": "Estude Melhor",
-    "Objetivo": "Educação",
-    "Headline": "Revisão rápida e eficiente",
-    "Texto de apoio": "",
-    "Legenda": "Revisão ativa, não passiva.",
-    "CTA": "",
-    "Tags / Hashtags": "#Revisão #EPQ",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "14",
-    "_date_dow": "11",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "RON-NOV-003",
-    "Data da ação": "18/11/2026",
-    "Semana": "P3",
-    "Perfil": "Ronan",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Reel",
-    "Tema / Campanha": "Bastidores: correção de prova real em aula",
-    "Pilar": "Bastidores e Humanização",
-    "Objetivo": "Relacionamento",
-    "Headline": "Erros reais que aparecem na correção",
-    "Texto de apoio": "",
-    "Legenda": "Curto, real, sem edição exagerada.",
-    "CTA": "",
-    "Tags / Hashtags": "#Bastidores #Correção",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "18",
-    "_date_dow": "11",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-DEZ-001",
-    "Data da ação": "02/12/2026",
-    "Semana": "P1",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Post",
-    "Tema / Campanha": "Dezembro: resultados e planejamento 2027",
-    "Pilar": "Estude Melhor",
-    "Objetivo": "Educação",
-    "Headline": "Feche o ano e projete 2027 com método",
-    "Texto de apoio": "",
-    "Legenda": "Resultados servem de base.",
-    "CTA": "",
-    "Tags / Hashtags": "#Resultados #Planejamento",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "02",
-    "_date_dow": "12",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "RON-DEZ-001",
-    "Data da ação": "03/12/2026",
-    "Semana": "P1",
-    "Perfil": "Ronan",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Reel",
-    "Tema / Campanha": "Erro que se repete todos os anos",
-    "Pilar": "Erros Comuns",
-    "Objetivo": "Educação",
-    "Headline": "Mesmo erro, ano após ano",
-    "Texto de apoio": "",
-    "Legenda": "Direto e didático.",
-    "CTA": "",
-    "Tags / Hashtags": "#ErrosComuns #Ronan",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Ideia",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "03",
-    "_date_dow": "12",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "INT-DEZ-001",
-    "Data da ação": "04/12/2026",
-    "Semana": "P1",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Integrado",
-    "Formato": "Carrossel + Reel",
-    "Tema / Campanha": "Fim de ano: descanso sem abandonar o estudo",
-    "Pilar": "Mito x Verdade",
-    "Objetivo": "Alcance",
-    "Headline": "Descansar não significa abandonar o estudo",
-    "Texto de apoio": "",
-    "Legenda": "EPQ: rotina leve. Ronan: experiência.",
-    "CTA": "",
-    "Tags / Hashtags": "#Descanso #Estudo",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "Bolsão",
-    "Checkpoint": "04/12/2026",
-    "_date_dd": "04",
-    "_date_dow": "12",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-DEZ-002",
-    "Data da ação": "05/12/2026",
-    "Semana": "P1",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Prova Social",
-    "Tema / Campanha": "Prova social: aprovações de dezembro",
-    "Pilar": "Prova Social",
-    "Objetivo": "Educação",
-    "Headline": "Resultados que fecham o ano",
-    "Texto de apoio": "",
-    "Legenda": "Foco na marca EPQ.",
-    "CTA": "",
-    "Tags / Hashtags": "#Aprovados #Resultados",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "05",
-    "_date_dow": "12",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "RON-DEZ-002",
-    "Data da ação": "09/12/2026",
-    "Semana": "P2",
-    "Perfil": "Ronan",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Vídeo",
-    "Tema / Campanha": "Retrospectiva do ano como professor",
-    "Pilar": "Bastidores e Humanização",
-    "Objetivo": "Relacionamento",
-    "Headline": "O que mudou na minha sala em 2026",
-    "Texto de apoio": "",
-    "Legenda": "Pessoal, próximo, sem comercial.",
-    "CTA": "",
-    "Tags / Hashtags": "#Retrospectiva #Ronan",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Conteúdo",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "09",
-    "_date_dow": "12",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  },
-  {
-    "ID": "EPQ-DEZ-003",
-    "Data da ação": "10/12/2026",
-    "Semana": "P2",
-    "Perfil": "EPQ",
-    "Tipo de distribuição": "Exclusivo",
-    "Formato": "Post",
-    "Tema / Campanha": "Oportunidade: planejamento de editais 2027",
-    "Pilar": "Editais e Oportunidades",
-    "Objetivo": "Alcance",
-    "Headline": "Prepare 2027 com antecedência",
-    "Texto de apoio": "",
-    "Legenda": "Guia rápido.",
-    "CTA": "Ver guia",
-    "Tags / Hashtags": "#Planejamento2027 #Editais",
-    "Roteiro": "",
-    "Ideia de arte / Thumb": "",
-    "Link para arquivo": "Comercial",
-    "Responsável": "Planejado",
-    "Status": "",
-    "OBS": "",
-    "Avaliação e Aprendizados": "",
-    "Campanha": "",
-    "_date_dd": "10",
-    "_date_dow": "12",
-    "_month_name": "",
-    "_is_past": false,
-    "_is_today": false
-  }
-];
-document.getElementById('debug').textContent = 'Itens carregados: ' + RAW.length + '\nPrimeiro: ' + RAW[0].ID;
+const RAW = {json_text};
+const DETAIL_IDS = new Set(RAW.slice(0,2).map(it=>it['ID']));
+function esc(t){{
+  if(t==null) return '';
+  const d=document.createElement('div');
+  d.textContent=String(t);
+  return d.innerHTML;
+}}
+function copyText(text){{
+  navigator.clipboard.writeText(text).then(()=>{{
+    const btn=document.querySelector('.copy-btn.success');
+    if(btn) btn.textContent='✅ Copiado';
+  }});
+}}
+function renderList(){{
+  const box=document.getElementById('lista-rows');
+  const fEditoria=document.getElementById('f-editoria').value;
+  const fCampanha=document.getElementById('f-campanha').value;
+  const fStatus=document.getElementById('f-status').value;
+  const q=document.getElementById('search').value.toLowerCase();
+  let html='';
+  let total=0, epq=0, ronan=0, integ=0, camp=0;
+  RAW.forEach((it)=>{{
+    const matchesEditoria=!fEditoria||it['Pilar']===fEditoria;
+    const matchesCampanha=!fCampanha||it['Formato']===fCampanha;
+    const matchesStatus=!fStatus||(it['Status']||'')===fStatus;
+    const matchesSearch=!q||[it['ID'],it['Headline'],it['Tema / Campanha'],it['Pilar']].join(' ').toLowerCase().includes(q);
+    if(!matchesEditoria||!matchesCampanha||!matchesStatus||!matchesSearch) return;
+    total++; if(it['Perfil']==='EPQ') epq++; if(it['Perfil']==='Ronan') ronan++;
+    if(it['Tipo de distribuição']==='Integrado') integ++; if(it['Formato']==='Campanha') camp++;
+    const hasDetail=DETAIL_IDS.has(it['ID']);
+    const stClass=(it['Status']||'Planejado').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')==='publicado'?'st-positive':(it['Status']||'Planejado').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')==='agendar'||(it['Status']||'Planejado').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')==='aprovado'?'st-blue':'st-neutral';
+    const sendHref='painel-tarefas/tarefas.html';
+    html += '<div class="sched-row'+(it['_is_past']?' is-past':'')+'" data-id="'+it['ID']+'">';
+    html += '<div><button class="expand-btn'+(hasDetail?'':' disabled')+'" data-action="expand" data-id="'+it['ID']+'" '+(hasDetail?'':'disabled')+'>▼</button></div>';
+    html += '<div class="sched-date"><span class="sched-dd">'+it['_date_dd']+'</span><span class="sched-dow">'+it['_date_dow']+'</span></div>';
+    html += '<div class="sched-id">'+it['ID']+'</div>';
+    html += '<div class="sched-perfil '+(it['Perfil']==='EPQ'?'perfil-epq':'perfil-ronan')+'">'+it['Perfil']+'</div>';
+    html += '<div class="sched-formato">'+it['Formato']+'</div>';
+    html += '<div class="sched-main"><div class="sched-headline">'+it['Headline']+'</div><div class="sched-tema">'+it['Tema / Campanha']+'</div></div>';
+    html += '<div class="sched-pilar">'+it['Pilar']+'</div>';
+    html += '<div class="sched-status '+stClass+'"><span class="status-dot"></span>'+(it['Status']||'—')+'</div>';
+    html += '<div><a href="'+sendHref+'" target="_blank" rel="noopener" class="btn btn-ghost" data-action="open" data-id="'+it['ID']+'" style="font-family:var(--font-mono);font-size:10px;padding:6px 10px;">Enviar</a></div>';
+    html += '</div>';
+    if(hasDetail){{
+      html += '<div class="sched-detail" id="detail-'+it['ID']+'">';
+      html += '<div class="detail-content">';
+      html += '<div class="detail-section"><div class="detail-label">Contexto</div><div class="detail-value">'+esc(it['Tema / Campanha'])+'</div></div>';
+      html += '<div class="detail-section"><div class="detail-label">Headline</div><div class="detail-value headline">'+esc(it['Headline'])+'</div><button class="copy-btn" onclick="copyText(''+esc(it['Headline']).replace(/'/g, "\'")+'')">📋 Copiar</button></div>';
+      html += '<div class="detail-section"><div class="detail-label">Legenda</div><div class="detail-value">'+esc(it['Legenda']||'—')+'</div><button class="copy-btn" onclick="copyText(''+esc(it['Legenda']||'').replace(/'/g, "\'")+'')">📋 Copiar</button></div>';
+      html += '<div class="detail-section"><div class="detail-label">Tags</div><div class="detail-value tags">'+esc(it['Tags / Hashtags']||'—')+'</div><button class="copy-btn" onclick="copyText(''+esc(it['Tags / Hashtags']||'').replace(/'/g, "\'")+'')">📋 Copiar</button></div>';
+      html += '<div class="detail-section"><div class="detail-label">Sugestão de Imagem</div><div class="detail-value">'+esc(it['Ideia de arte / Thumb']||'—')+'</div></div>';
+      html += '<div class="detail-section"><div class="detail-label">Briefing Completo</div><div class="detail-value briefing"><strong>Formato:</strong> '+esc(it['Formato'])+'<br><strong>Perfil:</strong> '+esc(it['Perfil'])+'<br><strong>Tipo:</strong> '+esc(it['Tipo de distribuição'])+'<br><strong>Objetivo:</strong> '+esc(it['Objetivo'])+'<br><strong>Responsável:</strong> '+esc(it['Responsável'])+'<br><strong>Status:</strong> '+esc(it['Status']||'—')+'<br><strong>OBS:</strong> '+esc(it['OBS']||'—')+'<br><strong>Avaliação:</strong> '+esc(it['Avaliação e Aprendizados']||'—')+'</div></div>';
+      html += '</div></div>';
+    }}
+  }});
+  box.innerHTML = html;
+  document.getElementById('kpis').innerHTML='<div class="kpi-item"><div class="kpi-label">Conteúdos</div><div class="kpi-value featured">'+total+'</div></div><div class="kpi-item"><div class="kpi-label">EPQ</div><div class="kpi-value">'+epq+'</div></div><div class="kpi-item"><div class="kpi-label">Ronan</div><div class="kpi-value">'+ronan+'</div></div><div class="kpi-item"><div class="kpi-label">Integrados</div><div class="kpi-value">'+integ+'</div></div><div class="kpi-item"><div class="kpi-label">Campanhas</div><div class="kpi-value">'+camp+'</div></div>';
+}}
+function init(){{
+  renderList();
+  ['search','f-editoria','f-campanha','f-status'].forEach(id=>{{
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', renderList);
+    el.addEventListener('change', renderList);
+  }});
+  document.getElementById('lista-rows').addEventListener('click',e=>{{
+    const btn=e.target.closest('[data-action="expand"]');
+    if(!btn) return;
+    const id=btn.dataset.id;
+    const detail=document.getElementById('detail-'+id);
+    if(!detail) return;
+    const isOpen=detail.classList.contains('open');
+    if(isOpen){{
+      detail.classList.remove('open');
+      btn.classList.remove('expanded');
+      btn.textContent='▼';
+    }} else {{
+      detail.classList.add('open');
+      btn.classList.add('expanded');
+      btn.textContent='▲';
+    }}
+  }});
+}}
+init();
 </script>
 </body>
 </html>
