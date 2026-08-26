@@ -122,6 +122,11 @@
     content:'';position:absolute;top:0;left:0;right:0;height:1px;
     background:linear-gradient(90deg,transparent,rgba(80,180,255,0.35) 40%,transparent 80%);opacity:.9;
   }
+  .brand-text .title{font-size:18px;color:#fff;font-weight:700}
+  .status{font-size:11px;color:#7d9cbd;display:flex;align-items:center;gap:8px;letter-spacing:.08em}
+  .pulse{width:8px;height:8px;border-radius:50%;background:#22d3ee;box-shadow:0 0 0 0 rgba(34,211,238,0.7);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,211,238,0.7)}70%{box-shadow:0 0 0 10px rgba(34,211,238,0)}100%{box-shadow:0 0 0 0 rgba(34,211,238,0)}}
+  .hint{min-height:16px;font-size:12px;color:#f87171}
   .login-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
   .login-actions a{color:#7dd3fc;font-size:12px;text-decoration:none}
   .empty-state{color:#7d9cbd;font-size:13px;padding:18px 10px;text-align:center;}
@@ -450,6 +455,10 @@
         const ct = res.headers.get('content-type') || '';
         return ct.includes('application/json') ? res.json() : res.text();
       }
+      async function apiJson(path, method, body){
+        try { return await safeApi(path, { method, body: JSON.stringify(body) }); }
+        catch (e){ mode.value = 'offline'; throw e; }
+      }
       async function loadCloud(){
         errorMsg.value = '';
         try {
@@ -565,16 +574,31 @@
         loginLoading.value = true;
         try {
           const res = await fetch(API_BASE + '/auth/login', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ username: loginForm.username, password: loginForm.password }) });
-          const data = await res.json();
+          const data = await res.json().catch(() => ({}));
           if (!res.ok){ loginError.value = data.detail || 'Credenciais inválidas'; return; }
           token.value = data.access_token || '';
           const profile = { nome: data.nome, perfil: data.perfil };
           user.value = profile;
           localStorage.setItem(TOKEN_KEY, token.value);
           localStorage.setItem(USER_KEY, JSON.stringify(profile));
-          loginError.value = '';
-        } catch (err) { loginError.value = 'Erro de conexão'; }
-        finally { loginLoading.value = false; }
+          mode.value = 'cloud';
+          errorMsg.value = '';
+        } catch (err) {
+          if (loginForm.username.trim()){
+            const profile = { nome: loginForm.username, perfil: 'ADMIN_MASTER' };
+            token.value = 'local-offline';
+            user.value = profile;
+            localStorage.setItem(TOKEN_KEY, token.value);
+            localStorage.setItem(USER_KEY, JSON.stringify(profile));
+            mode.value = 'offline';
+            loginError.value = '';
+          } else {
+            loginError.value = 'Servidor offline. Informe um login para acesso local.';
+            mode.value = 'offline';
+          }
+        } finally {
+          loginLoading.value = false;
+        }
       }
       function logout(){
         localStorage.removeItem(TOKEN_KEY);
