@@ -19,55 +19,58 @@
   --epq-gray-700:#2A3347;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
 html{scroll-behavior:smooth}
 body{
   font-family:'Inter',system-ui,sans-serif;
-  background:
-    radial-gradient(ellipse 1100px 620px at 10% -10%, rgba(36,87,235,.10), transparent 60%),
-    radial-gradient(900px 560px at 120% 10%, rgba(8,183,214,.10), transparent 55%),
-    linear-gradient(180deg,#F3F6FA 0%,#E9EEF5 100%);
   color:var(--epq-navy);
-  min-height:100vh;
+  background:var(--epq-navy);
   -webkit-font-smoothing:antialiased;
   line-height:1.45;
 }
-.app{max-width:920px;margin:0 auto;padding:2.25rem 1.25rem 3.5rem}
+.app{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:1fr;
+}
+@media (min-width:860px){
+  .app{
+    grid-template-columns:1.05fr 1fr;
+  }
+}
 
-.hero{
+.left{
   position:relative;
-  overflow:hidden;
-  border:1px solid rgba(21,38,66,.08);
-  border-radius:18px;
+  z-index:2;
+  padding:28px 26px 28px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  background:linear-gradient(180deg, rgba(13,27,42,.92), rgba(13,27,42,.82));
+}
+.right{
+  position:relative;
   background:
     url('bolsao-lp-hero.png') center/cover no-repeat;
-  min-height:380px;
-  display:grid;
-  align-items:end;
-  box-shadow:0 1px 2px rgba(21,38,66,.04), 0 14px 30px -18px rgba(21,38,66,.18);
 }
-.hero::after{
+.right::after{
   content:'';
   position:absolute;
   inset:0;
-  background:linear-gradient(180deg, rgba(13,27,42,.28) 0%, rgba(13,27,42,.78) 100%);
+  background:linear-gradient(180deg, rgba(13,27,42,.18), rgba(13,27,42,.55));
 }
-.hero-content{
-  position:relative;
-  z-index:2;
-  padding:1.5rem 1.6rem 1.6rem;
-  display:grid;
-  gap:.6rem;
-}
+
 .brand{
   position:absolute;
-  top:18px;right:22px;
+  top:24px;left:26px;
   font-family:'Space Grotesk',system-ui,sans-serif;
   color:var(--epq-white);
   font-weight:700;
   letter-spacing:.02em;
-  z-index:2;
+  z-index:3;
 }
 .brand span{color:var(--epq-cyan)}
+
 .eyebrow{
   display:inline-flex;
   align-items:center;
@@ -75,28 +78,31 @@ body{
   color:var(--epq-cyan);
   font-weight:700;
   font-size:13px;
-  letter-spacing:.04em;
+  letter-spacing:.06em;
   text-transform:uppercase;
+  margin-bottom:14px;
 }
 .title{
   font-family:'Space Grotesk',system-ui,sans-serif;
-  font-size:28px;
+  font-size:30px;
   font-weight:700;
   color:var(--epq-white);
   letter-spacing:-0.02em;
-  line-height:1.15;
+  line-height:1.12;
+  margin-bottom:10px;
 }
 .sub{
   font-size:15px;
   color:#E6ECF5;
-  max-width:680px;
+  max-width:720px;
   line-height:1.5;
+  margin-bottom:14px;
 }
 .tags{
   display:flex;
   gap:8px;
   flex-wrap:wrap;
-  margin-top:6px;
+  margin-bottom:22px;
 }
 .tag{
   display:inline-flex;
@@ -112,11 +118,54 @@ body{
   backdrop-filter:blur(6px);
 }
 
+.form{
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(21,38,66,.08);
+  border-radius:16px;
+  padding:18px;
+  box-shadow:0 12px 30px -18px rgba(21,38,66,.25);
+}
+.form-title{
+  font-family:'Space Grotesk',system-ui,sans-serif;
+  font-weight:700;
+  font-size:18px;
+  margin-bottom:6px;
+  color:var(--epq-navy);
+}
+.form-sub{
+  font-size:13px;
+  color:var(--epq-gray-500);
+  margin-bottom:14px;
+}
+.field{
+  width:100%;
+  padding:12px 14px;
+  border-radius:12px;
+  border:1px solid rgba(21,38,66,.12);
+  background:#fff;
+  font-size:14px;
+  color:var(--epq-navy);
+  outline:none;
+  margin-bottom:10px;
+}
+.field:focus{
+  border-color:var(--epq-blue-600);
+  box-shadow:0 0 0 3px rgba(36,87,235,.12);
+}
+select.field{
+  background-image:linear-gradient(45deg, transparent 50%, rgba(21,38,66,.45) 50%), linear-gradient(135deg, rgba(21,38,66,.45) 50%, transparent 50%);
+  background-position:calc(100% - 18px) 18px, calc(100% - 12px) 18px;
+  background-size:6px 6px, 6px 6px;
+  background-repeat:no-repeat;
+  appearance:none;
+  -webkit-appearance:none;
+}
 .cta{
   display:inline-flex;
   align-items:center;
   justify-content:center;
   gap:8px;
+  width:100%;
   padding:14px 26px;
   border-radius:12px;
   background:linear-gradient(135deg,var(--epq-blue-600) 0%,var(--epq-cyan) 100%);
@@ -129,19 +178,24 @@ body{
   box-shadow:0 6px 18px -6px rgba(36,87,235,.45), 0 0 22px rgba(8,183,214,.16);
 }
 
-@media (max-width:520px){
-  .hero{min-height:320px;border-radius:16px}
-  .hero-content{padding:1.2rem}
-  .title{font-size:22px}
-  .brand{top:14px;right:16px;font-size:18px}
+@media (max-width:859px){
+  .app{display:block}
+  .right{
+    min-height:42vh;
+  }
+  .left{
+    padding:22px 18px 26px;
+  }
+  .title{font-size:24px}
+  .brand{top:18px;left:18px}
 }
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="hero">
+  <div class="left">
     <div class="brand">EP<span>Q</span></div>
-    <div class="hero-content">
+    <div style="max-width:720px">
       <div class="eyebrow">Aulão · Carreiras Policiais</div>
       <div class="title">Direito Penal + Direito Administrativo com resolução de questões e teoria aplicada.</div>
       <div class="sub">Preparação prática para concursos policiais, com material exclusivo e foco no que realmente cai.</div>
@@ -150,11 +204,34 @@ body{
         <span class="tag">📍 Presencial / Online</span>
         <span class="tag">🎯 Foco em edital e banca</span>
       </div>
-      <div style="margin-top:10px">
-        <a class="cta" href="https://forms.office.com/r/SEU_LINK_AQUI" target="_blank" rel="noopener">Quero me inscrever</a>
+
+      <div class="form">
+        <div class="form-title">Quero me inscrever</div>
+        <div class="form-sub">Preencha e vá direto para o formulário oficial.</div>
+        <form onsubmit="event.preventDefault(); window.location.href='https://forms.office.com/r/SEU_LINK_AQUI';">
+          <input class="field" placeholder="Nome completo" required>
+          <input class="field" placeholder="WhatsApp" required>
+          <select class="field" required>
+            <option value="">Concurso alvo</option>
+            <option>PMERJ</option>
+            <option>Polícia Civil</option>
+            <option>PRF</option>
+            <option>Polícia Penal</option>
+            <option>Polícia Federal</option>
+            <option>Guarda Municipal</option>
+          </select>
+          <select class="field" required>
+            <option value="">Turno preferido</option>
+            <option>Manhã</option>
+            <option>Tarde</option>
+            <option>Noite</option>
+          </select>
+          <button class="cta" type="submit">Quero me inscrever</button>
+        </form>
       </div>
     </div>
   </div>
+  <div class="right" aria-hidden="true"></div>
 </div>
 </body>
 </html>
