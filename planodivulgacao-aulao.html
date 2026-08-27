@@ -26,29 +26,29 @@ body{
   color:var(--epq-navy);
   background:var(--epq-navy);
   -webkit-font-smoothing:antialiased;
-  line-height:1.5;
+  line-height:1.55;
 }
 .app{
   min-height:100vh;
   display:grid;
   grid-template-columns:1fr;
 }
-@media (min-width:980px){
+@media (min-width:1040px){
   .app{
-    grid-template-columns:1.1fr 1fr;
+    grid-template-columns:1.15fr 1fr;
   }
 }
 
 .left{
   position:relative;
   z-index:2;
-  padding:48px 64px 48px;
   display:flex;
   flex-direction:column;
   justify-content:center;
-  margin:0 auto;
+  padding:64px 64px 64px;
   width:100%;
-  max-width:1200px;
+  max-width:1240px;
+  margin:0 auto;
 }
 .right{
   position:relative;
@@ -59,19 +59,29 @@ body{
   content:'';
   position:absolute;
   inset:0;
-  background:linear-gradient(180deg, rgba(13,27,42,.25), rgba(13,27,42,.65));
+  background:linear-gradient(180deg, rgba(13,27,42,.22), rgba(13,27,42,.62));
 }
 
 .brand{
   position:absolute;
-  top:28px;left:64px;
+  top:30px;
+  left:64px;
   font-family:'Space Grotesk',system-ui,sans-serif;
   color:var(--epq-white);
   font-weight:700;
   letter-spacing:.02em;
   z-index:3;
+  font-size:20px;
 }
 .brand span{color:var(--epq-cyan)}
+
+.content{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:22px;
+  max-width:860px;
+}
 
 .eyebrow{
   display:inline-flex;
@@ -79,32 +89,30 @@ body{
   gap:10px;
   color:var(--epq-cyan);
   font-weight:700;
-  font-size:15px;
-  letter-spacing:.08em;
+  font-size:16px;
+  letter-spacing:.1em;
   text-transform:uppercase;
-  margin-bottom:20px;
 }
 .title{
   font-family:'Space Grotesk',system-ui,sans-serif;
-  font-size:38px;
+  font-size:42px;
   font-weight:700;
   color:var(--epq-white);
   letter-spacing:-0.03em;
-  line-height:1.12;
-  margin-bottom:16px;
+  line-height:1.08;
+  text-align:left;
 }
 .sub{
-  font-size:17px;
+  font-size:18px;
   color:#E6ECF5;
-  max-width:780px;
   line-height:1.6;
-  margin-bottom:20px;
+  text-align:left;
+  max-width:760px;
 }
 .tags{
   display:flex;
   gap:10px;
   flex-wrap:wrap;
-  margin-bottom:26px;
 }
 .tag{
   display:inline-flex;
@@ -114,8 +122,8 @@ body{
   color:var(--epq-white);
   border:1px solid rgba(255,255,255,.22);
   border-radius:999px;
-  padding:7px 14px;
-  font-size:13.5px;
+  padding:8px 16px;
+  font-size:14px;
   font-weight:600;
   backdrop-filter:blur(6px);
 }
@@ -124,22 +132,26 @@ body{
   background:rgba(255,255,255,.94);
   border:1px solid rgba(21,38,66,.08);
   border-radius:18px;
-  padding:24px;
-  box-shadow:0 14px 36px -20px rgba(21,38,66,.28);
+  padding:28px;
+  box-shadow:0 18px 40px -22px rgba(21,38,66,.28);
+  width:100%;
   max-width:640px;
+  align-self:flex-start;
 }
 .form-title{
   font-family:'Space Grotesk',system-ui,sans-serif;
   font-weight:700;
-  font-size:22px;
-  margin-bottom:8px;
+  font-size:24px;
+  margin-bottom:10px;
   color:var(--epq-navy);
+  text-align:left;
 }
 .form-sub{
   font-size:15px;
   color:var(--epq-gray-500);
-  margin-bottom:18px;
+  margin-bottom:20px;
   line-height:1.5;
+  text-align:left;
 }
 .field{
   width:100%;
@@ -158,7 +170,7 @@ body{
 }
 select.field{
   background-image:linear-gradient(45deg, transparent 50%, rgba(21,38,66,.45) 50%), linear-gradient(135deg, rgba(21,38,66,.45) 50%, transparent 50%);
-  background-position:calc(100% - 20px) 20px, calc(100% - 14px) 20px;
+  background-position:calc(100% - 22px) 22px, calc(100% - 16px) 22px;
   background-size:7px 7px, 7px 7px;
   background-repeat:no-repeat;
   appearance:none;
@@ -182,12 +194,13 @@ select.field{
   box-shadow:0 8px 22px -8px rgba(36,87,235,.5), 0 0 26px rgba(8,183,214,.18);
 }
 
-@media (max-width:979px){
-  .left{padding:28px 22px 32px}
-  .title{font-size:26px}
+@media (max-width:1039px){
+  .left{padding:44px 22px 40px}
+  .title{font-size:28px}
   .sub{font-size:15px}
   .brand{top:20px;left:22px}
-  .right{min-height:44vh}
+  .right{min-height:46vh}
+  .content{gap:18px; max-width:100%}
 }
 </style>
 </head>
@@ -195,7 +208,7 @@ select.field{
 <div class="app">
   <div class="left">
     <div class="brand">EP<span>Q</span></div>
-    <div>
+    <div class="content">
       <div class="eyebrow">Aulão · Carreiras Policiais</div>
       <div class="title">Direito Penal + Direito Administrativo com resolução de questões e teoria aplicada.</div>
       <div class="sub">Preparação prática para concursos policiais, com material exclusivo e foco no que realmente cai.</div>
@@ -206,7 +219,7 @@ select.field{
       </div>
 
       <div class="form">
-        <div class="form-title">Quero me inscrever</div>
+        <div class="form-title">Inscrição no aulão</div>
         <div class="form-sub">Preencha e vá direto para o formulário oficial.</div>
         <form onsubmit="event.preventDefault(); window.location.href='https://forms.office.com/r/SEU_LINK_AQUI';">
           <input class="field" placeholder="Nome completo" required>
