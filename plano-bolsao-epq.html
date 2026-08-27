@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bolsão EPQ 2026 — Plano Executivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --epq-white: #ffffff;
+    --epq-bg: #f4f7fa;
+    --epq-surface: rgba(255,255,255,.62);
+    --epq-surface-strong: rgba(255,255,255,.88);
+    --epq-gray-50: #f8fafc;
+    --epq-gray-100: #eef2f5;
+    --epq-gray-200: #e4eaf0;
+    --epq-gray-300: #d8e0e7;
+    --epq-gray-400: #adb9c5;
+    --epq-gray-500: #8a97a5;
+    --epq-gray-600: #687582;
+    --epq-gray-700: #4a5660;
+    --epq-gray-800: #2e3840;
+    --epq-gray-900: #17212b;
+    --epq-blue-50: #f0f7ff;
+    --epq-blue-100: #eaf3ff;
+    --epq-blue-200: #c5dcf5;
+    --epq-blue-300: #9bc5ef;
+    --epq-blue-400: #6aaae4;
+    --epq-blue-500: #3d8bd9;
+    --epq-blue-600: #2572be;
+    --epq-blue-700: #175a96;
+    --epq-blue-800: #0f3f6e;
+    --epq-blue-900: #0b3155;
+    --epq-positive: #2a8a5e;
+    --epq-attention: #b07218;
+    --epq-alert: #9b4a1a;
+    --epq-op-positive: #7ec8e3;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --shadow-sm: 0 1px 3px rgba(15,40,65,.06), 0 1px 2px rgba(15,40,65,.04);
+    --shadow-md: 0 4px 16px rgba(15,40,65,.08), 0 2px 6px rgba(15,40,65,.05);
+    --shadow-lg: 0 20px 60px rgba(15,40,65,.09), 0 8px 24px rgba(15,40,65,.06);
+    --shadow-glass: 0 20px 60px rgba(15,40,65,.08), inset 0 1px 0 rgba(255,255,255,.75);
+    --glass-border: 1px solid rgba(61,139,217,.15);
+    --glass-bg: rgba(255,255,255,.62);
+    --glass-blur: blur(18px);
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --sidebar-w: 84px;
+    --sidebar-expanded: 240px;
+    --motion-fast: 0.2s;
+    --motion-med: 0.5s;
+    --motion-slow: 0.9s;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-body);
+    background: var(--epq-bg);
+    color: var(--epq-gray-900);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible { outline: 2px solid var(--epq-blue-500); outline-offset: 2px; }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: fixed; left: 0; top: 0; height: 100vh; width: var(--sidebar-w);
+    background: var(--epq-gray-900);
+    border-right: 1px solid rgba(61,139,217,.15);
+    z-index: 100; display: flex; flex-direction: column;
+    padding: 24px 0; transition: width var(--motion-med) var(--ease-out);
+    overflow: hidden;
+  }
+  .sidebar:hover { width: var(--sidebar-expanded); }
+  .sidebar-logo {
+    width: 36px; height: 36px; margin: 0 0 28px 23px; flex-shrink: 0;
+    background: var(--epq-blue-700); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 700; font-size: 12px; color: #fff;
+  }
+  .sidebar-nav { display: flex; flex-direction: column; gap: 3px; padding: 0 12px; overflow-y: auto; }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px; padding: 9px 11px;
+    border-radius: var(--radius-sm); cursor: pointer; white-space: nowrap;
+    text-decoration: none; color: var(--epq-gray-500);
+    transition: background var(--motion-fast), color var(--motion-fast);
+  }
+  .nav-item:hover, .nav-item.active { background: rgba(61,139,217,.12); color: var(--epq-blue-300); }
+  .nav-item.active { color: var(--epq-blue-400); }
+  .nav-num { font-family: var(--font-mono); font-size: 9px; flex-shrink: 0; width: 16px; }
+  .nav-label { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; opacity: 0; transition: opacity var(--motion-fast); }
+  .sidebar:hover .nav-label { opacity: 1; }
+  .sidebar-status { margin-top: auto; padding: 14px 12px 0; display: flex; align-items: center; gap: 8px; }
+  .status-dot-live { width: 6px; height: 6px; background: var(--epq-blue-400); border-radius: 50%; animation: pulse-dot 2s ease-in-out infinite; flex-shrink: 0; }
+  @keyframes pulse-dot { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .5; transform: .8; } }
+
+  /* MAIN */
+  .main-content { margin-left: var(--sidebar-w); min-height: 100vh; }
+
+  /* HERO with banner */
+  .hero {
+    position: relative;
+    min-height: 420px;
+    background: var(--epq-gray-900);
+    overflow: hidden;
+  }
+  .hero-img {
+    display: block; width: 100%; height: auto;
+    opacity: .95;
+  }
+
+  /* PAGE BODY */
+  .page-body { padding: 56px 56px 100px; max-width: 1180px; }
+  .doc-section { margin-bottom: 76px; scroll-margin-top: 24px; }
+  .section-divider { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+  .divider-label {
+    font-family: var(--font-mono); font-size: 9px; font-weight: 600;
+    color: var(--epq-blue-500); letter-spacing: .2em; text-transform: uppercase; white-space: nowrap;
+  }
+  .divider-line { flex: 1; height: 1px; background: var(--epq-gray-200); }
+  .section-title {
+    font-family: var(--font-display); font-size: 26px; font-weight: 600;
+    letter-spacing: -.02em; margin: 10px 0 10px;
+  }
+  .section-lede {
+    font-size: 14px; color: var(--epq-gray-600); line-height: 1.7;
+    max-width: 760px; margin-bottom: 28px;
+  }
+  .sub-title {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+    color: var(--epq-blue-600); letter-spacing: .16em; text-transform: uppercase;
+    margin: 28px 0 14px;
+  }
+
+  /* CARDS */
+  .principle-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--epq-gray-200); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--epq-gray-200); }
+  .principle-card { background: var(--epq-white); padding: 22px 20px; }
+  .principle-num { font-family: var(--font-mono); font-size: 9px; color: var(--epq-blue-300); font-weight: 600; letter-spacing: .1em; margin-bottom: 10px; }
+  .principle-name { font-family: var(--font-display); font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .principle-desc { font-size: 12px; color: var(--epq-gray-600); line-height: 1.55; }
+
+  .glass-card { background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border: var(--glass-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-glass); padding: 24px; }
+  .solid-card { background: var(--epq-white); border: 1px solid var(--epq-gray-200); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); padding: 24px; }
+
+  /* SCHEDULE TABLE */
+  .schedule { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .schedule th {
+    text-align: left; padding: 10px 12px; font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+    color: var(--epq-blue-700); letter-spacing: .14em; text-transform: uppercase;
+    background: var(--epq-blue-50); border-bottom: 1px solid var(--epq-gray-200);
+  }
+  .schedule td { padding: 12px 12px; border-bottom: 1px solid var(--epq-gray-100); color: var(--epq-gray-800); vertical-align: top; }
+  .schedule tr:last-child td { border-bottom: none; }
+  .schedule td:first-child { font-family: var(--font-mono); font-size: 12px; color: var(--epq-gray-600); white-space: nowrap; }
+  .schedule td:nth-child(2) { font-weight: 600; color: var(--epq-gray-900); }
+  .schedule td:nth-child(3) { font-family: var(--font-mono); font-size: 12px; color: var(--epq-gray-600); }
+
+  /* META ADS SCENARIOS */
+  .scenario-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .scenario-card { background: var(--epq-white); border: 1px solid var(--epq-gray-200); border-radius: var(--radius-lg); padding: 18px; box-shadow: var(--shadow-md); }
+  .scenario-title { font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--epq-blue-600); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 8px; }
+  .scenario-value { font-family: var(--font-mono); font-size: 22px; font-weight: 500; color: var(--epq-gray-900); letter-spacing: -.03em; }
+  .scenario-meta { font-family: var(--font-mono); font-size: 10px; color: var(--epq-gray-500); margin-top: 4px; }
+
+  /* CREATIVE LIST */
+  .creative-list { display: flex; flex-direction: column; gap: 10px; }
+  .creative-item {
+    display: flex; align-items: center; gap: 14px; padding: 12px 14px;
+    border: 1px solid var(--epq-gray-200); border-radius: var(--radius-md); background: var(--epq-white);
+  }
+  .creative-num { font-family: var(--font-mono); font-size: 10px; color: var(--epq-blue-600); font-weight: 600; letter-spacing: .1em; min-width: 22px; }
+  .creative-name { font-weight: 600; color: var(--epq-gray-900); }
+  .creative-meta { font-family: var(--font-mono); font-size: 10px; color: var(--epq-gray-500); margin-top: 2px; }
+
+  /* MESSAGES */
+  .msg { background: var(--epq-white); border: 1px solid var(--epq-gray-200); border-radius: var(--radius-md); padding: 14px; font-size: 13px; color: var(--epq-gray-800); line-height: 1.55; }
+  .msg + .msg { margin-top: 10px; }
+  .msg-tag { font-family: var(--font-mono); font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--epq-blue-700); margin-bottom: 6px; }
+
+  /* CHECKLIST */
+  .check-list { display: flex; flex-direction: column; gap: 10px; }
+  .check-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 1px solid var(--epq-gray-200); border-radius: var(--radius-md); font-size: 13px; color: var(--epq-gray-800); background: var(--epq-white); }
+  .check-mark { width: 18px; height: 18px; border-radius: 5px; background: rgba(61,139,217,.1); border: 1px solid rgba(61,139,217,.3); color: var(--epq-blue-600); display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; }
+
+  /* FOOTER */
+  .page-footer { padding: 32px 56px; border-top: 1px solid var(--epq-gray-200); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .footer-brand, .footer-timestamp { font-family: var(--font-mono); font-size: 9px; color: var(--epq-gray-400); letter-spacing: .12em; text-transform: uppercase; }
+
+  @media (max-width: 900px) {
+    .scenario-grid, .principle-grid { grid-template-columns: 1fr 1fr; }
+    .page-body { padding: 40px 24px 80px; }
+    /* REMOVED */ padding: 0 24px 32px; }
+  }
+  @media (max-width: 640px) {
+    .sidebar { display: none; }
+    .main-content { margin-left: 0; }
+    .scenario-grid, .principle-grid { grid-template-columns: 1fr; }
+    /* REMOVED */ font-size: 30px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">EQ</div>
+  <div class="sidebar-nav">
+    <a class="nav-item active" href="#visao-geral"><span class="nav-num">00</span><span class="nav-label">Visão geral</span></a>
+    <a class="nav-item" href="#conceito"><span class="nav-num">01</span><span class="nav-label">Conceito</span></a>
+    <a class="nav-item" href="#formato"><span class="nav-num">02</span><span class="nav-label">Formato</span></a>
+    <a class="nav-item" href="#cronograma"><span class="nav-num">03</span><span class="nav-label">Cronograma</span></a>
+    <a class="nav-item" href="#divulgacao"><span class="nav-num">04</span><span class="nav-label">Divulgação</span></a>
+    <a class="nav-item" href="#meta-ads"><span class="nav-num">05</span><span class="nav-label">Meta Ads</span></a>
+    <a class="nav-item" href="#atendimento"><span class="nav-num">06</span><span class="nav-label">Atendimento</span></a>
+    <a class="nav-item" href="#evento"><span class="nav-num">07</span><span class="nav-label">Evento</span></a>
+    <a class="nav-item" href="#pos-evento"><span class="nav-num">08</span><span class="nav-label">Pós-evento</span></a>
+    <a class="nav-item" href="#equipe"><span class="nav-num">09</span><span class="nav-label">Equipe</span></a>
+    <a class="nav-item" href="#kpis"><span class="nav-num">10</span><span class="nav-label">KPIs</span></a>
+    <a class="nav-item" href="#validacoes"><span class="nav-num">11</span><span class="nav-label">Validações</span></a>
+  </div>
+  <div class="sidebar-status"><div class="status-dot-live"></div><span class="nav-label" style="opacity:1;color:var(--epq-gray-500)">v1.0</span></div>
+</nav>
+
+<div class="main-content">
+
+  <header class="hero">
+    <img class="hero-img" src="bolsao-epq-2026.png" alt="Capa Bolsão EPQ 2026" />
+  </header>
+
+  <div class="page-body">
+
+    <section class="doc-section" id="visao-geral">
+      <div class="section-divider"><span class="divider-label">00 // Visão geral</span><div class="divider-line"></div></div>
+      <h2 class="section-title">Um plano de captação, não um relatório</h2>
+      <p class="section-lede">Este documento é o centro de comando da campanha: regra simples, responsável claro, prazo curto e foco na matrícula. O Bolsão é uma oportunidade para o aluno descobrir seu nível, identificar gaps e conhecer a EPQ — não apenas ganhar um desconto.</p>
+      <div class="principle-grid">
+        <div class="principle-card">
+          <div class="principle-num">01</div>
+          <div class="principle-name">Prova simples</div>
+          <div class="principle-desc">Aplicação fácil, correção rápida e diagnóstico útil para o aluno.</div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">02</div>
+          <div class="principle-name">Equipe reduzida</div>
+          <div class="principle-desc">Flávio + 1 estagiária + professores pontuais. Sem excessos.</div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">03</div>
+          <div class="principle-name">Divulgação enxuta</div>
+          <div class="principle-desc">Instagram, Meta Ads, WhatsApp, indicação e professores.</div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">04</div>
+          <div class="principle-name">Foco em matrícula</div>
+          <div class="principle-desc">Do primeiro clique à matrícula em até 7 dias após o resultado.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="conceito">
+      <div class="section-divider"><span class="divider-label">01 // Conceito</span><div class="divider-line"></div></div>
+      <h2 class="section-title">O que é o Bolsão EPQ</h2>
+      <p class="section-lede">Uma experiência de captação com: prova diagnóstica, apresentação da metodologia, estrutura e professores, além de bolsa de até 50%.</p>
+      <div class="solid-card">
+        <p style="font-weight:600;margin-bottom:10px;">Posicionamento:</p>
+        <ul style="display:flex;flex-wrap:wrap;gap:10px 12px;list-style:none;padding:0;margin:0;">
+          <li style="display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-gray-900);font-weight:600;">Bolsas de até 50%</li>
+          <li style="display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-gray-900);font-weight:600;">Professores especializados</li>
+          <li style="display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-gray-900);font-weight:600;">Estrutura da unidade</li>
+          <li style="display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-gray-900);font-weight:600;">Ambiente motivador</li>
+          <li style="display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-gray-900);font-weight:600;">Metodologia baseada em questões</li>
+          <li style="display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-gray-900);font-weight:600;">Foco em resultado</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="doc-section" id="formato">
+      <div class="section-divider"><span class="divider-label">02 // Formato</span><div class="divider-line"></div></div>
+      <h2 class="section-title">Formato do evento</h2>
+      <div class="principle-grid" style="grid-template-columns: repeat(4, 1fr);">
+        <div class="principle-card">
+          <div class="principle-num">DATA</div>
+          <div class="principle-name" style="color:var(--epq-blue-700)">Sábado, 03/10/2026</div>
+          <div class="principle-desc">Sujeito a validação de capacidade.</div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">DURAÇÃO</div>
+          <div class="principle-name" style="color:var(--epq-blue-700)">2h30</div>
+          <div class="principle-desc">08h00–10h30</div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">PROVA</div>
+          <div class="principle-name" style="color:var(--epq-blue-700)">40 questões</div>
+          <div class="principle-desc">Matemática + Português. Múltipla escolha.</div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">MATRÍCULA</div>
+          <div class="principle-name" style="color:var(--epq-blue-700)">7 dias</div>
+          <div class="principle-desc">Prazo após divulgação do resultado.</div>
+        </div>
+      </div>
+      <div class="glass-card" style="margin-top:18px;">
+        <p style="font-weight:600;margin-bottom:8px;">Fluxo do dia:</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+          <span class="status-badge" style="background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-blue-700);">08h00 Recepção</span>
+          <span style="color:var(--epq-gray-400)">→</span>
+          <span class="status-badge" style="background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-blue-700);">08h30 Prova</span>
+          <span style="color:var(--epq-gray-400)">→</span>
+          <span class="status-badge" style="background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-blue-700);">10h00 Pausa</span>
+          <span style="color:var(--epq-gray-400)">→</span>
+          <span class="status-badge" style="background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-blue-700);">10h20 EPQ</span>
+          <span style="color:var(--epq-gray-400)">→</span>
+          <span class="status-badge" style="background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-blue-700);">11h15 Matrícula</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="cronograma">
+      <div class="section-divider"><span class="divider-label">03 // Cronograma</span><div class="divider-line"></div></div>
+      <h2 class="section-title">Cronograma operacional</h2>
+      <p class="section-lede">Começa em 31/08/2026. Sem excesso de etapas. Cada ação com responsável, canal, material e meta.</p>
+      <div class="solid-card" style="overflow:auto;">
+        <table class="schedule">
+          <thead>
+            <tr><th>DATA</th><th>AÇÃO</th><th>RESPONSÁVEL</th><th>CANAL</th><th>META</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>31/08</td><td>Alinhamento inicial: data, formato, disciplinas</td><td>Flávio</td><td>Presencial</td><td>Fechar definições</td></tr>
+            <tr><td>03/09</td><td>Validar estrutura, professores e capacidade</td><td>Flávio</td><td>Interno</td><td>Confirmar disponibilidade</td></tr>
+            <tr><td>06/09</td><td>Fechar regras do Bolsão e número de vagas</td><td>Flávio</td><td>Interno</td><td>Definir oferta final</td></tr>
+            <tr><td>08/09</td><td>Criar formulário de inscrição e landing page</td><td>Estagiária</td><td>Online</td><td>Publicar link</td></tr>
+            <tr><td>09/09</td><td>Elaborar prova e gabarito</td><td>Professores</td><td>Interno</td><td>40 questões prontas</td></tr>
+            <tr><td>10/09</td><td>Produzir criativos e copy dos anúncios</td><td>Flávio</td><td>Canva/Editor</td><td>5–8 peças aprovadas</td></tr>
+            <tr><td>11/09</td><td>Gravar até 3 vídeos curtos</td><td>Flávio</td><td>Celular/Editor</td><td>Editar e aprovar</td></tr>
+            <tr><td>14/09</td><td>Lançar campanha Meta Ads</td><td>Flávio</td><td>Meta Ads</td><td>Publicar campanhas</td></tr>
+            <tr><td>15/09</td><td>Conteúdo orgânico (feed + stories)</td><td>Estagiária</td><td>Instagram</td><td>3 posts + 5 stories</td></tr>
+            <tr><td>16/09</td><td>Divulgar em grupos de vestibular/concurso</td><td>Estagiária</td><td>WhatsApp/FB</td><td>10 grupos</td></tr>
+            <tr><td>17/09</td><td>Divulgação com professores</td><td>Flávio</td><td>Presencial/WhatsApp</td><td>Enviar convite</td></tr>
+            <tr><td>20/09</td><td>Meta de inscritos</td><td>Todos</td><td>Online</td><td>30–40 inscritos</td></tr>
+            <tr><td>21/09</td><td>Intensificar anúncios (aumentar orçamento)</td><td>Flávio</td><td>Meta Ads</td><td>Dobrar alcance</td></tr>
+            <tr><td>23/09</td><td>Remarketing para visitantes da landing page</td><td>Flávio</td><td>Meta Ads</td><td>Recapturar leads</td></tr>
+            <tr><td>25/09</td><td>Confirmar inscritos por WhatsApp</td><td>Estagiária</td><td>WhatsApp</td><td>80% respondidos</td></tr>
+            <tr><td>27/09</td><td>Meta final de inscritos</td><td>Estagiária</td><td>Online</td><td>50 inscritos</td></tr>
+            <tr><td>28/09</td><td>Contagem regressiva (stories + reels)</td><td>Estagiária</td><td>Instagram</td><td>3 peças</td></tr>
+            <tr><td>30/09</td><td>Enviar lembretes por WhatsApp (D-3)</td><td>Estagiária</td><td>WhatsApp</td><td>90% recebidos</td></tr>
+            <tr><td>01/10</td><td>Confirmar presença final (D-1)</td><td>Estagiária</td><td>WhatsApp</td><td>70% confirmações</td></tr>
+            <tr><td>02/10</td><td>Preparar estrutura da unidade</td><td>Flávio</td><td>Presencial</td><td>Tudo pronto</td></tr>
+            <tr><td>03/10</td><td>Imprimir provas + organizar salas</td><td>Estagiária</td><td>Presencial</td><td>Pronto para 50 alunos</td></tr>
+            <tr><td>03/10</td><td>EVENTO — 08h00–10h30</td><td>Todos</td><td>Presencial</td><td>40–50 comparecimentos</td></tr>
+            <tr><td>04/10</td><td>Divulgar resultado em até 48h</td><td>Estagiária</td><td>Online/Site</td><td>100% publicado</td></tr>
+            <tr><td>05–07/10</td><td>Oferecer bolsas por desempenho</td><td>Flávio</td><td>WhatsApp/Telefone</td><td>80% contatados</td></tr>
+            <tr><td>05–09/10</td><td>Follow-up por temperatura</td><td>Estagiária</td><td>WhatsApp</td><td>Classificar e abordar</td></tr>
+            <tr><td>05–12/10</td><td>Matrículas</td><td>Flávio + Estagiária</td><td>Presencial/Online</td><td>50 matrículas</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="doc-section" id="divulgacao">
+      <div class="section-divider"><span class="divider-label">04 // Divulgação</span><div class="divider-line"></div></div>
+      <h2 class="section-title">Canais e criativos</h2>
+      <p class="section-lede">Sem excesso: 5 a 8 peças principais, reaproveitadas em feed, stories e reels.</p>
+      <div class="sub-title">Canais prioritários</div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px 12px;list-style:none;padding:0;margin:0 0 18px;">
+        <li style="display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-gray-900);font-weight:600;">Instagram</li>
+        <li style="display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-gray-900);font-weight:600;">Meta Ads</li>
+        <li style="display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-gray-900);font-weight:600;">WhatsApp</li>
+        <li style="display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-gray-900);font-weight:600;">Indicação</li>
+        <li style="display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-gray-900);font-weight:600;">Professores</li>
+      </div>
+      <div class="sub-title">Criativos principais</div>
+      <div class="creative-list">
+        <div class="creative-item">
+          <div class="creative-num">01</div>
+          <div><div class="creative-name">Capa do Bolsão</div><div class="creative-meta">1:1 + 9:16 · Feed + stories</div></div>
+        </div>
+        <div class="creative-item">
+          <div class="creative-num">02</div>
+          <div><div class="creative-name">Prova diagnóstica</div><div class="creative-meta">9:16 · Stories + reels</div></div>
+        </div>
+        <div class="creative-item">
+          <div class="creative-num">03</div>
+          <div><div class="creative-name">Professores</div><div class="creative-meta">1:1 + 9:16 · Feed + stories</div></div>
+        </div>
+        <div class="creative-item">
+          <div class="creative-num">04</div>
+          <div><div class="creative-name">Estrutura da unidade</div><div class="creative-meta">1:1 + 9:16 · Feed + stories</div></div>
+        </div>
+        <div class="creative-item">
+          <div class="creative-num">05</div>
+          <div><div class="creative-name">Metodologia</div><div class="creative-meta">9:16 · Reels</div></div>
+        </div>
+        <div class="creative-item">
+          <div class="creative-num">06</div>
+          <div><div class="creative-name">Depoimento</div><div class="creative-meta">9:16 · Reels + stories</div></div>
+        </div>
+        <div class="creative-item">
+          <div class="creative-num">07</div>
+          <div><div class="creative-name">Contagem regressiva</div><div class="creative-meta">9:16 · Stories diários</div></div>
+        </div>
+        <div class="creative-item">
+          <div class="creative-num">08</div>
+          <div><div class="creative-name">Chamada para matrícula</div><div class="creative-meta">1:1 + 9:16 · Feed + stories</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="meta-ads">
+      <div class="section-divider"><span class="divider-label">05 // Meta Ads</span><div class="divider-line"></div></div>
+      <h2 class="section-title">Cenários de investimento</h2>
+      <p class="section-lede">Estimativas. Resultados variam por criativo, público e timing. Não representam garantia.</p>
+      <div class="scenario-grid">
+        <div class="scenario-card">
+          <div class="scenario-title">Mínimo</div>
+          <div class="scenario-value">R$ 500</div>
+          <div class="scenario-meta">Leads: 50–70 · Inscrições: 25–35 · Comparecimento: 15–20 · Matrículas: 3–7</div>
+        </div>
+        <div class="scenario-card">
+          <div class="scenario-title">Recomendado</div>
+          <div class="scenario-value">R$ 1.200</div>
+          <div class="scenario-meta">Leads: 120–150 · Inscrições: 60–80 · Comparecimento: 40–50 · Matrículas: 8–15</div>
+        </div>
+        <div class="scenario-card">
+          <div class="scenario-title">Agressivo</div>
+          <div class="scenario-value">R$ 2.000</div>
+          <div class="scenario-meta">Leads: 200–250 · Inscrições: 100–130 · Comparecimento: 70–90 · Matrículas: 15–25</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="atendimento">
+      <div class="section-divider"><span class="divider-label">06 // Atendimento</span><div class="divider-line"></div></div>
+      <h2 class="section-title">Fluxo e mensagens prontas</h2>
+      <p class="section-lede">Responsável: estagiária. Do anúncio à matrícula em até 7 dias.</p>
+      <div class="sub-title">Fluxo</div>
+      <div class="glass-card">
+        <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+          <span class="status-badge" style="background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-blue-700);">Anúncio</span>
+          <span style="color:var(--epq-gray-400)">→</span>
+          <span class="status-badge" style="background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-blue-700);">Formulário/WhatsApp</span>
+          <span style="color:var(--epq-gray-400)">→</span>
+          <span class="status-badge" style="background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-blue-700);">Confirmação</span>
+          <span style="color:var(--epq-gray-400)">→</span>
+          <span class="status-badge" style="background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-blue-700);">Lembrete</span>
+          <span style="color:var(--epq-gray-400)">→</span>
+          <span class="status-badge" style="background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-blue-700);">Evento</span>
+          <span style="color:var(--epq-gray-400)">→</span>
+          <span class="status-badge" style="background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-blue-700);">Resultado</span>
+          <span style="color:var(--epq-gray-400)">→</span>
+          <span class="status-badge" style="background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-blue-700);">Bolsa</span>
+          <span style="color:var(--epq-gray-400)">→</span>
+          <span class="status-badge" style="background:rgba(61,139,217,.08);border:1px solid rgba(61,139,217,.18);color:var(--epq-blue-700);">Matrícula</span>
+        </div>
+      </div>
+      <div class="sub-title">Mensagens prontas</div>
+      <div class="msg">
+        <div class="msg-tag">Confirmação</div>
+        Olá, [nome]! Recebemos sua inscrição para o Bolsão EPQ. O evento será em [data], às 08h, na [endereço]. Leve RG e caneta. Qualquer dúvida, responda esta mensagem.
+      </div>
+      <div class="msg">
+        <div class="msg-tag">Lembrete</div>
+        Faltam 3 dias para o Bolsão EPQ! Você está confirmado para [data], às 08h. Endereço: [endereço]. Leve RG. Dúvidas? Chama aqui.
+      </div>
+      <div class="msg">
+        <div class="msg-tag">Dúvidas</div>
+        O Bolsão é gratuito. A prova tem 40 questões de Matemática e Português, com duração de 1h30. No dia você conhece a metodologia, os professores e ganha até 50% de bolsa.
+      </div>
+      <div class="msg">
+        <div class="msg-tag">Não comparecimento</div>
+        Sentimos sua falta no Bolsão EPQ. Queremos ajudar você a chegar lá. Temos outras formas de participar. Vamos conversar?
+      </div>
+      <div class="msg">
+        <div class="msg-tag">Resultado</div>
+        Seu resultado no Bolsão EPQ está disponível no link [link]. Acesse para ver seu desempenho e a bolsa que você conquistou.
+      </div>
+      <div class="msg">
+        <div class="msg-tag">Bolsa</div>
+        Parabéns pelo resultado, [nome]! Você conquistou [X]% de bolsa para a turma [nome da turma]. A oferta vale até [data]. Para garantir, clique em [link] ou venha até a unidade.
+      </div>
+      <div class="msg">
+        <div class="msg-tag">Follow-up — Quente</div>
+        Vi que você se interessou. Queremos garantir sua vaga com a bolsa. Vamos conversar agora?
+      </div>
+      <div class="msg">
+        <div class="msg-tag">Follow-up — Morneo</div>
+        Ainda está em dúvida? O Bolsão foi um primeiro passo. Se quiser, faço uma simulação do curso para você.
+      </div>
+      <div class="msg">
+        <div class="msg-tag">Follow-up — Frio</div>
+        A EPQ tem turmas abertas. Se mudar de ideia, estamos aqui. Sem pressão.
+      </div>
+    </section>
+
+    <section class="doc-section" id="evento">
+      <div class="section-divider"><span class="divider-label">07 // Evento</span><div class="divider-line"></div></div>
+      <h2 class="section-title">Roteiro do evento</h2>
+      <p class="section-lede">2h30 de programação. Usar o evento também para gerar fotos, vídeos e depoimentos.</p>
+      <div class="solid-card" style="overflow:auto;">
+        <table class="schedule">
+          <thead>
+            <tr><th>HORÁRIO</th><th>BLOCO</th><th>RESPONSÁVEL</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>08h00–08h20</td><td>Recepção + café</td><td>Estagiária</td></tr>
+            <tr><td>08h20–08h30</td><td>Abertura e regras da prova</td><td>Flávio</td></tr>
+            <tr><td>08h30–10h00</td><td>Aplicação da prova</td><td>Professores</td></tr>
+            <tr><td>10h00–10h20</td><td>Pausa + correção rápida</td><td>Professores + Estagiária</td></tr>
+            <tr><td>10h20–10h40</td><td>Apresentação EPQ: metodologia, estrutura, resultados</td><td>Flávio</td></tr>
+            <tr><td>10h40–11h00</td><td>Professores falam sobre disciplinas e preparação</td><td>Professores</td></tr>
+            <tr><td>11h00–11h15</td><td>Premiação / anúncio das bolsas</td><td>Flávio</td></tr>
+            <tr><td>11h15–11h30</td><td>Atendimento individual + matrículas</td><td>Todos</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="doc-section" id="pos-evento">
+      <div class="section-divider"><span class="divider-label">08 // Pós-evento</span><div class="divider-line"></div></div>
+      <h2 class="section-title">Classificação e follow-up</h2>
+      <p class="section-lede">Classificar apenas: quente, morno, frio ou não compareceu. Follow-up específico para cada grupo.</p>
+      <div class="principle-grid" style="grid-template-columns: repeat(4, 1fr);">
+        <div class="principle-card">
+          <div class="principle-num">🔥 QUENTE</div>
+          <div class="principle-name">Compareceu + bom resultado + pediu matrícula</div>
+          <div class="principle-desc">Contato em até 24h. Fechar matrícula.</div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">🟠 MORNO</div>
+          <div class="principle-name">Compareceu + resultado médio + interesse sem decisão</div>
+          <div class="principle-desc">Contato em 48h. Oferecer simulação ou visita.</div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">🟡 FRIO</div>
+          <div class="principle-name">Compareceu + resultado baixo + sem interesse declarado</div>
+          <div class="principle-desc">Follow-up leve em 7 dias. Conteúdo de valor.</div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">⚪ NÃO COMPARECEU</div>
+          <div class="principle-name">Inscrito, mas faltou</div>
+          <div class="principle-desc">Mensagem de "sentimos sua falta" + nova oferta.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="equipe">
+      <div class="section-divider"><span class="divider-label">09 // Equipe</span><div class="divider-line"></div></div>
+      <h2 class="section-title">Divisão de responsabilidades</h2>
+      <div class="principle-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="principle-card">
+          <div class="principle-num">RONAN</div>
+          <div class="principle-name">Gestão da campanha</div>
+          <div class="principle-desc">Responsável pela gestão geral, aprovações, follow-up com equipe e entrega final.</div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">FLÁVIO</div>
+          <div class="principle-name">Apoio no planejamento + tráfego</div>
+          <div class="principle-desc">Estratégia e operação do tráfego. Acompanha entregas e dá suporte ao planejamento.</div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">ESTAGIÁRIA / PROFESSORES</div>
+          <div class="principle-name">Execução operacional</div>
+          <div class="principle-desc">Atendimento, conteúdo, prova e presença no evento.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="kpis">
+      <div class="section-divider"><span class="divider-label">10 // KPIs</span><div class="divider-line"></div></div>
+      <h2 class="section-title">Métricas essenciais</h2>
+      <p class="section-lede">Acompanhar apenas o necessário para manter a operação leve.</p>
+      <div class="principle-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="principle-card">
+          <div class="principle-num">AQUISIÇÃO</div>
+          <div class="principle-name">Investimento · Leads · Inscrições · CPL</div>
+          <div class="principle-desc">Controle semanal do funil.</div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">CONVERSÃO</div>
+          <div class="principle-name">Comparecimento · Bolsas · Matrículas · CPA</div>
+          <div class="principle-desc">Do evento à matrícula em até 7 dias.</div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">RESULTADO</div>
+          <div class="principle-name">Receita · Taxa de fechamento · Custo por matrícula</div>
+          <div class="principle-desc">Fechar o ciclo após o evento.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="validacoes">
+      <div class="section-divider"><span class="divider-label">11 // Validações</span><div class="divider-line"></div></div>
+      <h2 class="section-title">Pontos a validar com o EPQ</h2>
+      <p class="section-lede">Antes de publicar, confirmar:</p>
+      <div class="check-list">
+        <div class="check-item"><div class="check-mark">✓</div><span>Concursos atendidos pelo EPQ</span></div>
+        <div class="check-item"><div class="check-mark">✓</div><span>Disciplinas confirmadas</span></div>
+        <div class="check-item"><div class="check-mark">✓</div><span>Estrutura da unidade</span></div>
+        <div class="check-item"><div class="check-mark">✓</div><span>Professores participantes</span></div>
+        <div class="check-item"><div class="check-mark">✓</div><span>Capacidade de vagas por turma</span></div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer class="page-footer">
+    <div class="footer-brand">EPQ // Bolsão 2026</div>
+    <div class="footer-timestamp">v1.0 — 31/08/2026</div>
+  </footer>
+
+</div>
+</body>
+</html>
