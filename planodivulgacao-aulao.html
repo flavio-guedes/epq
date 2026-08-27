@@ -26,43 +26,45 @@ body{
   color:var(--epq-navy);
   background:var(--epq-navy);
   -webkit-font-smoothing:antialiased;
-  line-height:1.45;
+  line-height:1.5;
 }
 .app{
   min-height:100vh;
   display:grid;
   grid-template-columns:1fr;
 }
-@media (min-width:860px){
+@media (min-width:980px){
   .app{
-    grid-template-columns:1.05fr 1fr;
+    grid-template-columns:1.1fr 1fr;
   }
 }
 
 .left{
   position:relative;
   z-index:2;
-  padding:28px 26px 28px;
+  padding:48px 64px 48px;
   display:flex;
   flex-direction:column;
   justify-content:center;
-  background:linear-gradient(180deg, rgba(13,27,42,.92), rgba(13,27,42,.82));
+  margin:0 auto;
+  width:100%;
+  max-width:1200px;
 }
 .right{
   position:relative;
   background:
-    url('bolsao-lp-hero.png') center/cover no-repeat;
+    url('Capa padrão.png') center/cover no-repeat;
 }
 .right::after{
   content:'';
   position:absolute;
   inset:0;
-  background:linear-gradient(180deg, rgba(13,27,42,.18), rgba(13,27,42,.55));
+  background:linear-gradient(180deg, rgba(13,27,42,.25), rgba(13,27,42,.65));
 }
 
 .brand{
   position:absolute;
-  top:24px;left:26px;
+  top:28px;left:64px;
   font-family:'Space Grotesk',system-ui,sans-serif;
   color:var(--epq-white);
   font-weight:700;
@@ -74,88 +76,90 @@ body{
 .eyebrow{
   display:inline-flex;
   align-items:center;
-  gap:8px;
+  gap:10px;
   color:var(--epq-cyan);
   font-weight:700;
-  font-size:13px;
-  letter-spacing:.06em;
+  font-size:15px;
+  letter-spacing:.08em;
   text-transform:uppercase;
-  margin-bottom:14px;
+  margin-bottom:20px;
 }
 .title{
   font-family:'Space Grotesk',system-ui,sans-serif;
-  font-size:30px;
+  font-size:38px;
   font-weight:700;
   color:var(--epq-white);
-  letter-spacing:-0.02em;
+  letter-spacing:-0.03em;
   line-height:1.12;
-  margin-bottom:10px;
+  margin-bottom:16px;
 }
 .sub{
-  font-size:15px;
+  font-size:17px;
   color:#E6ECF5;
-  max-width:720px;
-  line-height:1.5;
-  margin-bottom:14px;
+  max-width:780px;
+  line-height:1.6;
+  margin-bottom:20px;
 }
 .tags{
   display:flex;
-  gap:8px;
+  gap:10px;
   flex-wrap:wrap;
-  margin-bottom:22px;
+  margin-bottom:26px;
 }
 .tag{
   display:inline-flex;
   align-items:center;
-  gap:6px;
+  gap:7px;
   background:rgba(255,255,255,.1);
   color:var(--epq-white);
-  border:1px solid rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.22);
   border-radius:999px;
-  padding:6px 12px;
-  font-size:12.5px;
+  padding:7px 14px;
+  font-size:13.5px;
   font-weight:600;
   backdrop-filter:blur(6px);
 }
 
 .form{
-  background:rgba(255,255,255,.92);
+  background:rgba(255,255,255,.94);
   border:1px solid rgba(21,38,66,.08);
-  border-radius:16px;
-  padding:18px;
-  box-shadow:0 12px 30px -18px rgba(21,38,66,.25);
+  border-radius:18px;
+  padding:24px;
+  box-shadow:0 14px 36px -20px rgba(21,38,66,.28);
+  max-width:640px;
 }
 .form-title{
   font-family:'Space Grotesk',system-ui,sans-serif;
   font-weight:700;
-  font-size:18px;
-  margin-bottom:6px;
+  font-size:22px;
+  margin-bottom:8px;
   color:var(--epq-navy);
 }
 .form-sub{
-  font-size:13px;
+  font-size:15px;
   color:var(--epq-gray-500);
-  margin-bottom:14px;
+  margin-bottom:18px;
+  line-height:1.5;
 }
 .field{
   width:100%;
-  padding:12px 14px;
-  border-radius:12px;
+  padding:14px 16px;
+  border-radius:14px;
   border:1px solid rgba(21,38,66,.12);
   background:#fff;
-  font-size:14px;
+  font-size:15px;
   color:var(--epq-navy);
   outline:none;
-  margin-bottom:10px;
+  margin-bottom:12px;
 }
 .field:focus{
   border-color:var(--epq-blue-600);
-  box-shadow:0 0 0 3px rgba(36,87,235,.12);
+  box-shadow:0 0 0 4px rgba(36,87,235,.12);
 }
 select.field{
   background-image:linear-gradient(45deg, transparent 50%, rgba(21,38,66,.45) 50%), linear-gradient(135deg, rgba(21,38,66,.45) 50%, transparent 50%);
-  background-position:calc(100% - 18px) 18px, calc(100% - 12px) 18px;
-  background-size:6px 6px, 6px 6px;
+  background-position:calc(100% - 20px) 20px, calc(100% - 14px) 20px;
+  background-size:7px 7px, 7px 7px;
   background-repeat:no-repeat;
   appearance:none;
   -webkit-appearance:none;
@@ -164,30 +168,26 @@ select.field{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  gap:8px;
+  gap:10px;
   width:100%;
-  padding:14px 26px;
-  border-radius:12px;
+  padding:16px 28px;
+  border-radius:14px;
   background:linear-gradient(135deg,var(--epq-blue-600) 0%,var(--epq-cyan) 100%);
   color:var(--epq-white);
   font-weight:700;
-  font-size:15px;
+  font-size:16px;
   border:none;
   cursor:pointer;
   text-decoration:none;
-  box-shadow:0 6px 18px -6px rgba(36,87,235,.45), 0 0 22px rgba(8,183,214,.16);
+  box-shadow:0 8px 22px -8px rgba(36,87,235,.5), 0 0 26px rgba(8,183,214,.18);
 }
 
-@media (max-width:859px){
-  .app{display:block}
-  .right{
-    min-height:42vh;
-  }
-  .left{
-    padding:22px 18px 26px;
-  }
-  .title{font-size:24px}
-  .brand{top:18px;left:18px}
+@media (max-width:979px){
+  .left{padding:28px 22px 32px}
+  .title{font-size:26px}
+  .sub{font-size:15px}
+  .brand{top:20px;left:22px}
+  .right{min-height:44vh}
 }
 </style>
 </head>
@@ -195,7 +195,7 @@ select.field{
 <div class="app">
   <div class="left">
     <div class="brand">EP<span>Q</span></div>
-    <div style="max-width:720px">
+    <div>
       <div class="eyebrow">Aulão · Carreiras Policiais</div>
       <div class="title">Direito Penal + Direito Administrativo com resolução de questões e teoria aplicada.</div>
       <div class="sub">Preparação prática para concursos policiais, com material exclusivo e foco no que realmente cai.</div>
