@@ -104,36 +104,37 @@
   @keyframes pulse-dot { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .5; transform: .8; } }
 
   /* MAIN */
-  .main-content { margin-left: var(--sidebar-w); min-height: 100vh; }
+  .page-body { padding: 56px 56px 100px; max-width: 1180px; }
 
-  /* HERO with banner */
+  /* HERO clean image-based banner */
   .hero {
     position: relative;
     min-height: 420px;
-    background: var(--epq-gray-900);
+    background: var(--epq-bg);
     overflow: hidden;
+    border-bottom: 1px solid var(--epq-gray-200);
   }
   .hero-img {
     display: block; width: 100%; height: auto;
   }
-  .hero-header {
-    position: absolute; top: 0; left: 0; right: 0;
-    padding: 28px 56px 18px;
-    z-index: 10;
-    background: linear-gradient(180deg, rgba(10,20,40,.55) 0%, rgba(10,20,40,.0) 100%);
-  }
-  .hero-title {
+  .hero-sub {
+    position: absolute;
+    top: 15%; right: 24px;
+    left: 24px;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
     font-family: var(--font-display);
-    font-size: clamp(26px, 3.6vw, 42px);
+    font-size: clamp(28px, 5vw, 56px);
     font-weight: 700;
-    color: var(--epq-gray-900);
-    letter-spacing: -.03em;
-    line-height: 1.05;
-    max-width: 760px;
+    color: #fff;
+    letter-spacing: -.02em;
+    line-height: 1.1;
+    text-align: right;
+    z-index: 10;
+    text-shadow: 0 2px 12px rgba(0,0,0,.45);
   }
-
-  /* PAGE BODY */
-  .page-body { padding: 56px 56px 100px; max-width: 1180px; }
   .doc-section { margin-bottom: 76px; scroll-margin-top: 24px; }
   .section-divider { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
   .divider-label {
@@ -212,7 +213,6 @@
   @media (max-width: 900px) {
     .scenario-grid, .principle-grid { grid-template-columns: 1fr 1fr; }
     .page-body { padding: 40px 24px 80px; }
-    .hero-title { font-size: 30px; }
   }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
@@ -221,35 +221,12 @@
 </head>
 <body>
 
-<nav class="sidebar">
-  <div class="sidebar-logo">EQ</div>
-  <div class="sidebar-nav">
-    <a class="nav-item active" href="#visao-geral"><span class="nav-num">00</span><span class="nav-label">Visão geral</span></a>
-    <a class="nav-item" href="#conceito"><span class="nav-num">01</span><span class="nav-label">Conceito</span></a>
-    <a class="nav-item" href="#formato"><span class="nav-num">02</span><span class="nav-label">Formato</span></a>
-    <a class="nav-item" href="#cronograma"><span class="nav-num">03</span><span class="nav-label">Cronograma</span></a>
-    <a class="nav-item" href="#divulgacao"><span class="nav-num">04</span><span class="nav-label">Divulgação</span></a>
-    <a class="nav-item" href="#meta-ads"><span class="nav-num">05</span><span class="nav-label">Meta Ads</span></a>
-    <a class="nav-item" href="#atendimento"><span class="nav-num">06</span><span class="nav-label">Atendimento</span></a>
-    <a class="nav-item" href="#evento"><span class="nav-num">07</span><span class="nav-label">Evento</span></a>
-    <a class="nav-item" href="#pos-evento"><span class="nav-num">08</span><span class="nav-label">Pós-evento</span></a>
-    <a class="nav-item" href="#equipe"><span class="nav-num">09</span><span class="nav-label">Equipe</span></a>
-    <a class="nav-item" href="#kpis"><span class="nav-num">10</span><span class="nav-label">KPIs</span></a>
-    <a class="nav-item" href="#validacoes"><span class="nav-num">11</span><span class="nav-label">Validações</span></a>
-  </div>
-  <div class="sidebar-status"><div class="status-dot-live"></div><span class="nav-label" style="opacity:1;color:var(--epq-gray-500)">v1.0</span></div>
-</nav>
+<div class="hero">
+  <img class="hero-img" src="bolsao-lp-hero.png" alt="Capa Bolsão EPQ 2026" />
+  <div class="hero-sub">BOLSÃO EPQ</div>
+</div>
 
-<div class="main-content">
-
-  <header class="hero">
-    <img class="hero-img" src="bolsao-desktop-lp.png" alt="Capa Bolsão EPQ 2026" />
-    <div class="hero-header">
-      <div class="hero-title">BOLSÃO EPQ</div>
-    </div>
-  </header>
-
-  <div class="page-body">
+<div class="page-body">
 
     <section class="doc-section" id="visao-geral">
       <div class="section-divider"><span class="divider-label">00 // Visão geral</span><div class="divider-line"></div></div>
