@@ -4,111 +4,157 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EPQ · Aulão — Carreiras Policiais</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#05b5f7;
-  }
+:root{
+  --epq-blue-700:#1A56DB;
+  --epq-blue-600:#2457EB;
+  --epq-cyan:#08B7D6;
+  --epq-navy:#0D1B2A;
+  --epq-white:#FFFFFF;
+  --epq-gray-100:#EFF2F7;
+  --epq-gray-500:#5B6B82;
+  --epq-gray-700:#2A3347;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
-  font-family:'Segoe UI',system-ui,sans-serif;
+  font-family:'Inter',system-ui,sans-serif;
   background:
-    radial-gradient(ellipse 1100px 620px at 10% -10%, rgba(8,183,214,.10), transparent 60%),
-    radial-gradient(900px 560px at 120% 10%, rgba(36,87,235,.10), transparent 55%),
-    linear-gradient(180deg, #F3F6FA 0%, #E9EEF5 100%);
-  color:#0D1526;
+    radial-gradient(ellipse 1100px 620px at 10% -10%, rgba(36,87,235,.10), transparent 60%),
+    radial-gradient(900px 560px at 120% 10%, rgba(8,183,214,.10), transparent 55%),
+    linear-gradient(180deg,#F3F6FA 0%,#E9EEF5 100%);
+  color:var(--epq-navy);
   min-height:100vh;
-  padding:2.5rem 1.25rem 4rem;
   -webkit-font-smoothing:antialiased;
+  line-height:1.45;
 }
-.app{max-width:760px;margin:0 auto}
-.card{
-  background:rgba(255,255,255,.86);
-  border:1px solid rgba(21,38,66,.09);
-  border-radius:16px;
-  padding:1.4rem;
-  margin-bottom:1rem;
-  box-shadow:0 1px 2px rgba(21,38,66,.04), 0 12px 28px -18px rgba(21,38,66,.18);
+.app{max-width:920px;margin:0 auto;padding:2.25rem 1.25rem 3.5rem}
+
+.hero{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(21,38,66,.08);
+  border-radius:18px;
+  background:
+    url('bolsao-lp-hero.png') center/cover no-repeat;
+  min-height:380px;
+  display:grid;
+  align-items:end;
+  box-shadow:0 1px 2px rgba(21,38,66,.04), 0 14px 30px -18px rgba(21,38,66,.18);
 }
-.title{font-family:'Space Grotesk',system-ui,sans-serif;font-size:22px;font-weight:700;letter-spacing:-0.01em;margin-bottom:6px}
-.sub{font-size:14px;color:#57667C;margin-bottom:1.25rem;line-height:1.5}
+.hero::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg, rgba(13,27,42,.28) 0%, rgba(13,27,42,.78) 100%);
+}
+.hero-content{
+  position:relative;
+  z-index:2;
+  padding:1.5rem 1.6rem 1.6rem;
+  display:grid;
+  gap:.6rem;
+}
+.brand{
+  position:absolute;
+  top:18px;right:22px;
+  font-family:'Space Grotesk',system-ui,sans-serif;
+  color:var(--epq-white);
+  font-weight:700;
+  letter-spacing:.02em;
+  z-index:2;
+}
+.brand span{color:var(--epq-cyan)}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:var(--epq-cyan);
+  font-weight:700;
+  font-size:13px;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+.title{
+  font-family:'Space Grotesk',system-ui,sans-serif;
+  font-size:28px;
+  font-weight:700;
+  color:var(--epq-white);
+  letter-spacing:-0.02em;
+  line-height:1.15;
+}
+.sub{
+  font-size:15px;
+  color:#E6ECF5;
+  max-width:680px;
+  line-height:1.5;
+}
+.tags{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:6px;
+}
+.tag{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:rgba(255,255,255,.1);
+  color:var(--epq-white);
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;
+  padding:6px 12px;
+  font-size:12.5px;
+  font-weight:600;
+  backdrop-filter:blur(6px);
+}
+
 .cta{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:12px 22px;border-radius:10px;
-  background:linear-gradient(135deg,#2457EB 0%,#0EA5C4 100%);
-  color:#fff;font-weight:700;font-size:14px;border:none;cursor:pointer;
-  box-shadow:0 4px 16px -4px rgba(36,87,235,.45), 0 0 24px rgba(8,183,214,.18);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:14px 26px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--epq-blue-600) 0%,var(--epq-cyan) 100%);
+  color:var(--epq-white);
+  font-weight:700;
+  font-size:15px;
+  border:none;
+  cursor:pointer;
   text-decoration:none;
+  box-shadow:0 6px 18px -6px rgba(36,87,235,.45), 0 0 22px rgba(8,183,214,.16);
 }
-.tag{display:inline-flex;align-items:center;gap:6px;background:rgba(36,87,235,.08);color:#1642C7;border:1px solid rgba(36,87,235,.38);border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:600;margin:2px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media (max-width:520px){ .grid{grid-template-columns:1fr} }
+
+@media (max-width:520px){
+  .hero{min-height:320px;border-radius:16px}
+  .hero-content{padding:1.2rem}
+  .title{font-size:22px}
+  .brand{top:14px;right:16px;font-size:18px}
+}
 </style>
 </head>
 <body>
 <div class="app">
-
-<div class="card">
-  <div class="title">Aulão: Direito Penal + Direito Administrativo</div>
-  <div class="sub">Preparação para concursos de carreiras policiais com resolução de questões, material exclusivo e aula prática.</div>
-
-  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem">
-    <span class="tag">📅 Sábado, 29 · 09h–12h</span>
-    <span class="tag">📍 Presencial / Online</span>
-    <span class="tag">🎯 Foco em edital e banca</span>
-  </div>
-
-  <div class="grid" style="margin-bottom:1rem">
-    <div class="card">
-      <div style="font-size:12px;color:#57667C;margin-bottom:6px;font-weight:700;letter-spacing:.02em;text-transform:uppercase">Para quem</div>
-      <div style="font-size:14px;line-height:1.5">PMERJ, Polícia Civil, PRF, Polícia Penal, Polícia Federal e Guardas Municipais.</div>
-    </div>
-    <div class="card">
-      <div style="font-size:12px;color:#57667C;margin-bottom:6px;font-weight:700;letter-spacing:.02em;text-transform:uppercase">Diferencial</div>
-      <div style="font-size:14px;line-height:1.5">2 professores em sala, dinâmica prática com questões e teoria aplicada.</div>
+  <div class="hero">
+    <div class="brand">EP<span>Q</span></div>
+    <div class="hero-content">
+      <div class="eyebrow">Aulão · Carreiras Policiais</div>
+      <div class="title">Direito Penal + Direito Administrativo com resolução de questões e teoria aplicada.</div>
+      <div class="sub">Preparação prática para concursos policiais, com material exclusivo e foco no que realmente cai.</div>
+      <div class="tags">
+        <span class="tag">📅 Sábado, 29 · 09h–12h</span>
+        <span class="tag">📍 Presencial / Online</span>
+        <span class="tag">🎯 Foco em edital e banca</span>
+      </div>
+      <div style="margin-top:10px">
+        <a class="cta" href="https://forms.office.com/r/SEU_LINK_AQUI" target="_blank" rel="noopener">Quero me inscrever</a>
+      </div>
     </div>
   </div>
-
-  <div class="card">
-    <div style="font-size:12px;color:#57667C;margin-bottom:6px;font-weight:700;letter-spacing:.02em;text-transform:uppercase">Promessa</div>
-    <div style="font-size:14px;line-height:1.5">Um aulão gratuito com foco no que realmente cai, explicação direta e exercícios comentados para acelerar sua aprovação.</div>
-  </div>
-
-  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:1rem">
-    <a class="cta" href="#reservar">Reservar vaga</a>
-    <a class="cta" style="background:linear-gradient(135deg,#0EA5C4 0%,#2457EB 100%)" href="https://wa.me/SEU_NUMERO" target="_blank">Falar no WhatsApp</a>
-  </div>
-</div>
-
-<div class="card" id="reservar">
-  <div class="title">Reserva de vaga</div>
-  <div class="sub">Campos essenciais para garantir a participação no aulão.</div>
-  <form onsubmit="event.preventDefault(); alert('Reserva registrada. Entraremos em contato pelo WhatsApp.');">
-    <div class="grid" style="margin-bottom:10px">
-      <input placeholder="Nome completo" required>
-      <input placeholder="WhatsApp" required>
-    </div>
-    <div class="grid" style="margin-bottom:10px">
-      <select required>
-        <option value="">Concurso alvo</option>
-        <option>PMERJ</option>
-        <option>Polícia Civil</option>
-        <option>PRF</option>
-        <option>Polícia Penal</option>
-        <option>Polícia Federal</option>
-        <option>Guarda Municipal</option>
-      </select>
-      <select required>
-        <option value="">Turno preferido</option>
-        <option>Manhã</option>
-        <option>Tarde</option>
-        <option>Noite</option>
-      </select>
-    </div>
-    <button class="cta" type="submit">Quero reservar minha vaga</button>
-  </form>
-</div>
-
 </div>
 </body>
 </html>
