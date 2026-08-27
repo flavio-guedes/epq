@@ -60,39 +60,94 @@
   }
   :focus-visible { outline: 2px solid var(--epq-blue-500); outline-offset: 2px; }
 
-  .wrap { max-width: 1060px; margin: 0 auto; padding: 28px 18px 48px; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 24px 18px 48px; }
 
   .hero {
     position: relative;
+    overflow: hidden;
+    background: #0a1428;
     border: 1px solid var(--epq-gray-200);
     border-radius: var(--radius-xl);
-    overflow: hidden;
-    background: var(--epq-gray-900);
     box-shadow: var(--shadow-lg);
   }
   .hero-img {
     display: block; width: 100%; height: auto;
-    opacity: .95;
+  }
+
+  /* Desktop hero reserva área para formulário à direita */
+  .hero--desktop {
+    aspect-ratio: 16 / 7;
+    max-height: 820px;
+  }
+  .hero--desktop::after {
+    content: "";
+    position: absolute;
+    top: 0; right: 0;
+    width: 52%;
+    height: 100%;
+    background:
+      linear-gradient(90deg, rgba(10,20,40,.0) 0%, rgba(10,20,40,.55) 55%, rgba(10,20,40,.92) 100%);
+    pointer-events: none;
+  }
+  .hero--desktop .hero-reserve {
+    position: absolute;
+    top: 6%; right: 5%;
+    width: 44%;
+    height: 88%;
+    border: 1px dashed rgba(255,255,255,.18);
+    border-radius: var(--radius-lg);
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  /* Mobile hero reserva área central para formulário */
+  .hero--mobile {
+    aspect-ratio: 9 / 16;
+    max-height: 860px;
+  }
+  .hero--mobile::after {
+    content: "";
+    position: absolute;
+    top: 26%; left: 6%; right: 6%;
+    height: 44%;
+    background: linear-gradient(180deg, rgba(10,20,40,.0), rgba(10,20,40,.65) 100%);
+    border-radius: var(--radius-lg);
+    pointer-events: none;
+  }
+  .hero--mobile .hero-reserve {
+    position: absolute;
+    top: 30%; left: 8%; right: 8%;
+    height: 38%;
+    border: 1px dashed rgba(255,255,255,.18);
+    border-radius: var(--radius-lg);
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .hero-reserve-label {
+    position: absolute;
+    z-index: 6;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+    pointer-events: none;
+  }
+  .hero--desktop .hero-reserve-label {
+    right: 8%; top: 50%; transform: translateY(-50%);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg) translateY(50%);
+  }
+  .hero--mobile .hero-reserve-label {
+    left: 50%; top: 50%; transform: translate(-50%, -50%);
+    text-align: center;
   }
 
   .section { margin-top: 18px; border: 1px solid var(--epq-gray-200); border-radius: var(--radius-lg); padding: 18px; background: var(--epq-white); box-shadow: var(--shadow-md); }
   .section h2 { margin: 0 0 10px; font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
   .section p { color: var(--epq-gray-700); line-height: 1.6; }
   .section-lede { font-size: 14px; color: var(--epq-gray-600); line-height: 1.7; max-width: 760px; margin-bottom: 18px; }
-
-  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-  @media (min-width: 720px) { .grid { grid-template-columns: repeat(4, 1fr); } }
-  .card {
-    border: 1px solid var(--epq-gray-200); border-radius: var(--radius-lg); padding: 14px;
-    background: var(--epq-white); box-shadow: var(--shadow-md);
-  }
-  .card .icon {
-    width: 40px; height: 40px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center;
-    background: var(--epq-blue-100); border: 1px solid var(--epq-blue-300, rgba(61,139,217,.25));
-    color: var(--epq-blue-700); font-weight: 700; margin-bottom: 10px;
-  }
-  .card h3 { margin: 0 0 6px; font-family: var(--font-mono); font-size: 10px; color: var(--epq-blue-700); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
-  .card p { margin: 0; color: var(--epq-gray-900); font-weight: 600; font-size: 15px; line-height: 1.35; }
 
   .cta {
     margin-top: 16px; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
@@ -107,82 +162,33 @@
   }
   .cta.secondary:hover { border-color: var(--epq-blue-400); }
 
-  .info { margin-top: 10px; color: var(--epq-gray-600); font-weight: 600; }
-  .warning {
-    margin-top: 14px; border: 1px solid rgba(155,74,26,.25); border-radius: var(--radius-lg); padding: 14px;
-    background: rgba(155,74,26,.04); color: var(--epq-alert); font-weight: 700;
-  }
-  .warning ul { margin: 8px 0 0; padding-left: 18px; color: var(--epq-gray-800); font-weight: 600; }
-
   @media (max-width: 900px) {
-    .grid { grid-template-columns: 1fr 1fr; }
     .wrap { padding: 18px 14px 36px; }
-  }
-  @media (max-width: 640px) {
-    .grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <div class="hero">
+  <!-- Desktop hero: área reservada para formulário à direita -->
+  <div class="hero hero--desktop" aria-label="Bolsão EPQ hero desktop">
     <img class="hero-img" src="bolsao-epq-2026.png" alt="Capa Bolsão EPQ 2026" />
+    <div class="hero-reserve" aria-hidden="true"></div>
+    <div class="hero-reserve-label" aria-hidden="true">Área reservada para formulário</div>
+  </div>
+
+  <!-- Mobile hero: área reservada no centro -->
+  <div class="hero hero--mobile" style="margin-top:18px;" aria-label="Bolsão EPQ hero mobile">
+    <img class="hero-img" src="bolsao-epq-2026.png" alt="Capa Bolsão EPQ 2026" />
+    <div class="hero-reserve" aria-hidden="true"></div>
+    <div class="hero-reserve-label" aria-hidden="true">Área reservada para formulário</div>
   </div>
 
   <div class="section">
-    <h2>Objetivo da página</h2>
-    <p>Converter visitante em inscrito no Bolsão EPQ com um formulário simples e CTA direto para WhatsApp.</p>
-    <div class="grid">
-      <div class="card">
-        <div class="icon">📝</div>
-        <h3>Formulário</h3>
-        <p>Nome, WhatsApp, cidade e como conheceu.</p>
-      </div>
-      <div class="card">
-        <div class="icon">📅</div>
-        <h3>Data</h3>
-        <p>Sábado, 03/10/2026, às 08h.</p>
-      </div>
-      <div class="card">
-        <div class="icon">🏆</div>
-        <h3>Bolsa</h3>
-        <p>Até 50% por desempenho na prova.</p>
-      </div>
-      <div class="card">
-        <div class="icon">🎯</div>
-        <h3>Diagnóstico</h3>
-        <p>40 questões para mapear gaps do aluno.</p>
-      </div>
-    </div>
-    <div class="warning">
-      <strong>PONTOS QUE PRECISAM SER VALIDADOS:</strong>
-      <ul>
-        <li>Concursos atendidos pelo EPQ</li>
-        <li>Disciplinas confirmadas</li>
-        <li>Estrutura da unidade</li>
-        <li>Professores participantes</li>
-        <li>Capacidade de vagas por turma</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>Estrutura sugerida</h2>
-    <p class="section-lede">Página curta, sem excesso. Do topo ao CTA em menos de 30s de leitura.</p>
-    <div style="display:flex;flex-direction:column;gap:10px;">
-      <div style="padding:12px 14px;border:1px solid var(--epq-gray-200);border-radius:var(--radius-md);background:var(--epq-gray-50);font-weight:600;">1. Hero com a arte do Bolsão</div>
-      <div style="padding:12px 14px;border:1px solid var(--epq-gray-200);border-radius:var(--radius-md);background:var(--epq-gray-50);font-weight:600;">2. Proposta: prova diagnóstica + metodologia + bolsa</div>
-      <div style="padding:12px 14px;border:1px solid var(--epq-gray-200);border-radius:var(--radius-md);background:var(--epq-gray-50);font-weight:600;">3. Informações práticas: data, horário, local</div>
-      <div style="padding:12px 14px;border:1px solid var(--epq-gray-200);border-radius:var(--radius-md);background:var(--epq-gray-50);font-weight:600;">4. Destaques: estrutura, professores, resultado</div>
-      <div style="padding:12px 14px;border:1px solid var(--epq-gray-200);border-radius:var(--radius-md);background:var(--epq-gray-50);font-weight:600;">5. Formulário curto + CTA para WhatsApp</div>
-  </div>
-
-  <div class="section">
-    <h2>Conversão</h2>
-    <p>Inscrição gratuita. Resultado em até 48h. Matrícula em até 7 dias.</p>
+    <h2>Resumo</h2>
+    <p>Esta página é a base de captura do Bolsão EPQ. Os banners acima são a estrutura visual premium do hero; o formulário de inscrição será inserido posteriormente na área reservada.</p>
+    <a class="cta secondary" href="https://flavio-guedes.github.io/epq/timeline.html" target="_blank" rel="noopener">VER TIMELINE DO EPQ</a>
     <a class="cta" href="https://wa.me/5521999719474?text=Ol%C3%A1!%20Quero%20me%20inscrever%20no%20Bols%C3%A3o%20EPQ." target="_blank" rel="noopener">QUERO ME INSCREVER NO BOLSÃO EPQ</a>
-    <a class="cta secondary" href="https://flavio-guedes.github.io/portfolio/designhead.html" target="_blank" rel="noopener">VER PORTFÓLIO</a>
   </div>
 
 </div>
