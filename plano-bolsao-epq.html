@@ -117,24 +117,55 @@
   .hero-img {
     display: block; width: 100%; height: auto;
   }
-  .hero-sub {
+  .hero-left {
     position: absolute;
-    top: 15%;
-    right: 24px;
-    left: 35%;
-    height: 70%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    top: 24px;
+    left: 24px;
     font-family: var(--font-display);
-    font-size: clamp(28px, 5vw, 56px);
+    font-size: clamp(24px, 4vw, 48px);
     font-weight: 700;
     color: #fff;
     letter-spacing: -.02em;
     line-height: 1.1;
-    text-align: center;
     z-index: 10;
     text-shadow: 0 2px 12px rgba(0,0,0,.45);
+  }
+  .hero-right {
+    position: absolute;
+    top: 20%;
+    right: 10%;
+    left: auto;
+    width: 42%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    height: 60%;
+    z-index: 10;
+  }
+  .hero-headline {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 3.8vw, 46px);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -.02em;
+    line-height: 1.15;
+    text-align: left;
+    margin-bottom: 14px;
+    text-shadow: 0 2px 12px rgba(0,0,0,.45);
+  }
+  .hero-headline .highlight {
+    color: #fbbf24;
+  }
+  .hero-subhead {
+    font-family: var(--font-body);
+    font-size: clamp(14px, 1.4vw, 17px);
+    font-weight: 400;
+    color: rgba(255,255,255,0.88);
+    line-height: 1.45;
+    text-align: left;
+    max-width: 92%;
+    text-shadow: 0 1px 8px rgba(0,0,0,.45);
   }
   .doc-section { margin-bottom: 76px; scroll-margin-top: 24px; }
   .section-divider { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
@@ -214,6 +245,16 @@
   @media (max-width: 900px) {
     .scenario-grid, .principle-grid { grid-template-columns: 1fr 1fr; }
     .page-body { padding: 40px 24px 80px; }
+    .hero-right { right: 6%; width: 48%; top: 22%; height: 56%; }
+    .hero-headline { font-size: clamp(20px, 3.2vw, 36px); }
+  }
+  @media (max-width: 640px) {
+    .scenario-grid, .principle-grid { grid-template-columns: 1fr; }
+    .hero { min-height: 320px; }
+    .hero-left { top: 16px; left: 16px; font-size: clamp(20px, 6vw, 32px); }
+    .hero-right { top: 18%; right: 4%; left: 4%; width: auto; height: auto; bottom: 16px; align-items: center; text-align: center; }
+    .hero-headline { font-size: clamp(18px, 5vw, 28px); text-align: center; }
+    .hero-subhead { text-align: center; max-width: 100%; font-size: clamp(13px, 3.5vw, 16px); }
   }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
@@ -224,7 +265,14 @@
 
 <div class="hero">
   <img class="hero-img" src="bolsao-lp-hero-01.png" alt="Capa Bolsão EPQ 2026" />
-  <div class="hero-sub">BOLSÃO EPQ</div>
+  <div class="hero-left">BOLSÃO EPQ</div>
+  <div class="hero-right">
+    <div class="hero-headline">
+      DESCUBRA SEU NÍVEL.<br>
+      CONQUISTE <span class="highlight">ATÉ 50% DE BOLSA.</span>
+    </div>
+    <div class="hero-subhead">Uma prova diagnóstica para quem quer se preparar melhor.</div>
+  </div>
 </div>
 
 <div class="page-body">
