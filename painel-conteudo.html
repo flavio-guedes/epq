@@ -194,8 +194,8 @@ body { font-family:var(--font-body); background:var(--epq-bg); color:var(--epq-g
     <div class="corner-brackets"><span class="cb-tl"></span><span class="cb-tr"></span></div>
     <div class="header-content">
       <div class="header-eyebrow">EPQ // Content Ops</div>
-      <h1 class="header-title">Painel de <em>Acompanhamento</em></h1>
-      <p class="header-subtitle">Visão operacional do conteúdo de agosto a dezembro — EPQ e Ronan. Filtre por editoria, campanha e status.</p>
+      <h1 class="header-title">Painel de <em>Conteúdo</em></h1>
+      <p class="header-subtitle">Visão consolidada do planejamento e do acompanhamento — EPQ e Ronan. Alterne entre Planejamento e Acompanhamento sem perder contexto.</p>
       <div class="header-meta">
         <div class="status-badge"><div class="status-badge-dot"></div>System Online</div>
         <div class="period-badge">01.08.2026 — 31.12.2026</div>
@@ -213,15 +213,36 @@ body { font-family:var(--font-body); background:var(--epq-bg); color:var(--epq-g
     </div>
 
     <div class="tabs">
-      <button class="tab active" data-tab="lista">Lista</button>
+      <button class="tab active" data-tab="lista" data-view="acompanhamento">Acompanhamento</button>
+      <button class="tab" data-tab="planejamento" data-view="planejamento">Planejamento</button>
+      <button class="tab" data-tab="planilha" data-view="planilha">Planilha</button>
     </div>
 
-    <div class="kpi-strip" id="kpis"></div>
+    <div id="view-acompanhamento">
+      <div class="kpi-strip" id="kpis"></div>
 
-    <div id="tab-lista">
+      <div id="tab-lista">
+        <div class="table-wrap">
+          <div class="sched-row sched-head">
+            <div></div>
+            <div class="sched-date">Data</div>
+            <div class="sched-id">ID</div>
+            <div class="sched-perfil">Perfil</div>
+            <div class="sched-formato">Formato</div>
+            <div class="sched-main">Headline / Tema</div>
+            <div class="sched-pilar">Pilar</div>
+            <div class="sched-status">Status</div>
+            <div></div>
+          </div>
+          <div id="lista-rows"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="view-planejamento" style="display:none">
+      <div class="kpi-strip" id="planejamento-kpis"></div>
       <div class="table-wrap">
         <div class="sched-row sched-head">
-          <div></div>
           <div class="sched-date">Data</div>
           <div class="sched-id">ID</div>
           <div class="sched-perfil">Perfil</div>
@@ -229,9 +250,25 @@ body { font-family:var(--font-body); background:var(--epq-bg); color:var(--epq-g
           <div class="sched-main">Headline / Tema</div>
           <div class="sched-pilar">Pilar</div>
           <div class="sched-status">Status</div>
-          <div></div>
         </div>
-        <div id="lista-rows"></div>
+        <div id="planejamento-rows"></div>
+      </div>
+    </div>
+
+    <div id="view-planilha" style="display:none">
+      <div class="table-wrap">
+        <div class="sched-row sched-head">
+          <div class="sched-id">ID</div>
+          <div class="sched-date">Data</div>
+          <div class="sched-perfil">Perfil</div>
+          <div class="sched-formato">Formato</div>
+          <div class="sched-main">Headline / Tema</div>
+          <div class="sched-pilar">Pilar</div>
+          <div class="sched-status">Status</div>
+          <div>Tarefa</div>
+          <div>Drive</div>
+        </div>
+        <div id="planilha-rows"></div>
       </div>
     </div>
 
@@ -246,18 +283,18 @@ body { font-family:var(--font-body); background:var(--epq-bg); color:var(--epq-g
 <script>
 const RAW = {json_text};
 const DETAIL_IDS = new Set(RAW.slice(0,2).map(it=>it['ID']));
-function esc(t){{
+function esc(t){
   if(t==null) return '';
   const d=document.createElement('div');
   d.textContent=String(t);
   return d.innerHTML;
-}}
-function copyText(text){{
+}
+function copyText(text){
   navigator.clipboard.writeText(text).then(()=>{{
     const btn=document.querySelector('.copy-btn.success');
     if(btn) btn.textContent='✅ Copiado';
-  }});
-}}
+  });
+}
 function renderList(){{
   const box=document.getElementById('lista-rows');
   const fEditoria=document.getElementById('f-editoria').value;
@@ -266,7 +303,7 @@ function renderList(){{
   const q=document.getElementById('search').value.toLowerCase();
   let html='';
   let total=0, epq=0, ronan=0, integ=0, camp=0;
-  RAW.forEach((it)=>{{
+  RAW.forEach((it)=>{
     const matchesEditoria=!fEditoria||it['Pilar']===fEditoria;
     const matchesCampanha=!fCampanha||it['Formato']===fCampanha;
     const matchesStatus=!fStatus||(it['Status']||'')===fStatus;
@@ -299,18 +336,18 @@ function renderList(){{
       html += '<div class="detail-section"><div class="detail-label">Briefing Completo</div><div class="detail-value briefing"><strong>Formato:</strong> '+esc(it['Formato'])+'<br><strong>Perfil:</strong> '+esc(it['Perfil'])+'<br><strong>Tipo:</strong> '+esc(it['Tipo de distribuição'])+'<br><strong>Objetivo:</strong> '+esc(it['Objetivo'])+'<br><strong>Responsável:</strong> '+esc(it['Responsável'])+'<br><strong>Status:</strong> '+esc(it['Status']||'—')+'<br><strong>OBS:</strong> '+esc(it['OBS']||'—')+'<br><strong>Avaliação:</strong> '+esc(it['Avaliação e Aprendizados']||'—')+'</div></div>';
       html += '</div></div>';
     }}
-  }});
+  });
   box.innerHTML = html;
   document.getElementById('kpis').innerHTML='<div class="kpi-item"><div class="kpi-label">Conteúdos</div><div class="kpi-value featured">'+total+'</div></div><div class="kpi-item"><div class="kpi-label">EPQ</div><div class="kpi-value">'+epq+'</div></div><div class="kpi-item"><div class="kpi-label">Ronan</div><div class="kpi-value">'+ronan+'</div></div><div class="kpi-item"><div class="kpi-label">Integrados</div><div class="kpi-value">'+integ+'</div></div><div class="kpi-item"><div class="kpi-label">Campanhas</div><div class="kpi-value">'+camp+'</div></div>';
 }}
-function init(){{
+function init(){
   renderList();
   ['search','f-editoria','f-campanha','f-status'].forEach(id=>{{
     const el=document.getElementById(id);
     if(!el) return;
     el.addEventListener('input', renderList);
     el.addEventListener('change', renderList);
-  }});
+  });
   document.getElementById('lista-rows').addEventListener('click',e=>{{
     const btn=e.target.closest('[data-action="expand"]');
     if(!btn) return;

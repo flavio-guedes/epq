@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aulão — Direito Penal + Administrativo</title>
 <style>
+<<<<<<< Updated upstream
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{
@@ -139,6 +140,250 @@
     </form>
   </div>
 
+=======
+:root{
+  --epq-blue-700:#1A56DB;
+  --epq-blue-600:#2457EB;
+  --epq-cyan:#08B7D6;
+  --epq-navy:#0D1B2A;
+  --epq-white:#FFFFFF;
+  --epq-gray-500:#5B6B82;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  color:var(--epq-navy);
+  background:var(--epq-navy);
+  -webkit-font-smoothing:antialiased;
+  line-height:1.4;
+}
+
+.page{
+  height:100dvh;
+  display:flex;
+  overflow:hidden;
+}
+
+.side{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:28px;
+}
+.left{
+  width:58%;
+  background:linear-gradient(180deg, rgba(13,27,42,.92), rgba(13,27,42,.88));
+  border-right:1px solid rgba(255,255,255,.08);
+}
+.right{
+  width:42%;
+  position:relative;
+  background:
+    url('capa-padrao-hero.png') center/cover no-repeat;
+}
+.right::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg, rgba(13,27,42,.45), rgba(13,27,42,.05) 70%, transparent 100%);
+}
+
+.brand{
+  position:absolute;
+  top:22px;
+  left:26px;
+  font-family:'Space Grotesk',system-ui,sans-serif;
+  color:var(--epq-white);
+  font-weight:700;
+  letter-spacing:.04em;
+  z-index:3;
+  font-size:18px;
+  background:rgba(13,27,42,.45);
+  padding:8px 12px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(6px);
+}
+.brand span{color:var(--epq-cyan)}
+
+.content{
+  position:relative;
+  z-index:2;
+  width:100%;
+  max-width:560px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  color:var(--epq-cyan);
+  font-weight:700;
+  font-size:12px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  background:rgba(8,183,214,.1);
+  border:1px solid rgba(8,183,214,.22);
+  padding:6px 12px;
+  border-radius:999px;
+  width:max-content;
+}
+.title{
+  font-family:'Space Grotesk',system-ui,sans-serif;
+  font-size:34px;
+  font-weight:700;
+  color:var(--epq-white);
+  letter-spacing:-0.01em;
+  line-height:1.05;
+}
+.sub{
+  font-size:14px;
+  color:#C9D5E8;
+  line-height:1.45;
+}
+.tags{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.tag{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:rgba(255,255,255,.08);
+  color:var(--epq-white);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:999px;
+  padding:6px 12px;
+  font-size:12px;
+  font-weight:600;
+  backdrop-filter:blur(4px);
+}
+
+.form{
+  background:rgba(255,255,255,.96);
+  border:1px solid rgba(21,38,66,.1);
+  border-radius:16px;
+  padding:16px;
+  box-shadow:0 12px 30px -20px rgba(21,38,66,.35);
+}
+.form-title{
+  font-family:'Space Grotesk',system-ui,sans-serif;
+  font-weight:700;
+  font-size:16px;
+  margin-bottom:4px;
+  color:var(--epq-navy);
+}
+.form-sub{
+  font-size:12px;
+  color:var(--epq-gray-500);
+  margin-bottom:10px;
+  line-height:1.4;
+}
+.field{
+  width:100%;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid rgba(21,38,66,.12);
+  background:#fff;
+  font-size:13px;
+  color:var(--epq-navy);
+  outline:none;
+  margin-bottom:6px;
+}
+.field:focus{
+  border-color:var(--epq-blue-600);
+  box-shadow:0 0 0 3px rgba(36,87,235,.12);
+}
+select.field{
+  background-image:linear-gradient(45deg, transparent 50%, rgba(21,38,66,.45) 50%), linear-gradient(135deg, rgba(21,38,66,.45) 50%, transparent 50%);
+  background-position:calc(100% - 16px) 16px, calc(100% - 10px) 16px;
+  background-size:6px 6px, 6px 6px;
+  background-repeat:no-repeat;
+  appearance:none;
+  -webkit-appearance:none;
+}
+.cta{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  width:100%;
+  padding:12px 20px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--epq-blue-600) 0%,var(--epq-cyan) 100%);
+  color:var(--epq-white);
+  font-weight:700;
+  font-size:14px;
+  border:none;
+  cursor:pointer;
+  text-decoration:none;
+  box-shadow:0 6px 18px -6px rgba(36,87,235,.5), 0 0 18px rgba(8,183,214,.18);
+}
+
+@media (max-width:860px){
+  .page{flex-direction:column}
+  .left,.right{width:100%}
+  .right{min-height:38vh}
+  .title{font-size:26px}
+  .content{max-width:100%}
+}
+
+@media (max-width:480px){
+  .left{padding:20px}
+  .right{min-height:34vh}
+  .title{font-size:24px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="side left">
+    <div class="brand">EP<span>Q</span></div>
+    <div class="content">
+      <div class="eyebrow">Aulão · Carreiras Policiais</div>
+      <div class="title">Direito Penal + Direito Administrativo com resolução de questões e teoria aplicada.</div>
+      <div class="sub">Preparação prática para concursos policiais, com material exclusivo e foco no que realmente cai.</div>
+      <div class="tags">
+        <span class="tag">📅 Sábado, 29 · 09h–12h</span>
+        <span class="tag">📍 Presencial / Online</span>
+        <span class="tag">🎯 Foco em edital e banca</span>
+      </div>
+
+      <div class="form">
+        <div class="form-title">inscricao aulao</div>
+        <div class="form-sub">Preencha e vá direto para o formulário oficial.</div>
+        <form onsubmit="event.preventDefault(); window.location.href='https://forms.office.com/r/SEU_LINK_AQUI';">
+          <input class="field" placeholder="Nome completo" required>
+          <input class="field" placeholder="WhatsApp" required>
+          <select class="field" required>
+            <option value="">Concurso alvo</option>
+            <option>PMERJ</option>
+            <option>Polícia Civil</option>
+            <option>PRF</option>
+            <option>Polícia Penal</option>
+            <option>Polícia Federal</option>
+            <option>Guarda Municipal</option>
+          </select>
+          <select class="field" required>
+            <option value="">Turno preferido</option>
+            <option>Manhã</option>
+            <option>Tarde</option>
+            <option>Noite</option>
+          </select>
+          <button class="cta" type="submit">Quero me inscrever</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="right"></div>
+>>>>>>> Stashed changes
 </div>
 </body>
 </html>
