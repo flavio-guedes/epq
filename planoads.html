@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EPQ — Cronograma de Ads (R$200/semana)</title>
+<title>EPQ · Plano de Ads</title>
 <style>
   :root {
     --navy: #0a1628;
@@ -121,6 +121,17 @@
     font-size: 12px; color: var(--gray-400); text-align: center; margin-top: 30px; padding: 0 24px;
   }
 </style>
+
+<script>
+(function(){
+  try {
+    var key='epq-active-tab';
+    var tab=location.pathname.split('/').pop().replace(/\?.*$/,'').replace(/#.*$/,'');
+    if (tab) localStorage.setItem(key, tab);
+  } catch(e) {}
+})();
+</script>
+
 </head>
 <body>
 

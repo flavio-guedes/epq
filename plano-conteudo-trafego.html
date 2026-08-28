@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EPQ · Plano Estratégico de Conteúdo + Tráfego</title>
+<title>EPQ · Plano de Conteúdo & Tráfego</title>
 <style>
   :root {
     --bg:#0b1220;
@@ -63,6 +63,17 @@
   .link.primary { background: rgba(59,130,246,.14); color: #e8f1ff; border-color: rgba(59,130,246,.35); }
   .link.primary:hover { background: rgba(59,130,246,.25); }
 </style>
+
+<script>
+(function(){
+  try {
+    var key='epq-active-tab';
+    var tab=location.pathname.split('/').pop().replace(/\?.*$/,'').replace(/#.*$/,'');
+    if (tab) localStorage.setItem(key, tab);
+  } catch(e) {}
+})();
+</script>
+
 </head>
 <body>
   <div class="container">

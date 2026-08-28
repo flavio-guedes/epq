@@ -332,7 +332,7 @@ function renderList(){{
     if(it['Tipo de distribuição']==='Integrado') integ++; if(it['Formato']==='Campanha') camp++;
     const hasDetail=DETAIL_IDS.has(it['ID']);
     const stClass=(it['Status']||'Planejado').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'')==='publicado'?'st-positive':(it['Status']||'Planejado').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'')==='agendar'||(it['Status']||'Planejado').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'')==='aprovado'?'st-blue':'st-neutral';
-    const sendHref='painel-tarefas/tarefas.html';
+    const sendHref='tarefas.html';
     html += '<div class="sched-row'+(it['_is_past']?' is-past':'')+'" data-id="'+it['ID']+'">';
     html += '<div><button class="expand-btn'+(hasDetail?'':' disabled')+'" data-action="expand" data-id="'+it['ID']+'" '+(hasDetail?'':'disabled')+'>▼</button></div>';
     html += '<div class="sched-date"><span class="sched-dd">'+it['_date_dd']+'</span><span class="sched-dow">'+it['_date_dow']+'</span></div>';
