@@ -172,6 +172,34 @@
   .stat-box { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
   .stat-box h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 6px; }
   .stat-box .value { font-size: 22px; font-weight: 700; color: var(--blue-900); }
+
+  .agenda-filters { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px; }
+  .agenda-filters label { font-size:12px; color:var(--text-muted); font-weight:700; }
+  .agenda-filters select, .agenda-filters input[type="text"] { padding:8px 10px; border-radius:10px; border:1px solid var(--border); background:var(--surface); color:var(--text-primary); font-size:12px; }
+  .agenda-filters .tag { padding:6px 10px; border-radius:999px; font-size:11px; font-weight:700; border:1px solid var(--border); background:var(--surface); color:var(--text-secondary); cursor:pointer; user-select:none; }
+  .agenda-filters .tag.active { background:var(--blue-600); border-color:var(--blue-600); color:#ffffff; }
+
+  .month-grid { display:grid; grid-template-columns: repeat(7, 1fr); gap:10px; }
+  @media (max-width: 900px) { .month-grid { grid-template-columns: repeat(4, 1fr); } }
+  .month-col { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:12px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); min-height:100px; }
+  .month-col h4 { font-size:12px; font-weight:700; color:var(--blue-900); margin-bottom:8px; text-align:center; }
+  .month-col .day-row { font-size:11px; color:var(--text-muted); text-align:center; margin-bottom:8px; font-weight:700; }
+  .month-col .ev { background:var(--blue-50); border:1px solid var(--border); border-radius:10px; padding:8px; margin-bottom:8px; }
+  .month-col .ev .time { font-size:11px; font-weight:700; color:var(--blue-800); margin-bottom:4px; }
+  .month-col .ev .title { font-size:12px; color:var(--text-secondary); line-height:1.35; }
+  .month-col .ev .tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
+  .month-col .ev .tag { padding:3px 8px; border-radius:999px; font-size:10px; font-weight:700; background:var(--blue-50); color:var(--blue-800); border:1px solid var(--border); }
+  .month-col .ev.p0 { border-left:3px solid #e11d48; background:#fff5f5; }
+  .month-col .ev.p0 .tag { background:#fff5f5; color:#881337; border-color:#fecdd3; }
+  .month-col .ev.p1 { border-left:3px solid var(--blue-600); }
+  .month-col .ev.p2 { border-left:3px solid #15803d; background:#f0fff4; }
+  .month-col .ev.p2 .tag { background:#f0fff4; color:#14532d; border-color:#bbf7d0; }
+
+  .agenda-list { margin-top:12px; }
+  .agenda-list .ev { display:flex; gap:12px; align-items:baseline; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:10px 12px; margin-bottom:8px; }
+  .agenda-list .time { font-size:12px; font-weight:700; color:var(--blue-800); min-width:110px; }
+  .agenda-list .title { font-size:13px; color:var(--text-secondary); }
+  .agenda-list .tags { display:flex; gap:6px; flex-wrap:wrap; margin-left:auto; }
 </style>
 </head>
 <body>
@@ -410,132 +438,35 @@
     </div>
 
     <!-- AGENDA -->
-    <div id="agenda" class="panel">
-      <div class="day">
-        <h2>Segunda</h2>
-        <div class="meta">Foco: Guardas + Captação</div>
-        <div class="goal"><strong>Meta do dia</strong><p>Estruturar oferta Guardas e iniciar prospecção qualificada</p></div>
-        <div class="time-block"><div class="time">09:00 - 09:30</div><div class="time-desc"><span class="highlight">P0 Guardas</span>: definir oferta, benefícios e condições</div></div>
-        <div class="time-block"><div class="time">09:30 - 10:00</div><div class="time-desc"><span class="highlight">P1 Campanha</span>: rascunhar criativos e argumentos Guardas</div></div>
-        <div class="time-block"><div class="time">10:00 - 10:30</div><div class="time-desc"><span class="highlight">P0 Prospecção</span>: montar lista de leads Guardas e disparar abordagens</div></div>
-        <div class="time-block"><div class="time">10:30 - 11:00</div><div class="time-desc"><span class="highlight">P1 EPQ</span>: checar métricas da campanha e ajustar anúncios</div></div>
-        <div class="time-block"><div class="time">11:00 - 12:00</div><div class="time-desc"><span class="highlight">P0 Follow-up</span>: responder interessados Guardas e agendar atendimentos</div></div>
-        <div class="time-block"><div class="time">12:00 - 13:00</div><div class="time-desc">Almoço</div></div>
-        <div class="time-block"><div class="time">13:00 - 13:30</div><div class="time-desc"><span class="highlight">P1 Apoio EPQ</span>: validar landing/formulário e WhatsApp</div></div>
-        <div class="time-block"><div class="time">13:30 - 14:00</div><div class="time-desc"><span class="highlight">P1 Conteúdo</span>: agendar posts de conversão Guardas</div></div>
-        <div class="time-block"><div class="time">14:00 - 15:00</div><div class="time-desc"><span class="highlight">P0 Atendimento</span>: ligações/WhatsApp qualificação Guardas</div></div>
-        <div class="time-block"><div class="time">15:00 - 15:30</div><div class="time-desc"><span class="highlight">P1 Ecossistema</span>: mapear integrações úteis para captação</div></div>
-        <div class="time-block"><div class="time">15:30 - 16:30</div><div class="time-desc"><span class="highlight">P0 Prospecção</span>: follow-up e próximos passos Guardas</div></div>
-        <div class="time-block"><div class="time">16:30 - 17:30</div><div class="time-desc"><span class="highlight">P0 Oferta</span>: montar proposta/página Guardas</div></div>
-        <div class="time-block"><div class="time">17:30 - 18:00</div><div class="time-desc"><span class="highlight">P1 Revisão</span>: revisar status e agenda do dia seguinte</div></div>
+      <div id="month-agenda" class="panel open">
+        <div class="agenda-filters">
+          <label for="month-select">Mês:</label>
+          <select id="month-select" onchange="renderMonthAgenda()">
+            <option value="9" selected>Setembro/2026</option>
+          </select>
+          <label for="tag-select">Filtrar por tag:</label>
+          <select id="tag-select" onchange="renderMonthAgenda()">
+            <option value="all" selected>Todas</option>
+            <option value="P0">P0</option>
+            <option value="P1">P1</option>
+            <option value="P2">P2</option>
+            <option value="Prospecção">Prospecção</option>
+            <option value="Follow-up">Follow-up</option>
+            <option value="Atendimento">Atendimento</option>
+            <option value="EPQ">EPQ</option>
+            <option value="Conteúdo">Conteúdo</option>
+            <option value="Revisão">Revisão</option>
+            <option value="Organização">Organização</option>
+            <option value="Descanso">Descanso</option>
+          </select>
+          <button onclick="clearAgendaFilters()" style="padding:8px 10px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;font-weight:700;font-size:12px;">Limpar filtros</button>
+        </div>
+        <div id="month-grid-container" class="month-grid"></div>
+        <div id="agenda-list-container" class="agenda-list"></div>
       </div>
+    </div>
 
-      <div class="day">
-        <h2>Terça</h2>
-        <div class="meta">Foco: PMERJ + Captação</div>
-        <div class="goal"><strong>Meta do dia</strong><p>Avançar estrutura comercial da PMERJ e ampliar prospecção</p></div>
-        <div class="time-block"><div class="time">09:00 - 09:30</div><div class="time-desc"><span class="highlight">P0 PMERJ</span>: definir oferta e diferenciais</div></div>
-        <div class="time-block"><div class="time">09:30 - 10:00</div><div class="time-desc"><span class="highlight">P1 Campanha</span>: rascunhar criativos e roteiro PMERJ</div></div>
-        <div class="time-block"><div class="time">10:00 - 10:30</div><div class="time-desc"><span class="highlight">P0 Prospecção</span>: filtrar leads PMERJ e iniciar abordagens</div></div>
-        <div class="time-block"><div class="time">10:30 - 11:00</div><div class="time-desc"><span class="highlight">P1 EPQ</span>: ajustar público, ver métricas e orçamento</div></div>
-        <div class="time-block"><div class="time">11:00 - 12:00</div><div class="time-desc"><span class="highlight">P0 Follow-up</span>: responder contatos e agendar chamadas PMERJ</div></div>
-        <div class="time-block"><div class="time">12:00 - 13:00</div><div class="time-desc">Almoço</div></div>
-        <div class="time-block"><div class="time">13:00 - 13:30</div><div class="time-desc"><span class="highlight">P1 Página/Form</span>: revisar estrutura de conversão PMERJ</div></div>
-        <div class="time-block"><div class="time">13:30 - 14:00</div><div class="time-desc"><span class="highlight">P1 Conteúdo</span>: preparar post/roteiro PMERJ</div></div>
-        <div class="time-block"><div class="time">14:00 - 15:00</div><div class="time-desc"><span class="highlight">P0 Atendimento</span>: atendimento leads PMERJ</div></div>
-        <div class="time-block"><div class="time">15:00 - 15:30</div><div class="time-desc"><span class="highlight">P1 Ecossistema</span>: revisar integrações que ajudem vendas</div></div>
-        <div class="time-block"><div class="time">15:30 - 16:30</div><div class="time-desc"><span class="highlight">P0 Prospecção</span>: follow-up frios e quentes PMERJ</div></div>
-        <div class="time-block"><div class="time">16:30 - 17:30</div><div class="time-desc"><span class="highlight">P0 Oferta</span>: ajustar oferta e página PMERJ</div></div>
-        <div class="time-block"><div class="time">17:30 - 18:00</div><div class="time-desc"><span class="highlight">P1 Revisão</span>: revisar status e próximos passos</div></div>
-      </div>
-
-      <div class="day">
-        <h2>Quarta</h2>
-        <div class="meta">Foco: Básica Concursos + Captação</div>
-        <div class="goal"><strong>Meta do dia</strong><p>Estruturar oferta da Básica e iniciar captação</p></div>
-        <div class="time-block"><div class="time">09:00 - 09:30</div><div class="time-desc"><span class="highlight">P0 Básica</span>: definir oferta, cronograma e valor</div></div>
-        <div class="time-block"><div class="time">09:30 - 10:00</div><div class="time-desc"><span class="highlight">P1 Campanha</span>: rascunhar criativos Básica</div></div>
-        <div class="time-block"><div class="time">10:00 - 10:30</div><div class="time-desc"><span class="highlight">P0 Prospecção</span>: montar leads Básica e disparar abordagens</div></div>
-        <div class="time-block"><div class="time">10:30 - 11:00</div><div class="time-desc"><span class="highlight">P1 EPQ</span>: checar desempenho das campanhas e ajustar</div></div>
-        <div class="time-block"><div class="time">11:00 - 12:00</div><div class="time-desc"><span class="highlight">P0 Follow-up</span>: responder e qualificar leads Básica</div></div>
-        <div class="time-block"><div class="time">12:00 - 13:00</div><div class="time-desc">Almoço</div></div>
-        <div class="time-block"><div class="time">13:00 - 13:30</div><div class="time-desc"><span class="highlight">P1 Form/WhatsApp</span>: revisar formulário e mensagens de atendimento</div></div>
-        <div class="time-block"><div class="time">13:30 - 14:00</div><div class="time-desc"><span class="highlight">P1 Conteúdo</span>: agendar post de conversão Básica</div></div>
-        <div class="time-block"><div class="time">14:00 - 15:00</div><div class="time-desc"><span class="highlight">P0 Atendimento</span>: atendimento leads Básica</div></div>
-        <div class="time-block"><div class="time">15:00 - 15:30</div><div class="time-desc"><span class="highlight">P2 Manutenção</span>: agrupar tarefas leves e burocráticas</div></div>
-        <div class="time-block"><div class="time">15:30 - 16:30</div><div class="time-desc"><span class="highlight">P0 Prospecção</span>: follow-up e próximos passos Básica</div></div>
-        <div class="time-block"><div class="time">16:30 - 17:30</div><div class="time-desc"><span class="highlight">P0 Oferta</span>: ajustar página/proposta Básica</div></div>
-        <div class="time-block"><div class="time">17:30 - 18:00</div><div class="time-desc"><span class="highlight">P1 Revisão</span>: revisar status e atualizar pipeline</div></div>
-      </div>
-
-      <div class="day">
-        <h2>Quinta</h2>
-        <div class="meta">Foco: Guardas/PMERJ + Conversão</div>
-        <div class="goal"><strong>Meta do dia</strong><p>Acelerar follow-ups e fechar matrículas/convites para atendimento</p></div>
-        <div class="time-block"><div class="time">09:00 - 09:30</div><div class="time-desc"><span class="highlight">P0 Guardas/PMERJ</span>: revisar respostas e priorizar quentes</div></div>
-        <div class="time-block"><div class="time">09:30 - 10:00</div><div class="time-desc"><span class="highlight">P0 Prospecção</span>: disparar abordagens para quentes/mornos</div></div>
-        <div class="time-block"><div class="time">10:00 - 10:30</div><div class="time-desc"><span class="highlight">P0 Follow-up</span>: follow-up pós-abordagem e reagendamento</div></div>
-        <div class="time-block"><div class="time">10:30 - 11:00</div><div class="time-desc"><span class="highlight">P1 EPQ</span>: checar resultados das campanhas e ajustar</div></div>
-        <div class="time-block"><div class="time">11:00 - 12:00</div><div class="time-desc"><span class="highlight">P0 Atendimento</span>: calls/WhatsApp qualificação Guardas/PMERJ</div></div>
-        <div class="time-block"><div class="time">12:00 - 13:00</div><div class="time-desc">Almoço</div></div>
-        <div class="time-block"><div class="time">13:00 - 13:30</div><div class="time-desc"><span class="highlight">P1 Apoio EPQ</span>: responder demandas e validar anúncios</div></div>
-        <div class="time-block"><div class="time">13:30 - 14:00</div><div class="time-desc"><span class="highlight">P1 Conteúdo</span>: revisar copy e agendar peça</div></div>
-        <div class="time-block"><div class="time">14:00 - 15:00</div><div class="time-desc"><span class="highlight">P0 Atendimento</span>: follow-up pós-atendimento e oferta</div></div>
-        <div class="time-block"><div class="time">15:00 - 15:30</div><div class="time-desc"><span class="highlight">P1 Ecossistema</span>: revisar automações úteis para prospecção</div></div>
-        <div class="time-block"><div class="time">15:30 - 17:00</div><div class="time-desc"><span class="highlight">P0 Prospecção</span>: follow-up e encaminhamento para matrícula</div></div>
-        <div class="time-block"><div class="time">17:00 - 18:00</div><div class="time-desc"><span class="highlight">P1 CRM</span>: registrar status, notas e próximos passos</div></div>
-      </div>
-
-      <div class="day">
-        <h2>Sexta</h2>
-        <div class="meta">Foco: Básica/PMERJ + Fechamento</div>
-        <div class="goal"><strong>Meta do dia</strong><p>Consolidar captação da semana e preparar próximos passos</p></div>
-        <div class="time-block"><div class="time">09:00 - 09:30</div><div class="time-desc"><span class="highlight">P0 Básica/PMERJ</span>: checar respostas e priorizar atendimentos</div></div>
-        <div class="time-block"><div class="time">09:30 - 10:00</div><div class="time-desc"><span class="highlight">P0 Prospecção</span>: abordar leads pendentes e atualizar pipeline</div></div>
-        <div class="time-block"><div class="time">10:00 - 10:30</div><div class="time-desc"><span class="highlight">P0 Follow-up</span>: follow-up final antes do fim de semana</div></div>
-        <div class="time-block"><div class="time">10:30 - 11:00</div><div class="time-desc"><span class="highlight">P1 EPQ</span>: alinhar resultados e próximas otimizações</div></div>
-        <div class="time-block"><div class="time">11:00 - 12:00</div><div class="time-desc"><span class="highlight">P0 Atendimento</span>: calls/WhatsApp e encaminhamento para matrícula</div></div>
-        <div class="time-block"><div class="time">12:00 - 13:00</div><div class="time-desc">Almoço</div></div>
-        <div class="time-block"><div class="time">13:00 - 13:30</div><div class="time-desc"><span class="highlight">P1 Oferta</span>: ajustar oferta/proposta conforme objeções</div></div>
-        <div class="time-block"><div class="time">13:30 - 14:00</div><div class="time-desc"><span class="highlight">P1 Conteúdo</span>: revisar peça e agendar para semana</div></div>
-        <div class="time-block"><div class="time">14:00 - 15:00</div><div class="time-desc"><span class="highlight">P0 Matrícula</span>: fechar encaminhamentos e confirmar entradas</div></div>
-        <div class="time-block"><div class="time">15:00 - 15:30</div><div class="time-desc"><span class="highlight">P2 Manutenção</span>: revisar ajustes pendentes não críticos</div></div>
-        <div class="time-block"><div class="time">15:30 - 17:00</div><div class="time-desc"><span class="highlight">P0 Prospecção</span>: follow-up e planejamento de segunda</div></div>
-        <div class="time-block"><div class="time">17:00 - 18:00</div><div class="time-desc"><span class="highlight">P1 CRM</span>: exportar base e registrar ganhos/perdidos</div></div>
-      </div>
-
-      <div class="day">
-        <h2>Sábado</h2>
-        <div class="meta">Foco: Revisão + Recuperação</div>
-        <div class="goal"><strong>Meta do dia</strong><p>Fechar pontos críticos e recuperar base para segunda</p></div>
-        <div class="time-block"><div class="time">09:00 - 09:30</div><div class="time-desc"><span class="highlight">P0 Follow-up</span>: responder leads pendentes</div></div>
-        <div class="time-block"><div class="time">09:30 - 10:00</div><div class="time-desc"><span class="highlight">P0 Prospecção</span>: follow-up quentes e reagendamento</div></div>
-        <div class="time-block"><div class="time">10:00 - 10:30</div><div class="time-desc"><span class="highlight">P1 EPQ</span>: checar campanhas e ajustar anúncios</div></div>
-        <div class="time-block"><div class="time">10:30 - 11:00</div><div class="time-desc"><span class="highlight">P1 Conteúdo</span>: revisar peças pendentes</div></div>
-        <div class="time-block"><div class="time">11:00 - 12:00</div><div class="time-desc"><span class="highlight">P0 Atendimento</span>: calls/WhatsApp e qualificação</div></div>
-        <div class="time-block"><div class="time">12:00 - 13:00</div><div class="time-desc">Almoço</div></div>
-        <div class="time-block"><div class="time">13:00 - 13:30</div><div class="time-desc"><span class="highlight">P1 Apoio EPQ</span>: responder demandas pontuais</div></div>
-        <div class="time-block"><div class="time">13:30 - 15:00</div><div class="time-desc"><span class="highlight">P0 Prospecção</span>: follow-up semanal e limpeza de base</div></div>
-        <div class="time-block"><div class="time">15:00 - 16:00</div><div class="time-desc"><span class="highlight">P2 Manutenção</span>: organização leve e backups</div></div>
-        <div class="time-block"><div class="time">16:00 - 17:00</div><div class="time-desc"><span class="highlight">P1 Revisão</span>: validar ajustes e métricas</div></div>
-        <div class="time-block"><div class="time">17:00 - 18:00</div><div class="time-desc"><span class="highlight">P1 Planejamento</span>: preparar estrutura da próxima semana</div></div>
-      </div>
-
-      <div class="day">
-        <h2>Domingo</h2>
-        <div class="meta">Foco: Revisão + Descanso</div>
-        <div class="goal"><strong>Meta do dia</strong><p>Recuperar energia e replanejar a semana</p></div>
-        <div class="time-block"><div class="time">09:00 - 09:30</div><div class="time-desc"><span class="highlight">Revisar</span> <a href="https://flavio-guedes.github.io/portfolio/relatorio.html" target="_blank">relatório</a></div></div>
-        <div class="time-block"><div class="time">09:30 - 10:30</div><div class="time-desc"><span class="highlight">P0 Planejamento</span>: definir foco da semana seguinte</div></div>
-        <div class="time-block"><div class="time">10:30 - 11:30</div><div class="time-desc"><span class="highlight">P2 Manutenção</span>: revisar pendências leves</div></div>
-        <div class="time-block"><div class="time">11:30 - 12:30</div><div class="time-desc"><span class="highlight">Backup</span>: backup e organização</div></div>
-        <div class="time-block"><div class="time">12:30 - 13:30</div><div class="time-desc">Almoço</div></div>
-        <div class="time-block"><div class="time">13:30 - 14:30</div><div class="time-desc"><span class="highlight">Revisão</span>: validar ajustes e links</div></div>
-        <div class="time-block"><div class="time">14:30 - 16:30</div><div class="time-desc"><span class="highlight">P2 Manutenção</span>: reduzir ruídos e arquivar pendências</div></div>
-        <div class="time-block"><div class="time">16:30 - 17:30</div><div class="time-desc"><span class="highlight">Descanso</span>: tempo livre</div></div>
-        <div class="time-block"><div class="time">17:30 - 18:00</div><div class="time-desc"><span class="highlight">Revisão</span>: revisar agenda e prioridades</div></div>
-      </div>
-    </div>    </div>
+    <!-- METAS -->    </div>
 
     <!-- METAS -->
     <div id="goals" class="panel">
@@ -758,6 +689,56 @@
           </div>
         </div>
       </div>
+      <div id="agenda-filter-pipe-projetos" style="margin-top:14px;">
+        <div class="section" style="padding:14px;">
+          <h2 style="font-size:15px;font-weight:700;color:var(--blue-900);margin-bottom:8px;">Agenda filtrada — Projetos</h2>
+          <div class="agenda-filters">
+            <label>Filtro rápido:</label>
+            <button class="tag active" onclick="filterAgendaByTab('pipe-projetos', 'all', this)">Todas</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-projetos', 'Organização', this)">Organização</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-projetos', 'Revisão', this)">Revisão</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-projetos', 'Planejamento', this)">Planejamento</button>
+          </div>
+          <div id="agenda-list-pipe-projetos" class="agenda-list"></div>
+        </div>
+      </div>
+
+      <div id="agenda-filter-pipe-crm" style="margin-top:14px;">
+        <div class="section" style="padding:14px;">
+          <h2 style="font-size:15px;font-weight:700;color:var(--blue-900);margin-bottom:8px;">Agenda filtrada — CRM/Atendimento</h2>
+          <div class="agenda-filters">
+            <label>Filtro rápido:</label>
+            <button class="tag active" onclick="filterAgendaByTab('pipe-crm', 'all', this)">Todas</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-crm', 'Atendimento', this)">Atendimento</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-crm', 'Follow-up', this)">Follow-up</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-crm', 'Prospecção', this)">Prospecção</button>
+          </div>
+          <div id="agenda-list-pipe-crm" class="agenda-list"></div>
+        </div>
+      </div>
+
+      <div id="agenda-filter-pipe-geral" style="margin-top:14px;">
+        <div class="section" style="padding:14px;">
+          <h2 style="font-size:15px;font-weight:700;color:var(--blue-900);margin-bottom:8px;">Agenda filtrada — Todas as frentes</h2>
+          <div class="agenda-filters">
+            <label>Filtro rápido:</label>
+            <button class="tag active" onclick="filterAgendaByTab('pipe-geral', 'all', this)">Todas</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'P0', this)">P0</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'P1', this)">P1</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'P2', this)">P2</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'Prospecção', this)">Prospecção</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'Follow-up', this)">Follow-up</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'Atendimento', this)">Atendimento</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'EPQ', this)">EPQ</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'Conteúdo', this)">Conteúdo</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'Revisão', this)">Revisão</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'Organização', this)">Organização</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'Descanso', this)">Descanso</button>
+          </div>
+          <div id="agenda-list-pipe-geral" class="agenda-list"></div>
+        </div>
+      </div>
+
 
       <div id="pipe-linkedin" class="sub-panel">
         <div class="crm-board">
@@ -921,6 +902,71 @@
         </div>
       </div>
     </div>
+      <div id="agenda-filter-pipe-outros" style="margin-top:14px;">
+        <div class="section" style="padding:14px;">
+          <h2 style="font-size:15px;font-weight:700;color:var(--blue-900);margin-bottom:8px;">Agenda filtrada — Outros fluxos</h2>
+          <div class="agenda-filters">
+            <label>Filtro rápido:</label>
+            <button class="tag active" onclick="filterAgendaByTab('pipe-outros', 'all', this)">Todas</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-outros', 'Revisão', this)">Revisão</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-outros', 'Organização', this)">Organização</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-outros', 'Planejamento', this)">Planejamento</button>
+          </div>
+          <div id="agenda-list-pipe-outros" class="agenda-list"></div>
+        </div>
+      </div>
+
+      <div id="agenda-filter-pipe-portfolio" style="margin-top:14px;">
+        <div class="section" style="padding:14px;">
+          <h2 style="font-size:15px;font-weight:700;color:var(--blue-900);margin-bottom:8px;">Agenda filtrada — Portfolio</h2>
+          <div class="agenda-filters">
+            <label>Filtro rápido:</label>
+            <button class="tag active" onclick="filterAgendaByTab('pipe-portfolio', 'all', this)">Todas</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-portfolio', 'Revisão', this)">Revisão</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-portfolio', 'Organização', this)">Organização</button>
+          </div>
+          <div id="agenda-list-pipe-portfolio" class="agenda-list"></div>
+        </div>
+      </div>
+
+      <div id="agenda-filter-pipe-epq" style="margin-top:14px;">
+        <div class="section" style="padding:14px;">
+          <h2 style="font-size:15px;font-weight:700;color:var(--blue-900);margin-bottom:8px;">Agenda filtrada — EPQ</h2>
+          <div class="agenda-filters">
+            <label>Filtro rápido:</label>
+            <button class="tag active" onclick="filterAgendaByTab('pipe-epq', 'all', this)">Todas</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-epq', 'EPQ', this)">EPQ</button>
+          </div>
+          <div id="agenda-list-pipe-epq" class="agenda-list"></div>
+        </div>
+      </div>
+
+      <div id="agenda-filter-pipe-conteudo" style="margin-top:14px;">
+        <div class="section" style="padding:14px;">
+          <h2 style="font-size:15px;font-weight:700;color:var(--blue-900);margin-bottom:8px;">Agenda filtrada — Conteúdo</h2>
+          <div class="agenda-filters">
+            <label>Filtro rápido:</label>
+            <button class="tag active" onclick="filterAgendaByTab('pipe-conteudo', 'all', this)">Todas</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-conteudo', 'Conteúdo', this)">Conteúdo</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-conteudo', 'EPQ', this)">EPQ</button>
+          </div>
+          <div id="agenda-list-pipe-conteudo" class="agenda-list"></div>
+        </div>
+      </div>
+
+      <div id="agenda-filter-pipe-linkedin" style="margin-top:14px;">
+        <div class="section" style="padding:14px;">
+          <h2 style="font-size:15px;font-weight:700;color:var(--blue-900);margin-bottom:8px;">Agenda filtrada — LinkedIn/Prospecção</h2>
+          <div class="agenda-filters">
+            <label>Filtro rápido:</label>
+            <button class="tag active" onclick="filterAgendaByTab('pipe-linkedin', 'all', this)">Todas</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-linkedin', 'Prospecção', this)">Prospecção</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-linkedin', 'Follow-up', this)">Follow-up</button>
+          </div>
+          <div id="agenda-list-pipe-linkedin" class="agenda-list"></div>
+        </div>
+      </div>
+
 
     <!-- CONTEÚDO -->
     <div id="content" class="panel">
@@ -1126,5 +1172,111 @@
     }
 
   </script>
+
+<script>
+function renderMonthAgenda() {
+  const month = parseInt(document.getElementById('month-select').value);
+  const tag = document.getElementById('tag-select').value;
+  const year = 2026;
+  const container = document.getElementById('month-grid-container');
+  const listContainer = document.getElementById('agenda-list-container');
+  container.innerHTML = '';
+  listContainer.innerHTML = '';
+
+  const monthNames = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  document.querySelector('header p').textContent = 'Agenda mensal — ' + monthNames[month-1] + '/' + year;
+
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const weekDays = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+  const firstWeekday = new Date(year, month-1, 1).getDay(); // 0=dom
+  const startOffset = (firstWeekday + 6) % 7; // 0=segunda
+
+  // Dummy grid for days
+  const totalCells = Math.ceil((startOffset + daysInMonth) / 7) * 7;
+  for (let i=0; i<startOffset; i++) {
+    const empty = document.createElement('div');
+    empty.className = 'month-col';
+    container.appendChild(empty);
+  }
+  for (let day=1; day<=daysInMonth; day++) {
+    const col = document.createElement('div');
+    col.className = 'month-col';
+    const date = new Date(year, month-1, day);
+    const weekday = date.getDay();
+    const dayLabel = document.createElement('div');
+    dayLabel.className = 'day-row';
+    dayLabel.textContent = weekDays[weekday] + ' ' + day;
+    col.appendChild(dayLabel);
+    const key = month + ',' + day;
+    const evts = window.__agendaData && window.__agendaData[key] ? window.__agendaData[key] : [];
+    evts.forEach(ev => {
+      const [time, title, tags] = ev;
+      if (tag !== 'all' && !tags.includes(tag)) return;
+      const card = document.createElement('div');
+      card.className = 'ev ' + (tags[0] || '');
+      card.innerHTML = '<div class="time">' + time + '</div>' +
+                       '<div class="title">' + title + '</div>' +
+                       '<div class="tags">' + tags.map(t => '<span class="tag">' + t + '</span>').join('') + '</div>';
+      col.appendChild(card);
+      // also append to list view
+      const row = document.createElement('div');
+      row.className = 'ev ' + (tags[0] || '');
+      row.innerHTML = '<div class="time">' + time + '</div>' +
+                      '<div class="title">' + title + ' (' + weekDays[weekday] + ' ' + day + ')</div>' +
+                      '<div class="tags">' + tags.map(t => '<span class="tag">' + t + '</span>').join('') + '</div>';
+      listContainer.appendChild(row);
+    });
+    container.appendChild(col);
+  }
+}
+
+function clearAgendaFilters() {
+  document.getElementById('tag-select').value = 'all';
+  renderMonthAgenda();
+}
+window.__agendaData = {"9,1": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,2": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,3": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,4": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,7": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,8": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,9": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,10": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,11": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,14": [["08:00 - 10:00", "PMERJ Manhã (aula)", ["P0", "PMERJ", "Manhã"]], ["10:00 - 12:00", "Básica Manhã (aula)", ["P0", "Básica", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 15:00", "GCM Manhã/Noite (aula)", ["P0", "GCM", "Tarde"]], ["15:00 - 17:00", "ESA/EAM/EEAR Manhã/Noite (aula)", ["P0", "ESA", "Tarde"]], ["17:00 - 18:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]]], "9,15": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,16": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,17": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,18": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,21": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,22": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,23": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,24": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,25": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,28": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,29": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,30": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,5": [["09:00 - 09:30", "Revisão geral", ["P1", "Revisão", "Manhã"]], ["09:30 - 10:30", "Prospecção leve e follow-up", ["P0", "Prospecção", "Manhã"]], ["10:30 - 11:00", "Conteúdo pendente", ["P1", "Conteúdo", "Manhã"]], ["11:00 - 12:00", "Atendimento rápido", ["P0", "Atendimento", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Revisão de métricas", ["P1", "EPQ", "Tarde"]], ["14:00 - 15:00", "Planejamento semanal", ["P1", "Planejamento", "Tarde"]], ["15:00 - 16:00", "Organização leve", ["P2", "Organização", "Tarde"]], ["16:00 - 17:00", "Follow-up final", ["P0", "Follow-up", "Tarde"]], ["17:00 - 18:00", "Descanso/Reflexão", ["P2", "Descanso", "Tarde"]]], "9,12": [["08:00 - 10:00", "PMERJ Sábado (aula)", ["P0", "PMERJ", "Sábado"]], ["10:00 - 12:00", "Básica Sábado (aula)", ["P0", "Básica", "Sábado"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 15:00", "Atendimento pós-aula", ["P0", "Atendimento", "Tarde"]], ["15:00 - 17:00", "Follow-up matrículas", ["P0", "Follow-up", "Tarde"]]], "9,19": [["08:00 - 10:00", "GCM Sábado (aula)", ["P0", "GCM", "Sábado"]], ["10:00 - 12:00", "Atendimento e follow-up", ["P0", "Atendimento", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 15:00", "Follow-up e matrículas", ["P0", "Follow-up", "Tarde"]], ["15:00 - 17:00", "Revisão e fechamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Planejamento próxima semana", ["P1", "Planejamento", "Tarde"]]], "9,26": [["09:00 - 09:30", "Revisão geral", ["P1", "Revisão", "Manhã"]], ["09:30 - 10:30", "Prospecção leve e follow-up", ["P0", "Prospecção", "Manhã"]], ["10:30 - 11:00", "Conteúdo pendente", ["P1", "Conteúdo", "Manhã"]], ["11:00 - 12:00", "Atendimento rápido", ["P0", "Atendimento", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Revisão de métricas", ["P1", "EPQ", "Tarde"]], ["14:00 - 15:00", "Planejamento semanal", ["P1", "Planejamento", "Tarde"]], ["15:00 - 16:00", "Organização leve", ["P2", "Organização", "Tarde"]], ["16:00 - 17:00", "Follow-up final", ["P0", "Follow-up", "Tarde"]], ["17:00 - 18:00", "Descanso/Reflexão", ["P2", "Descanso", "Tarde"]]], "9,6": [["09:00 - 10:00", "Revisão semanal leve", ["P2", "Revisão", "Manhã"]], ["10:00 - 11:00", "Planejamento semanal", ["P1", "Planejamento", "Manhã"]], ["11:00 - 12:00", "Backup e organização", ["P2", "Organização", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Descanso/Reflexão", ["P2", "Descanso", "Tarde"]], ["14:00 - 15:00", "Revisão de links e ajustes", ["P1", "Revisão", "Tarde"]], ["15:00 - 16:00", "Preparação para segunda", ["P1", "Planejamento", "Tarde"]], ["16:00 - 17:00", "Tempo livre", ["P2", "Descanso", "Tarde"]], ["17:00 - 18:00", "Revisão final", ["P2", "Revisão", "Tarde"]]], "9,13": [["09:00 - 10:00", "Revisão semanal leve", ["P2", "Revisão", "Manhã"]], ["10:00 - 11:00", "Planejamento semanal", ["P1", "Planejamento", "Manhã"]], ["11:00 - 12:00", "Backup e organização", ["P2", "Organização", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Descanso/Reflexão", ["P2", "Descanso", "Tarde"]], ["14:00 - 15:00", "Revisão de links e ajustes", ["P1", "Revisão", "Tarde"]], ["15:00 - 16:00", "Preparação para segunda", ["P1", "Planejamento", "Tarde"]], ["16:00 - 17:00", "Tempo livre", ["P2", "Descanso", "Tarde"]], ["17:00 - 18:00", "Revisão final", ["P2", "Revisão", "Tarde"]]], "9,20": [["09:00 - 10:00", "Revisão semanal leve", ["P2", "Revisão", "Manhã"]], ["10:00 - 11:00", "Planejamento semanal", ["P1", "Planejamento", "Manhã"]], ["11:00 - 12:00", "Backup e organização", ["P2", "Organização", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Descanso/Reflexão", ["P2", "Descanso", "Tarde"]], ["14:00 - 15:00", "Revisão de links e ajustes", ["P1", "Revisão", "Tarde"]], ["15:00 - 16:00", "Preparação para segunda", ["P1", "Planejamento", "Tarde"]], ["16:00 - 17:00", "Tempo livre", ["P2", "Descanso", "Tarde"]], ["17:00 - 18:00", "Revisão final", ["P2", "Revisão", "Tarde"]]], "9,27": [["09:00 - 10:00", "Revisão semanal leve", ["P2", "Revisão", "Manhã"]], ["10:00 - 11:00", "Planejamento semanal", ["P1", "Planejamento", "Manhã"]], ["11:00 - 12:00", "Backup e organização", ["P2", "Organização", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Descanso/Reflexão", ["P2", "Descanso", "Tarde"]], ["14:00 - 15:00", "Revisão de links e ajustes", ["P1", "Revisão", "Tarde"]], ["15:00 - 16:00", "Preparação para segunda", ["P1", "Planejamento", "Tarde"]], ["16:00 - 17:00", "Tempo livre", ["P2", "Descanso", "Tarde"]], ["17:00 - 18:00", "Revisão final", ["P2", "Revisão", "Tarde"]]]};
+renderMonthAgenda();
+</script>
+<script>
+function filterAgendaByTab(tabId, tag, btn) {
+  const list = document.getElementById('agenda-list-' + tabId);
+  if (!list) return;
+  const buttons = btn.parentElement.querySelectorAll('.tag');
+  buttons.forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const data = window.__agendaData || {};
+  let items = [];
+  Object.keys(data).forEach(key => {
+    data[key].forEach(ev => {
+      const [time, title, tags] = ev;
+      if (tag === 'all' || tags.includes(tag)) {
+        const parts = key.split(',');
+        items.push({ month: parseInt(parts[0]), day: parseInt(parts[1]), time, title, tags });
+      }
+    });
+  });
+
+  items.sort((a, b) => {
+    if (a.month !== b.month) return a.month - b.month;
+    return a.day - b.day;
+  });
+
+  list.innerHTML = '';
+  if (items.length === 0) {
+    list.innerHTML = '<div class="ev" style="color:var(--text-muted);font-size:12px;">Nenhum evento encontrado para este filtro.</div>';
+    return;
+  }
+
+  items.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'ev ' + (item.tags[0] || '');
+    row.innerHTML = '<div class="time">' + item.time + '</div>' +
+                    '<div class="title">' + item.title + ' (' + item.day + '/' + item.month + ')</div>' +
+                    '<div class="tags">' + item.tags.map(t => '<span class="tag">' + t + '</span>').join('') + '</div>';
+    list.appendChild(row);
+  });
+}
+</script>
 </body>
 </html>
