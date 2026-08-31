@@ -353,6 +353,23 @@
     line-height:1.6;
     color:var(--silver-300);
   }
+  .success-next{
+    list-style:none;
+    padding:0;
+    margin:18px 0 8px;
+    display:inline-block;
+    text-align:left;
+  }
+  .success-next li{
+    font-size:15px;
+    color:var(--silver-200);
+    line-height:1.7;
+  }
+  .success-cta{
+    font-size:14px;
+    color:var(--accent);
+    margin-top:6px;
+  }
 
   /* ===== Footer ===== */
   .site-footer{
@@ -376,9 +393,9 @@
     to{ opacity:1; transform:translateY(0); }
   }
 
-  /* ===== Desktop: form mais estreito, não domina a tela ===== */
+  /* ===== Desktop: formulário alinhado à largura do conteúdo ===== */
   @media (min-width:1024px){
-    .form-card{ max-width:360px; margin-left:auto; }
+    .form-card{ max-width:none; margin-left:0; width:100%; }
   }
 
   /* Telas baixas (notebooks/monitores widescreen): reduz ainda mais respiros */
@@ -510,8 +527,14 @@
               <circle cx="26" cy="26" r="25" stroke="#34d399" stroke-width="2" opacity="0.4"/>
               <path d="M16 27L22.5 33.5L36 19" stroke="#34d399" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <h2>Inscrição realizada!</h2>
-            <p>Seus dados foram recebidos. Em breve você receberá as informações do Aulão.</p>
+            <h2>Inscrição confirmada!</h2>
+            <p>Recebemos seus dados para o Aulão EPQ. Guarde esta confirmação e fique atento às próximas mensagens com detalhes do evento.</p>
+            <ul class="success-next">
+              <li>Data: <strong>Sábado, 29 · 09h–12h</strong></li>
+              <li>Formato: <strong>Presencial / Online</strong></li>
+              <li>Assunto: <strong>Direito Penal + Administrativo</strong></li>
+            </ul>
+            <p class="success-cta">Se precisar de atendimento imediato, chame no WhatsApp.</p>
           </div>
         </div>
       </div>
