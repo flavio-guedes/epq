@@ -115,7 +115,6 @@
     gap:clamp(10px,1.8vh,20px);
     flex:none;
     width:100%;
-    max-width:520px;
     min-height:0;
     max-height:100%;
     overflow-y:auto;
@@ -376,9 +375,9 @@
     to{ opacity:1; transform:translateY(0); }
   }
 
-  /* ===== Desktop: form mais estreito, não domina a tela ===== */
+  /* ===== Desktop: formulário alinhado à largura do conteúdo ===== */
   @media (min-width:1024px){
-    .form-card{ max-width:360px; margin-left:auto; }
+    .form-card{ max-width:none; margin-left:0; }
   }
 
   /* Telas baixas (notebooks/monitores widescreen): reduz ainda mais respiros */
@@ -447,9 +446,8 @@
           </div>
         </div>
 
-        <div class="form-card">
-          <form id="inscricao-form" novalidate>
-            <h2>Garanta sua vaga</h2>
+        <form id="inscricao-form" class="form-card" novalidate>
+          <h2>Garanta sua vaga</h2>
 
             <div class="field">
               <label class="field-label" for="nome">Nome completo<span class="required-star" aria-hidden="true">*</span></label>
