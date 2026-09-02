@@ -121,6 +121,7 @@
     <div class="tabs">
       <button class="active" onclick="switchTab('e-strategy', this)">Estratégia</button>
       <button onclick="switchTab('e-structure', this)">Estrutura</button>
+      <button onclick="switchTab('e-contests', this)">Concursos</button>
       <button onclick="switchTab('e-creatives', this)">Criativos</button>
       <button onclick="switchTab('e-whatsapp', this)">WhatsApp</button>
       <button onclick="switchTab('e-class', this)">Aula</button>
@@ -173,6 +174,100 @@
         <p class="lead" style="margin-top:8px">Regra de captação por turma: ao menos 10 alunos por turma, com até 15 dias de antecedência da abertura.</p>
         <p class="meta">Geo-restrição obrigatória: Nilópolis, Mesquita, Guadalupe, Nova Iguaçu, Belford Roxo, Anchieta, São João, Éden, Ricardo de Albuquerque, Magalhães Bastos e Vila Militar. Sem isso, o algoritmo tende a trazer leads sem intenção de comparecer.</p>
         <p class="meta">Não criar estruturas separadas para cada turno. Tratar turno no criativo, no WhatsApp e no atendimento.</p>
+      </div>
+    </div>
+
+    <div id="e-contests" class="panel">
+      <div class="section">
+        <h2>Estratégia por concurso</h2>
+        <p class="meta">Usar estas regras como base operacional. Cada concurso vira um bloco próprio para evitar misturar intenção de compra, copy e remarketing.</p>
+        <div class="grid" style="margin-top:12px">
+          <div class="card">
+            <h4>GCM</h4>
+            <div class="value">Matrícula Premiada</div>
+            <p style="font-size:12.5px;color:#334155;line-height:1.5;margin-top:6px">Foco: inscrição, comparecimento e conversão. Usar prova social, dor e oportunidade.</p>
+          </div>
+          <div class="card">
+            <h4>PMERJ</h4>
+            <div class="value">Método + Data</div>
+            <p style="font-size:12.5px;color:#334155;line-height:1.5;margin-top:6px">Foco: confiança, preparação consistente e urgência de vaga/turma.</p>
+          </div>
+          <div class="card">
+            <h4>Outros</h4>
+            <div class="value">Replicar modelo</div>
+            <p style="font-size:12.5px;color:#334155;line-height:1.5;margin-top:6px">Foco: experimentação enxuta; só entrar se a conversão justificar.</p>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <h2>GCM</h2>
+        <p class="lead">Regra operacional:</p>
+        <p>Raio de captação focado nas imediações de <span class="lead">Nilópolis</span>, incluindo candidatos de outras cidades próximas que aceitem comparecer à EPQ.</p>
+        <h3>Campanha</h3>
+        <p>Objetivo: leads para WhatsApp. Não criar conjuntos por turno; tratar turno no atendimento e no script.</p>
+        <h3>Geo-restrição</h3>
+        <p>Nilópolis + regiões próximas à unidade. Se o algoritmo puxar leads sem intenção de comparecer, reduzir raio e/ou refinar público.</p>
+        <h3>Conjuntos</h3>
+        <p><span class="lead">Conjunto 01 — GCM | FRIO</span><br>Localização: mesma região. Público: amplo. Não usar interesses na fase inicial; deixar o algoritmo otimizar conversão.</p>
+        <ul>
+          <li>Oportunidade</li>
+          <li>Erro comum</li>
+          <li>Sonho/Farda</li>
+        </ul>
+        <p style="margin-top:10px"><span class="lead">Conjunto 02 — GCM | REMARKETING</span><br>Localização: mesma região.</p>
+        <ul>
+          <li>Engajamento Instagram/Facebook</li>
+          <li>Visualizadores de vídeo</li>
+          <li>Visitantes da landing page</li>
+          <li>Iniciadores de formulário</li>
+          <li>Conversas no WhatsApp sem conversão</li>
+        </ul>
+        <p style="margin-top:10px"><span class="lead">Anúncios de remarketing:</span></p>
+        <ul>
+          <li>Prova social</li>
+          <li>Valor da preparação</li>
+          <li>Oferta/Matrícula Premiada</li>
+        </ul>
+        <p class="meta" style="margin-top:10px">Excluir: leads/alunos já convertidos, quando possível.</p>
+      </div>
+      <div class="section">
+        <h2>PMERJ</h2>
+        <p class="lead">Regra operacional:</p>
+        <p>Tratar preparação como método de curto/médio prazo e usar data/turma como gatilho de ação.</p>
+        <h3>Campanha</h3>
+        <p>Objetivo: leads para WhatsApp ou landing page quando o volume de leads exigir qualificação.</p>
+        <h3>Geo-restrição</h3>
+        <p>Raio coerente com comparecimento à EPQ. Se a base PMERJ for fraca na região, reduzir para eixo mais forte e ajustar criativo para proximidade/rotina.</p>
+        <h3>Conjuntos</h3>
+        <p><span class="lead">Conjunto 01 — PMERJ | FRIO</span><br>Usar copy de método, consistência e início de turma. Priorizar datas próximas de abertura.</p>
+        <ul>
+          <li>Método/Consistência</li>
+          <li>Data certa</li>
+          <li>Prova social</li>
+        </ul>
+        <p style="margin-top:10px"><span class="lead">Conjunto 02 — PMERJ | REMARKETING</span><br>Usar para reativar interessados e pessoas que baixaram material ou interagiram.</p>
+        <ul>
+          <li>Prova social</li>
+          <li>Valor da preparação</li>
+          <li>Convite aula experimental</li>
+        </ul>
+      </div>
+      <div class="section">
+        <h2>Outros concursos</h2>
+        <p>Usar apenas se houver turma aberta e capacidade operacional.</p>
+        <h3>Regra de entrada</h3>
+        <ul>
+          <li>Verba disponível após PMERJ e GCM estarem atendidos.</li>
+          <li>Conversão previsível por WhatsApp ou LP.</li>
+          <li>Prazo de captação claro.</li>
+        </ul>
+        <h3>Estrutura mínima</h3>
+        <p>Repetir modelo enxuto: 1 campanha fria + 1 campanha remarketing, no máximo.</p>
+        <ul>
+          <li>1 criativo focado em vaga/turma/data</li>
+          <li>1 criativo de prova social</li>
+          <li>1 criativo de oferta</li>
+        </ul>
       </div>
     </div>
 
