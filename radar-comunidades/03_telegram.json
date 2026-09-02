@@ -1,0 +1,121 @@
+{
+  "query": "grupos telegram concursos militares RJ",
+  "terms": [
+    "PMERJ",
+    "CBMERJ",
+    "concurso militar RJ",
+    "ESA",
+    "EsPCEx"
+  ],
+  "total_items": 18,
+  "groups": [
+    {
+      "username": "concursosmilitareschat",
+      "url": "https://t.me/concursosmilitareschat",
+      "chat_id": "",
+      "source_term": "concurso militar RJ telegram grupo"
+    },
+    {
+      "username": "bibliotecadacacau",
+      "url": "https://t.me/bibliotecadacacau",
+      "chat_id": "",
+      "source_term": "CBMERJ concurso telegram grupo"
+    },
+    {
+      "username": "degraucultural",
+      "url": "https://t.me/degraucultural",
+      "chat_id": "",
+      "source_term": "concurso CBMERJ 2024 telegram"
+    },
+    {
+      "username": "grupoestudosmilitar",
+      "url": "https://t.me/grupoestudosmilitar",
+      "chat_id": "",
+      "source_term": "concurso militar RJ telegram grupo"
+    },
+    {
+      "username": "historia_esa",
+      "url": "https://t.me/historia_esa",
+      "chat_id": "",
+      "source_term": "ESA concurso telegram"
+    },
+    {
+      "username": "espcex",
+      "url": "https://t.me/espcex",
+      "chat_id": "",
+      "source_term": "EsPCEx concurso telegram"
+    },
+    {
+      "username": "ESPCEXZEROHUM",
+      "url": "https://t.me/ESPCEXZEROHUM",
+      "chat_id": "",
+      "source_term": "EsPCEx concurso telegram"
+    },
+    {
+      "username": "em_espcex_grupo",
+      "url": "https://t.me/em_espcex_grupo",
+      "chat_id": "",
+      "source_term": "ESA EsPCEx telegram grupo"
+    },
+    {
+      "username": "sociedademilitar",
+      "url": "https://t.me/sociedademilitar",
+      "chat_id": "",
+      "source_term": "militares RJ telegram grupo"
+    },
+    {
+      "username": "ConcursoPM",
+      "url": "https://t.me/ConcursoPM",
+      "chat_id": "",
+      "source_term": "telegram grupo concurso PMERJ"
+    },
+    {
+      "username": "concursos021",
+      "url": "https://t.me/concursos021",
+      "chat_id": "",
+      "source_term": "telegram grupo concursos publicos RJ"
+    },
+    {
+      "username": "concursospublicosrj",
+      "url": "https://t.me/concursospublicosrj",
+      "chat_id": "",
+      "source_term": "t.me concurso militar RJ"
+    },
+    {
+      "username": "rjconcursos",
+      "url": "https://t.me/rjconcursos",
+      "chat_id": "",
+      "source_term": "telegram grupo concursos RJ 2024"
+    },
+    {
+      "username": "focopmerj",
+      "url": "https://t.me/focopmerj",
+      "chat_id": "",
+      "source_term": "telegram PMERJ RJ concurso"
+    },
+    {
+      "username": "gcomilitar",
+      "url": "https://t.me/gcomilitar",
+      "chat_id": "",
+      "source_term": "telegram.org concurso militar RJ"
+    },
+    {
+      "username": "concursospublicosestudos",
+      "url": "https://t.me/concursospublicosestudos",
+      "chat_id": "",
+      "source_term": "grupo telegram concursos publicos RJ"
+    },
+    {
+      "username": "mestresdocfo",
+      "url": "https://t.me/mestresdocfo",
+      "chat_id": "",
+      "source_term": "grupo telegram PMERJ CBMERJ"
+    },
+    {
+      "username": "EsPCEx_ESA_EEAR",
+      "url": "https://t.me/EsPCEx_ESA_EEAR",
+      "chat_id": "",
+      "source_term": "telegram grupo ESA EsPCEx"
+    }
+  ]
+}
