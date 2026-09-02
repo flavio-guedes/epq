@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Radar de Comunidades — EPQ</title>
+<style>
+  :root {
+    --bg:#0b0d12; --surface:#13161d; --surface2:#1b1f28; --border:#262c3a;
+    --accent:#4f6ef7; --green:#3ecf8e; --yellow:#f5c842; --red:#f56b6b;
+    --text:#e6e7ee; --text-muted:#7c8093; --text-dim:#9ca0b3;
+    --radius:10px; --sans:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.55;padding:28px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+  .brand{display:flex;align-items:center;gap:10px}
+  .logo{width:34px;height:34px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px}
+  .title{font-weight:700;font-size:16px}
+  .subtitle{font-size:11px;color:var(--text-muted)}
+  .pill{font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;background:rgba(79,110,247,.15);color:var(--accent);border:1px solid rgba(79,110,247,.35)}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px}
+  .k{font-size:10px;color:var(--text-muted);font-weight:700;letter-spacing:.6px;text-transform:uppercase}
+  .v{font-size:22px;font-weight:800;margin-top:4px}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+  .search{padding:8px 12px;border-radius:8px;background:var(--surface);color:var(--text);border:1px solid var(--border);font-size:13px;min-width:220px}
+  .filter-btn{padding:5px 14px;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--text-dim);font-size:12px;cursor:pointer}
+  .filter-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .filter-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+  .list{display:grid;gap:10px}
+  .item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;display:grid;gap:8px}
+  .item-header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .item-title{font-weight:700;font-size:13px;color:var(--text);text-decoration:none}
+  .item-title:hover{text-decoration:underline}
+  .item-meta{font-size:11px;color:var(--text-muted)}
+  .badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px;border:1px solid rgba(255,255,255,.12);display:inline-block;white-space:nowrap}
+  .b-green{color:var(--green);border-color:rgba(10,255,176,.25);background:rgba(10,255,176,.10)}
+  .b-blue{color:#6ba4f5;border-color:rgba(125,196,255,.25);background:rgba(125,196,255,.10)}
+  .b-yellow{color:var(--yellow);border-color:rgba(255,209,102,.25);background:rgba(255,209,102,.10)}
+  .b-red{color:var(--red);border-color:rgba(255,91,126,.25);background:rgba(255,91,126,.10)}
+  .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .btn{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;border:none;cursor:pointer;background:var(--accent);color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+  .btn-secondary{background:var(--surface);color:var(--text-dim);border:1px solid var(--border)}
+  .empty{color:var(--text-muted);font-size:12px;padding:10px 0}
+  @media(max-width:860px){.kpis{grid-template-columns:repeat(2,1fr)} .item-header{flex-direction:column;align-items:flex-start} .actions{width:100%;justify-content:flex-end}}
+  @media(max-width:480px){.kpis{grid-template-columns:1fr 1fr} body{padding:16px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo">EPQ</div>
+    <div>
+      <div class="title">Radar de Comunidades</div>
+      <div class="subtitle">Inteligência de comunidades para prospecção orgânica</div>
+    </div>
+  </div>
+  <span class="pill" id="pill">Carregando...</span>
+</header>
+
+<div class="kpis">
+  <div class="card"><div class="k">Comunidades</div><div class="v" id="k-total">0</div></div>
+  <div class="card"><div class="k">WhatsApp</div><div class="v" id="k-whatsapp">0</div></div>
+  <div class="card"><div class="k">Facebook</div><div class="v" id="k-facebook">0</div></div>
+  <div class="card"><div class="k">Telegram</div><div class="v" id="k-telegram">0</div></div>
+</div>
+
+<div class="toolbar">
+  <input class="search" id="search" placeholder="Buscar por nome, foco ou concurso..." oninput="render()" />
+  <button class="filter-btn active" onclick="setFilter('all',this)">Todos</button>
+  <button class="filter-btn" onclick="setFilter('WhatsApp',this)">WhatsApp</button>
+  <button class="filter-btn" onclick="setFilter('Facebook',this)">Facebook</button>
+  <button class="filter-btn" onclick="setFilter('Telegram',this)">Telegram</button>
+  <button class="filter-btn" onclick="setFilter('RJ',this)">RJ</button>
+  <button class="filter-btn" onclick="setFilter('Nacional',this)">Nacional</button>
+</div>
+
+<div class="list" id="list"></div>
+
+<script>
+let rows = [];
+let filter = 'all';
+
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function setFilter(f, btn){ filter = f; document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); render(); }
+function copyText(text){ if(!text) return; if(navigator.clipboard) navigator.clipboard.writeText(text).catch(()=>{}); }
+function openUrl(url){ if(url) window.open(url,'_blank'); }
+
+function render(){
+  const q = document.getElementById('search').value.toLowerCase();
+  const container = document.getElementById('list');
+  let data = rows;
+  if(filter !== 'all'){
+    const platformMap = { WhatsApp:'whatsapp', Facebook:'facebook', Telegram:'telegram' };
+    if(['WhatsApp','Facebook','Telegram'].includes(filter)){
+      data = data.filter(r=> (r.plataforma||'').toLowerCase() === platformMap[filter]);
+    } else if(filter==='RJ'){
+      data = data.filter(r=> (r.uf||'').toLowerCase().includes('rj') || (r.cidade||'').toLowerCase().includes('rio') || (r.foco||'').toLowerCase().includes('rj'));
+    } else if(filter==='Nacional'){
+      data = data.filter(r=> !((r.uf||'').toLowerCase().includes('rj') || (r.cidade||'').toLowerCase().includes('rio') || (r.foco||'').toLowerCase().includes('rj')));
+    }
+  }
+  if(q) data = data.filter(r=> (r.nome||'').toLowerCase().includes(q) || (r.foco||'').toLowerCase().includes(q) || (r.url||'').toLowerCase().includes(q));
+
+  const whatsapp = rows.filter(r=> (r.plataforma||'').toLowerCase()==='whatsapp').length;
+  const facebook = rows.filter(r=> (r.plataforma||'').toLowerCase()==='facebook').length;
+  const telegram = rows.filter(r=> (r.plataforma||'').toLowerCase()==='telegram').length;
+  document.getElementById('k-total').textContent = String(rows.length);
+  document.getElementById('k-whatsapp').textContent = String(whatsapp);
+  document.getElementById('k-facebook').textContent = String(facebook);
+  document.getElementById('k-telegram').textContent = String(telegram);
+  document.getElementById('pill').textContent = `${data.length} visível`;
+
+  container.innerHTML = data.map(r=>`<div class="item">
+    <div class="item-header">
+      <div>
+        <a class="item-title" href="${esc(r.url)}" target="_blank">${esc(r.nome)}</a>
+        <div class="item-meta">${esc(r.plataforma)} · ${esc(r.foco)} · ${esc(r.uf||'N/A')} ${esc(r.cidade||'')}</div>
+      </div>
+      <div class="actions">
+        <button class="btn" onclick="openUrl('${esc(r.url)}')">Abrir</button>
+        <button class="btn btn-secondary" onclick="copyText('${esc(r.url)}')">Copiar URL</button>
+        <button class="btn btn-secondary" onclick="copyText('Olá! Tudo bem?\\n\\nSou da EPQ e gostaria de entender se é possível compartilhar conteúdo útil para a comunidade. Posso enviar uma proposta?')">Mensagem admin</button>
+      </div>
+    </div>
+    <div class="item-meta">Público: ${esc(r.publico||'N/A')} · Atividade: ${esc(r.atividade||'N/A')} · Relevância: ${esc(r.relevancia||'N/A')} · Permite divulgação: ${esc(r.permite_divulgacao||'N/A')} · Admin: ${esc(r.admin||'N/A')}</div>
+    <div class="item-meta">${esc(r.observacoes||'')}</div>
+  </div>`).join('') || '<div class="empty">Nenhuma comunidade encontrada.</div>';
+}
+
+(async function init(){
+  const text = await fetch('comunidades.json').then(r=>r.text()).catch(()=>'');
+  if(!text){ document.getElementById('list').innerHTML='<div class="empty">Erro ao carregar dados.</div>'; return; }
+  try { rows = JSON.parse(text); } catch { document.getElementById('list').innerHTML='<div class="empty">Erro ao ler JSON.</div>'; return; }
+  render();
+})();
+</script>
+</body>
+</html>
