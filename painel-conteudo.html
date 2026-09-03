@@ -3,181 +3,651 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EPQ // Painel de Conteúdo</title>
+<title>EPQ · Painel de Conteúdo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-
-:root {
-  --epq-white:#ffffff; --epq-bg:#f4f7fa; --epq-gray-50:#f8fafc; --epq-gray-100:#eef2f5; --epq-gray-200:#e4eaf0;
-  --epq-gray-300:#d8e0e7; --epq-gray-400:#adb9c5; --epq-gray-500:#8a97a5; --epq-gray-600:#687582;
-  --epq-gray-700:#4a5660; --epq-gray-800:#2e3840; --epq-gray-900:#17212b;
-  --epq-blue-50:#f0f7ff; --epq-blue-100:#eaf3ff; --epq-blue-200:#c5dcf5; --epq-blue-300:#9bc5ef;
-  --epq-blue-400:#6aaae4; --epq-blue-500:#3d8bd9; --epq-blue-600:#2572be; --epq-blue-700:#175a96;
-  --epq-blue-800:#0f3f6e; --epq-blue-900:#0b3155;
-  --epq-positive:#2a8a5e; --epq-attention:#b07218; --epq-alert:#9b4a1a;
-  --radius-sm:6px; --radius-md:10px; --radius-lg:16px; --radius-xl:24px;
-  --shadow-md:0 4px 16px rgba(15,40,65,.08), 0 2px 6px rgba(15,40,65,.05);
-  --font-display:'Space Grotesk',sans-serif; --font-body:'Inter',sans-serif; --font-mono:'JetBrains Mono',monospace;
-}
-* { box-sizing:border-box; margin:0; padding:0; }
-body { font-family:var(--font-body); background:var(--epq-bg); color:var(--epq-gray-900); min-height:100vh; overflow-x:hidden; -webkit-font-smoothing:antialiased; }
-:focus-visible { outline:2px solid var(--epq-blue-500); outline-offset:2px; }
-
-.sidebar { position:fixed; left:0; top:0; height:100vh; width:84px; background:var(--epq-gray-900); border-right:1px solid rgba(61,139,217,.15); z-index:100; display:flex; flex-direction:column; padding:24px 0; transition:width .5s cubic-bezier(0.16, 1, 0.3, 1); overflow:hidden; }
-.sidebar:hover { width:240px; }
-.sidebar-logo { width:36px; height:36px; margin:0 0 28px 23px; flex-shrink:0; background:var(--epq-blue-700); border-radius:8px; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:700; font-size:12px; color:#fff; }
-.sidebar-nav { display:flex; flex-direction:column; gap:3px; padding:0 12px; overflow-y:auto; }
-.nav-item { display:flex; align-items:center; gap:12px; padding:9px 11px; border-radius:var(--radius-sm); cursor:pointer; white-space:nowrap; text-decoration:none; color:var(--epq-gray-500); transition:background .2s, color .2s; }
-.nav-item:hover, .nav-item.active { background:rgba(61,139,217,.12); color:var(--epq-blue-300); }
-.nav-item.active { color:var(--epq-blue-400); }
-.nav-num { font-family:var(--font-mono); font-size:9px; flex-shrink:0; width:16px; }
-.nav-label { font-family:var(--font-mono); font-size:10px; font-weight:500; letter-spacing:.07em; text-transform:uppercase; opacity:0; transition:opacity .2s; }
-.sidebar:hover .nav-label { opacity:1; }
-.sidebar-status { margin-top:auto; padding:14px 12px 0; display:flex; align-items:center; gap:8px; }
-.status-dot-live { width:6px; height:6px; background:var(--epq-blue-400); border-radius:50%; animation:pulse-dot 2s ease-in-out infinite; flex-shrink:0; }
-@keyframes pulse-dot { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.5; transform:.8; } }
-
-.main-content { margin-left:84px; min-height:100vh; }
-.command-header {
-  position:relative; min-height:420px; background:var(--epq-gray-900);
-  background-image:linear-gradient(100deg, rgba(11,20,32,.92) 0%, rgba(11,20,32,.78) 38%, rgba(11,49,85,.45) 65%, rgba(11,49,85,.18) 100%), url('data:image/png;base64,__BANNER__');
-  background-size:cover; background-position:center; overflow:hidden; display:flex; align-items:flex-end; padding-bottom:44px;
-}
-.grid-overlay { position:absolute; inset:0; pointer-events:none; opacity:.35; background-image:linear-gradient(rgba(61,139,217,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(61,139,217,.07) 1px, transparent 1px); background-size:44px 44px; mask-image:radial-gradient(ellipse 70% 90% at 30% 40%, black 30%, transparent 75%); }
-.corner-brackets span { position:absolute; width:20px; height:20px; border:1px solid rgba(61,139,217,.35); }
-.cb-tl { top:20px; left:20px; border-right:none; border-bottom:none; }
-.cb-tr { top:20px; right:20px; border-left:none; border-bottom:none; }
-.header-content { position:relative; z-index:10; padding:0 56px; width:100%; max-width:900px; }
-.header-eyebrow { font-family:var(--font-mono); font-size:10px; font-weight:500; color:var(--epq-blue-300); letter-spacing:.2em; text-transform:uppercase; margin-bottom:16px; }
-.header-title { font-family:var(--font-display); font-size:clamp(30px, 4.6vw, 54px); font-weight:700; color:#fff; letter-spacing:-.03em; line-height:1.04; margin-bottom:14px; text-shadow:0 2px 24px rgba(0,0,0,.35); }
-.header-title em { color:var(--epq-blue-400); font-style:normal; }
-.header-subtitle { font-size:14px; font-weight:400; color:var(--epq-gray-300); line-height:1.6; max-width:560px; margin-bottom:28px; }
-.header-meta { display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
-.status-badge { display:flex; align-items:center; gap:7px; font-family:var(--font-mono); font-size:10px; font-weight:500; color:var(--epq-blue-400); letter-spacing:.12em; text-transform:uppercase; }
-.status-badge-dot { width:6px; height:6px; background:var(--epq-blue-400); border-radius:50%; animation:pulse-dot 2s ease-in-out infinite; }
-.period-badge { font-family:var(--font-mono); font-size:10px; color:var(--epq-gray-400); letter-spacing:.08em; border-left:1px solid rgba(255,255,255,.12); padding-left:24px; }
-
-.page-body { padding:40px 56px 100px; max-width:1400px; }
-.filter-bar { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:24px; }
-.filter-chip { height:36px; padding:0 14px; border-radius:var(--radius-xl); border:1px solid var(--epq-gray-200); background:var(--epq-white); font-family:var(--font-mono); font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--epq-gray-700); cursor:pointer; transition:all .2s; white-space:nowrap; }
-.filter-chip:hover { border-color:var(--epq-blue-400); color:var(--epq-blue-700); }
-.filter-input { height:36px; padding:0 14px; border-radius:var(--radius-xl); border:1px solid var(--epq-gray-200); background:var(--epq-white); font-family:var(--font-body); font-size:13px; color:var(--epq-gray-900); min-width:220px; }
-.filter-input:focus { border-color:var(--epq-blue-500); outline:none; box-shadow:0 0 0 3px rgba(61,139,217,.12); }
-
-.tabs { display:flex; gap:8px; margin-bottom:18px; }
-.tab { padding:10px 16px; border-radius:var(--radius-sm); font-family:var(--font-mono); font-size:10px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--epq-gray-600); cursor:pointer; border:1px solid transparent; background:transparent; }
-.tab.active { background:var(--epq-white); color:var(--epq-blue-700); border-color:var(--epq-gray-200); box-shadow:var(--shadow-md); }
-
-.kpi-strip { background:var(--epq-white); border:1px solid var(--epq-gray-200); border-radius:var(--radius-lg); display:flex; overflow-x:auto; margin-bottom:24px; box-shadow:var(--shadow-md); }
-.kpi-item { flex:1; min-width:130px; padding:22px 24px; border-right:1px solid var(--epq-gray-200); display:flex; flex-direction:column; gap:5px; }
-.kpi-item:last-child { border-right:none; }
-.kpi-label { font-family:var(--font-mono); font-size:9px; font-weight:500; color:var(--epq-gray-500); letter-spacing:.13em; text-transform:uppercase; }
-.kpi-value { font-family:var(--font-mono); font-size:26px; font-weight:500; color:var(--epq-gray-900); letter-spacing:-.03em; }
-.kpi-value.featured { color:var(--epq-blue-700); }
-
-.table-wrap { background:linear-gradient(180deg,#ffffff,#f8fafc); border:1px solid var(--epq-gray-200); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-md); }
-.sched-row { display:grid; grid-template-columns: 40px 78px 108px 80px 108px 1fr 140px 148px 64px; align-items:center; gap:14px; padding:14px 20px; border-bottom:1px solid transparent; border-image:linear-gradient(90deg, var(--epq-gray-200), rgba(61,139,217,.35), var(--epq-gray-200)) 1; }
-.sched-row:last-child { border-bottom:none; }
-.sched-row.sched-head { background:linear-gradient(180deg,var(--epq-gray-50),#eef2f5); font-family:var(--font-mono); font-size:9px; font-weight:600; color:var(--epq-gray-500); letter-spacing:.1em; text-transform:uppercase; padding-top:12px; padding-bottom:12px; cursor:default; border-bottom:1px solid var(--epq-gray-200); }
-.sched-row.is-past { opacity:.6; }
-.sched-row:not(.sched-head):hover { background:linear-gradient(180deg,var(--epq-blue-50),rgba(61,139,217,.04)); cursor:pointer; }
-
-.sched-date { font-family:var(--font-mono); font-size:11px; font-weight:700; color:var(--epq-blue-700); letter-spacing:.06em; }
-.sched-id { font-family:var(--font-mono); font-size:10px; font-weight:700; color:var(--epq-gray-800); }
-.sched-perfil { font-family:var(--font-mono); font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; padding:4px 8px; border-radius:999px; display:inline-block; }
-.perfil-epq { color:#064e3b; background:#d1fae5; border:1px solid #34d399; }
-.perfil-ronan { color:#1e3a8a; background:#dbeafe; border:1px solid #93c5fd; }
-.sched-formato { font-family:var(--font-mono); font-size:10px; font-weight:700; color:#7c3aed; letter-spacing:.08em; text-transform:uppercase; }
-.sched-main { min-width:0; }
-.sched-headline { font-family:var(--font-display); font-size:13px; font-weight:700; color:var(--epq-blue-900); line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.sched-tema { font-size:11px; color:var(--epq-gray-600); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.sched-pilar { font-family:var(--font-mono); font-size:10px; font-weight:700; color:#0f3f6e; letter-spacing:.08em; text-transform:uppercase; }
-.sched-status { font-family:var(--font-mono); font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:5px 10px; border-radius:999px; border:1px solid transparent; }
-.st-positive { color:#14532d; background:#dcfce7; border-color:#86efac; }
-.st-blue { color:#0f3f6e; background:#dbeafe; border-color:#93c5fd; }
-.st-neutral { color:#374151; background:#f3f4f6; border-color:#d1d5db; }
-.st-attention { color:#7a5200; background:#fff4cc; border-color:#fde68a; }
-.st-gap { color:#431407; background:#ffe4e6; border-color:#fca5a5; }
-.st-alert { color:#7f1d1d; background:#fee2e2; border-color:#f87171; }
-.status-dot { width:7px; height:7px; border-radius:50%; display:inline-block; margin-right:8px; }
-.st-positive .status-dot { background:#16a34a; box-shadow:0 0 0 3px rgba(22,163,74,.15); }
-.st-blue .status-dot { background:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,.15); }
-.st-neutral .status-dot { background:#6b7280; box-shadow:0 0 0 3px rgba(107,114,128,.15); }
-.st-attention .status-dot { background:#d97706; box-shadow:0 0 0 3px rgba(217,119,6,.15); }
-.st-gap .status-dot { background:#e11d48; box-shadow:0 0 0 3px rgba(225,29,72,.15); }
-.st-alert .status-dot { background:#dc2626; box-shadow:0 0 0 3px rgba(220,38,38,.15); }
-
-.expand-btn { width:32px; height:32px; border-radius:var(--radius-sm); border:1px solid var(--epq-gray-200); background:var(--epq-white); cursor:pointer; font-family:var(--font-mono); font-size:12px; color:var(--epq-gray-700); display:flex; align-items:center; justify-content:center; transition:all .2s; }
-.expand-btn:hover { border-color:var(--epq-blue-400); color:var(--epq-blue-700); background:var(--epq-blue-50); }
-.expand-btn.expanded { background:var(--epq-blue-700); color:#fff; border-color:var(--epq-blue-700); }
-.sched-detail { display:none; background:var(--epq-gray-50); border-bottom:1px solid var(--epq-gray-200); }
-.sched-detail.open { display:block; }
-.detail-content { padding:18px 20px; }
-.detail-section { margin-bottom:14px; }
-.detail-section:last-child { margin-bottom:0; }
-.detail-label { font-family:var(--font-mono); font-size:9px; font-weight:600; color:var(--epq-gray-500); letter-spacing:.12em; text-transform:uppercase; margin-bottom:4px; }
-.detail-value { font-size:13px; color:var(--epq-gray-900); line-height:1.5; }
-.headline { font-family:var(--font-display); font-size:15px; font-weight:700; color:var(--epq-blue-900); }
-.tags { font-family:var(--font-mono); font-size:12px; color:var(--epq-blue-700); }
-.briefing { background:var(--epq-white); padding:12px; border-radius:var(--radius-sm); border:1px solid var(--epq-gray-200); }
-.copy-btn { display:inline-flex; align-items:center; gap:6px; margin-top:6px; padding:6px 12px; border-radius:var(--radius-sm); border:1px solid var(--epq-gray-200); background:var(--epq-white); font-family:var(--font-mono); font-size:10px; font-weight:600; color:var(--epq-gray-700); cursor:pointer; }
-.copy-btn:hover { border-color:var(--epq-blue-400); color:var(--epq-blue-700); }
-
-.page-footer { padding:32px 56px; border-top:1px solid var(--epq-gray-200); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
-.footer-brand, .footer-timestamp { font-family:var(--font-mono); font-size:9px; color:var(--epq-gray-400); letter-spacing:.12em; text-transform:uppercase; }
-
-@media (max-width:1100px) {
-  .sched-row { grid-template-columns: 40px 64px 90px 66px 1fr 110px 56px; }
-  .sched-formato, .sched-pilar { display:none; }
-}
-@media (max-width:900px) {
-  .page-body { padding:32px 24px 80px; }
-  .header-content { padding:0 24px; }
-  .filter-bar { gap:8px; }
-  .filter-input { min-width:180px; }
-}
-@media (max-width:640px) {
-  .sidebar { display:none; }
-  .main-content { margin-left:0; }
-  .command-header { min-height:320px; padding-bottom:28px; }
-  .header-title { font-size:26px; }
-  .header-subtitle { font-size:13px; }
-  .header-meta { gap:12px; }
-  .period-badge { padding-left:12px; }
-  .filter-bar { flex-direction:column; align-items:stretch; }
-  .filter-input { min-width:auto; width:100%; }
-  .filter-chip { width:100%; height:40px; }
-  .tabs { gap:6px; }
-  .tab { padding:8px 12px; font-size:9px; }
-  .sched-row {
-    grid-template-columns: 40px 1fr 64px;
-    grid-template-rows: auto auto;
-    gap: 6px 10px;
-    padding: 14px 14px;
-  }
-  .sched-row.sched-head { display:none; }
-  .sched-row > .sched-id,
-  .sched-row > .sched-formato,
-  .sched-row > .sched-pilar,
-  .sched-row > .sched-status,
-  .sched-row > .sched-copywriter { display:none !important; }
-  .sched-row > div:first-child { grid-row: 1 / 3; align-self:center; }
-  .sched-date { grid-row: 1 / 3; align-self:center; }
-  .sched-main { grid-column: 2 / 4; }
-  .sched-detail .detail-content { padding:14px; }
-  .expand-btn { width:40px; height:40px; }
-  .copy-btn { width:100%; justify-content:center; }
-}
-@media (prefers-reduced-motion:reduce) {
-  *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
-}
-
+:root{--epq-white:#ffffff;--epq-bg:#f4f7fa;--epq-gray-50:#f8fafc;--epq-gray-100:#eef2f5;--epq-gray-200:#e4eaf0;--epq-gray-300:#d8e0e7;--epq-gray-400:#adb9c5;--epq-gray-500:#8a97a5;--epq-gray-600:#687582;--epq-gray-700:#4a5660;--epq-gray-800:#2e3840;--epq-gray-900:#17212b;--epq-blue-50:#f0f7ff;--epq-blue-100:#eaf3ff;--epq-blue-200:#c5dcf5;--epq-blue-300:#9bc5ef;--epq-blue-400:#6aaae4;--epq-blue-500:#3d8bd9;--epq-blue-600:#2572be;--epq-blue-700:#175a96;--epq-blue-800:#0f3f6e;--epq-blue-900:#0b3155;--epq-positive:#2a8a5e;--epq-attention:#b07218;--epq-alert:#9b4a1a;--radius-sm:6px;--radius-md:10px;--radius-lg:16px;--radius-xl:24px;--shadow-md:0 4px 16px rgba(15,40,65,.08), 0 2px 6px rgba(15,40,65,.05);--font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;--font-mono:'JetBrains Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-body);background:var(--epq-bg);color:var(--epq-gray-900);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--epq-blue-500);outline-offset:2px}
+.sidebar{position:fixed;left:0;top:0;height:100vh;width:84px;background:var(--epq-gray-900);border-right:1px solid rgba(61,139,217,.15);z-index:100;display:flex;flex-direction:column;padding:24px 0;transition:width .5s cubic-bezier(0.16, 1, 0.3, 1);overflow:hidden}
+.sidebar:hover{width:240px}
+.sidebar-logo{width:36px;height:36px;margin:0 0 28px 23px;flex-shrink:0;background:var(--epq-blue-700);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:12px;color:#fff}
+.sidebar-nav{display:flex;flex-direction:column;gap:3px;padding:0 12px;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:12px;padding:9px 11px;border-radius:var(--radius-sm);cursor:pointer;white-space:nowrap;text-decoration:none;color:var(--epq-gray-500);transition:background .2s, color .2s}
+.nav-item:hover,.nav-item.active{background:rgba(61,139,217,.12);color:var(--epq-blue-300)}
+.nav-item.active{color:var(--epq-blue-400)}
+.nav-num{font-family:var(--font-mono);font-size:9px;flex-shrink:0;width:16px}
+.nav-label{font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;opacity:0;transition:opacity .2s}
+.sidebar:hover .nav-label{opacity:1}
+.sidebar-status{margin-top:auto;padding:14px 12px 0;display:flex;align-items:center;gap:8px}
+.status-dot-live{width:6px;height:6px;background:var(--epq-blue-400);border-radius:50%;animation:pulse-dot 2s ease-in-out infinite;flex-shrink:0}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:.8}}
+.main-content{margin-left:84px;min-height:100vh}
+.command-header{position:relative;min-height:420px;background:var(--epq-gray-900);background-image:linear-gradient(100deg, rgba(11,20,32,.92) 0%, rgba(11,20,32,.78) 38%, rgba(11,49,85,.45) 65%, rgba(11,49,85,.18) 100%), url('data:image/png;base64,__BANNER__');background-size:cover;background-position:center;overflow:hidden;display:flex;align-items:flex-end;padding-bottom:44px}
+.grid-overlay{position:absolute;inset:0;pointer-events:none;opacity:.35;background-image:linear-gradient(rgba(61,139,217,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(61,139,217,.07) 1px, transparent 1px);background-size:44px 44px;mask-image:radial-gradient(ellipse 70% 90% at 30% 40%, black 30%, transparent 75%)}
+.corner-brackets span{position:absolute;width:20px;height:20px;border:1px solid rgba(61,139,217,.35)}
+.cb-tl{top:20px;left:20px;border-right:none;border-bottom:none}
+.cb-tr{top:20px;right:20px;border-left:none;border-bottom:none}
+.header-content{position:relative;z-index:10;padding:0 56px;width:100%;max-width:900px}
+.header-eyebrow{font-family:var(--font-mono);font-size:10px;font-weight:500;color:var(--epq-blue-300);letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px}
+.header-title{font-family:var(--font-display);font-size:clamp(30px, 4.6vw, 54px);font-weight:700;color:#fff;letter-spacing:-.03em;line-height:1.04;margin-bottom:14px;text-shadow:0 2px 24px rgba(0,0,0,.35)}
+.header-title em{color:var(--epq-blue-400);font-style:normal}
+.header-subtitle{font-size:14px;font-weight:400;color:var(--epq-gray-300);line-height:1.6;max-width:560px;margin-bottom:28px}
+.header-meta{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.status-badge{display:flex;align-items:center;gap:7px;font-family:var(--font-mono);font-size:10px;font-weight:500;color:var(--epq-blue-400);letter-spacing:.12em;text-transform:uppercase}
+.status-badge-dot{width:6px;height:6px;background:var(--epq-blue-400);border-radius:50%;animation:pulse-dot 2s ease-in-out infinite}
+.period-badge{font-family:var(--font-mono);font-size:10px;color:var(--epq-gray-400);letter-spacing:.08em;border-left:1px solid rgba(255,255,255,.12);padding-left:24px}
+.page-body{padding:40px 56px 100px;max-width:1400px}
+.filter-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.filter-chip{height:36px;padding:0 14px;border-radius:var(--radius-xl);border:1px solid var(--epq-gray-200);background:var(--epq-white);font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--epq-gray-700);cursor:pointer;transition:all .2s;white-space:nowrap}
+.filter-chip:hover{border-color:var(--epq-blue-400);color:var(--epq-blue-700)}
+.filter-input{height:36px;padding:0 14px;border-radius:var(--radius-xl);border:1px solid var(--epq-gray-200);background:var(--epq-white);font-family:var(--font-body);font-size:13px;color:var(--epq-gray-900);min-width:220px}
+.filter-input:focus{border-color:var(--epq-blue-500);outline:none;box-shadow:0 0 0 3px rgba(61,139,217,.12)}
+.tabs{display:flex;gap:8px;margin-bottom:18px}
+.tab{padding:10px 16px;border-radius:var(--radius-sm);font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--epq-gray-600);cursor:pointer;border:1px solid transparent;background:transparent}
+.tab.active{background:var(--epq-white);color:var(--epq-blue-700);border-color:var(--epq-gray-200);box-shadow:var(--shadow-md)}
+.kpi-strip{background:var(--epq-white);border:1px solid var(--epq-gray-200);border-radius:var(--radius-lg);display:flex;overflow-x:auto;margin-bottom:24px;box-shadow:var(--shadow-md)}
+.kpi-item{flex:1;min-width:130px;padding:22px 24px;border-right:1px solid var(--epq-gray-200);display:flex;flex-direction:column;gap:5px}
+.kpi-item:last-child{border-right:none}
+.kpi-label{font-family:var(--font-mono);font-size:9px;font-weight:500;color:var(--epq-gray-500);letter-spacing:.13em;text-transform:uppercase}
+.kpi-value{font-family:var(--font-mono);font-size:26px;font-weight:500;color:var(--epq-gray-900);letter-spacing:-.03em}
+.kpi-value.featured{color:var(--epq-blue-700)}
+.table-wrap{background:linear-gradient(180deg,#ffffff,#f8fafc);border:1px solid var(--epq-gray-200);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-md)}
+.sched-row{display:grid;grid-template-columns:40px 78px 108px 80px 108px 1fr 140px 148px 64px;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid transparent;border-image:linear-gradient(90deg, var(--epq-gray-200), rgba(61,139,217,.35), var(--epq-gray-200)) 1}
+.sched-row:last-child{border-bottom:none}
+.sched-row.sched-head{background:linear-gradient(180deg,var(--epq-gray-50),#eef2f5);font-family:var(--font-mono);font-size:9px;font-weight:600;color:var(--epq-gray-500);letter-spacing:.1em;text-transform:uppercase;padding-top:12px;padding-bottom:12px;cursor:default;border-bottom:1px solid var(--epq-gray-200)}
+.sched-row.is-past{opacity:.6}
+.sched-row:not(.sched-head):hover{background:linear-gradient(180deg,var(--epq-blue-50),rgba(61,139,217,.04));cursor:pointer}
+.sched-date{font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--epq-blue-700);letter-spacing:.06em;display:flex;flex-direction:column;gap:1px;position:relative}
+.sched-dd{font-size:18px;font-weight:700;color:var(--epq-gray-900)}
+.sched-dow{font-size:12px;color:var(--epq-blue-700);font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+.sched-id{font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--epq-gray-800)}
+.sched-perfil{font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 8px;border-radius:999px;display:inline-block;text-align:center}
+.perfil-epq{color:#064e3b;background:#d1fae5;border:1px solid #34d399}
+.perfil-ronan{color:#1e3a8a;background:#dbeafe;border:1px solid #93c5fd}
+.sched-formato{font-family:var(--font-mono);font-size:10px;font-weight:700;color:#7c3aed;letter-spacing:.08em;text-transform:uppercase}
+.sched-main{min-width:0}
+.sched-headline{font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--epq-blue-900);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sched-tema{font-size:11px;color:var(--epq-gray-600);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sched-pilar{font-family:var(--font-mono);font-size:10px;font-weight:700;color:#0f3f6e;letter-spacing:.08em;text-transform:uppercase}
+.sched-status{font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:999px;border:1px solid transparent;display:inline-flex;align-items:center;gap:6px}
+.status-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:8px;flex-shrink:0}
+.st-positive{color:#14532d;background:#dcfce7;border-color:#86efac}
+.st-positive .status-dot{background:#16a34a;box-shadow:0 0 0 3px rgba(22,163,74,.15)}
+.st-blue{color:#0f3f6e;background:#dbeafe;border-color:#93c5fd}
+.st-blue .status-dot{background:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+.st-neutral{color:#374151;background:#f3f4f6;border-color:#d1d5db}
+.st-neutral .status-dot{background:#6b7280;box-shadow:0 0 0 3px rgba(107,114,128,.15)}
+.st-attention{color:#7a5200;background:#fff4cc;border-color:#fde68a}
+.st-attention .status-dot{background:#d97706;box-shadow:0 0 0 3px rgba(217,119,6,.15)}
+.st-gap{color:#431407;background:#ffe4e6;border-color:#fca5a5}
+.st-gap .status-dot{background:#e11d48;box-shadow:0 0 0 3px rgba(225,29,72,.15)}
+.st-alert{color:#7f1d1d;background:#fee2e2;border-color:#f87171}
+.st-alert .status-dot{background:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,.15)}
+.page-footer{padding:32px 56px;border-top:1px solid var(--epq-gray-200);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.footer-brand,.footer-timestamp{font-family:var(--font-mono);font-size:9px;color:var(--epq-gray-400);letter-spacing:.12em;text-transform:uppercase}
+@media(max-width:1100px){.sched-row{grid-template-columns:40px 64px 90px 66px 1fr 110px 56px}.sched-formato,.sched-pilar{display:none}}
+@media(max-width:900px){.page-body{padding:32px 24px 80px}.header-content{padding:0 24px}.filter-bar{gap:8px}.filter-input{min-width:180px}}
+@media(max-width:640px){.sidebar{display:none}.main-content{margin-left:0}.command-header{min-height:320px;padding-bottom:28px}.header-title{font-size:26px}.header-subtitle{font-size:13px}.header-meta{gap:12px}.period-badge{padding-left:12px}.filter-bar{flex-direction:column;align-items:stretch}.filter-input{min-width:auto;width:100%}.filter-chip{width:100%;height:40px}.tabs{gap:6px}.tab{padding:8px 12px;font-size:9px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}}
 </style>
+
+<script>
+(function(){
+  try {
+    var key='epq-active-tab';
+    var tab=location.pathname.split('/').pop().replace(/\?.*$/,'').replace(/#.*$/,'');
+    if (tab) localStorage.setItem(key, tab);
+  } catch(e) {}
+})();
+
+// Planning data from cronograma.html
+window.PLANNING_DATA = {
+  "planejamento": [
+    {
+      "mes": "Agosto",
+      "contagem": "12 conteúdos · 8 EPQ · 4 Ronan",
+      "itens": [
+        {
+          "data": "04.08 ter",
+          "id": "EPQ-AGO-001",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "3 passos para usar questões como ferramenta de estudo",
+          "tema": "Estudo por questões: por onde começar",
+          "pilar": "Estude Melhor",
+          "status": "Planejado"
+        },
+        {
+          "data": "05.08 qua",
+          "id": "RON-AGO-001",
+          "perfil": "Ronan",
+          "formato": "Reel",
+          "headline": "O que ninguém mostra sobre corrigir provas",
+          "tema": "Rotina de quem corrige provas",
+          "pilar": "Bastidores e Humanização",
+          "status": "Ideia"
+        },
+        {
+          "data": "06.08 qui",
+          "id": "INT-AGO-001",
+          "perfil": "EPQ",
+          "formato": "Carrossel + Reel",
+          "headline": "Você estuda muito, mas aprende pouco?",
+          "tema": "Erro: só ler sem praticar questões",
+          "pilar": "Erros Comuns",
+          "status": "Publicar no mesmo dia"
+        },
+        {
+          "data": "07.08 sex",
+          "id": "EPQ-AGO-002",
+          "perfil": "EPQ",
+          "formato": "Story",
+          "headline": "Desafio EPQ da semana",
+          "tema": "Desafio: 50 questões hoje",
+          "pilar": "Comunidade",
+          "status": "—"
+        },
+        {
+          "data": "12.08 qua",
+          "id": "RON-AGO-002",
+          "perfil": "Ronan",
+          "formato": "Reel",
+          "headline": "Revisar o erro é mais importante que acertar",
+          "tema": "Fazer questões sem revisar: mito ou verdade",
+          "pilar": "Mito x Verdade",
+          "status": "—"
+        },
+        {
+          "data": "13.08 qui",
+          "id": "EPQ-AGO-003",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Gustavo saiu do zero à aprovação em 8 meses",
+          "tema": "Aluno aprovado: Gustavo — PMERJ",
+          "pilar": "Prova Social",
+          "status": "Aguardar depoimento em vídeo"
+        },
+        {
+          "data": "14.08 sex",
+          "id": "EPQ-AGO-004",
+          "perfil": "EPQ",
+          "formato": "Carrossel",
+          "headline": "Revisão inteligente em 4 passos",
+          "tema": "Como revisar erros sem repeti-los",
+          "pilar": "Estude Melhor",
+          "status": "—"
+        },
+        {
+          "data": "19.08 qua",
+          "id": "RON-AGO-003",
+          "perfil": "Ronan",
+          "formato": "Vídeo",
+          "headline": "Antes do aluno chegar à conclusão, eu já vi o padrão",
+          "tema": "O que eu vejo em sala antes do aluno perceber",
+          "pilar": "Autoridade e Método",
+          "status": "Avaliar até 20/08"
+        },
+        {
+          "data": "20.08 qui",
+          "id": "INT-AGO-002",
+          "perfil": "EPQ",
+          "formato": "Campanha",
+          "headline": "PMERJ: última semana para fechar ciclo",
+          "tema": "PMERJ: últimos dias até a prova",
+          "pilar": "Editais e Oportunidades",
+          "status": "—"
+        },
+        {
+          "data": "21.08 sex",
+          "id": "EPQ-AGO-005",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Datas, locais e regras atualizadas",
+          "tema": "PMERJ: cronograma oficial até o dia da prova",
+          "pilar": "Editais e Oportunidades",
+          "status": "—"
+        },
+        {
+          "data": "26.08 qua",
+          "id": "RON-AGO-004",
+          "perfil": "Ronan",
+          "formato": "Vídeo",
+          "headline": "O que realmente importa no edital da PMERJ",
+          "tema": "Minha análise do edital da PMERJ",
+          "pilar": "Editais e Oportunidades",
+          "status": "—"
+        },
+        {
+          "data": "27.08 qui",
+          "id": "EPQ-AGO-006",
+          "perfil": "EPQ",
+          "formato": "Carrossel",
+          "headline": "Planeje a semana sem ansiedade",
+          "tema": "Planejamento semanal sem queimar etapas",
+          "pilar": "Estude Melhor",
+          "status": "—"
+        }
+      ]
+    },
+    {
+      "mes": "Setembro",
+      "contagem": "11 conteúdos · 8 EPQ · 3 Ronan",
+      "itens": [
+        {
+          "data": "02.09 qua",
+          "id": "EPQ-SET-001",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Segunda a sexta usando questões",
+          "tema": "Estudo por questões: rotina de 1 semana",
+          "pilar": "Estude Melhor",
+          "status": "—"
+        },
+        {
+          "data": "03.09 qui",
+          "id": "RON-SET-001",
+          "perfil": "Ronan",
+          "formato": "Reel",
+          "headline": "O erro que eu canso de ver na correção",
+          "tema": "Aluno que não escuta e repete o mesmo erro",
+          "pilar": "Erros Comuns",
+          "status": "—"
+        },
+        {
+          "data": "04.09 sex",
+          "id": "INT-SET-001",
+          "perfil": "EPQ",
+          "formato": "Carrossel + Reel",
+          "headline": "Quantidade sem qualidade não aprova",
+          "tema": "Resolver questões sem entender o erro: mito ou verdade",
+          "pilar": "Mito x Verdade",
+          "status": "—"
+        },
+        {
+          "data": "05.09 sáb",
+          "id": "EPQ-SET-002",
+          "perfil": "EPQ",
+          "formato": "Prova Social",
+          "headline": "Lucas começou em março, mudou a estratégia",
+          "tema": "Depoimento: antes e depois do aluno Lucas",
+          "pilar": "Prova Social",
+          "status": "—"
+        },
+        {
+          "data": "09.09 qua",
+          "id": "RON-SET-002",
+          "perfil": "Ronan",
+          "formato": "Vídeo",
+          "headline": "O primeiro minuto define o foco da semana",
+          "tema": "O que eu digo no primeiro minuto de aula",
+          "pilar": "Bastidores e Humanização",
+          "status": "—"
+        },
+        {
+          "data": "10.09 qui",
+          "id": "EPQ-SET-003",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Editais abertos: semana 37",
+          "tema": "Oportunidade: novos editais na região",
+          "pilar": "Editais e Oportunidades",
+          "status": "Avaliar até 17/09"
+        },
+        {
+          "data": "11.09 sex",
+          "id": "INT-SET-002",
+          "perfil": "EPQ",
+          "formato": "Campanha",
+          "headline": "SES com inscrição aberta: última chance",
+          "tema": "SES: semana de inscrição aberta",
+          "pilar": "Editais e Oportunidades",
+          "status": "—"
+        },
+        {
+          "data": "12.09 sáb",
+          "id": "EPQ-SET-004",
+          "perfil": "EPQ",
+          "formato": "Carrossel",
+          "headline": "Matéria difícil sem travar o cronograma",
+          "tema": "Matéria difícil: como dividir a semana",
+          "pilar": "Estude Melhor",
+          "status": "—"
+        },
+        {
+          "data": "16.09 qua",
+          "id": "RON-SET-003",
+          "perfil": "Ronan",
+          "formato": "Reel",
+          "headline": "A diferença não é sorte, é consistência",
+          "tema": "Por que alguns alunos passam e outros param na metade",
+          "pilar": "Mito x Verdade",
+          "status": "—"
+        },
+        {
+          "data": "17.09 qui",
+          "id": "EPQ-SET-005",
+          "perfil": "EPQ",
+          "formato": "Story",
+          "headline": "PMERJ, Guarda, SES ou outro?",
+          "tema": "Enquete: qual edital você segue?",
+          "pilar": "Comunidade",
+          "status": "—"
+        },
+        {
+          "data": "18.09 sex",
+          "id": "EPQ-SET-006",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Resultados reais em editais de segurança",
+          "tema": "Prova social: 12 alunos aprovados em julho",
+          "pilar": "Prova Social",
+          "status": "—"
+        }
+      ]
+    },
+    {
+      "mes": "Outubro",
+      "contagem": "10 conteúdos · 7 EPQ · 3 Ronan",
+      "itens": [
+        {
+          "data": "01.10 qui",
+          "id": "EPQ-OUT-001",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Comece outubro sem carregar erros",
+          "tema": "Outubro: foco, revisão e prova social",
+          "pilar": "Estude Melhor",
+          "status": "—"
+        },
+        {
+          "data": "02.10 sex",
+          "id": "RON-OUT-001",
+          "perfil": "Ronan",
+          "formato": "Reel",
+          "headline": "O erro que mais atrasa alunos",
+          "tema": "Erro que derruba ritmo de estudos",
+          "pilar": "Erros Comuns",
+          "status": "—"
+        },
+        {
+          "data": "03.10 sáb",
+          "id": "INT-OUT-001",
+          "perfil": "EPQ",
+          "formato": "Carrossel + Reel",
+          "headline": "Motivação ajuda, mas método sustenta",
+          "tema": "Motivação não sustenta estudo longo",
+          "pilar": "Mito x Verdade",
+          "status": "—"
+        },
+        {
+          "data": "06.10 ter",
+          "id": "EPQ-OUT-002",
+          "perfil": "EPQ",
+          "formato": "Prova Social",
+          "headline": "Giovana mudou de área e passou",
+          "tema": "Depoimento em vídeo: Giovana — SES",
+          "pilar": "Prova Social",
+          "status": "—"
+        },
+        {
+          "data": "07.10 qua",
+          "id": "RON-OUT-002",
+          "perfil": "Ronan",
+          "formato": "Vídeo",
+          "headline": "Corrigir questões também é ensinar padrões",
+          "tema": "O método por trás da correção de questões",
+          "pilar": "Autoridade e Método",
+          "status": "—"
+        },
+        {
+          "data": "08.10 qui",
+          "id": "EPQ-OUT-003",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Editais abertos: semana 40",
+          "tema": "Oportunidade: novos editais outubro",
+          "pilar": "Editais e Oportunidades",
+          "status": "—"
+        },
+        {
+          "data": "09.10 sex",
+          "id": "INT-OUT-002",
+          "perfil": "EPQ",
+          "formato": "Campanha",
+          "headline": "GM: inscrição encerra no fim do mês",
+          "tema": "Guarda Municipal: último mês de inscrição",
+          "pilar": "Editais e Oportunidades",
+          "status": "—"
+        },
+        {
+          "data": "13.10 ter",
+          "id": "EPQ-OUT-004",
+          "perfil": "EPQ",
+          "formato": "Carrossel",
+          "headline": "Fim de semana sem perder ritmo",
+          "tema": "Ritmo de estudos sem travar no fim de semana",
+          "pilar": "Estude Melhor",
+          "status": "—"
+        },
+        {
+          "data": "14.10 qua",
+          "id": "RON-OUT-003",
+          "perfil": "Ronan",
+          "formato": "Reel",
+          "headline": "O que acontece antes da live",
+          "tema": "Bastidores: preparando uma aula ao vivo",
+          "pilar": "Bastidores e Humanização",
+          "status": "—"
+        },
+        {
+          "data": "15.10 qui",
+          "id": "EPQ-OUT-005",
+          "perfil": "EPQ",
+          "formato": "Story",
+          "headline": "Descubra seu perfil de erro",
+          "tema": "Quiz: qual seu maior erro de estudo?",
+          "pilar": "Comunidade",
+          "status": "—"
+        }
+      ]
+    },
+    {
+      "mes": "Novembro",
+      "contagem": "9 conteúdos · 6 EPQ · 3 Ronan",
+      "itens": [
+        {
+          "data": "04.11 qua",
+          "id": "EPQ-NOV-001",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Mês de revisão e provas: organize agora",
+          "tema": "Novembro: revisão e provas próximas",
+          "pilar": "Estude Melhor",
+          "status": "—"
+        },
+        {
+          "data": "05.11 qui",
+          "id": "RON-NOV-001",
+          "perfil": "Ronan",
+          "formato": "Reel",
+          "headline": "Véspera de prova: dica pessoal",
+          "tema": "Ansiedade na véspera: o que eu faço",
+          "pilar": "Bastidores e Humanização",
+          "status": "—"
+        },
+        {
+          "data": "06.11 sex",
+          "id": "INT-NOV-001",
+          "perfil": "EPQ",
+          "formato": "Carrossel + Reel",
+          "headline": "Ansiedade atrapalha, mas pode ser controlada",
+          "tema": "Ansiedade não melhora desempenho? mito ou verdade",
+          "pilar": "Mito x Verdade",
+          "status": "—"
+        },
+        {
+          "data": "07.11 sáb",
+          "id": "EPQ-NOV-002",
+          "perfil": "EPQ",
+          "formato": "Prova Social",
+          "headline": "Ele trocou método e mudou o resultado",
+          "tema": "História: de reprovado a aprovado em 6 meses",
+          "pilar": "Prova Social",
+          "status": "—"
+        },
+        {
+          "data": "11.11 qua",
+          "id": "RON-NOV-002",
+          "perfil": "Ronan",
+          "formato": "Vídeo",
+          "headline": "A mensagem que falta para muitos alunos",
+          "tema": "O que eu diria para quem estuda há meses sem passar",
+          "pilar": "Autoridade e Método",
+          "status": "—"
+        },
+        {
+          "data": "12.11 qui",
+          "id": "EPQ-NOV-003",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Editais até dezembro: organize-se",
+          "tema": "Oportunidade: editais de fim de ano",
+          "pilar": "Editais e Oportunidades",
+          "status": "—"
+        },
+        {
+          "data": "13.11 sex",
+          "id": "INT-NOV-002",
+          "perfil": "EPQ",
+          "formato": "Campanha",
+          "headline": "Black Friday com benefício para alunos",
+          "tema": "Black Friday EPQ: condições especiais",
+          "pilar": "Conversão",
+          "status": "—"
+        },
+        {
+          "data": "14.11 sáb",
+          "id": "EPQ-NOV-004",
+          "perfil": "EPQ",
+          "formato": "Carrossel",
+          "headline": "Revisão rápida e eficiente",
+          "tema": "Últimos dias: como revisar sem pânico",
+          "pilar": "Estude Melhor",
+          "status": "—"
+        },
+        {
+          "data": "18.11 qua",
+          "id": "RON-NOV-003",
+          "perfil": "Ronan",
+          "formato": "Reel",
+          "headline": "Erros reais que aparecem na correção",
+          "tema": "Bastidores: correção de prova real em aula",
+          "pilar": "Bastidores e Humanização",
+          "status": "—"
+        }
+      ]
+    },
+    {
+      "mes": "Dezembro",
+      "contagem": "6 conteúdos · 4 EPQ · 2 Ronan",
+      "itens": [
+        {
+          "data": "02.12 qua",
+          "id": "EPQ-DEZ-001",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Feche o ano e projete 2027 com método",
+          "tema": "Dezembro: resultados e planejamento 2027",
+          "pilar": "Estude Melhor",
+          "status": "—"
+        },
+        {
+          "data": "03.12 qui",
+          "id": "RON-DEZ-001",
+          "perfil": "Ronan",
+          "formato": "Reel",
+          "headline": "Mesmo erro, ano após ano",
+          "tema": "Erro que se repete todos os anos",
+          "pilar": "Erros Comuns",
+          "status": "—"
+        },
+        {
+          "data": "04.12 sex",
+          "id": "INT-DEZ-001",
+          "perfil": "EPQ",
+          "formato": "Carrossel + Reel",
+          "headline": "Descansar não significa abandonar o estudo",
+          "tema": "Fim de ano: descanso sem abandonar o estudo",
+          "pilar": "Mito x Verdade",
+          "status": "—"
+        },
+        {
+          "data": "05.12 sáb",
+          "id": "EPQ-DEZ-002",
+          "perfil": "EPQ",
+          "formato": "Prova Social",
+          "headline": "Resultados que fecham o ano",
+          "tema": "Prova social: aprovações de dezembro",
+          "pilar": "Prova Social",
+          "status": "—"
+        },
+        {
+          "data": "09.12 qua",
+          "id": "RON-DEZ-002",
+          "perfil": "Ronan",
+          "formato": "Vídeo",
+          "headline": "O que mudou na minha sala em 2026",
+          "tema": "Retrospectiva do ano como professor",
+          "pilar": "Bastidores e Humanização",
+          "status": "—"
+        },
+        {
+          "data": "10.12 qui",
+          "id": "EPQ-DEZ-003",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Prepare 2027 com antecedência",
+          "tema": "Oportunidade: planejamento de editais 2027",
+          "pilar": "Editais e Oportunidades",
+          "status": "—"
+        }
+      ]
+    }
+  ]
+};
+window.PLAN_ITEMS = [];
+(function() {
+  if (!window.PLANNING_DATA || !Array.isArray(window.PLANNING_DATA.planejamento)) return;
+  var items = [];
+  window.PLANNING_DATA.planejamento.forEach(function(m) {
+    (m.itens || []).forEach(function(it) {
+      items.push({
+        ID: it.id || it.ID,
+        Data: it.data || it.Data || '',
+        Perfil: it.perfil || it.Perfil || '',
+        Formato: it.formato || it.Formato || '',
+        Headline: it.headline || it.Headline || '',
+        Tema: it.tema || it.Tema || it['Tema / Campanha'] || '',
+        Pilar: it.pilar || it.Pilar || '',
+        Status: it.status || it.Status || 'Planejado',
+        Mes: m.mes || '',
+        MesID: (m.mes || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, '-')
+      });
+    });
+  });
+  var seen = {};
+  items.forEach(function(it) {
+    if (!seen[it.ID]) { seen[it.ID] = true; window.PLAN_ITEMS.push(it); }
+  });
+})();
+</script>
+
 </head>
 <body>
-
 <nav class="sidebar">
   <div class="sidebar-logo">EQ</div>
   <div class="sidebar-nav">
@@ -186,9 +656,7 @@ body { font-family:var(--font-body); background:var(--epq-bg); color:var(--epq-g
   </div>
   <div class="sidebar-status"><div class="status-dot-live"></div><span class="nav-label" style="opacity:1;color:var(--epq-gray-500)">v1.0</span></div>
 </nav>
-
 <div class="main-content">
-
   <header class="command-header">
     <div class="grid-overlay"></div>
     <div class="corner-brackets"><span class="cb-tl"></span><span class="cb-tr"></span></div>
@@ -202,25 +670,20 @@ body { font-family:var(--font-body); background:var(--epq-bg); color:var(--epq-g
       </div>
     </div>
   </header>
-
   <div class="page-body">
-
     <div class="filter-bar">
       <input id="search" class="filter-input" placeholder="Buscar headline, tema, ID ou pilar..." />
-      <select id="f-editoria" class="filter-chip"><option value="">Editoria</option>{editoria_opts}</select>
-      <select id="f-campanha" class="filter-chip"><option value="">Campanha</option>{campanha_opts}</select>
-      <select id="f-status" class="filter-chip"><option value="">Status</option>{status_opts}</select>
+      <select id="f-editoria" class="filter-chip"><option value="">Editoria</option></select>
+      <select id="f-campanha" class="filter-chip"><option value="">Campanha</option></select>
+      <select id="f-status" class="filter-chip"><option value="">Status</option></select>
     </div>
-
     <div class="tabs">
       <button class="tab active" data-tab="lista" data-view="acompanhamento">Acompanhamento</button>
       <button class="tab" data-tab="planejamento" data-view="planejamento">Planejamento</button>
       <button class="tab" data-tab="planilha" data-view="planilha">Planilha</button>
     </div>
-
     <div id="view-acompanhamento">
       <div class="kpi-strip" id="kpis"></div>
-
       <div id="tab-lista">
         <div class="table-wrap">
           <div class="sched-row sched-head">
@@ -238,8 +701,12 @@ body { font-family:var(--font-body); background:var(--epq-bg); color:var(--epq-g
         </div>
       </div>
     </div>
-
     <div id="view-planejamento" style="display:none">
+      <div class="filter-bar">
+        <input id="planejamento-search" class="filter-input" placeholder="Buscar no planejamento..." />
+        <select id="f-planejamento-pilar" class="filter-chip"><option value="">Pilar</option></select>
+        <select id="f-planejamento-perfil" class="filter-chip"><option value="">Perfil</option><option>EPQ</option><option>Ronan</option></select>
+      </div>
       <div class="kpi-strip" id="planejamento-kpis"></div>
       <div class="table-wrap">
         <div class="sched-row sched-head">
@@ -254,8 +721,12 @@ body { font-family:var(--font-body); background:var(--epq-bg); color:var(--epq-g
         <div id="planejamento-rows"></div>
       </div>
     </div>
-
     <div id="view-planilha" style="display:none">
+      <div class="filter-bar">
+        <input id="planilha-search" class="filter-input" placeholder="Buscar na planilha..." />
+        <select id="f-planilha-status" class="filter-chip"><option value="">Status</option></select>
+      </div>
+      <div class="kpi-strip" id="planilha-kpis"></div>
       <div class="table-wrap">
         <div class="sched-row sched-head">
           <div class="sched-id">ID</div>
@@ -271,102 +742,959 @@ body { font-family:var(--font-body); background:var(--epq-bg); color:var(--epq-g
         <div id="planilha-rows"></div>
       </div>
     </div>
-
   </div>
-
   <footer class="page-footer">
     <div class="footer-brand">EPQ // Painel de Conteúdo</div>
-    <div class="footer-timestamp">v1.0 · 25.08.2026</div>
+    <div class="footer-timestamp">v2.0 · 28.08.2026</div>
   </footer>
 </div>
-
 <script>
-const RAW = {json_text};
-const DETAIL_IDS = new Set(RAW.slice(0,2).map(it=>it['ID']));
-function esc(t){
-  if(t==null) return '';
-  const d=document.createElement('div');
-  d.textContent=String(t);
-  return d.innerHTML;
-}
-function copyText(text){
-  navigator.clipboard.writeText(text).then(()=>{{
-    const btn=document.querySelector('.copy-btn.success');
-    if(btn) btn.textContent='✅ Copiado';
-  });
-}
-function renderList(){{
+const RAW=[
+  {
+    "ID": "EPQ-AGO-001",
+    "_date_dd": "04.08",
+    "_date_dow": "ter",
+    "Perfil": "EPQ",
+    "Formato": "Post",
+    "Headline": "3 passos para usar questões como ferramenta de estudo",
+    "Tema / Campanha": "Estudo por questões: por onde começar",
+    "Pilar": "Estude Melhor",
+    "Status": "Planejado",
+    "_is_past": true
+  },
+  {
+    "ID": "RON-AGO-001",
+    "_date_dd": "05.08",
+    "_date_dow": "qua",
+    "Perfil": "Ronan",
+    "Formato": "Reel",
+    "Headline": "O que ninguém mostra sobre corrigir provas",
+    "Tema / Campanha": "Rotina de quem corrige provas",
+    "Pilar": "Bastidores e Humanização",
+    "Status": "Ideia",
+    "_is_past": true
+  },
+  {
+    "ID": "INT-AGO-001",
+    "_date_dd": "06.08",
+    "_date_dow": "qui",
+    "Perfil": "EPQ",
+    "Formato": "Carrossel + Reel",
+    "Headline": "Você estuda muito, mas aprende pouco?",
+    "Tema / Campanha": "Erro: só ler sem praticar questões",
+    "Pilar": "Erros Comuns",
+    "Status": "Publicar no mesmo dia",
+    "_is_past": true
+  },
+  {
+    "ID": "EPQ-AGO-002",
+    "_date_dd": "07.08",
+    "_date_dow": "sex",
+    "Perfil": "EPQ",
+    "Formato": "Story",
+    "Headline": "Desafio EPQ da semana",
+    "Tema / Campanha": "Desafio: 50 questões hoje",
+    "Pilar": "Comunidade",
+    "Status": "—",
+    "_is_past": true
+  },
+  {
+    "ID": "RON-AGO-002",
+    "_date_dd": "12.08",
+    "_date_dow": "qua",
+    "Perfil": "Ronan",
+    "Formato": "Reel",
+    "Headline": "Revisar o erro é mais importante que acertar",
+    "Tema / Campanha": "Fazer questões sem revisar: mito ou verdade",
+    "Pilar": "Mito x Verdade",
+    "Status": "—",
+    "_is_past": true
+  },
+  {
+    "ID": "EPQ-AGO-003",
+    "_date_dd": "13.08",
+    "_date_dow": "qui",
+    "Perfil": "EPQ",
+    "Formato": "Post",
+    "Headline": "Gustavo saiu do zero à aprovação em 8 meses",
+    "Tema / Campanha": "Aluno aprovado: Gustavo — PMERJ",
+    "Pilar": "Prova Social",
+    "Status": "Aguardar depoimento em vídeo",
+    "_is_past": true
+  },
+  {
+    "ID": "EPQ-AGO-004",
+    "_date_dd": "14.08",
+    "_date_dow": "sex",
+    "Perfil": "EPQ",
+    "Formato": "Carrossel",
+    "Headline": "Revisão inteligente em 4 passos",
+    "Tema / Campanha": "Como revisar erros sem repeti-los",
+    "Pilar": "Estude Melhor",
+    "Status": "—",
+    "_is_past": true
+  },
+  {
+    "ID": "RON-AGO-003",
+    "_date_dd": "19.08",
+    "_date_dow": "qua",
+    "Perfil": "Ronan",
+    "Formato": "Vídeo",
+    "Headline": "Antes do aluno chegar à conclusão, eu já vi o padrão",
+    "Tema / Campanha": "O que eu vejo em sala antes do aluno perceber",
+    "Pilar": "Autoridade e Método",
+    "Status": "Avaliar até 20/08",
+    "_is_past": true
+  },
+  {
+    "ID": "INT-AGO-002",
+    "_date_dd": "20.08",
+    "_date_dow": "qui",
+    "Perfil": "EPQ",
+    "Formato": "Campanha",
+    "Headline": "PMERJ: última semana para fechar ciclo",
+    "Tema / Campanha": "PMERJ: últimos dias até a prova",
+    "Pilar": "Editais e Oportunidades",
+    "Status": "—",
+    "_is_past": true
+  },
+  {
+    "ID": "EPQ-AGO-005",
+    "_date_dd": "21.08",
+    "_date_dow": "sex",
+    "Perfil": "EPQ",
+    "Formato": "Post",
+    "Headline": "Datas, locais e regras atualizadas",
+    "Tema / Campanha": "PMERJ: cronograma oficial até o dia da prova",
+    "Pilar": "Editais e Oportunidades",
+    "Status": "—",
+    "_is_past": true
+  },
+  {
+    "ID": "RON-AGO-004",
+    "_date_dd": "26.08",
+    "_date_dow": "qua",
+    "Perfil": "Ronan",
+    "Formato": "Vídeo",
+    "Headline": "O que realmente importa no edital da PMERJ",
+    "Tema / Campanha": "Minha análise do edital da PMERJ",
+    "Pilar": "Editais e Oportunidades",
+    "Status": "—",
+    "_is_past": false
+  },
+  {
+    "ID": "EPQ-AGO-006",
+    "_date_dd": "27.08",
+    "_date_dow": "qui",
+    "Perfil": "EPQ",
+    "Formato": "Carrossel",
+    "Headline": "Planeje a semana sem ansiedade",
+    "Tema / Campanha": "Planejamento semanal sem queimar etapas",
+    "Pilar": "Estude Melhor",
+    "Status": "—",
+    "_is_past": false
+  },
+  {
+    "ID": "EPQ-SET-001",
+    "_date_dd": "02.09",
+    "_date_dow": "qua",
+    "Perfil": "EPQ",
+    "Formato": "Post",
+    "Headline": "Segunda a sexta usando questões",
+    "Tema / Campanha": "Estudo por questões: rotina de 1 semana",
+    "Pilar": "Estude Melhor",
+    "Status": "—",
+    "_is_past": false
+  },
+  {
+    "ID": "RON-SET-001",
+    "_date_dd": "03.09",
+    "_date_dow": "qui",
+    "Perfil": "Ronan",
+    "Formato": "Reel",
+    "Headline": "O erro que eu canso de ver na correção",
+    "Tema / Campanha": "Aluno que não escuta e repete o mesmo erro",
+    "Pilar": "Erros Comuns",
+    "Status": "—",
+    "_is_past": false
+  },
+  {
+    "ID": "INT-SET-001",
+    "_date_dd": "04.09",
+    "_date_dow": "sex",
+    "Perfil": "EPQ",
+    "Formato": "Carrossel + Reel",
+    "Headline": "Quantidade sem qualidade não aprova",
+    "Tema / Campanha": "Resolver questões sem entender o erro: mito ou verdade",
+    "Pilar": "Mito x Verdade",
+    "Status": "—",
+    "_is_past": false
+  },
+  {
+    "ID": "EPQ-SET-002",
+    "_date_dd": "05.09",
+    "_date_dow": "sáb",
+    "Perfil": "EPQ",
+    "Formato": "Prova Social",
+    "Headline": "Lucas começou em março, mudou a estratégia",
+    "Tema / Campanha": "Depoimento: antes e depois do aluno Lucas",
+    "Pilar": "Prova Social",
+    "Status": "—",
+    "_is_past": false
+  },
+  {
+    "ID": "RON-SET-002",
+    "_date_dd": "09.09",
+    "_date_dow": "qua",
+    "Perfil": "Ronan",
+    "Formato": "Vídeo",
+    "Headline": "O primeiro minuto define o foco da semana",
+    "Tema / Campanha": "O que eu digo no primeiro minuto de aula",
+    "Pilar": "Bastidores e Humanização",
+    "Status": "—",
+    "_is_past": false
+  },
+  {
+    "ID": "EPQ-SET-003",
+    "_date_dd": "10.09",
+    "_date_dow": "qui",
+    "Perfil": "EPQ",
+    "Formato": "Post",
+    "Headline": "Editais abertos: semana 37",
+    "Tema / Campanha": "Oportunidade: novos editais na região",
+    "Pilar": "Editais e Oportunidades",
+    "Status": "Avaliar até 17/09",
+    "_is_past": false
+  },
+  {
+    "ID": "INT-SET-002",
+    "_date_dd": "11.09",
+    "_date_dow": "sex",
+    "Perfil": "EPQ",
+    "Formato": "Campanha",
+    "Headline": "SES com inscrição aberta: última chance",
+    "Tema / Campanha": "SES: semana de inscrição aberta",
+    "Pilar": "Editais e Oportunidades",
+    "Status": "—",
+    "_is_past": false
+  },
+  {
+    "ID": "EPQ-SET-004",
+    "_date_dd": "12.09",
+    "_date_dow": "sáb",
+    "Perfil": "EPQ",
+    "Formato": "Carrossel",
+    "Headline": "Matéria difícil sem travar o cronograma",
+    "Tema / Campanha": "Matéria difícil: como dividir a semana",
+    "Pilar": "Estude Melhor",
+    "Status": "—",
+    "_is_past": false
+  },
+  {
+    "ID": "RON-SET-003",
+    "_date_dd": "16.09",
+    "_date_dow": "qua",
+    "Perfil": "Ronan",
+    "Formato": "Reel",
+    "Headline": "A diferença não é sorte, é consistência",
+    "Tema / Campanha": "Por que alguns alunos passam e outros param na metade",
+    "Pilar": "Mito x Verdade",
+    "Status": "—",
+    "_is_past": false
+  },
+  {
+    "ID": "EPQ-SET-005",
+    "_date_dd": "17.09",
+    "_date_dow": "qui",
+    "Perfil": "EPQ",
+    "Formato": "Story",
+    "Headline": "PMERJ, Guarda, SES ou outro?",
+    "Tema / Campanha": "Enquete: qual edital você segue?",
+    "Pilar": "Comunidade",
+    "Status": "—",
+    "_is_past": false
+  },
+  {
+    "ID": "EPQ-SET-006",
+    "_date_dd": "18.09",
+    "_date_dow": "sex",
+    "Perfil": "EPQ",
+    "Formato": "Post",
+    "Headline": "Resultados reais em editais de segurança",
+    "Tema / Campanha": "Prova social: 12 alunos aprovados em julho",
+    "Pilar": "Prova Social",
+    "Status": "—",
+    "_is_past": false
+  }
+];
+const DETAIL_IDS=new Set(RAW.slice(0,2).map(it=>it['ID']));
+function esc(t){if(t==null)return '';const d=document.createElement('div');d.textContent=String(t);return d.innerHTML}
+function copyText(text){navigator.clipboard.writeText(text).then(()=>{const btn=document.querySelector('.copy-btn.success');if(btn)btn.textContent='✅ Copiado'})}
+function renderList(){
   const box=document.getElementById('lista-rows');
   const fEditoria=document.getElementById('f-editoria').value;
   const fCampanha=document.getElementById('f-campanha').value;
   const fStatus=document.getElementById('f-status').value;
   const q=document.getElementById('search').value.toLowerCase();
-  let html='';
-  let total=0, epq=0, ronan=0, integ=0, camp=0;
+  let html='';let total=0,epq=0,ronan=0,integ=0,camp=0;
   RAW.forEach((it)=>{
     const matchesEditoria=!fEditoria||it['Pilar']===fEditoria;
     const matchesCampanha=!fCampanha||it['Formato']===fCampanha;
     const matchesStatus=!fStatus||(it['Status']||'')===fStatus;
     const matchesSearch=!q||[it['ID'],it['Headline'],it['Tema / Campanha'],it['Pilar']].join(' ').toLowerCase().includes(q);
     if(!matchesEditoria||!matchesCampanha||!matchesStatus||!matchesSearch) return;
-    total++; if(it['Perfil']==='EPQ') epq++; if(it['Perfil']==='Ronan') ronan++;
-    if(it['Tipo de distribuição']==='Integrado') integ++; if(it['Formato']==='Campanha') camp++;
+    total++;if(it['Perfil']==='EPQ')epq++;if(it['Perfil']==='Ronan')ronan++;if(it['Tipo de distribuição']==='Integrado')integ++;if(it['Formato']==='Campanha')camp++;
     const hasDetail=DETAIL_IDS.has(it['ID']);
-    const stClass=(it['Status']||'Planejado').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')==='publicado'?'st-positive':(it['Status']||'Planejado').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')==='agendar'||(it['Status']||'Planejado').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')==='aprovado'?'st-blue':'st-neutral';
-    const sendHref='painel-tarefas/tarefas.html';
-    html += '<div class="sched-row'+(it['_is_past']?' is-past':'')+'" data-id="'+it['ID']+'">';
-    html += '<div><button class="expand-btn'+(hasDetail?'':' disabled')+'" data-action="expand" data-id="'+it['ID']+'" '+(hasDetail?'':'disabled')+'>▼</button></div>';
-    html += '<div class="sched-date"><span class="sched-dd">'+it['_date_dd']+'</span><span class="sched-dow">'+it['_date_dow']+'</span></div>';
-    html += '<div class="sched-id">'+it['ID']+'</div>';
-    html += '<div class="sched-perfil '+(it['Perfil']==='EPQ'?'perfil-epq':'perfil-ronan')+'">'+it['Perfil']+'</div>';
-    html += '<div class="sched-formato">'+it['Formato']+'</div>';
-    html += '<div class="sched-main"><div class="sched-headline">'+it['Headline']+'</div><div class="sched-tema">'+it['Tema / Campanha']+'</div></div>';
-    html += '<div class="sched-pilar">'+it['Pilar']+'</div>';
-    html += '<div class="sched-status '+stClass+'"><span class="status-dot"></span>'+(it['Status']||'—')+'</div>';
-    html += '<div><a href="'+sendHref+'" target="_blank" rel="noopener" class="btn btn-ghost" data-action="open" data-id="'+it['ID']+'" style="font-family:var(--font-mono);font-size:10px;padding:6px 10px;">Enviar</a></div>';
-    html += '</div>';
-    if(hasDetail){{
-      html += '<div class="sched-detail" id="detail-'+it['ID']+'">';
-      html += '<div class="detail-content">';
-      html += '<div class="detail-section"><div class="detail-label">Contexto</div><div class="detail-value">'+esc(it['Tema / Campanha'])+'</div></div>';
-      html += '<div class="detail-section"><div class="detail-label">Headline</div><div class="detail-value headline">'+esc(it['Headline'])+'</div><button class="copy-btn" onclick="copyText(''+esc(it['Headline']).replace(/'/g, "\'")+'')">📋 Copiar</button></div>';
-      html += '<div class="detail-section"><div class="detail-label">Legenda</div><div class="detail-value">'+esc(it['Legenda']||'—')+'</div><button class="copy-btn" onclick="copyText(''+esc(it['Legenda']||'').replace(/'/g, "\'")+'')">📋 Copiar</button></div>';
-      html += '<div class="detail-section"><div class="detail-label">Tags</div><div class="detail-value tags">'+esc(it['Tags / Hashtags']||'—')+'</div><button class="copy-btn" onclick="copyText(''+esc(it['Tags / Hashtags']||'').replace(/'/g, "\'")+'')">📋 Copiar</button></div>';
-      html += '<div class="detail-section"><div class="detail-label">Sugestão de Imagem</div><div class="detail-value">'+esc(it['Ideia de arte / Thumb']||'—')+'</div></div>';
-      html += '<div class="detail-section"><div class="detail-label">Briefing Completo</div><div class="detail-value briefing"><strong>Formato:</strong> '+esc(it['Formato'])+'<br><strong>Perfil:</strong> '+esc(it['Perfil'])+'<br><strong>Tipo:</strong> '+esc(it['Tipo de distribuição'])+'<br><strong>Objetivo:</strong> '+esc(it['Objetivo'])+'<br><strong>Responsável:</strong> '+esc(it['Responsável'])+'<br><strong>Status:</strong> '+esc(it['Status']||'—')+'<br><strong>OBS:</strong> '+esc(it['OBS']||'—')+'<br><strong>Avaliação:</strong> '+esc(it['Avaliação e Aprendizados']||'—')+'</div></div>';
-      html += '</div></div>';
-    }}
+    const stClass=(it['Status']||'Planejado').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')==='publicado'?'st-positive':((it['Status']||'Planejado').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')==='agendar'||(it['Status']||'Planejado').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')==='aprovado')?'st-blue':'st-neutral';
+    const sendHref='tarefas.html';
+    html+='<div class="sched-row'+(it['_is_past']?' is-past':'')+'" data-id="'+it['ID']+'">';
+    html+='<div><button class="expand-btn'+(hasDetail?'':' disabled')+'" data-action="expand" data-id="'+it['ID']+'" '+(hasDetail?'':'disabled')+'>▼</button></div>';
+    html+='<div class="sched-date"><span class="sched-dd">'+it['_date_dd']+'</span><span class="sched-dow">'+it['_date_dow']+'</span></div>';
+    html+='<div class="sched-id">'+it['ID']+'</div>';
+    html+='<div class="sched-perfil '+(it['Perfil']==='EPQ'?'perfil-epq':'perfil-ronan')+'">'+it['Perfil']+'</div>';
+    html+='<div class="sched-formato">'+it['Formato']+'</div>';
+    html+='<div class="sched-main"><div class="sched-headline">'+it['Headline']+'</div><div class="sched-tema">'+it['Tema / Campanha']+'</div></div>';
+    html+='<div class="sched-pilar">'+it['Pilar']+'</div>';
+    html+='<div class="sched-status '+stClass+'"><span class="status-dot"></span>'+(it['Status']||'—')+'</div>';
+    html+='<div><a href="'+sendHref+'" target="_blank" rel="noopener" class="btn btn-ghost" data-action="open" data-id="'+it['ID']+'" style="font-family:var(--font-mono);font-size:10px;padding:6px 10px;">Enviar</a></div>';
+    html+='</div>';
+    if(hasDetail){
+      html+='<div class="sched-detail" id="detail-'+it['ID']+'">';
+      html+='<div class="detail-content">';
+      html+='<div class="detail-section"><div class="detail-label">Contexto</div><div class="detail-value">'+esc(it['Tema / Campanha'])+'</div></div>';
+      html+='<div class="detail-section"><div class="detail-label">Headline</div><div class="detail-value headline">'+esc(it['Headline'])+'</div><button class="copy-btn" onclick="copyText(\''+esc(it['Headline']).replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')">📋 Copiar</button></div>';
+      html+='<div class="detail-section"><div class="detail-label">Legenda</div><div class="detail-value">'+(it['Legenda']||'—')+'</div><button class="copy-btn" onclick="copyText(\''+esc(it['Legenda']||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')">📋 Copiar</button></div>';
+      html+='<div class="detail-section"><div class="detail-label">Tags</div><div class="detail-value tags">'+(it['Tags / Hashtags']||'—')+'</div><button class="copy-btn" onclick="copyText(\''+esc(it['Tags / Hashtags']||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')">📋 Copiar</button></div>';
+      html+='<div class="detail-section"><div class="detail-label">Sugestão de Imagem</div><div class="detail-value">'+(it['Ideia de arte / Thumb']||'—')+'</div></div>';
+      html+='<div class="detail-section"><div class="detail-label">Briefing Completo</div><div class="detail-value briefing"><strong>Formato:</strong> '+esc(it['Formato'])+'<br><strong>Perfil:</strong> '+esc(it['Perfil'])+'<br><strong>Tipo:</strong> '+esc(it['Tipo de distribuição'])+'<br><strong>Objetivo:</strong> '+esc(it['Objetivo'])+'<br><strong>Responsável:</strong> '+esc(it['Responsável'])+'<br><strong>Status:</strong> '+(it['Status']||'—')+'<br><strong>OBS:</strong> '+(it['OBS']||'—')+'<br><strong>Avaliação:</strong> '+(it['Avaliação e Aprendizados']||'—')+'</div></div>';
+      html+='</div></div>';
+    }
   });
-  box.innerHTML = html;
+  box.innerHTML=html;
   document.getElementById('kpis').innerHTML='<div class="kpi-item"><div class="kpi-label">Conteúdos</div><div class="kpi-value featured">'+total+'</div></div><div class="kpi-item"><div class="kpi-label">EPQ</div><div class="kpi-value">'+epq+'</div></div><div class="kpi-item"><div class="kpi-label">Ronan</div><div class="kpi-value">'+ronan+'</div></div><div class="kpi-item"><div class="kpi-label">Integrados</div><div class="kpi-value">'+integ+'</div></div><div class="kpi-item"><div class="kpi-label">Campanhas</div><div class="kpi-value">'+camp+'</div></div>';
-}}
+}
+function renderPlanejamento(){
+  if(!window.PLAN_ITEMS) return;
+  const q=(document.getElementById('planejamento-search').value||'').toLowerCase();
+  const fPilar=document.getElementById('f-planejamento-pilar').value;
+  const fPerfil=document.getElementById('f-planejamento-perfil').value;
+  let html='';let total=0,epq=0,ronan=0;const monthCounts={};
+  const list=window.PLAN_ITEMS.slice().sort((a,b)=>(a.MesID+a.Data).localeCompare(b.MesID+b.Data));
+  list.forEach((it)=>{
+    if(fPilar&&it.Pilar!==fPilar) return;
+    if(fPerfil&&it.Perfil!==fPerfil) return;
+    if(q&&![it.ID,it.Headline,it.Tema,it.Pilar,it.Mes].join(' ').toLowerCase().includes(q)) return;
+    total++;if(it.Perfil==='EPQ')epq++;if(it.Perfil==='Ronan')ronan++;monthCounts[it.Mes]=(monthCounts[it.Mes]||0)+1;
+    const stClass=(it.Status||'Planejado').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')==='publicado'?'st-positive':((it.Status||'Planejado').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')==='agendar'||(it.Status||'Planejado').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')==='aprovado')?'st-blue':'st-neutral';
+    html+='<div class="sched-row" data-id="'+it.ID+'">'
+      +'<div class="sched-date"><span class="sched-dd">'+it.Data+'</span></div>'
+      +'<div class="sched-id">'+it.ID+'</div>'
+      +'<div class="sched-perfil '+(it.Perfil==='EPQ'?'perfil-epq':'perfil-ronan')+'">'+it.Perfil+'</div>'
+      +'<div class="sched-formato">'+it.Formato+'</div>'
+      +'<div class="sched-main"><div class="sched-headline">'+it.Headline+'</div><div class="sched-tema">'+it.Tema+'</div></div>'
+      +'<div class="sched-pilar">'+it.Pilar+'</div>'
+      +'<div class="sched-status '+stClass+'"><span class="status-dot"></span>'+(it.Status||'—')+'</div>'
+    +'</div>';
+  });
+  document.getElementById('planejamento-rows').innerHTML=html;
+  document.getElementById('planejamento-kpis').innerHTML='<div class="kpi-item"><div class="kpi-label">Planejados</div><div class="kpi-value featured">'+total+'</div></div><div class="kpi-item"><div class="kpi-label">EPQ</div><div class="kpi-value">'+epq+'</div></div><div class="kpi-item"><div class="kpi-label">Ronan</div><div class="kpi-value">'+ronan+'</div></div><div class="kpi-item"><div class="kpi-label">Meses</div><div class="kpi-value">'+Object.keys(monthCounts).length+'</div></div>';
+}
+function renderPlanilha(){
+  if(!window.PLAN_ITEMS) return;
+  const q=(document.getElementById('planilha-search').value||'').toLowerCase();
+  const fStatus=document.getElementById('f-planilha-status').value;
+  let html='';let total=0;
+  window.PLAN_ITEMS.slice().sort((a,b)=>a.ID.localeCompare(b.ID)).forEach((it)=>{
+    if(fStatus&&it.Status!==fStatus) return;
+    if(q&&![it.ID,it.Headline,it.Tema,it.Mes].join(' ').toLowerCase().includes(q)) return;
+    total++;
+    html+='<div class="sched-row" data-id="'+it.ID+'">'
+      +'<div class="sched-id">'+it.ID+'</div>'
+      +'<div class="sched-date">'+it.Data+'</div>'
+      +'<div class="sched-perfil '+(it.Perfil==='EPQ'?'perfil-epq':'perfil-ronan')+'">'+it.Perfil+'</div>'
+      +'<div class="sched-formato">'+it.Formato+'</div>'
+      +'<div class="sched-main"><div class="sched-headline">'+it.Headline+'</div><div class="sched-tema">'+it.Tema+'</div></div>'
+      +'<div class="sched-pilar">'+it.Pilar+'</div>'
+      +'<div class="sched-status st-neutral"><span class="status-dot"></span>'+(it.Status||'—')+'</div>'
+      +'<div>—</div><div>—</div>'
+    +'</div>';
+  });
+  document.getElementById('planilha-rows').innerHTML=html;
+  document.getElementById('planilha-kpis').innerHTML='<div class="kpi-item"><div class="kpi-label">Itens</div><div class="kpi-value featured">'+total+'</div></div>';
+}
+function switchView(view){
+  document.querySelectorAll('.tab[data-view]').forEach((btn)=>btn.classList.toggle('active', btn.dataset.view===view));
+  ['acompanhamento','planejamento','planilha'].forEach((name)=>{
+    const el=document.getElementById('view-'+name);
+    if(!el) return;
+    el.style.display=name===view?'':'none';
+  });
+  if(view==='planejamento') renderPlanejamento();
+  if(view==='planilha') renderPlanilha();
+}
 function init(){
   renderList();
   ['search','f-editoria','f-campanha','f-status'].forEach(id=>{{
-    const el=document.getElementById(id);
-    if(!el) return;
-    el.addEventListener('input', renderList);
-    el.addEventListener('change', renderList);
-  });
-  document.getElementById('lista-rows').addEventListener('click',e=>{{
-    const btn=e.target.closest('[data-action="expand"]');
-    if(!btn) return;
-    const id=btn.dataset.id;
-    const detail=document.getElementById('detail-'+id);
-    if(!detail) return;
-    const isOpen=detail.classList.contains('open');
-    if(isOpen){{
-      detail.classList.remove('open');
-      btn.classList.remove('expanded');
-      btn.textContent='▼';
-    }} else {{
-      detail.classList.add('open');
-      btn.classList.add('expanded');
-      btn.textContent='▲';
-    }}
+    const el=document.getElementById(id);if(!el) return;el.addEventListener('input',renderList);el.addEventListener('change',renderList);
   }});
-}}
+  ['planejamento-search','f-planejamento-pilar','f-planejamento-perfil'].forEach(id=>{{
+    const el=document.getElementById(id);if(!el) return;el.addEventListener('input',renderPlanejamento);el.addEventListener('change',renderPlanejamento);
+  }});
+  ['planilha-search','f-planilha-status'].forEach(id=>{{
+    const el=document.getElementById(id);if(!el) return;el.addEventListener('input',renderPlanilha);el.addEventListener('change',renderPlanilha);
+  }});
+  document.getElementById('lista-rows').addEventListener('click',(e)=>{
+    const btn=e.target.closest('[data-action="expand"]');if(!btn) return;
+    const id=btn.dataset.id;const detail=document.getElementById('detail-'+id);if(!detail) return;
+    const isOpen=detail.classList.contains('open');
+    if(isOpen){detail.classList.remove('open');btn.classList.remove('expanded');btn.textContent='▼'}else{detail.classList.add('open');btn.classList.add('expanded');btn.textContent='▲'}
+  });
+  document.querySelectorAll('.tab[data-view]').forEach((btn)=>{
+    btn.addEventListener('click',()=>switchView(btn.dataset.view));
+  });
+}
 init();
+
+// Planning data from cronograma.html
+window.PLANNING_DATA = {
+  "planejamento": [
+    {
+      "mes": "Agosto",
+      "contagem": "12 conteúdos · 8 EPQ · 4 Ronan",
+      "itens": [
+        {
+          "data": "04.08 ter",
+          "id": "EPQ-AGO-001",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "3 passos para usar questões como ferramenta de estudo",
+          "tema": "Estudo por questões: por onde começar",
+          "pilar": "Estude Melhor",
+          "status": "Planejado"
+        },
+        {
+          "data": "05.08 qua",
+          "id": "RON-AGO-001",
+          "perfil": "Ronan",
+          "formato": "Reel",
+          "headline": "O que ninguém mostra sobre corrigir provas",
+          "tema": "Rotina de quem corrige provas",
+          "pilar": "Bastidores e Humanização",
+          "status": "Ideia"
+        },
+        {
+          "data": "06.08 qui",
+          "id": "INT-AGO-001",
+          "perfil": "EPQ",
+          "formato": "Carrossel + Reel",
+          "headline": "Você estuda muito, mas aprende pouco?",
+          "tema": "Erro: só ler sem praticar questões",
+          "pilar": "Erros Comuns",
+          "status": "Publicar no mesmo dia"
+        },
+        {
+          "data": "07.08 sex",
+          "id": "EPQ-AGO-002",
+          "perfil": "EPQ",
+          "formato": "Story",
+          "headline": "Desafio EPQ da semana",
+          "tema": "Desafio: 50 questões hoje",
+          "pilar": "Comunidade",
+          "status": "—"
+        },
+        {
+          "data": "12.08 qua",
+          "id": "RON-AGO-002",
+          "perfil": "Ronan",
+          "formato": "Reel",
+          "headline": "Revisar o erro é mais importante que acertar",
+          "tema": "Fazer questões sem revisar: mito ou verdade",
+          "pilar": "Mito x Verdade",
+          "status": "—"
+        },
+        {
+          "data": "13.08 qui",
+          "id": "EPQ-AGO-003",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Gustavo saiu do zero à aprovação em 8 meses",
+          "tema": "Aluno aprovado: Gustavo — PMERJ",
+          "pilar": "Prova Social",
+          "status": "Aguardar depoimento em vídeo"
+        },
+        {
+          "data": "14.08 sex",
+          "id": "EPQ-AGO-004",
+          "perfil": "EPQ",
+          "formato": "Carrossel",
+          "headline": "Revisão inteligente em 4 passos",
+          "tema": "Como revisar erros sem repeti-los",
+          "pilar": "Estude Melhor",
+          "status": "—"
+        },
+        {
+          "data": "19.08 qua",
+          "id": "RON-AGO-003",
+          "perfil": "Ronan",
+          "formato": "Vídeo",
+          "headline": "Antes do aluno chegar à conclusão, eu já vi o padrão",
+          "tema": "O que eu vejo em sala antes do aluno perceber",
+          "pilar": "Autoridade e Método",
+          "status": "Avaliar até 20/08"
+        },
+        {
+          "data": "20.08 qui",
+          "id": "INT-AGO-002",
+          "perfil": "EPQ",
+          "formato": "Campanha",
+          "headline": "PMERJ: última semana para fechar ciclo",
+          "tema": "PMERJ: últimos dias até a prova",
+          "pilar": "Editais e Oportunidades",
+          "status": "—"
+        },
+        {
+          "data": "21.08 sex",
+          "id": "EPQ-AGO-005",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Datas, locais e regras atualizadas",
+          "tema": "PMERJ: cronograma oficial até o dia da prova",
+          "pilar": "Editais e Oportunidades",
+          "status": "—"
+        },
+        {
+          "data": "26.08 qua",
+          "id": "RON-AGO-004",
+          "perfil": "Ronan",
+          "formato": "Vídeo",
+          "headline": "O que realmente importa no edital da PMERJ",
+          "tema": "Minha análise do edital da PMERJ",
+          "pilar": "Editais e Oportunidades",
+          "status": "—"
+        },
+        {
+          "data": "27.08 qui",
+          "id": "EPQ-AGO-006",
+          "perfil": "EPQ",
+          "formato": "Carrossel",
+          "headline": "Planeje a semana sem ansiedade",
+          "tema": "Planejamento semanal sem queimar etapas",
+          "pilar": "Estude Melhor",
+          "status": "—"
+        }
+      ]
+    },
+    {
+      "mes": "Setembro",
+      "contagem": "11 conteúdos · 8 EPQ · 3 Ronan",
+      "itens": [
+        {
+          "data": "02.09 qua",
+          "id": "EPQ-SET-001",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Segunda a sexta usando questões",
+          "tema": "Estudo por questões: rotina de 1 semana",
+          "pilar": "Estude Melhor",
+          "status": "—"
+        },
+        {
+          "data": "03.09 qui",
+          "id": "RON-SET-001",
+          "perfil": "Ronan",
+          "formato": "Reel",
+          "headline": "O erro que eu canso de ver na correção",
+          "tema": "Aluno que não escuta e repete o mesmo erro",
+          "pilar": "Erros Comuns",
+          "status": "—"
+        },
+        {
+          "data": "04.09 sex",
+          "id": "INT-SET-001",
+          "perfil": "EPQ",
+          "formato": "Carrossel + Reel",
+          "headline": "Quantidade sem qualidade não aprova",
+          "tema": "Resolver questões sem entender o erro: mito ou verdade",
+          "pilar": "Mito x Verdade",
+          "status": "—"
+        },
+        {
+          "data": "05.09 sáb",
+          "id": "EPQ-SET-002",
+          "perfil": "EPQ",
+          "formato": "Prova Social",
+          "headline": "Lucas começou em março, mudou a estratégia",
+          "tema": "Depoimento: antes e depois do aluno Lucas",
+          "pilar": "Prova Social",
+          "status": "—"
+        },
+        {
+          "data": "09.09 qua",
+          "id": "RON-SET-002",
+          "perfil": "Ronan",
+          "formato": "Vídeo",
+          "headline": "O primeiro minuto define o foco da semana",
+          "tema": "O que eu digo no primeiro minuto de aula",
+          "pilar": "Bastidores e Humanização",
+          "status": "—"
+        },
+        {
+          "data": "10.09 qui",
+          "id": "EPQ-SET-003",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Editais abertos: semana 37",
+          "tema": "Oportunidade: novos editais na região",
+          "pilar": "Editais e Oportunidades",
+          "status": "Avaliar até 17/09"
+        },
+        {
+          "data": "11.09 sex",
+          "id": "INT-SET-002",
+          "perfil": "EPQ",
+          "formato": "Campanha",
+          "headline": "SES com inscrição aberta: última chance",
+          "tema": "SES: semana de inscrição aberta",
+          "pilar": "Editais e Oportunidades",
+          "status": "—"
+        },
+        {
+          "data": "12.09 sáb",
+          "id": "EPQ-SET-004",
+          "perfil": "EPQ",
+          "formato": "Carrossel",
+          "headline": "Matéria difícil sem travar o cronograma",
+          "tema": "Matéria difícil: como dividir a semana",
+          "pilar": "Estude Melhor",
+          "status": "—"
+        },
+        {
+          "data": "16.09 qua",
+          "id": "RON-SET-003",
+          "perfil": "Ronan",
+          "formato": "Reel",
+          "headline": "A diferença não é sorte, é consistência",
+          "tema": "Por que alguns alunos passam e outros param na metade",
+          "pilar": "Mito x Verdade",
+          "status": "—"
+        },
+        {
+          "data": "17.09 qui",
+          "id": "EPQ-SET-005",
+          "perfil": "EPQ",
+          "formato": "Story",
+          "headline": "PMERJ, Guarda, SES ou outro?",
+          "tema": "Enquete: qual edital você segue?",
+          "pilar": "Comunidade",
+          "status": "—"
+        },
+        {
+          "data": "18.09 sex",
+          "id": "EPQ-SET-006",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Resultados reais em editais de segurança",
+          "tema": "Prova social: 12 alunos aprovados em julho",
+          "pilar": "Prova Social",
+          "status": "—"
+        }
+      ]
+    },
+    {
+      "mes": "Outubro",
+      "contagem": "10 conteúdos · 7 EPQ · 3 Ronan",
+      "itens": [
+        {
+          "data": "01.10 qui",
+          "id": "EPQ-OUT-001",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Comece outubro sem carregar erros",
+          "tema": "Outubro: foco, revisão e prova social",
+          "pilar": "Estude Melhor",
+          "status": "—"
+        },
+        {
+          "data": "02.10 sex",
+          "id": "RON-OUT-001",
+          "perfil": "Ronan",
+          "formato": "Reel",
+          "headline": "O erro que mais atrasa alunos",
+          "tema": "Erro que derruba ritmo de estudos",
+          "pilar": "Erros Comuns",
+          "status": "—"
+        },
+        {
+          "data": "03.10 sáb",
+          "id": "INT-OUT-001",
+          "perfil": "EPQ",
+          "formato": "Carrossel + Reel",
+          "headline": "Motivação ajuda, mas método sustenta",
+          "tema": "Motivação não sustenta estudo longo",
+          "pilar": "Mito x Verdade",
+          "status": "—"
+        },
+        {
+          "data": "06.10 ter",
+          "id": "EPQ-OUT-002",
+          "perfil": "EPQ",
+          "formato": "Prova Social",
+          "headline": "Giovana mudou de área e passou",
+          "tema": "Depoimento em vídeo: Giovana — SES",
+          "pilar": "Prova Social",
+          "status": "—"
+        },
+        {
+          "data": "07.10 qua",
+          "id": "RON-OUT-002",
+          "perfil": "Ronan",
+          "formato": "Vídeo",
+          "headline": "Corrigir questões também é ensinar padrões",
+          "tema": "O método por trás da correção de questões",
+          "pilar": "Autoridade e Método",
+          "status": "—"
+        },
+        {
+          "data": "08.10 qui",
+          "id": "EPQ-OUT-003",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Editais abertos: semana 40",
+          "tema": "Oportunidade: novos editais outubro",
+          "pilar": "Editais e Oportunidades",
+          "status": "—"
+        },
+        {
+          "data": "09.10 sex",
+          "id": "INT-OUT-002",
+          "perfil": "EPQ",
+          "formato": "Campanha",
+          "headline": "GM: inscrição encerra no fim do mês",
+          "tema": "Guarda Municipal: último mês de inscrição",
+          "pilar": "Editais e Oportunidades",
+          "status": "—"
+        },
+        {
+          "data": "13.10 ter",
+          "id": "EPQ-OUT-004",
+          "perfil": "EPQ",
+          "formato": "Carrossel",
+          "headline": "Fim de semana sem perder ritmo",
+          "tema": "Ritmo de estudos sem travar no fim de semana",
+          "pilar": "Estude Melhor",
+          "status": "—"
+        },
+        {
+          "data": "14.10 qua",
+          "id": "RON-OUT-003",
+          "perfil": "Ronan",
+          "formato": "Reel",
+          "headline": "O que acontece antes da live",
+          "tema": "Bastidores: preparando uma aula ao vivo",
+          "pilar": "Bastidores e Humanização",
+          "status": "—"
+        },
+        {
+          "data": "15.10 qui",
+          "id": "EPQ-OUT-005",
+          "perfil": "EPQ",
+          "formato": "Story",
+          "headline": "Descubra seu perfil de erro",
+          "tema": "Quiz: qual seu maior erro de estudo?",
+          "pilar": "Comunidade",
+          "status": "—"
+        }
+      ]
+    },
+    {
+      "mes": "Novembro",
+      "contagem": "9 conteúdos · 6 EPQ · 3 Ronan",
+      "itens": [
+        {
+          "data": "04.11 qua",
+          "id": "EPQ-NOV-001",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Mês de revisão e provas: organize agora",
+          "tema": "Novembro: revisão e provas próximas",
+          "pilar": "Estude Melhor",
+          "status": "—"
+        },
+        {
+          "data": "05.11 qui",
+          "id": "RON-NOV-001",
+          "perfil": "Ronan",
+          "formato": "Reel",
+          "headline": "Véspera de prova: dica pessoal",
+          "tema": "Ansiedade na véspera: o que eu faço",
+          "pilar": "Bastidores e Humanização",
+          "status": "—"
+        },
+        {
+          "data": "06.11 sex",
+          "id": "INT-NOV-001",
+          "perfil": "EPQ",
+          "formato": "Carrossel + Reel",
+          "headline": "Ansiedade atrapalha, mas pode ser controlada",
+          "tema": "Ansiedade não melhora desempenho? mito ou verdade",
+          "pilar": "Mito x Verdade",
+          "status": "—"
+        },
+        {
+          "data": "07.11 sáb",
+          "id": "EPQ-NOV-002",
+          "perfil": "EPQ",
+          "formato": "Prova Social",
+          "headline": "Ele trocou método e mudou o resultado",
+          "tema": "História: de reprovado a aprovado em 6 meses",
+          "pilar": "Prova Social",
+          "status": "—"
+        },
+        {
+          "data": "11.11 qua",
+          "id": "RON-NOV-002",
+          "perfil": "Ronan",
+          "formato": "Vídeo",
+          "headline": "A mensagem que falta para muitos alunos",
+          "tema": "O que eu diria para quem estuda há meses sem passar",
+          "pilar": "Autoridade e Método",
+          "status": "—"
+        },
+        {
+          "data": "12.11 qui",
+          "id": "EPQ-NOV-003",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Editais até dezembro: organize-se",
+          "tema": "Oportunidade: editais de fim de ano",
+          "pilar": "Editais e Oportunidades",
+          "status": "—"
+        },
+        {
+          "data": "13.11 sex",
+          "id": "INT-NOV-002",
+          "perfil": "EPQ",
+          "formato": "Campanha",
+          "headline": "Black Friday com benefício para alunos",
+          "tema": "Black Friday EPQ: condições especiais",
+          "pilar": "Conversão",
+          "status": "—"
+        },
+        {
+          "data": "14.11 sáb",
+          "id": "EPQ-NOV-004",
+          "perfil": "EPQ",
+          "formato": "Carrossel",
+          "headline": "Revisão rápida e eficiente",
+          "tema": "Últimos dias: como revisar sem pânico",
+          "pilar": "Estude Melhor",
+          "status": "—"
+        },
+        {
+          "data": "18.11 qua",
+          "id": "RON-NOV-003",
+          "perfil": "Ronan",
+          "formato": "Reel",
+          "headline": "Erros reais que aparecem na correção",
+          "tema": "Bastidores: correção de prova real em aula",
+          "pilar": "Bastidores e Humanização",
+          "status": "—"
+        }
+      ]
+    },
+    {
+      "mes": "Dezembro",
+      "contagem": "6 conteúdos · 4 EPQ · 2 Ronan",
+      "itens": [
+        {
+          "data": "02.12 qua",
+          "id": "EPQ-DEZ-001",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Feche o ano e projete 2027 com método",
+          "tema": "Dezembro: resultados e planejamento 2027",
+          "pilar": "Estude Melhor",
+          "status": "—"
+        },
+        {
+          "data": "03.12 qui",
+          "id": "RON-DEZ-001",
+          "perfil": "Ronan",
+          "formato": "Reel",
+          "headline": "Mesmo erro, ano após ano",
+          "tema": "Erro que se repete todos os anos",
+          "pilar": "Erros Comuns",
+          "status": "—"
+        },
+        {
+          "data": "04.12 sex",
+          "id": "INT-DEZ-001",
+          "perfil": "EPQ",
+          "formato": "Carrossel + Reel",
+          "headline": "Descansar não significa abandonar o estudo",
+          "tema": "Fim de ano: descanso sem abandonar o estudo",
+          "pilar": "Mito x Verdade",
+          "status": "—"
+        },
+        {
+          "data": "05.12 sáb",
+          "id": "EPQ-DEZ-002",
+          "perfil": "EPQ",
+          "formato": "Prova Social",
+          "headline": "Resultados que fecham o ano",
+          "tema": "Prova social: aprovações de dezembro",
+          "pilar": "Prova Social",
+          "status": "—"
+        },
+        {
+          "data": "09.12 qua",
+          "id": "RON-DEZ-002",
+          "perfil": "Ronan",
+          "formato": "Vídeo",
+          "headline": "O que mudou na minha sala em 2026",
+          "tema": "Retrospectiva do ano como professor",
+          "pilar": "Bastidores e Humanização",
+          "status": "—"
+        },
+        {
+          "data": "10.12 qui",
+          "id": "EPQ-DEZ-003",
+          "perfil": "EPQ",
+          "formato": "Post",
+          "headline": "Prepare 2027 com antecedência",
+          "tema": "Oportunidade: planejamento de editais 2027",
+          "pilar": "Editais e Oportunidades",
+          "status": "—"
+        }
+      ]
+    }
+  ]
+};
+window.PLAN_ITEMS = [];
+(function() {
+  if (!window.PLANNING_DATA || !Array.isArray(window.PLANNING_DATA.planejamento)) return;
+  var items = [];
+  window.PLANNING_DATA.planejamento.forEach(function(m) {
+    (m.itens || []).forEach(function(it) {
+      items.push({
+        ID: it.id || it.ID,
+        Data: it.data || it.Data || '',
+        Perfil: it.perfil || it.Perfil || '',
+        Formato: it.formato || it.Formato || '',
+        Headline: it.headline || it.Headline || '',
+        Tema: it.tema || it.Tema || it['Tema / Campanha'] || '',
+        Pilar: it.pilar || it.Pilar || '',
+        Status: it.status || it.Status || 'Planejado',
+        Mes: m.mes || '',
+        MesID: (m.mes || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, '-')
+      });
+    });
+  });
+  var seen = {};
+  items.forEach(function(it) {
+    if (!seen[it.ID]) { seen[it.ID] = true; window.PLAN_ITEMS.push(it); }
+  });
+})();
 </script>
 </body>
 </html>

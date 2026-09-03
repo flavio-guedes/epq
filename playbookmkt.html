@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EPQ · Playbook de Marketing & Conteúdo</title>
+<title>EPQ · Playbook de Marketing</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -438,6 +438,17 @@
     .statusbar{left:216px;}
   }
 </style>
+
+<script>
+(function(){
+  try {
+    var key='epq-active-tab';
+    var tab=location.pathname.split('/').pop().replace(/\?.*$/,'').replace(/#.*$/,'');
+    if (tab) localStorage.setItem(key, tab);
+  } catch(e) {}
+})();
+</script>
+
 </head>
 <body>
 

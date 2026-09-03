@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EPQ Timeline</title>
+<title>EPQ · Timeline</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -128,6 +128,17 @@ body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,
  .hero-title{font-size:34px}
 }
 </style>
+
+<script>
+(function(){
+  try {
+    var key='epq-active-tab';
+    var tab=location.pathname.split('/').pop().replace(/\?.*$/,'').replace(/#.*$/,'');
+    if (tab) localStorage.setItem(key, tab);
+  } catch(e) {}
+})();
+</script>
+
 </head>
 <body>
 
@@ -243,9 +254,9 @@ const timeline=[
   {phase:"02",title:"Posicionamento & Estratégia",period:"—",status:"Concluído",problem:"Ausência de território editorial e de um funil explícito.",decision:"Criar posicionamento, proposta de valor e sistema de conteúdo.",deliveries:["Proposta de valor: estudar melhor, não mais","Território: “Erro comum de quem estuda para concurso”","Estratégia orgânico × tráfego","Funil Topo → Meio → Fundo"],impact:"Direcionamento claro de comunicação e conteúdo.",tools:["plano-conteudo-trafego.html","planoads.html"]},
   {phase:"03",title:"Identidade & Direção Criativa",period:"—",status:"Concluído",problem:"Ausência de padronização visual e peças de campanha estruturadas.",decision:"Definir identidade visual, sistema de templates e peças.",deliveries:["Sistema visual EPQ","Templates para posts, carrosséis, stories, reels","Peças de campanha"],impact:"Identidade consistente e produção mais rápida.",tools:["Painel de Conteúdo","Playbook de Marketing"]},
   {phase:"04",title:"Estruturação de Conteúdo",period:"21/08 → fim set/2026",status:"Concluído",problem:"Conteúdo sem calendário, rituais de produção ou status visível.",decision:"Criar fluxo editorial com etapas e responsáveis.",deliveries:["Planejamento editorial","Calendário e cronograma","Briefing → Produção → Revisão → Aprovação → Publicação"],impact:"Redução de retrabalho e previsibilidade.",tools:["painel-conteudo.html","cronograma.html"]},
-  {phase:"05",title:"Gestão Operacional",period:"—",status:"Concluído",problem:"Tarefas e responsários dispersos sem acompanhamento.",decision:"Criar painel próprio de gestão.",deliveries:["Painel de Gestão de Tarefas","Kanban com status","Acompanhamento por dono e prioridade"],impact:"Visibilidade operacional em tempo real.",tools:["painel-tarefas/index.html"]},
+  {phase:"05",title:"Gestão Operacional",period:"—",status:"Concluído",problem:"Tarefas e responsários dispersos sem acompanhamento.",decision:"Criar painel próprio de gestão.",deliveries:["Painel de Gestão de Tarefas","Kanban com status","Acompanhamento por dono e prioridade"],impact:"Visibilidade operacional em tempo real.",tools:["tarefas.html"]},
   {phase:"06",title:"Painel de Conteúdo",period:"—",status:"Concluído",problem:"Falta de visão consolidada de pautas e status.",decision:"Criar painel unificado de conteúdo.",deliveries:["Painel de Acompanhamento","Kanban e lista","Filtros por status e tema"],impact:"Acompanhamento editorial centralizado.",tools:["painel-conteudo.html"]},
-  {phase:"07",title:"Integração dos Sistemas",period:"—",status:"Concluído",problem:"Conteúdo e gestão operavam separados.",decision:"Integrar painéis e tornar conteúdo parte da operação.",deliveries:["Integração Painel Conteúdo + Tarefas","Vínculo por projeto/área","Manifesto de integração"],impact:"Operação integrada em vez de listas paralelas.",tools:["integration-manifest.json","painel-conteudo.html","painel-tarefas/index.html"]},
+  {phase:"07",title:"Integração dos Sistemas",period:"—",status:"Concluído",problem:"Conteúdo e gestão operavam separados.",decision:"Integrar painéis e tornar conteúdo parte da operação.",deliveries:["Integração Painel Conteúdo + Tarefas","Vínculo por projeto/área","Manifesto de integração"],impact:"Operação integrada em vez de listas paralelas.",tools:["integration-manifest.json","painel-conteudo.html","tarefas.html"]},
   {phase:"08",title:"Marketing & Performance",period:"—",status:"Em evolução",problem:"Planejamento de mídia sem estrutura de execução.",decision:"Estruturar plano de ads e jornada de atendimento.",deliveries:["Plano de Ads (R$200/semana)","Playbook de Marketing","Playbook de Atendimento"],impact:"Direcionamento operacional de mídia e conversão.",tools:["planoads.html","playbookmkt.html","playbookatendimento.html","plano-conteudo-trafego.html"]},
   {phase:"09",title:"Organização do Ecossistema",period:"—",status:"Em evolução",problem:"Arquivos e assets sem estrutura de localização e reuso.",decision:"Criar organização por mês, editoria, formato e status.",deliveries:["Estrutura de pastas por mês e tema","Convenções de nomenclatura","Fluxo de arquivamento"],impact:"Escala e reaproveitamento com menos atrito.",tools:["painel-estrutura"]},
   {phase:"10",title:"AI Operating System",period:"—",status:"Em implementação",problem:"Execução manual concentrada em pessoas.",decision:"Introduzir camada de agentes, skills e automação.",deliveries:["Arquitetura: Flávio → Atlas → Hermes → Agentes → Skills","Agentes especialistas por área","Monitoramento e relatórios automáticos"],impact:"Operação assistida por agentes com supervisão humana.",tools:["Hermes","Skills","Automações locais"]},

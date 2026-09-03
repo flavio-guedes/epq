@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EPQ | COMMAND CENTER</title>
+<title>EPQ · Fluxo Comercial</title>
 <style>
 :root{
   --n0:#060f1e;--n1:#0b1d3a;--n2:#132848;--n3:#1c3a60;--n4:#254e82;
@@ -348,6 +348,17 @@ body.mode-intelligence .fcard[data-has-script="1"]{box-shadow:0 0 0 1px var(--cy
   .cri-headline{font-size:12px}
 }
 </style>
+
+<script>
+(function(){
+  try {
+    var key='epq-active-tab';
+    var tab=location.pathname.split('/').pop().replace(/\?.*$/,'').replace(/#.*$/,'');
+    if (tab) localStorage.setItem(key, tab);
+  } catch(e) {}
+})();
+</script>
+
 </head>
 <body class="mode-execution">
 

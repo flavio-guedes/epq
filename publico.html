@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EPQ — Análise Estratégica ICP + Auditoria de Conteúdo</title>
+<title>EPQ · Público</title>
 <style>
   :root {
     --navy: #0a1628;
@@ -560,6 +560,17 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 3px; }
 </style>
+
+<script>
+(function(){
+  try {
+    var key='epq-active-tab';
+    var tab=location.pathname.split('/').pop().replace(/\?.*$/,'').replace(/#.*$/,'');
+    if (tab) localStorage.setItem(key, tab);
+  } catch(e) {}
+})();
+</script>
+
 </head>
 <body>
 

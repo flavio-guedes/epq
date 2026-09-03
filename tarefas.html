@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EPQ Central de Tarefas</title>
+<title>EPQ · Tarefas</title>
 <style>
   :root{
     --navy:#0a1f3b;
@@ -189,6 +189,17 @@
     .search{max-width:100%}
   }
 </style>
+
+<script>
+(function(){
+  try {
+    var key='epq-active-tab';
+    var tab=location.pathname.split('/').pop().replace(/\?.*$/,'').replace(/#.*$/,'');
+    if (tab) localStorage.setItem(key, tab);
+  } catch(e) {}
+})();
+</script>
+
 </head>
 <body>
   <div class="cover-wrap" id="cover">

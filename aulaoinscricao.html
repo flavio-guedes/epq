@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPQ · Aulão — Carreiras Policiais</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --epq-white: #ffffff;
+  --epq-bg: #0b1220;
+  --epq-surface-strong: rgba(11,18,32,.92);
+  --epq-gray-50: #f8fafc;
+  --epq-gray-100: #eef2f5;
+  --epq-gray-200: #e4eaf0;
+  --epq-gray-300: #d8e0e7;
+  --epq-gray-500: #8a97a5;
+  --epq-gray-700: #c9d5e8;
+  --epq-gray-900: #e6f0ff;
+  --epq-blue-600: #2457eb;
+  --epq-blue-700: #1a56db;
+  --epq-cyan: #08B7D6;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --shadow-md: 0 8px 24px rgba(15,40,65,.35), 0 2px 6px rgba(15,40,65,.25);
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--epq-bg);
+  color: var(--epq-gray-900);
+  min-height: 100vh;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  height: 100dvh;
+  display: flex;
+  overflow: hidden;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 28px 32px;
+}
+
+.left {
+  width: 56%;
+  background: linear-gradient(180deg, rgba(11,18,32,.92), rgba(11,18,32,.88));
+  border-right: 1px solid rgba(255,255,255,.08);
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--epq-white);
+  margin-bottom: 22px;
+  letter-spacing: .02em;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 10px;
+}
+
+.content {
+  width: 100%;
+  max-width: 540px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--epq-cyan);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  background: rgba(8,183,214,.1);
+  border: 1px solid rgba(8,183,214,.18);
+  padding: 6px 12px;
+  border-radius: 999px;
+  width: max-content;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--epq-white);
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+}
+
+.sub {
+  font-size: 14px;
+  color: var(--epq-gray-700);
+  line-height: 1.5;
+}
+
+.tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,.08);
+  color: var(--epq-white);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  backdrop-filter: blur(6px);
+}
+
+.form {
+  background: rgba(255,255,255,.96);
+  border: 1px solid rgba(21,38,66,.08);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow-md);
+}
+
+.form-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 4px;
+  color: var(--epq-bg);
+}
+
+.form-sub {
+  font-size: 12px;
+  color: var(--epq-gray-500);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.field {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(21,38,66,.12);
+  background: #fff;
+  font-size: 13px;
+  color: var(--epq-bg);
+  outline: none;
+  margin-bottom: 6px;
+}
+
+.field:focus {
+  border-color: var(--epq-blue-600);
+  box-shadow: 0 0 0 3px rgba(36,87,235,.12);
+}
+
+select.field {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, rgba(21,38,66,.35) 50%), linear-gradient(135deg, rgba(21,38,66,.35) 50%, transparent 50%);
+  background-position: calc(100% - 16px) 16px, calc(100% - 10px) 16px;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--epq-blue-700) 0%, var(--epq-cyan) 100%);
+  color: var(--epq-white);
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 8px 20px -8px rgba(37,114,190,.55), 0 0 18px rgba(8,183,214,.12);
+}
+
+.right {
+  width: 44%;
+  position: relative;
+  background: url('Capa aula inscricao.jpeg') center/cover no-repeat;
+}
+
+.right::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(11,18,32,.45), rgba(11,18,32,.05) 70%, transparent 100%);
+}
+
+@media (max-width: 860px) {
+  .page { flex-direction: column; overflow-y: auto; min-height: 100dvh; }
+  .left, .right { width: 100%; }
+  .right { min-height: 38vh; }
+  body { overflow: auto; }
+  .title { font-size: 26px; }
+  .content { max-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .left { padding: 20px; }
+  .right { min-height: 32vh; }
+  .title { font-size: 24px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="side left">
+    <div class="brand">EPQ</div>
+    <div class="content">
+      <div class="eyebrow">Aulão · Carreiras Policiais</div>
+      <div class="title">AULÃO EPQ</div>
+      <div class="sub">Direito Penal + Direito Administrativo com resolução de questões e teoria aplicada.</div>
+      <div class="tags">
+        <span class="tag">📅 Sábado, 29 · 09h–12h</span>
+        <span class="tag">📍 Presencial / Online</span>
+        <span class="tag">🎯 Foco em edital e banca</span>
+      </div>
+
+      <div class="form">
+        <div class="form-title">inscricao aulao</div>
+        <div class="form-sub">Preencha e vá direto para o formulário oficial.</div>
+        <form onsubmit="event.preventDefault(); window.location.href='https://forms.office.com/r/SEU_LINK_AQUI';">
+          <input class="field" placeholder="Nome completo" required>
+          <input class="field" placeholder="WhatsApp" required>
+          <select class="field" required>
+            <option value="">Concurso alvo</option>
+            <option>PMERJ</option>
+            <option>Polícia Civil</option>
+            <option>PRF</option>
+            <option>Polícia Penal</option>
+            <option>Polícia Federal</option>
+            <option>Guarda Municipal</option>
+          </select>
+          <select class="field" required>
+            <option value="">Turno preferido</option>
+            <option>Manhã</option>
+            <option>Tarde</option>
+            <option>Noite</option>
+          </select>
+          <button class="cta" type="submit">Quero me inscrever</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="right"></div>
+</div>
+</body>
+</html>

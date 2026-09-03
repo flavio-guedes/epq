@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EPQ — Análise de Atendimento e Funil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+<style>
+:root{
+  --navy:#0a1f3b;
+  --blue:#1b3a8a;
+  --gold:#d4a843;
+  --bg:#f6f7fb;
+  --card:#ffffff;
+  --text:#0f172a;
+  --muted:#6b7280;
+  --ok:#16a34a;
+  --warn:#d97706;
+  --bad:#dc2626;
+  --hot:#ef4444;
+  --warm:#f97316;
+  --nurture:#eab308;
+  --cold:#94a3b8;
+  --shadow:0 6px 18px rgba(15,23,41,.06);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;background:var(--bg);color:var(--text);line-height:1.45}
+.wrap{max-width:1240px;margin:0 auto;padding:28px 18px 60px}
+
+header.brand{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:22px;flex-wrap:wrap}
+.brand-left{display:flex;align-items:center;gap:14px}
+.brand-mark{height:46px;width:46px;background:linear-gradient(135deg,var(--blue),var(--navy));border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:18px;box-shadow:var(--shadow)}
+.brand h1{font-size:22px;margin:0;line-height:1.15}
+.brand p{margin:3px 0 0;color:var(--muted);font-size:13px}
+.brand-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.link-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid #e5e7eb;background:#fff;text-decoration:none;color:#0f172a;font-size:13px;font-weight:600;box-shadow:var(--shadow)}
+.link-btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0;padding:14px;background:#fff;border:1px solid #e5e7eb;border-radius:16px;box-shadow:var(--shadow)}
+.input,.select{padding:11px 13px;border:1px #e5e7eb solid;border-radius:12px;background:#fff;font-size:14px;min-width:220px}
+.select{min-width:180px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:12px;border:1px solid #e5e7eb;background:#fff;font-size:13px;font-weight:600;cursor:pointer;user-select:none}
+.pill.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+.kpi{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}
+@media(min-width:700px){.kpi{grid-template-columns:repeat(5,1fr)}}
+.card{background:var(--card);border:1px solid #e5e7eb;border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+.kpi .card{text-align:center}
+.kpi .value{font-size:28px;font-weight:800;margin:6px 0;letter-spacing:-.02em}
+.kpi .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.kpi .hint{font-size:11px;color:var(--muted);margin-top:4px}
+
+.section{margin-top:22px}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.section-title{font-size:16px;font-weight:700;margin:0}
+
+.funnel{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:900px){.funnel{grid-template-columns:repeat(6,1fr)}}
+.funnel .step{background:var(--card);border:1px solid #e5e7eb;border-radius:14px;padding:14px;text-align:center;box-shadow:var(--shadow)}
+.funnel .stage{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.funnel .count{font-size:26px;font-weight:800;margin:6px 0}
+.funnel .pct{font-size:12px;color:var(--muted)}
+
+.grid-2{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:980px){.grid-2{grid-template-columns:1fr 1fr}}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid #e5e7eb;border-radius:16px;background:#fff;box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse;min-width:1040px;font-size:13px}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid #e5e7eb)}
+th{font-weight:600;color:#374151;background:#f9fafb;position:sticky;top:0}
+tr:hover td{background:#f8fafc)}
+.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.badge-hot{background:#fee2e2;color:#991b1b}
+.badge-warm{background:#ffedd5;color:#9a3412}
+.badge-nurture{background:#fef9c3;color:#713f12}
+.badge-cold{background:#e2e8f0;color:#334155}
+
+.timeline{display:flex;flex-direction:column;gap:10px}
+.tl-item{display:flex;gap:10px}
+.tl-dot{width:10px;min-width:10px;height:10px;border-radius:50%;background:#cbd5e1;margin-top:7px}
+.tl-dot.g{background:#16a34a}.tl-dot.y{background:#eab308}.tl-dot.r{background:#ef4444}.tl-dot.b{background:#0f172a}
+.tl-content{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px;flex:1}
+.tl-meta{font-size:11px;color:var(--muted)}
+.tl-text{font-size:13px;margin-top:2px}
+
+.lead-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+.lead-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.lead-title{font-weight:700;font-size:15px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+button.btn{padding:9px 12px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;font-size:13px;font-weight:600}
+button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+.empty{color:var(--muted);font-size:13px;padding:8px 0}
+
+.row-list{display:flex;flex-direction:column;gap:10px}
+@media(min-width:980px){.row-list{display:table;width:100%;border-collapse:collapse}}
+@media(min-width:980px){.row-item{display:table-row}.row-item>*{display:table-cell;vertical-align:top;padding:12px 14px;border-bottom:1px solid #e5e7eb}}
+.row-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:12px;box-shadow:var(--shadow)}
+.row-title{font-weight:700;font-size:14px}
+.row-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.row-meta{font-size:12px;color:#374151;margin-top:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.row-actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+
+.report{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:16px;box-shadow:var(--shadow)}
+.report h3{font-size:14px;margin:10px 0 6px;color:#111827}
+.report ul{padding-left:18px;margin:0}
+.report li{margin:6px 0;font-size:13px;line-height:1.55}
+.muted{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <header class="brand">
+    <div class="brand-left">
+      <div class="brand-mark">EPQ</div>
+      <div>
+        <h1>Análise de Atendimento — Funil e Jornada</h1>
+        <p>Dados extraídos das conversas do WhatsApp. Nenhum dado inventado.</p>
+      </div>
+    </div>
+    <div class="brand-actions">
+      <a class="link-btn" href="https://github.com/flavio-guedes/epq" target="_blank" rel="noreferrer">GitHub</a>
+      <a class="link-btn primary" href="https://flavio-guedes.github.io/epq/analise_atendimento/" target="_blank" rel="noreferrer">Abrir painel</a>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <input class="input" v-model="q" placeholder="Buscar lead por nome, telefone ou status…">
+    <select class="select" v-model="statusFilter"><option value="">Todos status</option></select>
+    <select class="select" v-model="objFilter"><option value="">Todas objeções</option></select>
+    <select class="select" v-model="prioFilter"><option value="">Todas prioridades</option></select>
+    <label class="pill" :class="{active:sort==='score'}" @click="sort='score'">Score</label>
+    <label class="pill" :class="{active:sort==='prioridade'}" @click="sort='prioridade'">Prioridade</label>
+    <label class="pill" :class="{active:sort==='ultima'}" @click="sort='ultima'">Última</label>
+  </div>
+
+  <div class="kpi">
+    <div class="card"><div class="label">Leads analisados</div><div class="value">{{kpi.total}}</div><div class="hint">Base: conversas exportadas</div></div>
+    <div class="card"><div class="label">Quentes / recuperáveis</div><div class="value">{{kpi.hotRec}}</div><div class="hint">Ação imediata</div></div>
+    <div class="card"><div class="label">Com resposta</div><div class="value">{{kpi.resp}}</div><div class="hint">Conversas com troca</div></div>
+    <div class="card"><div class="label">Sem resposta</div><div class="value">{{kpi.semResp}}</div><div class="hint">Follow-up necessário</div></div>
+    <div class="card"><div class="label">Principal objeção</div><div class="value" style="font-size:13px;margin-top:8px">{{kpi.objTop||'—'}}</div><div class="hint">Padrão observado</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><div class="section-title">Funil observado</div></div>
+    <div class="funnel">
+      <div class="step" v-for="s in funnel" :key="s.stage">
+        <div class="stage">{{s.stage}}</div>
+        <div class="count">{{s.count}}</div>
+        <div class="pct">{{s.pct}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section grid-2">
+    <div class="card">
+      <div class="section-head"><div class="section-title">Ranking de objeções</div></div>
+      <div v-if="objRank.length===0" class="empty">Sem objeções explícitas suficientes nesta amostra.</div>
+      <div v-else>
+        <div v-for="o in objRank" :key="o.categoria" style="padding:9px 0;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-weight:600;font-size:14px">{{o.categoria}}</div>
+            <div style="font-size:12px;color:var(--muted)">{{o.freq}} ocorrência(s)</div>
+          </div>
+          <span class="badge" :class="o.badge">{{o.nivel}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-head"><div class="section-title">Atendimento — acertos e erros comuns</div></div>
+      <div style="font-size:13px;line-height:1.6">
+        <div><strong style="color:var(--ok)">✓ Acertos:</strong> agendamento rápido de aula experimental, clareza em turnos/valores, saudação curta.</div>
+        <div style="margin-top:8px"><strong style="color:var(--bad)">✗ Erros:</strong> follow-up lento, ausência de CTA após passar valores, respostas genéricas sem diagnóstico.</div>
+        <div style="margin-top:8px"><strong style="color:var(--warn)">⚠ Crítico:</strong> leads param no preço/valor sem próximo passo reforçado.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><div class="section-title">Leads</div></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Lead</th>
+            <th>Status</th>
+            <th>Score</th>
+            <th>Origem</th>
+            <th>Dor</th>
+            <th>Objeção</th>
+            <th>Última interação</th>
+            <th>Probabilidade</th>
+            <th>Próxima ação</th>
+            <th>Prioridade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="l in filtered" :key="l.id">
+            <td><a href="#" @click.prevent="openLead(l)" style="color:var(--blue);font-weight:600;text-decoration:none)">{{l.name}}</a><div style="font-size:11px;color:var(--muted)">{{l.phone}}</div></td>
+            <td><span class="badge" :class="statusClass(l.status)">{{l.status}}</span></td>
+            <td><div style="font-weight:700">{{l.score}}</div><div style="font-size:11px;color:var(--muted)">{{temperatura(l.score)}}</div></td>
+            <td>{{l.source}}</td>
+            <td style="max-width:220px">{{l.dor}}</td>
+            <td style="max-width:220px">{{l.objecoes.length?l.objecoes.map(x=>x.categoria).join(', '):'—'}}</td>
+            <td style="white-space:nowrap">{{l.ultimaInteracao}}</td>
+            <td style="max-width:180px">{{l.probabilidade}}</td>
+            <td style="max-width:220px">{{l.proximaAcao}}</td>
+            <td>{{l.prioridade}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div v-if="!filtered.length" class="empty">Nenhum lead encontrado com os filtros atuais.</div>
+  </div>
+
+  <div class="section grid-2">
+    <div class="card">
+      <div class="section-head"><div class="section-title">Jornada do lead</div></div>
+      <div class="timeline">
+        <div v-for="(t,i) in selected.jornada" :key="i" class="tl-item">
+          <div class="tl-dot" :class="dot(t.status)"></div>
+          <div class="tl-content">
+            <div class="tl-meta">{{t.data}}</div>
+            <div class="tl-text">{{t.etapa}}</div>
+          </div>
+        </div>
+      </div>
+      <div v-if="!selected.jornada.length" class="empty">Selecione um lead para visualizar a jornada.</div>
+    </div>
+    <div class="card">
+      <div class="section-head"><div class="section-title">Correções de rota</div></div>
+      <div class="report">
+        <h3>Problema</h3>
+        <ul>
+          <li>Follow-up lento e genérico em alguns leads.</li>
+          <li>Objeção de preço/valor tratada só quando o lead pergunta.</li>
+        </ul>
+        <h3>Evidência</h3>
+        <ul>
+          <li>Sabrina, Matheus, Gabriel e Dom Burgue não receberam agendamento rápido.</li>
+          <li>Douglas foi exceção: avanço rápido e aula experimental agendada.</li>
+        </ul>
+        <h3>Impacto</h3>
+        <ul>
+          <li>Perda de momentum já na etapa de qualificação.</li>
+        </ul>
+        <h3>Recomendação</h3>
+        <ul>
+          <li>Responder em até 30 min e sempre fechar com CTA de aula experimental.</li>
+          <li>Antecipar valor e garantia no primeiro contato.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section grid-2">
+    <div class="card">
+      <div class="section-head"><div class="section-title">Meta Ads — recomendações</div></div>
+      <div class="report">
+        <ul>
+          <li>Anúncios que perguntam “tem vaga?” funcionam bem para PMERJ.</li>
+          <li>Leads de GCM pedem oferta específica; usar criativos segmentados por cidade.</li>
+          <li>Reforçar método para iniciantes no copy para reduzir “pouca base”.</li>
+          <li>Follow-up automático com aula experimental em até 30 minutos.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-head"><div class="section-title">What To Do Now</div></div>
+      <div class="report">
+        <ol style="padding-left:18px;margin:0">
+          <li>Recuperar Douglas e Claudia com confirmação de presença.</li>
+          <li>Reativar Matheus, Sabrina, Gabriel e Patrick com aula experimental.</li>
+          <li>Criar follow-up automático para GCM São Gonçalo.</li>
+          <li>Revisar copy do anúncio para antecipar método para iniciantes.</li>
+          <li>Ajustar script para responder preço/valor com garantia já na primeira troca.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div v-if="lead" class="section card" style="margin-top:14px">
+    <div class="section-head"><div class="section-title">{{lead.name}}</div></div>
+    <div class="grid-2">
+      <div>
+        <div style="font-size:13px"><strong>Origem:</strong> {{lead.source}}</div>
+        <div style="font-size:13px"><strong>Campanha:</strong> {{lead.campaign}}</div>
+        <div style="font-size:13px"><strong>Status:</strong> {{lead.status}}</div>
+        <div style="font-size:13px"><strong>Score:</strong> {{lead.score}} — {{temperatura(lead.score)}}</div>
+        <div style="font-size:13px"><strong>Dor:</strong> {{lead.dor}}</div>
+        <div style="font-size:13px"><strong>Desejo:</strong> {{lead.desejo}}</div>
+        <div style="font-size:13px"><strong>Última interação:</strong> {{lead.ultimaInteracao}}</div>
+      </div>
+      <div>
+        <div style="font-size:13px"><strong>Perguntas:</strong> {{lead.perguntas.length?lead.perguntas.join(' | '):'—'}}</div>
+        <div style="font-size:13px"><strong>Respostas:</strong> {{lead.respostasAtendimento.join(' || ')}}</div>
+        <div style="font-size:13px"><strong>Objeções:</strong> {{lead.objecoes.length?lead.objecoes.map(x=>x.categoria).join(', '):'—'}}</div>
+        <div class="actions">
+          <button class="btn primary" @click="openWa(lead)">Abrir WhatsApp</button>
+          <button class="btn" @click="closeLead()">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const RAW={leads:[],registros:[]};
+</script>
+<script>
+const APP_STATE = {
+  leads: [
+    {
+      id:'lead-001-douglas',name:'Douglas PMERJ',phone:'+55 21 9XXXX-XXXX',source:'Instagram',campaign:'PMERJ',entrada:'2026-08-24',intencaoInicial:'Queria saber se tem vaga e disse ter pouca base de estudo.',produtoInteresse:'Turma PMERJ',dor:'Pouca base de estudo',desejo:'Entrar na turma PMERJ para aprender tudo desde o início.',objecoes:[],perguntas:['Tem vaga?','Tem problema eu ter pouca base?','Qual turno?','Como funciona o curso?'],respostasAtendimento:['Ofereceu manhã, noite e sábado.','Confirmou 5 meses e disciplinas do edital.','Agendou aula experimental para a noite.'],avancos:[],momentosPerdaMomentum:[],sinaisCompra:['Disponibilidade para ir no mesmo dia','Aceitou aula experimental','Aceitou colocar nome na lista'],sinaisDesinteresse:[],followUps:[],ultimaInteracao:'2026-09-02',resultadoFinal:'Agendou aula experimental.',status:'QUENTE',statusConfirmacao:'CONFIRMADO',score:85,probabilidade:'Alta',proximaAcao:'Confirmar presença no dia/horário e iniciar matrícula após aula.',prioridade:'ALTA',tempoRespostaHoras:1.5,jornada:[{etapa:'ANÚNCIO',data:'2026-08-24',status:'🟢'},{etapa:'LEAD',data:'2026-08-24',status:'🟢'},{etapa:'PRIMEIRO CONTATO',data:'2026-09-02',status:'🟢'},{etapa:'QUALIFICAÇÃO',data:'2026-09-02',status:'🟢'},{etapa:'INTERESSE',data:'2026-09-02',status:'🟢'},{etapa:'OFERTA / AULA EXPERIMENTAL',data:'2026-09-02',status:'🟢'}]},
+    {id:'lead-002-claudia',name:'Claudia PMERJ',phone:'+55 21 9XXXX-XXXX',source:'Instagram',campaign:'PMERJ',entrada:'2026-09-03',intencaoInicial:'Quis saber quando começam novas turmas, horários, valores e idade.',produtoInteresse:'Turma PMERJ',dor:'Insegurança sobre começo de turma e adaptação de horário.',desejo:'Iniciar preparação PMERJ em turma alinhada à sua rotina.',objecoes:[],perguntas:['Tem turma nova?','Que horas começa?','Sábado que horas?','Idade tem limite?','Quais os valores?'],respostasAtendimento:['Informou turnos, horários, abertura das turmas e duração de 5 meses.','Passou valores claros e agendou aula experimental.'],avancos:[],momentosPerdaMomentum:[],sinaisCompra:['Confirmou sim ao agendamento','Aceitou próxima ação clara'],sinaisDesinteresse:[],followUps:[],ultimaInteracao:'2026-09-03',resultadoFinal:'Agendou aula experimental para 03/09.',status:'QUENTE',statusConfirmacao:'CONFIRMADO',score:88,probabilidade:'Alta',proximaAcao:'Acompanhar presença e avançar para matrícula após aula experimental.',prioridade:'ALTA',tempoRespostaHoras:1.3,jornada:[{etapa:'ANÚNCIO',data:'2026-09-03',status:'🟢'},{etapa:'LEAD',data:'2026-09-03',status:'🟢'},{etapa:'PRIMEIRO CONTATO',data:'2026-09-03',status:'🟢'},{etapa:'QUALIFICAÇÃO',data:'2026-09-03',status:'🟢'},{etapa:'INTERESSE',data:'2026-09-03',status:'🟢'},{etapa:'OFERTA / AULA EXPERIMENTAL',data:'2026-09-03',status:'🟢'}]},
+    {id:'lead-003-matheus',name:'Matheus PMERJ',phone:'+55 21 9XXXX-XXXX',source:'Instagram',campaign:'PMERJ',entrada:'2026-09-02',intencaoInicial:'Queria saber se a turma já começou, o valor e se inclui todas as matérias.',produtoInteresse:'Turma PMERJ',dor:'Dúvida prática de viabilidade.',desejo:'Clareza sobre começo do curso e custo.',objecoes:[],perguntas:['A turma já começou?','Qual valor?','Tem todas matérias do edital?'],respostasAtendimento:['Informou valores, turnos, duração e que cobre todo o edital.'],avancos:[],momentosPerdaMomentum:[{data:'2026-09-02',evento:'Após passar valores e dados, não houve agendamento.',tipo:'🔴'}],sinaisCompra:['Perguntou valores e conteúdo'],sinaisDesinteresse:['Sem resposta ao follow-up de aula experimental'],followUps:['Solicitou agendamento de aula experimental'],ultimaInteracao:'2026-09-02',resultadoFinal:'Sem resposta após follow-up.',status:'OBJEÇÃO',statusConfirmacao:'CONFIRMADO',score:48,probabilidade:'Média-baixa',proximaAcao:'Follow-up com reforço de método para iniciantes e vaga na turma.',prioridade:'MÉDIA',tempoRespostaHoras:0.4,jornada:[{etapa:'ANÚNCIO',data:'2026-09-02',status:'🟢'},{etapa:'LEAD',data:'2026-09-02',status:'🟢'},{etapa:'PRIMEIRO CONTATO',data:'2026-09-02',status:'🟢'},{etapa:'QUALIFICAÇÃO',data:'2026-09-02',status:'🟢'},{etapa:'INTERESSE',data:'2026-09-02',status:'🟡'},{etapa:'OBJEÇÃO / SEM AÇÃO',data:'2026-09-02',status:'🔴'}]},
+    {id:'lead-004-sabrina',name:'Sabrina PMERJ',phone:'+55 21 9XXXX-XXXX',source:'Instagram',campaign:'PMERJ',entrada:'2026-09-02',intencaoInicial:'Solicitou apenas valor e horário.',produtoInteresse:'Turma PMERJ',dor:'Dúvida operacional simples.',desejo:'Saber custo e horário para decidir.',objecoes:[],perguntas:['Qual o valor?','Quais horários?'],respostasAtendimento:['Informou turnos e valores, sem vincular próximo passo forte.'],avancos:[],momentosPerdaMomentum:[{data:'2026-09-02',evento:'Conversa terminou em dado e sem agendamento.',tipo:'🔴'}],sinaisCompra:['Pediu valores e horários'],sinaisDesinteresse:['Sem follow-up registrado e sem agendamento'],followUps:[],ultimaInteracao:'2026-09-02',resultadoFinal:'Sem resposta.',status:'OBJEÇÃO',statusConfirmacao:'CONFIRMADO',score:40,probabilidade:'Média-baixa',proximaAcao:'Follow-up direto com benefício e agenda de aula experimental.',prioridade:'MÉDIA',tempoRespostaHoras:1.6,jornada:[{etapa:'ANÚNCIO',data:'2026-09-02',status:'🟢'},{etapa:'LEAD',data:'2026-09-02',status:'🟢'},{etapa:'PRIMEIRO CONTATO',data:'2026-09-02',status:'🟢'},{etapa:'QUALIFICAÇÃO',data:'2026-09-02',status:'🟡'},{etapa:'INTERESSE',data:'2026-09-02',status:'🟡'},{etapa:'FALTA DE AÇÃO',data:'2026-09-02',status:'🔴'}]},
+    {id:'lead-005-mylena',name:'Mylena PMERJ',phone:'+55 21 9XXXX-XXXX',source:'Instagram',campaign:'PMERJ',entrada:'2026-09-02',intencaoInicial:'Pediu mais informações sobre o anúncio.',produtoInteresse:'Indefinido',dor:'Não identificada',desejo:'Não identificado',objecoes:[],perguntas:[],respostasAtendimento:['Primeira resposta automática padrão.'],avancos:[],momentosPerdaMomentum:[{data:'2026-09-02',evento:'Sem retorno da lead após primeiro contato.',tipo:'🔴'}],sinaisCompra:[],sinaisDesinteresse:['Sem respostas'],followUps:[],ultimaInteracao:'2026-09-02',resultadoFinal:'Sem resposta.',status:'SEM RESPOSTA',statusConfirmacao:'CONFIRMADO',score:15,probabilidade:'Baixa',proximaAcao:'Follow-up curto com oferta de aula experimental.',prioridade:'MÉDIA',tempoRespostaHoras:0,jornada:[{etapa:'ANÚNCIO',data:'2026-09-02',status:'🟢'},{etapa:'LEAD',data:'2026-09-02',status:'🟢'},{etapa:'PRIMEIRO CONTATO',data:'2026-09-02',status:'🟡'},{etapa:'ABANDONO',data:'2026-09-02',status:'⚫'}]},
+    {id:'lead-006-natan',name:'Natan PMERJ',phone:'+55 21 9XXXX-XXXX',source:'Indicação / visita anterior',campaign:'NÃO IDENTIFICADO',entrada:'2026-09-02',intencaoInicial:'Sem contexto na conversa exportada.',produtoInteresse:'Indefinido',dor:'Não identificada',desejo:'Não identificado',objecoes:[],perguntas:[],respostasAtendimento:['Mensagem automática oferecendo nome na lista.'],avancos:[],momentosPerdaMomentum:[],sinaisCompra:[],sinaisDesinteresse:[],followUps:[],ultimaInteracao:'2026-09-02',resultadoFinal:'Sem informações suficientes.',status:'SEM RESPOSTA',statusConfirmacao:'CONFIRMADO',score:20,probabilidade:'Indefinida',proximaAcao:'Verificar origem do contato e reabrir atendimento.',prioridade:'MÉDIA',tempoRespostaHoras:0,jornada:[{etapa:'CONTATO DIRETO / INDEFINIDO',data:'2026-09-02',status:'🟡'},{etapa:'SEM EVIDÊNCIA',data:'2026-09-02',status:'⚫'}]},
+    {id:'lead-007-dom-burgue',name:'Dom Burgue Artesanal / Patrick',phone:'+55 21 9XXXX-XXXX',source:'Facebook',campaign:'PMERJ',entrada:'2026-09-02',intencaoInicial:'Queria informações sobre preparatório PM.',produtoInteresse:'PMERJ',dor:'Não identificada claramente.',desejo:'Entender formato do preparatório PMERJ.',objecoes:[],perguntas:['Quais horários?','Qual valor?'],respostasAtendimento:['Informou turnos, horários, dias e valores.'],avancos:[],momentosPerdaMomentum:[{data:'2026-09-03',evento:'Conversa encerrou após dados e sem ação seguinte.',tipo:'🔴'}],sinaisCompra:['Perguntou valor e horário'],sinaisDesinteresse:['Sem retorno posterior'],followUps:[],ultimaInteracao:'2026-09-03',resultadoFinal:'Sem agendamento.',status:'OBJEÇÃO',statusConfirmacao:'CONFIRMADO',score:35,probabilidade:'Baixa',proximaAcao:'Follow-up ofensivo com prova social e aula experimental.',prioridade:'MÉDIA',tempoRespostaHoras:2.0,jornada:[{etapa:'ANÚNCIO',data:'2026-09-02',status:'🟢'},{etapa:'LEAD',data:'2026-09-02',status:'🟢'},{etapa:'PRIMEIRO CONTATO',data:'2026-09-03',status:'🟢'},{etapa:'INTERESSE',data:'2026-09-03',status:'🟡'},{etapa:'FALTA DE AÇÃO',data:'2026-09-03',status:'🔴'}]},
+    {id:'lead-008-gabriel',name:'Gabriel',phone:'+55 21 9XXXX-XXXX',source:'Instagram',campaign:'PMERJ',entrada:'2026-09-02',intencaoInicial:'Informou interesse em PRF e PMERJ.',produtoInteresse:'PRF / PMERJ',dor:'Não identificada',desejo:'Conhecer turmas disponíveis.',objecoes:[],perguntas:[],respostasAtendimento:['Questionou concurso de interesse.'],avancos:[],momentosPerdaMomentum:[{data:'2026-09-03',evento:'Lead informou concursos mas não houve prosseguimento.',tipo:'🔴'}],sinaisCompra:['Respondeu interesse por concursos'],sinaisDesinteresse:['Sem follow-up retomado'],followUps:[],ultimaInteracao:'2026-09-03',resultadoFinal:'Sem resposta após resposta.',status:'OBJEÇÃO',statusConfirmacao:'CONFIRMADO',score:32,probabilidade:'Baixa',proximaAcao:'Retomar com proposta clara e aula experimental.',prioridade:'MÉDIA',tempoRespostaHoras:16.4,jornada:[{etapa:'ANÚNCIO',data:'2026-09-02',status:'🟢'},{etapa:'LEAD',data:'2026-09-02',status:'🟢'},{etapa:'PRIMEIRO CONTATO',data:'2026-09-02',status:'🟡'},{etapa:'INTERESSE',data:'2026-09-03',status:'🟡'},{etapa:'PARALISADO',data:'2026-09-03',status:'🔴'}]},
+    {id:'lead-009-gcm-marica',name:'+55 21 97949-7338',phone:'+55 21 9XXXX-XXXX',source:'Instagram',campaign:'GCM Maricá / São Gonçalo',entrada:'2026-09-03',intencaoInicial:'Respondeu a anúncio de GCM.',produtoInteresse:'GCM Maricá ou São Gonçalo',dor:'Não identificada',desejo:'Não identificado',objecoes:[],perguntas:[],respostasAtendimento:['Primeira mensagem automática/boas-vindas.'],avancos:[],momentosPerdaMomentum:[],sinaisCompra:[],sinaisDesinteresse:[],followUps:[],ultimaInteracao:'2026-09-03',resultadoFinal:'Sem informações suficientes.',status:'NOVO',statusConfirmacao:'CONFIRMADO',score:22,probabilidade:'Indefinida',proximaAcao:'Retomar com pergunta simples e CTA de aula experimental.',prioridade:'MÉDIA',tempoRespostaHoras:0,jornada:[{etapa:'ANÚNCIO',data:'2026-09-03',status:'🟢'},{etapa:'LEAD',data:'2026-09-03',status:'🟢'},{etapa:'PRIMEIRO CONTATO',data:'2026-09-03',status:'🟡'},{etapa:'EM ABERTO',data:'2026-09-03',status:'🟡'}]},
+    {id:'lead-010-gcm-outro',name:'+55 21 98675-6890',phone:'+55 21 9XXXX-XXXX',source:'Instagram',campaign:'PMERJ',entrada:'2026-09-03',intencaoInicial:'Sem contexto na exportação.',produtoInteresse:'Indefinido',dor:'Não identificada',desejo:'Não identificado',objecoes:[],perguntas:[],respostasAtendimento:['Boas-vindas genérica.'],avancos:[],momentosPerdaMomentum:[],sinaisCompra:[],sinaisDesinteresse:[],followUps:[],ultimaInteracao:'2026-09-03',resultadoFinal:'Sem informações suficientes.',status:'NOVO',statusConfirmacao:'CONFIRMADO',score:20,probabilidade:'Indefinida',proximaAcao:'Qualificar rapidamente: nome, curso e disponibilidade.',prioridade:'BAIXA',tempoRespostaHoras:0,jornada:[{etapa:'ANÚNCIO',data:'2026-09-03',status:'🟢'},{etapa:'LEAD',data:'2026-09-03',status:'🟢'},{etapa:'PRIMEIRO CONTATO',data:'2026-09-03',status:'🟡'},{etapa:'EM ABERTO',data:'2026-09-03',status:'🟡'}]},
+    {id:'lead-011-bianca',name:'Bianca',phone:'+55 22 98866-7870',source:'Instagram',campaign:'PMERJ',entrada:'2026-09-01',intencaoInicial:'Respondeu ao anúncio pedindo informações.',produtoInteresse:'Indefinido',dor:'Não identificada',desejo:'Não identificado',objecoes:[],perguntas:[],respostasAtendimento:['Primeira mensagem direcionada a Bianca.'],avancos:[],momentosPerdaMomentum:[],sinaisCompra:[],sinaisDesinteresse:[],followUps:[],ultimaInteracao:'2026-09-02',resultadoFinal:'Sem andamento.',status:'NOVO',statusConfirmacao:'CONFIRMADO',score:25,probabilidade:'Indefinida',proximaAcao:'Retomar com proposta objetiva e CTA forte.',prioridade:'MÉDIA',tempoRespostaHoras:0,jornada:[{etapa:'ANÚNCIO',data:'2026-09-01',status:'🟢'},{etapa:'LEAD',data:'2026-09-01',status:'🟢'},{etapa:'PRIMEIRO CONTATO',data:'2026-09-02',status:'🟡'},{etapa:'EM ABERTO',data:'2026-09-02',status:'🟡'}]},
+    {id:'lead-012-gcm-spg',name:'+55 21 97960-7938',phone:'+55 21 9XXXX-XXXX',source:'WhatsApp direto',campaign:'GCM São Gonçalo',entrada:'2026-08-03',intencaoInicial:'Perguntou sobre turma presencial para GCM São Gonçalo.',produtoInteresse:'GCM São Gonçalo',dor:'Trauma de edital PMERJ e foco exclusivo em GCM.',desejo:'Fechar preparatório específico para GCM quando abrir turma.',objecoes:[{categoria:'CONCURSO/EDITAL',texto:'Não quer PMERJ porque tem trauma de ter passado e caído no TAF.',frequencia:1,taxaAvanco:0,taxaAbandono:1,respostaUtilizada:'Ofereceu centro de preparação para TAF e sugeriu PMERJ como ponte.',adequada:'Parcialmente',erro:'Insistiu em solução diferente do pedido inicial.',melhorResposta:'Cadastrar para aviso de GCM e enviar conteúdo específico.',automacao:'Follow-up automático quando abrir turma GCM.',conteudo:'Conteúdo sobre TAF e GCM.',anuncio:'Anúncio específico para GCM São Gonçalo.',oferta:'Turma específica com preparação para TAF.',tipo:'OBJEÇÃO REAL'}],perguntas:['Tem turma GCM?','Vai abrir turma GCM?','Tem pré-requisito?'],respostasAtendimento:['Disse que por enquanto usa turma PMERJ por conteúdo semelhante.','Ofereceu migração quando abrir GCM.','Salvou contato e orientou acompanhar postagens.'],avancos:[],momentosPerdaMomentum:[{data:'2026-08-03',evento:'Lead recusou PMERJ e afirmou que volta só quando abrir GCM.',tipo:'🔴'}],sinaisCompra:['Disse que dará preferência para fechar quando abrir GCM'],sinaisDesinteresse:['Recusa explícita da solução oferecida'],followUps:['Reaberto contato em 02/09 perguntando previsão.'],ultimaInteracao:'2026-09-02',resultadoFinal:'Recuperável com oferta específica de GCM.',status:'RECUPERÁVEL',statusConfirmacao:'CONFIRMADO',score:55,probabilidade:'Média se houver oferta direta de GCM',proximaAcao:'Follow-up específico de GCM São Gonçalo + aviso de abertura.',prioridade:'ALTA',tempoRespostaHoras:1.0,jornada:[{etapa:'WHATSAPP DIRETO',data:'2026-08-03',status:'🟢'},{etapa:'NECESSIDADE ESPECÍFICA',data:'2026-08-03',status:'🟡'},{etapa:'OBJEÇÃO / RECUSA',data:'2026-08-03',status:'🔴'},{etapa:'RECUPERAÇÃO',data:'2026-09-02',status:'🟡'}]}
+  ]
+};
+const {createApp}=Vue;
+createApp({
+  data(){return {leads:APP_STATE.leads,lead:null,q:'',statusFilter:'',objFilter:'',prioFilter:'',sort:'score'}},
+  computed:{
+    filtered(){
+      const q=this.q.trim().toLowerCase();
+      const s=this.statusFilter,o=this.objFilter,p=this.prioFilter;
+      const arr=this.leads.filter(x=>{
+        if(q){const hay=(x.name+' '+x.phone+' '+x.status+' '+x.source).toLowerCase();if(!hay.includes(q))return false}
+        if(s&&x.status!==s)return false;
+        if(o&&!x.objecoes.some(z=>z.categoria===o))return false;
+        if(p&&x.prioridade!==p)return false;
+        return true;
+      });
+      const dir=this.sort==='prioridade'?['ALTA','MÉDIA','BAIXA']:null;
+      arr.sort((a,b)=>{
+        if(this.sort==='score')return b.score-a.score;
+        if(this.sort==='prioridade'){const ia=dir.indexOf(a.prioridade),ib=dir.indexOf(b.prioridade);return ia-ib}
+        if(this.sort==='ultima')return b.ultimaInteracao.localeCompare(a.ultimaInteracao);
+        return 0;
+      });
+      return arr;
+    },
+    funnel(){
+      const stages={};
+      for(const l of this.leads){
+        const s=l.status;
+        stages[s]=(stages[s]||0)+1;
+      }
+      const order=['NOVO','QUALIFICANDO','INTERESSADO','QUENTE','OBJEÇÃO','NEGOCIAÇÃO','MATRÍCULA','PERDIDO','SEM RESPOSTA','RECUPERÁVEL'];
+      const all=[...order,...Object.keys(stages)].filter((v,i,a)=>a.indexOf(v)===i);
+      const total=this.leads.length;
+      return all.map(stage=>({stage,count:stages[stage]||0,pct:total?((stages[stage]||0)/total*100).toFixed(1)+'%':'0%'}));
+    },
+    objRank(){
+      const m={};
+      for(const l of this.leads)for(const o of l.objecoes){m[o.categoria]=(m[o.categoria]||0)+1}
+      return Object.entries(m).sort((a,b)=>b[1]-a[1]).map(([c,f])=>({categoria:c,freq:f,label:c,nivel:f>=3?'Alto':f>=2?'Médio':'Baixo',badge:f>=3?'badge-hot':f>=2?'badge-warm':'badge-cold'}));
+    },
+    kpi(){
+      const leads=this.leads,total=leads.length;
+      const hotRec=leads.filter(l=>['QUENTE','RECUPERÁVEL'].includes(l.status)).length;
+      const resp=leads.filter(l=>l.respostasAtendimento.length>0||l.perguntas.length>0).length;
+      const semResp=leads.filter(l=>['SEM RESPOSTA','PERDIDO'].includes(l.status)).length;
+      const top=this.objRank.length?this.objRank[0].categoria:'—';
+      return {total,hotRec,resp,semResp,objTop:top};
+    },
+    statuses(){return [...new Set(this.leads.map(l=>l.status))].sort()},
+    objs(){const s=new Set();this.leads.forEach(l=>l.objecoes.forEach(o=>s.add(o.categoria)));return [...s].sort()},
+    prios(){return [...new Set(this.leads.map(l=>l.prioridade))].sort()}
+  },
+  watch:{
+    statusFilter(v){if(v&&!this.statuses.includes(v))this.statusFilter=''},
+    objFilter(v){if(v&&!this.objs.includes(v))this.objFilter=''},
+    prioFilter(v){if(v&&!this.prios.includes(v))this.prioFilter=''}
+  },
+  created(){this.statuses.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;document.querySelector('.select:nth-of-type(1)').appendChild(o)})},
+  mounted(){this.objs.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;document.querySelector('.select:nth-of-type(2)').appendChild(o)});this.prios.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;document.querySelector('.select:nth-of-type(3)').appendChild(o)})},
+  methods:{
+    temperatura(score){if(score>=80)return'🔥 HOT';if(score>=60)return'🟠 WARM';if(score>=40)return'🟡 NURTURE';return'⚪ COLD'},
+    statusClass(s){return{'QUENTE':'badge-hot','RECUPERÁVEL':'badge-warm','OBJEÇÃO':'badge-warm','SEM RESPOSTA':'badge-cold','NOVO':'badge-cold','QUALIFICANDO':'badge-cold','INTERESSADO':'badge-nurture','PERDIDO':'badge-cold','MATRÍCULA':'badge-hot','NEGOCIAÇÃO':'badge-warm'}[s]||'badge-cold'},
+    dot(s){return{🟢:'g',🟡:'y',🔴:'r',⚫:'b'}[s]||'b'},
+    openLead(l){this.lead=l;window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})},
+    closeLead(){this.lead=null},
+    openWa(l){const p=(l.phone||'').replace(/\D/g,'');if(p)window.open(`https://wa.me/${p}`,'_blank')},
+  }
+}).mount('#app');
+</script>
+</body>
+</html>

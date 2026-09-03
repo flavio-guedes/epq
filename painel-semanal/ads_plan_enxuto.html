@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPQ — Plano de Ads Enxuto</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+  :root {
+    --blue-900: #0b1d3a;
+    --blue-800: #12305e;
+    --blue-700: #1a3f7a;
+    --blue-600: #4169E1;
+    --blue-500: #5b8def;
+    --blue-400: #7aa8ff;
+    --blue-300: #a3c4ff;
+    --blue-200: #cfe3ff;
+    --blue-100: #e8f1ff;
+    --blue-50: #f6f9ff;
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --surface: #ffffff;
+    --border: #e5e7eb;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: linear-gradient(180deg, #f8faff 0%, #eef2ff 100%);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+    padding: 0;
+  }
+  .page { max-width: 1000px; margin: 0 auto; padding: 24px 20px 60px; }
+  header { margin-bottom: 18px; }
+  header h1 { font-size: 24px; font-weight: 700; color: var(--blue-900); letter-spacing: -0.3px; }
+  header p { color: var(--text-muted); font-size: 13px; margin-top: 6px; }
+
+  .kpi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 14px; }
+  @media (max-width: 720px) { .kpi { grid-template-columns: repeat(2, 1fr); } }
+  .kpi .item {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .kpi .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 6px; }
+  .kpi .value { font-size: 22px; font-weight: 700; color: var(--blue-900); }
+  .kpi .value.blue { color: var(--blue-600); }
+  .kpi .value.green { color: #15803d; }
+  .kpi .value.amber { color: #b45309; }
+
+  .tabs { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
+  .tabs button {
+    padding: 10px 14px; border-radius: 999px; font-size: 13px; font-weight: 700;
+    border: 1px solid var(--border); color: var(--text-secondary); background: var(--surface); cursor: pointer; white-space: nowrap;
+  }
+  .tabs button:hover { background: var(--blue-50); border-color: var(--blue-300); }
+  .tabs button.active { background: var(--blue-600); border-color: var(--blue-600); color: #ffffff; }
+
+  .panel { display: none; }
+  .panel.open { display: block; }
+
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); margin-bottom: 12px; }
+  .section h2 { font-size: 15px; font-weight: 700; color: var(--blue-900); margin-bottom: 8px; }
+  .section h3 { font-size: 13px; font-weight: 700; color: var(--blue-900); margin-top: 10px; margin-bottom: 6px; }
+  .section p, .section li { font-size: 13.5px; color: var(--text-secondary); line-height: 1.5; }
+  .section ul { margin-left: 18px; }
+  .section li { margin-bottom: 6px; }
+  .section .lead { font-weight: 700; color: var(--blue-800); }
+  .section .meta { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: var(--blue-50); border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
+  .card h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 6px; }
+  .card .value { font-size: 20px; font-weight: 700; color: var(--blue-900); }
+
+  .timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  @media (max-width: 800px) { .timeline { grid-template-columns: 1fr; } }
+  .timeline .day { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px; }
+  .timeline .day h4 { font-size: 13px; font-weight: 700; color: var(--blue-900); margin-bottom: 6px; }
+  .timeline .day ul { margin-left: 16px; }
+  .timeline .day li { font-size: 12.5px; color: var(--text-secondary); margin-bottom: 6px; line-height: 1.4; }
+
+  .checkpoint { background: var(--blue-50); border-left: 3px solid var(--blue-600); padding: 10px 12px; border-radius: 8px; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 10px; }
+  .checkpoint input[type="checkbox"] { margin-top: 3px; accent-color: var(--blue-600); }
+  .checkpoint-content strong { font-size: 12px; font-weight: 700; color: var(--blue-900); display: block; margin-bottom: 2px; }
+  .checkpoint-content p { font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
+  .checkpoint.done { border-left-color: #15803d; background: #f0fff4; }
+  .checkpoint.done .checkpoint-content strong { text-decoration: line-through; color: #14532d; }
+  .checkpoint.done .checkpoint-content p { text-decoration: line-through; color: #14532d; }
+
+  .download-bar { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .download-bar a, .download-bar button {
+    padding: 10px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; border: 1px solid var(--blue-600); color: var(--blue-800); background: var(--blue-50); cursor: pointer; text-decoration: none;
+  }
+  .download-bar a:hover, .download-bar button:hover { background: var(--blue-100); }
+  .download-bar.secondary a, .download-bar.secondary button { border-color: var(--border); color: var(--text-secondary); background: var(--surface); }
+</style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>EPQ — Plano de Ads Enxuto</h1>
+      <p>Setup mínimo, rápido e orientado a matrícula. Foco: 02/09 → 19/09.</p>
+    </header>
+
+    <div class="kpi">
+      <div class="item"><div class="label">Orçamento semanal</div><div class="value blue">R$ 200–300+</div></div>
+      <div class="item"><div class="label">Período</div><div class="value blue">02/09 → 19/09</div></div>
+      <div class="item"><div class="label">Foco</div><div class="value green">Matrícula</div></div>
+      <div class="item"><div class="label">Estrutura</div><div class="value amber">2 campanhas</div></div>
+    </div>
+
+    <div class="download-bar">
+      <a href="https://flavio-guedes.github.io/painel-semanal/ads_plan_enxuto.html" target="_blank">Abrir plano enxuto</a>
+      <a href="https://github.com/flavio-guedes/painel-semanal" target="_blank">Repo painel-semanal</a>
+    </div>
+    <div class="download-bar secondary">
+      <a href="https://flavio-guedes.github.io/epq/plano-ads-completo.html" target="_blank">Abrir plano completo</a>
+    </div>
+
+    <div class="tabs">
+      <button class="active" onclick="switchTab('e-strategy', this)">Estratégia</button>
+      <button onclick="switchTab('e-structure', this)">Estrutura</button>
+      <button onclick="switchTab('e-contests', this)">Concursos</button>
+      <button onclick="switchTab('e-creatives', this)">Criativos</button>
+      <button onclick="switchTab('e-whatsapp', this)">WhatsApp</button>
+      <button onclick="switchTab('e-class', this)">Aula</button>
+      <button onclick="switchTab('e-calendar', this)">Calendário</button>
+      <button onclick="switchTab('e-metrics', this)">Métricas</button>
+      <button onclick="switchTab('e-priorities', this)">Prioridades</button>
+    </div>
+
+    <div id="e-strategy" class="panel open">
+      <div class="section">
+        <h2>Princípio</h2>
+        <p>Menor funil capaz de gerar matrículas:</p>
+        <p class="lead">ADS → WHATSAPP → ATENDIMENTO RÁPIDO → AULA EXPERIMENTAL → MATRÍCULA</p>
+        <p>A LP entra só quando aumentar conversão ou qualificação.</p>
+      </div>
+      <div class="section">
+        <h2>Decisão: Ads → WhatsApp ou LP</h2>
+        <p>Usar <span class="lead">WhatsApp direto como regra</span> na primeira fase. A landing page só entra se a qualidade dos leads cair ou o comparecimento for menor que 40%.</p>
+        <p>Testar 1 variante por vez e depois concentrar verba na melhor rota. Critério final: <span class="lead">matrículas geradas por R$ investido</span>.</p>
+        <p class="meta">Pagamento como pré-requisito: boleto enviado até terça; confirmação até quarta; campanha sobe só após pagamento confirmado.</p>
+      </div>
+      <div class="section">
+        <h2>Orçamento</h2>
+        <p>Tratar como variável por semana, atrelado ao retorno e ao pagamento confirmado.</p>
+        <div class="grid">
+          <div class="card"><h4>R$ 200/semana</h4><div class="value">≈ R$ 28,50/dia</div></div>
+          <div class="card"><h4>R$ 250/semana</h4><div class="value">≈ R$ 35,70/dia</div></div>
+          <div class="card"><h4>R$ 300/semana</h4><div class="value">≈ R$ 42,85/dia</div></div>
+        </div>
+        <p class="meta" style="margin-top:10px">Regra: 80–90% captação, 10–20% remarketing. Se volume for baixo: 100% captação.</p>
+        <p class="meta" style="margin-top:6px">Gatilho de pausa: se após 7 dias custo por lead for acima de R$ 12 ou sem matrícula, pausar e revisar público/criativo.</p>
+      </div>
+    </div>
+
+    <div id="e-structure" class="panel">
+      <div class="section">
+        <h2>Estrutura mínima</h2>
+        <p>Não criar 10 campanhas. Usar estrutura simples e replicável.</p>
+        <h3>Campanha 1 — Captação</h3>
+        <p>Objetivo: gerar conversas no WhatsApp. Públicos: frio + concursos prioritários. Consolidar públicos sempre que possível.</p>
+        <h3>Campanha 2 — Remarketing</h3>
+        <p>Objetivo: recuperar intenção e levar para WhatsApp. Se orçamento for pequeno, começar só com Campanha 1.</p>
+      </div>
+      <div class="section">
+        <h2>Concursos prioritários</h2>
+        <ul>
+          <li>Guarda Municipal</li>
+          <li>PMERJ</li>
+        </ul>
+        <p class="lead" style="margin-top:8px">Regra de captação por turma: ao menos 10 alunos por turma, com até 15 dias de antecedência da abertura.</p>
+        <p class="meta">Geo-restrição obrigatória: Nilópolis, Mesquita, Guadalupe, Nova Iguaçu, Belford Roxo, Anchieta, São João, Éden, Ricardo de Albuquerque, Magalhães Bastos e Vila Militar. Sem isso, o algoritmo tende a trazer leads sem intenção de comparecer.</p>
+        <p class="meta">Não criar estruturas separadas para cada turno. Tratar turno no criativo, no WhatsApp e no atendimento.</p>
+      </div>
+    </div>
+
+    <div id="e-contests" class="panel">
+      <div class="section">
+        <h2>Estratégia por concurso</h2>
+        <p class="meta">Usar estas regras como base operacional. Cada concurso vira um bloco próprio para evitar misturar intenção de compra, copy e remarketing.</p>
+        <div class="grid" style="margin-top:12px">
+          <div class="card">
+            <h4>GCM</h4>
+            <div class="value">Matrícula Premiada</div>
+            <p style="font-size:12.5px;color:#334155;line-height:1.5;margin-top:6px">Foco: inscrição, comparecimento e conversão. Usar prova social, dor e oportunidade.</p>
+          </div>
+          <div class="card">
+            <h4>PMERJ</h4>
+            <div class="value">Método + Data</div>
+            <p style="font-size:12.5px;color:#334155;line-height:1.5;margin-top:6px">Foco: confiança, preparação consistente e urgência de vaga/turma.</p>
+          </div>
+          <div class="card">
+            <h4>Outros</h4>
+            <div class="value">Replicar modelo</div>
+            <p style="font-size:12.5px;color:#334155;line-height:1.5;margin-top:6px">Foco: experimentação enxuta; só entrar se a conversão justificar.</p>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <h2>GCM</h2>
+        <p class="lead">Regra operacional:</p>
+        <p>Raio de captação focado nas imediações de <span class="lead">Nilópolis</span>, incluindo candidatos de outras cidades próximas que aceitem comparecer à EPQ.</p>
+        <h3>Campanha</h3>
+        <p>Objetivo: leads para WhatsApp. Não criar conjuntos por turno; tratar turno no atendimento e no script.</p>
+        <h3>Geo-restrição</h3>
+        <p>Nilópolis + regiões próximas à unidade. Se o algoritmo puxar leads sem intenção de comparecer, reduzir raio e/ou refinar público.</p>
+        <h3>Conjuntos</h3>
+        <p><span class="lead">Conjunto 01 — GCM | FRIO</span><br>Localização: mesma região. Público: amplo. Não usar interesses na fase inicial; deixar o algoritmo otimizar conversão.</p>
+        <ul>
+          <li>Oportunidade</li>
+          <li>Erro comum</li>
+          <li>Sonho/Farda</li>
+        </ul>
+        <p style="margin-top:10px"><span class="lead">Conjunto 02 — GCM | REMARKETING</span><br>Localização: mesma região.</p>
+        <ul>
+          <li>Engajamento Instagram/Facebook</li>
+          <li>Visualizadores de vídeo</li>
+          <li>Visitantes da landing page</li>
+          <li>Iniciadores de formulário</li>
+          <li>Conversas no WhatsApp sem conversão</li>
+        </ul>
+        <p style="margin-top:10px"><span class="lead">Anúncios de remarketing:</span></p>
+        <ul>
+          <li>Prova social</li>
+          <li>Valor da preparação</li>
+          <li>Oferta/Matrícula Premiada</li>
+        </ul>
+        <p class="meta" style="margin-top:10px">Excluir: leads/alunos já convertidos, quando possível.</p>
+      </div>
+      <div class="section">
+        <h2>PMERJ</h2>
+        <p class="lead">Regra operacional:</p>
+        <p>Tratar preparação como método de curto/médio prazo e usar data/turma como gatilho de ação.</p>
+        <h3>Campanha</h3>
+        <p>Objetivo: leads para WhatsApp ou landing page quando o volume de leads exigir qualificação.</p>
+        <h3>Geo-restrição</h3>
+        <p>Raio coerente com comparecimento à EPQ. Se a base PMERJ for fraca na região, reduzir para eixo mais forte e ajustar criativo para proximidade/rotina.</p>
+        <h3>Conjuntos</h3>
+        <p><span class="lead">Conjunto 01 — PMERJ | FRIO</span><br>Usar copy de método, consistência e início de turma. Priorizar datas próximas de abertura.</p>
+        <ul>
+          <li>Método/Consistência</li>
+          <li>Data certa</li>
+          <li>Prova social</li>
+        </ul>
+        <p style="margin-top:10px"><span class="lead">Conjunto 02 — PMERJ | REMARKETING</span><br>Usar para reativar interessados e pessoas que baixaram material ou interagiram.</p>
+        <ul>
+          <li>Prova social</li>
+          <li>Valor da preparação</li>
+          <li>Convite aula experimental</li>
+        </ul>
+      </div>
+      <div class="section">
+        <h2>Outros concursos</h2>
+        <p>Usar apenas se houver turma aberta e capacidade operacional.</p>
+        <h3>Regra de entrada</h3>
+        <ul>
+          <li>Verba disponível após PMERJ e GCM estarem atendidos.</li>
+          <li>Conversão previsível por WhatsApp ou LP.</li>
+          <li>Prazo de captação claro.</li>
+        </ul>
+        <h3>Estrutura mínima</h3>
+        <p>Repetir modelo enxuto: 1 campanha fria + 1 campanha remarketing, no máximo.</p>
+        <ul>
+          <li>1 criativo focado em vaga/turma/data</li>
+          <li>1 criativo de prova social</li>
+          <li>1 criativo de oferta</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="e-creatives" class="panel">
+      <div class="section">
+        <h2>Kit inicial enxuto</h2>
+        <p>Total: <span class="lead">8 criativos</span>. Conceito + formato + headline + texto da arte + copy + CTA + público + destino.</p>
+        <ul>
+          <li>Guarda Municipal: 3 criativos</li>
+          <li>PMERJ: 3 criativos</li>
+          <li>Prova social / método: 2 criativos</li>
+        </ul>
+        <h3>Prioridade de conceito</h3>
+        <ol>
+          <li>Início da turma / turno / data</li>
+          <li>Aula experimental</li>
+          <li>Dor / erro</li>
+          <li>Prova social / aprovados</li>
+          <li>Diferenciais reais</li>
+          <li>Parceria QConcursos</li>
+        </ol>
+        <h3>CTAs principais</h3>
+        <ul>
+          <li>QUERO CONHECER A TURMA</li>
+          <li>QUERO FAZER UMA AULA EXPERIMENTAL</li>
+        </ul>
+        <p class="meta">Escolher 1 CTA principal para a primeira fase.</p>
+      </div>
+    </div>
+
+    <div id="e-whatsapp" class="panel">
+      <div class="section">
+        <h2>Scripts essenciais</h2>
+        <p>Não criar 30 scripts. Usar estes 7 na primeira fase:</p>
+        <ul>
+          <li>1. Primeira resposta — curto e humano.</li>
+          <li>2. Diagnóstico — até 3–4 perguntas.</li>
+          <li>3. Indicação da turma — concurso + turno + data.</li>
+          <li>4. Convite para aula — mesmo dia ou mesma semana.</li>
+          <li>5. Pós-aula — conduzir para matrícula.</li>
+          <li>6. Objeção — preço / distância / tempo / dúvida.</li>
+          <li>7. Follow-up — lead que não fechou.</li>
+        </ul>
+        <h3>SLA</h3>
+        <p class="lead">Responder o mais rápido possível.</p>
+        <p>Meta inicial: <span class="lead">até 5 minutos</span> no horário de atendimento. Registrar tempo de resposta para análise.</p>
+      </div>
+    </div>
+
+    <div id="e-class" class="panel">
+      <div class="section">
+        <h2>Aula experimental como conversão</h2>
+        <p class="lead">Fluxo:</p>
+        <p>LEAD → DIAGNÓSTICO → TURMA → AULA → FEEDBACK → MATRÍCULA</p>
+        <p>Priorizar <span class="lead">mesmo dia</span> ou <span class="lead">mesma semana</span>.</p>
+      </div>
+    </div>
+
+    <div id="e-calendar" class="panel">
+      <div class="section">
+        <h2>Datas das turmas</h2>
+        <div class="timeline">
+          <div class="day">
+            <h4>12/09</h4>
+            <ul>
+              <li>PMERJ Sábado</li>
+              <li>Básica Sábado</li>
+            </ul>
+          </div>
+          <div class="day">
+            <h4>14/09</h4>
+            <ul>
+              <li>PMERJ Manhã</li>
+              <li>Básica Manhã</li>
+              <li>Básica Noite</li>
+            </ul>
+          </div>
+          <div class="day">
+            <h4>19/09</h4>
+            <ul>
+              <li>GCM Sábado</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <h2>3 ondas</h2>
+        <div class="timeline">
+          <div class="day">
+            <h4>Onda 1 — 02/09 a 06/09</h4>
+            <ul>
+              <li>Objetivo: estrutura + teste de públicos e criativos</li>
+              <li>Ação: fechar template visual, subir campanha direcionada e medir qualidade dos leads</li>
+            </ul>
+          </div>
+          <div class="day">
+            <h4>Onda 2 — 07/09 a 14/09</h4>
+            <ul>
+              <li>Objetivo: conversão para 12/09 e 14/09</li>
+              <li>Ação: acelerar WhatsApp, aula experimental e remarketing</li>
+            </ul>
+          </div>
+          <div class="day">
+            <h4>Onda 3 — 15/09 a 19/09</h4>
+            <ul>
+              <li>Objetivo: conversão 19/09</li>
+              <li>Ação: remarketing, follow-up e otimização por matrícula</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="e-metrics" class="panel">
+      <div class="section">
+        <h2>Métricas mínimas</h2>
+        <h3>Ads</h3>
+        <ul>
+          <li>Investimento</li>
+          <li>CTR</li>
+          <li>CPC</li>
+          <li>Conversas</li>
+          <li>Custo por conversa</li>
+        </ul>
+        <h3>Comercial</h3>
+        <ul>
+          <li>Leads</li>
+          <li>Tempo de resposta</li>
+          <li>Aulas agendadas</li>
+          <li>Aulas realizadas</li>
+          <li>Matrículas</li>
+        </ul>
+        <h3>Negócio</h3>
+        <ul>
+          <li>Custo por matrícula</li>
+          <li>Receita</li>
+          <li>CAC</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="e-priorities" class="panel">
+      <div class="section">
+        <h2>O que fazer primeiro</h2>
+        <ol>
+          <li>Montar campanha de captação para WhatsApp com segmentação por turma e geo-restrição.</li>
+          <li>Fechar template visual base e publicar kit inicial de 8 criativos.</li>
+          <li>Ativar SLA de resposta rápida com meta gradual para Clara.</li>
+          <li>Agendar aulas experimentais em até 24h.</li>
+          <li>Registrar custo por conversa e custo por matrícula.</li>
+          <li>Se houver volume, ligar remarketing na Onda 2.</li>
+          <li>Depois dos primeiros dados, concentrar verba no melhor caminho.</li>
+        </ol>
+      </div>
+      <div class="section">
+        <h2>Regra final</h2>
+        <p>Adicionar complexidade só depois que os dados demonstrarem necessidade. O setup inicial deve ser: <span class="lead">pequeno + rápido + medível + fácil de operar + focado em matrícula</span>.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Checklist semanal</h2>
+      <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Estrutura</strong><p>Campanha 1 ativa; WhatsApp operando; geo-restrição aplicada.</p></div></div>
+      <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Criativos</strong><p>Template visual fechado; 8 peças publicadas.</p></div></div>
+      <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Scripts</strong><p>7 scripts prontos e testados.</p></div></div>
+      <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Aulas</strong><p>Agendamento em até 24h.</p></div></div>
+      <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Métricas</strong><p>Painel mínimo atualizado; custo por matrícula visível.</p></div></div>
+    </div>
+
+    <div class="section" style="background:#fff5f6;border-color:#fecdd3;">
+      <h3 style="color:#881337">Risco principal</h3>
+      <div style="color:#334155;font-size:13px">Fragmentar verba, atrasar a resposta do WhatsApp ou perder a janela de captação das turmas reduz matrícula. Priorizar velocidade, simplicidade e cumprimento das datas de abertura.</div>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tab, btn) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('open'));
+      document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+      document.getElementById(tab).classList.add('open');
+      btn.classList.add('active');
+    }
+    function toggleCheckpoint(checkbox) {
+      const cp = checkbox.closest('.checkpoint');
+      if (checkbox.checked) { cp.classList.add('done'); } else { cp.classList.remove('done'); }
+    }
+  </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auditoria de Ativos Meta — EPQ</title>
+<title>EPQ · Auditoria</title>
 <style>
   :root {
     --bg: #0f1117;
@@ -484,6 +484,17 @@
   }
   .tooltip-wrap:hover .tooltip-text { opacity: 1; }
 </style>
+
+<script>
+(function(){
+  try {
+    var key='epq-active-tab';
+    var tab=location.pathname.split('/').pop().replace(/\?.*$/,'').replace(/#.*$/,'');
+    if (tab) localStorage.setItem(key, tab);
+  } catch(e) {}
+})();
+</script>
+
 </head>
 <body>
 

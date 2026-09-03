@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline Hermes</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+  :root {
+    --blue-900: #0b1d3a;
+    --blue-800: #12305e;
+    --blue-700: #1a3f7a;
+    --blue-600: #4169E1;
+    --blue-500: #5b8def;
+    --blue-400: #7aa8ff;
+    --blue-300: #a3c4ff;
+    --blue-200: #cfe3ff;
+    --blue-100: #e8f1ff;
+    --blue-50:  #f6f9ff;
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --surface: #ffffff;
+    --border: #e5e7eb;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: linear-gradient(180deg, #f8faff 0%, #eef2ff 100%);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    padding: 0;
+    min-height: 100vh;
+  }
+
+  .page { max-width: 1200px; margin: 0 auto; padding: 28px 22px 60px; }
+  header { margin-bottom: 22px; }
+  header h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.3px; color: var(--blue-900); }
+  header p { color: var(--text-muted); font-size: 14px; margin-top: 6px; }
+
+  .kpi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+  @media (max-width: 720px) { .kpi { grid-template-columns: repeat(2, 1fr); } }
+  .kpi .item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .kpi .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 6px; }
+  .kpi .value { font-size: 22px; font-weight: 700; color: var(--blue-900); }
+  .kpi .value.red { color: #e11d48; }
+  .kpi .value.blue { color: var(--blue-600); }
+  .kpi .value.green { color: #15803d; }
+  .kpi .value.amber { color: #b45309; }
+
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .tabs button {
+    padding: 10px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    background: var(--surface);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .tabs button:hover { background: var(--blue-50); border-color: var(--blue-300); }
+  .tabs button.active { background: var(--blue-600); border-color: var(--blue-600); color: #ffffff; }
+
+  .panel { display: none; }
+  .panel.open { display: block; }
+
+  details { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); margin-bottom: 12px; }
+  summary { font-size: 15px; font-weight: 700; color: var(--blue-900); cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; }
+  summary::after { content: '+'; font-size: 18px; color: var(--blue-600); }
+  details[open] summary::after { content: '-'; }
+  .details-body { margin-top: 12px; }
+  .details-body h4 { font-size: 13px; font-weight: 700; color: var(--blue-900); margin-top: 10px; margin-bottom: 4px; }
+  .details-body p, .details-body li { font-size: 13.5px; color: var(--text-secondary); line-height: 1.45; }
+  .details-body ul { margin-left: 18px; }
+  .details-body li { margin-bottom: 6px; }
+  code { background: var(--blue-50); padding: 2px 7px; border-radius: 7px; font-size: 12px; color: var(--blue-800); border: 1px solid var(--border); }
+
+  .front { background: var(--blue-50); border-left: 3px solid var(--blue-600); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; }
+  .front h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; color: var(--blue-900); }
+  .front div { font-size: 13px; color: var(--text-secondary); }
+  .bar { height: 6px; background: var(--border); border-radius: 999px; margin-top: 10px; overflow: hidden; }
+  .bar > span { display: block; height: 100%; border-radius: 999px; background: var(--blue-600); }
+
+  .project { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); margin-bottom: 10px; }
+  .project summary { font-size: 14px; font-weight: 700; color: var(--blue-900); }
+  .project .details-body { margin-top: 10px; }
+
+  .day { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); margin-bottom: 12px; }
+  .day h2 { font-size: 15px; font-weight: 700; color: var(--blue-900); margin-bottom: 6px; }
+  .day .meta { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+  .day ul { margin-left: 18px; }
+  .day li { font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; line-height: 1.4; }
+  .day .goal { background: var(--blue-50); border-left: 3px solid var(--blue-600); padding: 10px 12px; border-radius: 8px; margin-bottom: 10px; }
+  .day .goal strong { font-size: 12px; font-weight: 700; color: var(--blue-900); display: block; margin-bottom: 2px; }
+  .day .goal p { font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
+  .day a { color: var(--blue-600); text-decoration: none; font-size: 12px; }
+  .day a:hover { text-decoration: underline; }
+
+  .time-block { display: flex; gap: 12px; margin-bottom: 6px; align-items: baseline; }
+  .time { font-size: 12px; font-weight: 700; color: var(--blue-800); min-width: 110px; }
+  .time-desc { font-size: 13px; color: var(--text-secondary); }
+  .highlight { color: var(--blue-600); font-weight: 700; }
+
+  .risk { background: #fff5f6; border-left: 3px solid #e11d48; border: 1px solid #fecdd3; border-radius: 12px; padding: 14px 16px; margin-top: 4px; }
+  .risk h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; color: #881337; }
+  .risk div { font-size: 13px; color: var(--text-secondary); }
+
+  .suggestion-box { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); margin-bottom: 12px; }
+  .suggestion-box h2 { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--blue-900); }
+  .suggestion-box ul { margin-left: 18px; }
+  .suggestion-box li { margin-bottom: 6px; font-size: 13.5px; color: var(--text-secondary); line-height: 1.45; }
+
+  .download-bar { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .download-bar button { padding: 10px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; border: 1px solid var(--blue-600); color: var(--blue-800); background: var(--blue-50); cursor: pointer; }
+  .download-bar button:hover { background: var(--blue-100); }
+
+  .cycle { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); margin-bottom: 12px; }
+  .cycle h2 { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--blue-900); }
+  .cycle ul { margin-left: 18px; }
+  .cycle li { margin-bottom: 6px; font-size: 13.5px; color: var(--text-secondary); }
+
+  .goal-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); margin-bottom: 12px; }
+  .goal-card h2 { font-size: 15px; font-weight: 700; margin-bottom: 10px; color: var(--blue-900); }
+  .checkpoint { background: var(--blue-50); border-left: 3px solid var(--blue-600); padding: 10px 12px; border-radius: 8px; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 10px; }
+  .checkpoint input[type="checkbox"] { margin-top: 3px; accent-color: var(--blue-600); }
+  .checkpoint-content strong { font-size: 12px; font-weight: 700; color: var(--blue-900); display: block; margin-bottom: 2px; }
+  .checkpoint-content p { font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
+  .checkpoint.done { border-left-color: #15803d; background: #f0fff4; }
+  .checkpoint.done .checkpoint-content strong { text-decoration: line-through; color: #14532d; }
+  .checkpoint.done .checkpoint-content p { text-decoration: line-through; color: #14532d; }
+
+  .checklist-dropdown { margin-top: 8px; }
+  .checklist-dropdown summary { font-size: 11px; font-weight: 700; color: var(--blue-700); cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 6px; }
+  .checklist-dropdown summary::after { content: '+'; font-size: 14px; color: var(--blue-600); }
+  .checklist-dropdown[open] summary::after { content: '-'; }
+  .checklist-dropdown ul { margin-left: 18px; margin-top: 6px; }
+  .checklist-dropdown li { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; line-height: 1.35; }
+
+  .sub-tabs { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .sub-tabs button { padding: 8px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; border: 1px solid var(--border); color: var(--text-secondary); background: var(--surface); cursor: pointer; }
+  .sub-tabs button:hover { background: var(--blue-50); border-color: var(--blue-300); }
+  .sub-tabs button.active { background: var(--blue-600); border-color: var(--blue-600); color: #ffffff; }
+
+  .sub-panel { display: none; }
+  .sub-panel.open { display: block; }
+
+  .crm-board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  @media (max-width: 900px) { .crm-board { grid-template-columns: 1fr; } }
+  .crm-column { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .crm-column h3 { font-size: 13px; font-weight: 700; color: var(--blue-900); margin-bottom: 10px; text-align: center; }
+  .crm-column .count { font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 10px; }
+  .crm-column .card-item { background: var(--blue-50); border: 1px solid var(--border); border-radius: 10px; padding: 10px; margin-bottom: 8px; }
+  .crm-column .card-item h4 { font-size: 13px; font-weight: 700; color: var(--blue-900); margin-bottom: 4px; }
+  .crm-column .card-item p { font-size: 12px; color: var(--text-secondary); line-height: 1.3; }
+  .crm-column .actions { display: flex; gap: 6px; margin-top: 6px; }
+  .crm-column .actions button { flex: 1; padding: 6px; border-radius: 999px; font-size: 11px; font-weight: 700; border: 1px solid var(--blue-600); color: var(--blue-800); background: var(--blue-50); cursor: pointer; }
+  .crm-column .actions button:hover { background: var(--blue-100); }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 14px; }
+  @media (max-width: 640px) { .stats-grid { grid-template-columns: 1fr; } }
+  .stat-box { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+  .stat-box h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 6px; }
+  .stat-box .value { font-size: 22px; font-weight: 700; color: var(--blue-900); }
+
+  .agenda-filters { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px; }
+  .agenda-filters label { font-size:12px; color:var(--text-muted); font-weight:700; }
+  .agenda-filters select, .agenda-filters input[type="text"] { padding:8px 10px; border-radius:10px; border:1px solid var(--border); background:var(--surface); color:var(--text-primary); font-size:12px; }
+  .agenda-filters .tag { padding:6px 10px; border-radius:999px; font-size:11px; font-weight:700; border:1px solid var(--border); background:var(--surface); color:var(--text-secondary); cursor:pointer; user-select:none; }
+  .agenda-filters .tag.active { background:var(--blue-600); border-color:var(--blue-600); color:#ffffff; }
+
+  .month-grid { display:grid; grid-template-columns: repeat(7, 1fr); gap:10px; }
+  @media (max-width: 900px) { .month-grid { grid-template-columns: repeat(4, 1fr); } }
+  .month-col { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:12px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); min-height:100px; }
+  .month-col h4 { font-size:12px; font-weight:700; color:var(--blue-900); margin-bottom:8px; text-align:center; }
+  .month-col .day-row { font-size:11px; color:var(--text-muted); text-align:center; margin-bottom:8px; font-weight:700; }
+  .month-col .ev { background:var(--blue-50); border:1px solid var(--border); border-radius:10px; padding:8px; margin-bottom:8px; }
+  .month-col .ev .time { font-size:11px; font-weight:700; color:var(--blue-800); margin-bottom:4px; }
+  .month-col .ev .title { font-size:12px; color:var(--text-secondary); line-height:1.35; }
+  .month-col .ev .tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
+  .month-col .ev .tag { padding:3px 8px; border-radius:999px; font-size:10px; font-weight:700; background:var(--blue-50); color:var(--blue-800); border:1px solid var(--border); }
+  .month-col .ev.p0 { border-left:3px solid #e11d48; background:#fff5f5; }
+  .month-col .ev.p0 .tag { background:#fff5f5; color:#881337; border-color:#fecdd3; }
+  .month-col .ev.p1 { border-left:3px solid var(--blue-600); }
+  .month-col .ev.p2 { border-left:3px solid #15803d; background:#f0fff4; }
+  .month-col .ev.p2 .tag { background:#f0fff4; color:#14532d; border-color:#bbf7d0; }
+
+  .agenda-list { margin-top:12px; }
+  .agenda-list .ev { display:flex; gap:12px; align-items:baseline; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:10px 12px; margin-bottom:8px; }
+  .agenda-list .time { font-size:12px; font-weight:700; color:var(--blue-800); min-width:110px; }
+  .agenda-list .title { font-size:13px; color:var(--text-secondary); }
+  .agenda-list .tags { display:flex; gap:6px; flex-wrap:wrap; margin-left:auto; }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div id="ads-plan" class="panel">
+      <div style="margin-bottom:10px;">
+        <button onclick="switchTab('report', document.querySelector('.tabs button'))" style="padding:10px 14px;border-radius:999px;font-size:13px;font-weight:700;border:1px solid var(--blue-600);color:var(--blue-800);background:var(--blue-50);cursor:pointer;">Voltar para o painel</button>
+      </div>
+<div class="page">
+    <header>
+      <h1>EPQ — Plano de Ads Enxuto</h1>
+      <p>Setup mínimo, rápido e orientado a matrícula. Foco: 31/08 → 19/09.</p>
+    </header>
+
+    <div class="kpi">
+      <div class="item"><div class="label">Orçamento semanal</div><div class="value blue">R$ 200–300</div></div>
+      <div class="item"><div class="label">Período</div><div class="value blue">31/08 → 19/09</div></div>
+      <div class="item"><div class="label">Foco</div><div class="value green">Matrícula</div></div>
+      <div class="item"><div class="label">Estrutura</div><div class="value amber">2 campanhas</div></div>
+    </div>
+
+    <div class="download-bar">
+      <a href="https://flavio-guedes.github.io/painel-semanal/ads_plan_enxuto.html" target="_blank">Abrir plano enxuto</a>
+      <a href="https://github.com/flavio-guedes/painel-semanal" target="_blank">Repo painel-semanal</a>
+    </div>
+    <div class="download-bar secondary">
+    </div>
+
+    <div class="tabs">
+      <button class="active" onclick="switchTab('e-strategy', this)">Estratégia</button>
+      <button onclick="switchTab('e-structure', this)">Estrutura</button>
+      <button onclick="switchTab('e-creatives', this)">Criativos</button>
+      <button onclick="switchTab('e-whatsapp', this)">WhatsApp</button>
+      <button onclick="switchTab('e-class', this)">Aula</button>
+      <button onclick="switchTab('e-calendar', this)">Calendário</button>
+      <button onclick="switchTab('e-metrics', this)">Métricas</button>
+      <button onclick="switchTab('e-priorities', this)">Prioridades</button>
+    </div>
+
+    <div id="e-strategy" class="panel open">
+      <div class="section">
+        <h2>Princípio</h2>
+        <p>Menor funil capaz de gerar matrículas:</p>
+        <p class="lead">ADS → WHATSAPP → ATENDIMENTO RÁPIDO → AULA EXPERIMENTAL → MATRÍCULA</p>
+        <p>A LP entra só quando aumentar conversão ou qualificação.</p>
+      </div>
+      <div class="section">
+        <h2>Decisão: Ads → WhatsApp ou LP</h2>
+        <p>Testar 1 variante por vez e depois concentrar verba na melhor rota. Critério final: <span class="lead">matrículas geradas por R$ investido</span>.</p>
+      </div>
+      <div class="section">
+        <h2>Orçamento</h2>
+        <div class="grid">
+          <div class="card"><h4>R$ 200/semana</h4><div class="value">≈ R$ 28,50/dia</div></div>
+          <div class="card"><h4>R$ 250/semana</h4><div class="value">≈ R$ 35,70/dia</div></div>
+          <div class="card"><h4>R$ 300/semana</h4><div class="value">≈ R$ 42,85/dia</div></div>
+        </div>
+        <p class="meta" style="margin-top:10px">Regra: 80–90% captação, 10–20% remarketing. Se volume for baixo: 100% captação.</p>
+      </div>
+    </div>
+
+    <div id="e-structure" class="panel">
+      <div class="section">
+        <h2>Estrutura mínima</h2>
+        <p>Não criar 10 campanhas. Usar estrutura simples e replicável.</p>
+        <h3>Campanha 1 — Captação</h3>
+        <p>Objetivo: gerar conversas no WhatsApp. Públicos: frio + concursos prioritários. Consolidar públicos sempre que possível.</p>
+        <h3>Campanha 2 — Remarketing</h3>
+        <p>Objetivo: recuperar intenção e levar para WhatsApp. Se orçamento for pequeno, começar só com Campanha 1.</p>
+      </div>
+      <div class="section">
+        <h2>Concursos prioritários</h2>
+        <ul>
+          <li>PMERJ</li>
+          <li>BÁSICA</li>
+          <li>GCM Maricá / São Gonçalo</li>
+          <li>ESA / EAM / EEAR</li>
+        </ul>
+        <p class="meta">Não criar estruturas separadas para cada turno. Tratar turno no criativo, no WhatsApp e no atendimento.</p>
+      </div>
+    </div>
+
+    <div id="e-creatives" class="panel">
+      <div class="section">
+        <h2>Kit inicial enxuto</h2>
+        <p>Total: <span class="lead">11 criativos</span>. Conceito + formato + headline + texto da arte + copy + CTA + público + destino.</p>
+        <ul>
+          <li>PMERJ: 3 criativos</li>
+          <li>BÁSICA: 2 criativos</li>
+          <li>GCM: 2 criativos</li>
+          <li>ESA/EAM/EEAR: 2 criativos</li>
+          <li>Remarketing: 2 criativos</li>
+        </ul>
+        <h3>Prioridade de conceito</h3>
+        <ol>
+          <li>Início da turma</li>
+          <li>Aula experimental</li>
+          <li>Dor / erro</li>
+          <li>Prova social</li>
+          <li>Diferenciais reais</li>
+        </ol>
+        <h3>CTAs principais</h3>
+        <ul>
+          <li>QUERO CONHECER A TURMA</li>
+          <li>QUERO FAZER UMA AULA EXPERIMENTAL</li>
+        </ul>
+        <p class="meta">Escolher 1 CTA principal para a primeira fase.</p>
+      </div>
+    </div>
+
+    <div id="e-whatsapp" class="panel">
+      <div class="section">
+        <h2>Scripts essenciais</h2>
+        <p>Não criar 30 scripts. Usar estes 7 na primeira fase:</p>
+        <ul>
+          <li>1. Primeira resposta — curto e humano.</li>
+          <li>2. Diagnóstico — até 3–4 perguntas.</li>
+          <li>3. Indicação da turma — concurso + turno + data.</li>
+          <li>4. Convite para aula — mesmo dia ou mesma semana.</li>
+          <li>5. Pós-aula — conduzir para matrícula.</li>
+          <li>6. Objeção — preço / distância / tempo / dúvida.</li>
+          <li>7. Follow-up — lead que não fechou.</li>
+        </ul>
+        <h3>SLA</h3>
+        <p class="lead">Responder o mais rápido possível.</p>
+        <p>Meta inicial: <span class="lead">até 5 minutos</span> no horário de atendimento. Registrar tempo de resposta para análise.</p>
+      </div>
+    </div>
+
+    <div id="e-class" class="panel">
+      <div class="section">
+        <h2>Aula experimental como conversão</h2>
+        <p class="lead">Fluxo:</p>
+        <p>LEAD → DIAGNÓSTICO → TURMA → AULA → FEEDBACK → MATRÍCULA</p>
+        <p>Priorizar <span class="lead">mesmo dia</span> ou <span class="lead">mesma semana</span>.</p>
+      </div>
+    </div>
+
+    <div id="e-calendar" class="panel">
+      <div class="section">
+        <h2>Datas das turmas</h2>
+        <div class="timeline">
+          <div class="day">
+            <h4>12/09</h4>
+            <ul>
+              <li>PMERJ Sábado</li>
+              <li>Básica Sábado</li>
+            </ul>
+          </div>
+          <div class="day">
+            <h4>14/09</h4>
+            <ul>
+              <li>PMERJ Manhã</li>
+              <li>Básica Manhã</li>
+              <li>Básica Noite</li>
+              <li>GCM Manhã</li>
+              <li>GCM Noite</li>
+              <li>ESA/EAM/EEAR Manhã</li>
+              <li>ESA/EAM/EEAR Noite</li>
+            </ul>
+          </div>
+          <div class="day">
+            <h4>19/09</h4>
+            <ul>
+              <li>GCM Sábado</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <h2>3 ondas</h2>
+        <div class="timeline">
+          <div class="day">
+            <h4>Onda 1 — 31/08 a 06/09</h4>
+            <ul>
+              <li>Objetivo: volume e validação de ângulos</li>
+              <li>Ação: estruturar campanhas</li>
+            </ul>
+          </div>
+          <div class="day">
+            <h4>Onda 2 — 07/09 a 14/09</h4>
+            <ul>
+              <li>Objetivo: conversão 12/09 e 14/09</li>
+              <li>Ação: acelerar WhatsApp/aula</li>
+            </ul>
+          </div>
+          <div class="day">
+            <h4>Onda 3 — 15/09 a 19/09</h4>
+            <ul>
+              <li>Objetivo: conversão 19/09</li>
+              <li>Ação: remarketing e follow-up</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="e-metrics" class="panel">
+      <div class="section">
+        <h2>Métricas mínimas</h2>
+        <h3>Ads</h3>
+        <ul>
+          <li>Investimento</li>
+          <li>CTR</li>
+          <li>CPC</li>
+          <li>Conversas</li>
+          <li>Custo por conversa</li>
+        </ul>
+        <h3>Comercial</h3>
+        <ul>
+          <li>Leads</li>
+          <li>Tempo de resposta</li>
+          <li>Aulas agendadas</li>
+          <li>Aulas realizadas</li>
+          <li>Matrículas</li>
+        </ul>
+        <h3>Negócio</h3>
+        <ul>
+          <li>Custo por matrícula</li>
+          <li>Receita</li>
+          <li>CAC</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="e-priorities" class="panel">
+      <div class="section">
+        <h2>O que fazer primeiro</h2>
+        <ol>
+          <li>Montar campanha de captação para WhatsApp.</li>
+          <li>Publicar kit inicial de 11 criativos.</li>
+          <li>Ativar SLA de resposta rápida.</li>
+          <li>Agendar aulas experimentais em até 24h.</li>
+          <li>Registrar custo por conversa e custo por matrícula.</li>
+          <li>Se houver volume, ligar remarketing.</li>
+          <li>Depois dos primeiros dados, concentrar verba no melhor caminho.</li>
+        </ol>
+      </div>
+      <div class="section">
+        <h2>Regra final</h2>
+        <p>Adicionar complexidade só depois que os dados demonstrarem necessidade. O setup inicial deve ser: <span class="lead">pequeno + rápido + medível + fácil de operar + focado em matrícula</span>.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Checklist semanal</h2>
+      <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Estrutura</strong><p>Campanha 1 ativa; WhatsApp operando.</p></div></div>
+      <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Criativos</strong><p>11 peças publicadas.</p></div></div>
+      <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Scripts</strong><p>7 scripts prontos e testados.</p></div></div>
+      <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Aulas</strong><p>Agendamento em até 24h.</p></div></div>
+      <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Métricas</strong><p>Painel mínimo atualizado.</p></div></div>
+    </div>
+
+    <div class="section" style="background:#fff5f6;border-color:#fecdd3;">
+      <h3 style="color:#881337">Risco principal</h3>
+      <div style="color:#334155;font-size:13px">Fragmentar verba ou atrasar a resposta do WhatsApp reduz matrícula. Priorizar velocidade e simplicidade.</div>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tab, btn) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('open'));
+      document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+      document.getElementById(tab).classList.add('open');
+      btn.classList.add('active');
+    }
+    function toggleCheckpoint(checkbox) {
+      const cp = checkbox.closest('.checkpoint');
+      if (checkbox.checked) { cp.classList.add('done'); } else { cp.classList.remove('done'); }
+    }
+  </script>
+    </div>
+    <header>
+      <h1>Pipeline Hermes</h1>
+      <p>Relatório + Agenda + Metas + Pipeline + Conteúdo em uma página.</p>
+    </header>
+
+    <div class="kpi">
+      <div class="item"><div class="label">Concluídas</div><div class="value green">8</div></div>
+      <div class="item"><div class="label">Pendentes</div><div class="value red">6</div></div>
+      <div class="item"><div class="label">Frentes ativas</div><div class="value blue">7</div></div>
+      <div class="item"><div class="label">Risco principal</div><div class="value amber">1</div></div>
+    </div>
+
+    <div class="download-bar" style="margin-bottom:14px;">
+      <a href="https://flavio-guedes.github.io/painel-semanal/" target="_blank" style="padding:10px 14px;border-radius:999px;font-size:13px;font-weight:700;border:1px solid var(--blue-600);color:var(--blue-800);background:var(--blue-50);text-decoration:none;">Abrir painel semanal</a>
+      <a href="https://flavio-guedes.github.io/painel-semanal/ads_plan_enxuto.html" target="_blank" style="padding:10px 14px;border-radius:999px;font-size:13px;font-weight:700;border:1px solid var(--border);color:var(--text-secondary);background:var(--surface);text-decoration:none;">Plano ads enxuto</a>
+      <a href="https://github.com/flavio-guedes/painel-semanal" target="_blank" style="padding:10px 14px;border-radius:999px;font-size:13px;font-weight:700;border:1px solid var(--border);color:var(--text-secondary);background:var(--surface);text-decoration:none;">Repo painel-semanal</a>
+      <a href="https://github.com/flavio-guedes/pipeline" target="_blank" style="padding:10px 14px;border-radius:999px;font-size:13px;font-weight:700;border:1px solid var(--border);color:var(--text-secondary);background:var(--surface);text-decoration:none;">Repo pipeline</a>
+    </div>
+    <div class="tabs">
+      <button class="active" onclick="switchTab('report', this)">Relatório</button>
+      <button onclick="switchTab('agenda', this)">Agenda</button>
+      <button onclick="switchTab('goals', this)">Metas</button>
+      <button onclick="switchTab('pipeline', this)">Pipeline</button>
+      <button onclick="switchTab('content', this)">Conteúdo</button>
+      <button onclick="switchTab('team', this)">Equipe</button>
+      <button onclick="switchTab('ads-plan', this)">Plano Ads</button>
+    </div>
+
+    <!-- RELATÓRIO -->
+    <div id="report" class="panel open">
+      <details open>
+        <summary>Portfolio</summary>
+        <div class="details-body">
+          <div class="download-bar">
+            <button onclick="downloadTasks('portfolio')">Download tarefas — Portfolio</button>
+          </div>
+          <details class="project" open>
+            <summary>Páginas foco</summary><div style="margin-top:6px;"><a href="https://flavio-guedes.github.io/portfolio/produto.html" target="_blank" style="margin-right:8px;">produto.html</a> <a href="https://flavio-guedes.github.io/portfolio/parceria.html" target="_blank" style="margin-right:8px;">parceria.html</a> <a href="https://flavio-guedes.github.io/portfolio/designhead.html" target="_blank" style="margin-right:8px;">designhead.html</a></div>
+            <div class="details-body">
+              <h4>Evolução</h4><p>Ajustes em <code><a href="https://flavio-guedes.github.io/portfolio/produto.html" target="_blank">produto.html</a></code>, <code><a href="https://flavio-guedes.github.io/portfolio/parceria.html" target="_blank">parceria.html</a></code>, <code><a href="https://flavio-guedes.github.io/portfolio/designhead.html" target="_blank">designhead.html</a></code>. Remoção do LinkedIn do Flávio, cases do EPQ inseridos em <code><a href="https://flavio-guedes.github.io/portfolio/produto.html" target="_blank">produto.html</a></code>.</p>
+              <h4>Problemas</h4><p>Apenas validação visual final de <code><a href="https://flavio-guedes.github.io/portfolio/designhead.html" target="_blank">designhead.html</a></code> pendente.</p>
+              <h4>Skills</h4><p>HTML/CSS avançado, Git/Web publishing, UI/UX Design.</p>
+              <h4>Agentes</h4><p>MASTER orquestra; agente de revisão visual executa.</p>
+              <h4>Resumo</h4><p>Portfolio alinhado às frentes definidas. Páginas foco prontas para uso.</p>
+              <h4>Sugestões</h4><ul><li>Validar <code><a href="https://flavio-guedes.github.io/portfolio/designhead.html" target="_blank">designhead.html</a></code> em diferentes dispositivos.</li><li>Adicionar cases recentes.</li></ul>
+            </div>
+          </details>
+          <details class="project">
+            <summary>Proposta e CV</summary><div style="margin-top:6px;"><span class="highlight">Arquivos locais:</span> proposta_v3.html, proposta_padrao.html, cv-product-designer.html</div>
+            <div class="details-body">
+              <h4>Evolução</h4><p><code>proposta_v3.html</code>, <code>proposta_padrao.html</code>, <code>cv-product-designer.html</code> e PDF gerados.</p>
+              <h4>Problemas</h4><p>Nenhum.</p>
+              <h4>Skills</h4><p>Copywriting comercial, Design editorial, PDF automation.</p>
+              <h4>Agentes</h4><p>MASTER orquestra; agente de conteúdo executa.</p>
+              <h4>Resumo</h4><p>Materiais prontos para envio e publicação.</p>
+              <h4>Sugestões</h4><ul><li>Criar versões por nicho.</li><li>Adicionar depoimentos/cases.</li></ul>
+            </div>
+          </details>
+        </div>
+      </details>
+
+      <details>
+        <summary>LinkedIn Prospecção</summary>
+        <div class="details-body">
+          <div class="download-bar">
+            <button onclick="downloadTasks('linkedin')">Download tarefas — LinkedIn</button>
+          </div>
+          <details class="project">
+            <summary>Painel <a href="https://github.com/flavio-guedes/pipeline" target="_blank">pipelkd.html</a></summary>
+            <div class="details-body">
+              <h4>Evolução</h4><p><code><a href="https://github.com/flavio-guedes/pipeline" target="_blank">pipelkd.html</a></code> criado e publicado com rolagem vertical clean, paginação 10 em 10, temperatura por lead e link direto para o perfil.</p>
+              <h4>Problemas</h4><p>Alguns contatos não abriam corretamente em versão anterior; ajustado após retroação.</p>
+              <h4>Skills</h4><p>Análise de dados CSV, JavaScript/HTML, Inteligência comercial.</p>
+              <h4>Agentes</h4><p>MASTER orquestra; agente de dados + agente de produto executam.</p>
+              <h4>Resumo</h4><p>Painel estável e publicado. Leads priorizados por score e temperatura.</p>
+              <h4>Sugestões</h4><ul><li>Adicionar filtros por temperatura e score.</li><li>Criar modo offline.</li></ul>
+            </div>
+          </details>
+          <details class="project">
+            <summary>Top 30 Leads</summary>
+            <div class="details-body">
+              <h4>Evolução</h4><p>Top 30 prospecção LinkedIn gerada e estruturada.</p>
+              <h4>Problemas</h4><p>Nenhum.</p>
+              <h4>Skills</h4><p>Análise de relacionamento, classificação de oportunidades.</p>
+              <h4>Agentes</h4><p>MASTER orquestra; agente de análise executa.</p>
+              <h4>Resumo</h4><p>Lista pronta para ação.</p>
+              <h4>Sugestões</h4><ul><li>Atualizar lista semanalmente.</li><li>Adicionar notas de follow-up.</li></ul>
+            </div>
+          </details>
+        </div>
+      </details>
+
+      <details>
+        <summary>CRM/Email</summary>
+        <div class="details-body">
+          <div class="download-bar">
+            <button onclick="downloadTasks('crm')">Download tarefas — CRM/Email</button>
+          </div>
+          <details class="project">
+            <summary>Segmentação de Leads</summary>
+            <div class="details-body">
+              <h4>Evolução</h4><p>Base: 2.117 contatos únicos. Distribuição: Tier 1 = 1.336, Tier 2 = 671, Tier 3 = 12, Tier 4 = 98. Canal principal: LinkedIn (2.057), email (129), WhatsApp/telefone (79).</p>
+              <h4>Problemas</h4><p>Maioria dos contatos só tem LinkedIn. Cobrança por email é baixa.</p>
+              <h4>Skills</h4><p>Segmentação, qualificação de leads, prospecção multicanal.</p>
+              <h4>Agentes</h4><p>MASTER orquestra; agente de dados + agente de crescimento executam.</p>
+              <h4>Resumo</h4><p>Base segmentada por tier/grupo com portfólios recomendados definidos.</p>
+              <h4>Sugestões</h4><ul><li>Priorizar Tier 1 e Tier 2.</li><li>Follow-up principal por LinkedIn.</li><li>Criar portfólios específicos para Operações e Tech/IA.</li></ul>
+            </div>
+          </details>
+        </div>
+      </details>
+
+      <details>
+        <summary>Gmail/CRM</summary>
+        <div class="details-body">
+          <div class="download-bar">
+            <button onclick="downloadTasks('gmail')">Download tarefas — Gmail/CRM</button>
+          </div>
+          <details class="project">
+            <summary>CRM do Gmail</summary>
+            <div class="details-body">
+              <h4>Evolução</h4><p>Estrutura iniciada. Acesso ao Gmail ainda não integrado ao painel.</p>
+              <h4>Problemas</h4><p>Autenticação e leitura automatizada pendentes.</p>
+              <h4>Skills</h4><p>Gmail API, Python, Automação.</p>
+              <h4>Agentes</h4><p>MASTER orquestra; agente de integração executa.</p>
+              <h4>Resumo</h4><p>Pendente de conexão segura.</p>
+              <h4>Sugestões</h4><ul><li>Implementar OAuth com fallback.</li><li>Sincronizar leads com painel.</li></ul>
+            </div>
+          </details>
+        </div>
+      </details>
+
+      <details>
+        <summary>CRM/Drive</summary>
+        <div class="details-body">
+          <div class="download-bar">
+            <button onclick="downloadTasks('crm')">Download tarefas — CRM/Drive</button>
+          </div>
+          <details class="project">
+            <summary>Base local</summary>
+            <div class="details-body">
+              <h4>Evolução</h4><p>Base local criada com dados do Drive.</p>
+              <h4>Problemas</h4><p>Leitura automatizada do Drive indisponível. Dados precisam ser copiados para pasta local.</p>
+              <h4>Skills</h4><p>Integração Google Drive, Python, Automação.</p>
+              <h4>Agentes</h4><p>MASTER orquestra; agente de integração executa.</p>
+              <h4>Resumo</h4><p>Estrutura iniciada; acesso automatizado pendente.</p>
+              <h4>Sugestões</h4><ul><li>Usar API Google Drive com OAuth.</li><li>Agendar sincronização local periódica.</li></ul>
+            </div>
+          </details>
+        </div>
+      </details>
+
+      <details>
+        <summary>EPQ/Forecast</summary>
+        <div class="details-body">
+          <div class="download-bar">
+            <button onclick="downloadTasks('epq')">Download tarefas — EPQ/Forecast</button>
+          </div>
+          <details class="project">
+            <summary>forecast.html</summary>
+            <div class="details-body">
+              <h4>Evolução</h4><p><code>forecast.html</code> criado e publicado com explicação didática da planilha, gráficos interativos e explorador por mês.</p>
+              <h4>Problemas</h4><p>Ajustes mobile pendentes para melhor experiência em telas pequenas.</p>
+              <h4>Skills</h4><p>Análise financeira, Visualização de dados, Educação/Didática.</p>
+              <h4>Agentes</h4><p>MASTER orquestra; agente de análise + agente de frontend executam.</p>
+              <h4>Resumo</h4><p>Conteúdo didático completo publicado. Experiência mobile pode melhorar.</p>
+              <h4>Sugestões</h4><ul><li>Refinar CSS para mobile.</li><li>Adicionar suporte a offline.</li></ul>
+            </div>
+          </details>
+        </div>
+      </details>
+
+      <details>
+        <summary>Beni/Áudios</summary>
+        <div class="details-body">
+          <div class="download-bar">
+            <button onclick="downloadTasks('beni')">Download tarefas — Beni/Áudios</button>
+          </div>
+          <details class="project">
+            <summary>Áudios do Benício</summary><div style="margin-top:6px;"><span class="highlight">Pendente:</span> aulao_inscricao.html / aulaoinscricao.html</div>
+            <div class="details-body">
+              <h4>Evolução</h4><p>Textos preparados. Geração bloqueada por quota da ElevenLabs.</p>
+              <h4>Problemas</h4><p>Créditos insuficientes no provedor TTS.</p>
+              <h4>Skills</h4><p>TTS/Áudio, Conteúdo infantil, Storytelling.</p>
+              <h4>Agentes</h4><p>MASTER orquestra; agente de conteúdo executa.</p>
+              <h4>Resumo</h4><p>Aguardando liberação de quota ou provedor alternativo.</p>
+              <h4>Sugestões</h4><ul><li>Usar provedor gratuito como fallback.</li><li>Comprar créditos adicionais.</li></ul>
+            </div>
+          </details>
+        </div>
+      </details>
+
+      <div class="cycle">
+        <h2>Ciclos de aprimoramento</h2>
+        <ul>
+          <li><strong>Framework:</strong> SCAN → PRIORIZAÇÃO → DELEGAÇÃO → EXECUÇÃO → VALIDAÇÃO → DESTRAVAMENTO → REPORT.</li>
+          <li><strong>Papel do MASTER:</strong> orquestrador — define prioridades, delega para agentes especializados e valida entregas. O MASTER não executa tarefas operacionais.</li>
+          <li><strong>Status:</strong> ciclos ativos nas frentes Portfolio, LinkedIn, Email, CRM/Drive, EPQ/Forecast e Gmail/CRM.</li>
+          <li><strong>Ecossistema:</strong> 7 frentes, 10 projetos, 8 tarefas concluídas, 6 pendentes.</li>
+          <li><strong>Melhoria contínua:</strong> ajustes baseados em feedback, retrabalho reduzido e rituais de validação.</li>
+        </ul>
+      </div>
+
+      <div class="suggestion-box">
+        <h2>Sugestões globais por frente</h2>
+        <ul>
+          <li><strong>Portfolio:</strong> Padronizar tom e CTA em todas as páginas. Criar template reutilizável para novos cases.</li>
+          <li><strong>LinkedIn:</strong> Automatizar atualização da lista de leads. Integrar com CRM para follow-up.</li>
+          <li><strong>Email:</strong> Conectar com Google Sheets para atualização automática. Adicionar filtros e status.</li>
+          <li><strong>CRM/Drive:</strong> Implementar sincronização automática com API. Criar alertas para novos arquivos.</li>
+          <li><strong>Beni/áudios:</strong> Definir provedor TTS padrão com fallback. Criar biblioteca de áudios por tema.</li>
+          <li><strong>EPQ/Forecast:</strong> Finalizar mobile e adicionar modo offline. Criar versão white-label para clientes.</li>
+          <li><strong>Proposta/CV:</strong> Criar versões por segmento e idioma. Automatizar geração de PDF.</li>
+          <li><strong>Gmail/CRM:</strong> Finalizar autenticação e sincronização de leads com o painel.</li>
+        </ul>
+      </div>
+
+      <div class="suggestion-box">
+        <h2>Sugestões globais para o ecossistema</h2>
+        <ul>
+          <li>Criar um <strong>Integration Hub central</strong> para conectar todos os painéis e fontes de dados.</li>
+          <li>Adotar um <strong>layout unificado</strong> para todos os painéis do portfolio, garantindo consistência visual.</li>
+          <li>Implementar <strong>autenticação unificada</strong> para LinkedIn/Gmail, reduzindo bloqueios.</li>
+          <li>Criar um <strong>modo offline</strong> para painéis críticos, permitindo acesso sem internet.</li>
+          <li>Adicionar <strong>monitoramento automatizado</strong> de saúde dos painéis e fontes de dados.</li>
+          <li>Estabelecer <strong>convenções de nomenclatura</strong> e versionamento para todos os arquivos.</li>
+        </ul>
+      </div>
+
+      <div class="risk">
+        <h3>Risco principal</h3>
+        <div>Bloqueios externos de quota/autenticação podem atrasar integrações de dados em tempo real.</div>
+      </div>
+    </div>
+
+    <!-- AGENDA -->
+      <div id="month-agenda" class="panel open">
+        <div class="agenda-filters">
+          <label for="month-select">Mês:</label>
+          <select id="month-select" onchange="renderMonthAgenda()">
+            <option value="9" selected>Setembro/2026</option>
+          </select>
+          <label for="tag-select">Filtrar por tag:</label>
+          <select id="tag-select" onchange="renderMonthAgenda()">
+            <option value="all" selected>Todas</option>
+            <option value="P0">P0</option>
+            <option value="P1">P1</option>
+            <option value="P2">P2</option>
+            <option value="Prospecção">Prospecção</option>
+            <option value="Follow-up">Follow-up</option>
+            <option value="Atendimento">Atendimento</option>
+            <option value="EPQ">EPQ</option>
+            <option value="Conteúdo">Conteúdo</option>
+            <option value="Revisão">Revisão</option>
+            <option value="Organização">Organização</option>
+            <option value="Descanso">Descanso</option>
+          </select>
+          <button onclick="clearAgendaFilters()" style="padding:8px 10px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;font-weight:700;font-size:12px;">Limpar filtros</button>
+        </div>
+        <div id="month-grid-container" class="month-grid"></div>
+        <div id="agenda-list-container" class="agenda-list"></div>
+      </div>
+    </div>
+
+    <!-- METAS -->    </div>
+
+    <!-- METAS -->
+    <div id="goals" class="panel">
+      <div class="goal-card">
+        <h2>Meta maior da semana</h2>
+        <p>Fechar contrato(s) de pelo menos R$ 4.000 esta semana.</p>
+        <div class="bar" style="margin-top:12px"><span style="width:0%"></span></div>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">Progresso: <span id="goalProgress">R$ 0 / R$ 4.000</span></p>
+      </div>
+
+      <div class="goal-card">
+        <h2>Metas por frente</h2>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <h4>Conteúdo</h4>
+            <div class="value">3 peças/semana</div>
+            <div class="checkpoint" style="margin-top:8px;"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Checklist</strong><p>1 reels/short, 1 post LinkedIn, 1 artigo/blog.</p></div></div>
+          </div>
+          <div class="stat-box">
+            <h4>Projetos</h4>
+            <div class="value">1 case/semana</div>
+            <div class="checkpoint" style="margin-top:8px;"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Checklist</strong><p>Estruturar case, validar dados, aprovar publicação.</p></div></div>
+          </div>
+          <div class="stat-box">
+            <h4>Portfolio</h4>
+            <div class="value">1 ajuste/semana</div>
+            <div class="checkpoint" style="margin-top:8px;"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Checklist</strong><p>Atualizar 1 página, validar mobile, testar links.</p></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="goal-card">
+        <h2>Submetas por dia</h2>
+        <div class="goal-card" style="padding:0;border:none;box-shadow:none;background:transparent;">
+          <div class="goal-card" style="margin-bottom:10px;">
+            <h4 style="font-size:13px;font-weight:700;color:var(--blue-900);margin-bottom:4px;">Segunda</h4>
+            <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Checkpoint 1</strong><p>Enviar proposta para 2 leads qualificados até 12h.</p><p style="margin-top:4px;color:var(--text-muted);">Sugestão: filtrar tier 3, score 21-30, temperatura MORNA/QUENTE; usar <a href="https://flavio-guedes.github.io/portfolio/proposta_v3.html" target="_blank">proposta_v3.html</a>.</p><details class="checklist-dropdown"><summary>Checklist da tarefa</summary><ul><li>Abrir lista de leads qualificados</li><li>Aplicar filtros: tier 3, score 21-30, temperatura MORNA/QUENTE</li><li>Selecionar 2 leads</li><li>Montar proposta usando <a href="https://flavio-guedes.github.io/portfolio/proposta_v3.html" target="_blank">proposta_v3.html</a></li><li>Enviar por email ou LinkedIn</li><li>Registrar envio e próximo passo</li></ul></details></div></div>
+            <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Checkpoint 2</strong><p>Confirmar reunião com pelo menos 1 lead até 18h.</p><p style="margin-top:4px;color:var(--text-muted);">Sugestão: checar inbox do LinkedIn e email; enviar link de confirmação com lembrete.</p><details class="checklist-dropdown"><summary>Checklist da tarefa</summary><ul><li>Abrir inbox LinkedIn/email</li><li>Identificar leads com resposta pendente</li><li>Enviar proposta de horário</li><li>Agendar reunião</li><li>Criar lembrete</li><li>Registrar no pipeline</li></ul></details></div></div>
+          </div>
+          <div class="goal-card" style="margin-bottom:10px;">
+            <h4 style="font-size:13px;font-weight:700;color:var(--blue-900);margin-bottom:4px;">Terça</h4>
+            <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Checkpoint 1</strong><p>Follow-up em 3 leads quentes do LinkedIn até 12h.</p><p style="margin-top:4px;color:var(--text-muted);">Sugestão: abrir <a href="https://github.com/flavio-guedes/pipeline" target="_blank">pipelkd.html</a>, filtrar temperatura QUENTE, copiar fluxo de follow-up e enviar mensagem curta.</p><details class="checklist-dropdown"><summary>Checklist da tarefa</summary><ul><li>Abrir <a href="https://github.com/flavio-guedes/pipeline" target="_blank">pipelkd.html</a></li><li>Filtrar temperatura QUENTE</li><li>Selecionar 3 leads</li><li>Copiar fluxo de follow-up</li><li>Enviar mensagem curta</li><li>Registrar data e canal</li></ul></details></div></div>
+            <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Checkpoint 2</strong><p>Registrar respostas e atualizar status até 18h.</p><p style="margin-top:4px;color:var(--text-muted);">Sugestão: criar coluna no CSV/Excel com status; marcar interessado/em conversa e próximo passo.</p><details class="checklist-dropdown"><summary>Checklist da tarefa</summary><ul><li>Abrir CSV/Excel</li><li>Adicionar coluna de status</li><li>Atualizar status dos leads</li><li>Registrar interessado/em conversa</li><li>Definir próximo passo</li><li>Salvar alterações</li></ul></details></div></div>
+          </div>
+          <div class="goal-card" style="margin-bottom:10px;">
+            <h4 style="font-size:13px;font-weight:700;color:var(--blue-900);margin-bottom:4px;">Quarta</h4>
+            <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Checkpoint 1</strong><p>Enviar follow-up para 2 leads frios até 12h.</p><p style="margin-top:4px;color:var(--text-muted);">Sugestão: abrir tier 3 ou leads frios; usar template de follow-up com valor + CTA; incluir link do portfolio.</p><details class="checklist-dropdown"><summary>Checklist da tarefa</summary><ul><li>Abrir tier 3/leads frios</li><li>Selecionar 2 leads</li><li>Usar template de follow-up</li><li>Incluir valor + CTA + link portfolio</li><li>Enviar mensagem</li><li>Registrar envio</li></ul></details></div></div>
+            <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Checkpoint 2</strong><p>Atualizar pipeline e registrar avanços até 18h.</p><p style="margin-top:4px;color:var(--text-muted);">Sugestão: atualizar status no pipeline; registrar bloqueios e lições no relatório.</p><details class="checklist-dropdown"><summary>Checklist da tarefa</summary><ul><li>Abrir pipeline</li><li>Atualizar status dos leads</li><li>Registrar bloqueios</li><li>Registrar lições</li><li>Salvar alterações</li></ul></details></div></div>
+          </div>
+          <div class="goal-card" style="margin-bottom:10px;">
+            <h4 style="font-size:13px;font-weight:700;color:var(--blue-900);margin-bottom:4px;">Quinta</h4>
+            <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Checkpoint 1</strong><p>Agendar 1 reunião comercial até 12h.</p><p style="margin-top:4px;color:var(--text-muted);">Sugestão: levantar dossie rápido do lead; preparar 3 perguntas de qualificação; enviar proposta de horário.</p><details class="checklist-dropdown"><summary>Checklist da tarefa</summary><ul><li>Abrir dados do lead</li><li>Levantar dossie rápido</li><li>Preparar 3 perguntas</li><li>Definir horários</li><li>Enviar proposta de horário</li><li>Confirmar reunião</li></ul></details></div></div>
+            <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Checkpoint 2</strong><p>Enviar proposta personalizada para 1 lead até 18h.</p><p style="margin-top:4px;color:var(--text-muted);">Sugestão: adaptar <a href="https://flavio-guedes.github.io/portfolio/proposta_v3.html" target="_blank">proposta_v3.html</a> com dados do dossie; enviar por email/LinkedIn com resumo de valor.</p><details class="checklist-dropdown"><summary>Checklist da tarefa</summary><ul><li>Abrir <a href="https://flavio-guedes.github.io/portfolio/proposta_v3.html" target="_blank">proposta_v3.html</a></li><li>Adaptar com dados do dossie</li><li>Revisar <a href="https://flavio-guedes.github.io/portfolio/relatorio.html" target="_blank">relatório</a> valor e prazo</li><li>Enviar por email/LinkedIn</li><li>Registrar envio</li><li>Agendar follow-up</li></ul></details></div></div>
+          </div>
+          <div class="goal-card" style="margin-bottom:10px;">
+            <h4 style="font-size:13px;font-weight:700;color:var(--blue-900);margin-bottom:4px;">Sexta</h4>
+            <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Checkpoint 1</strong><p>Fechar pelo menos 1 contrato até 12h.</p><p style="margin-top:4px;color:var(--text-muted);">Sugestão: confirmar proposta enviada; alinhar forma de pagamento; registrar valor no goalProgress.</p><details class="checklist-dropdown"><summary>Checklist da tarefa</summary><ul><li>Abrir proposta enviada</li><li>Confirmar aceite</li><li>Alinhar pagamento</li><li>Registrar valor</li><li>Atualizar goalProgress</li><li>Registrar no CRM</li></ul></details></div></div>
+            <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Checkpoint 2</strong><p>Confirmar valor total acumulado até 18h.</p><p style="margin-top:4px;color:var(--text-muted);">Sugestão: somar contratos fechados; atualizar barra de progresso; registrar no CRM.</p><details class="checklist-dropdown"><summary>Checklist da tarefa</summary><ul><li>Somar contratos fechados</li><li>Comparar com meta</li><li>Atualizar barra</li><li>Registrar no CRM</li><li>Salvar alterações</li></ul></details></div></div>
+          </div>
+          <div class="goal-card" style="margin-bottom:10px;">
+            <h4 style="font-size:13px;font-weight:700;color:var(--blue-900);margin-bottom:4px;">Sábado</h4>
+            <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Checkpoint 1</strong><p>Follow-up pós-proposta para leads pendentes até 12h.</p><p style="margin-top:4px;color:var(--text-muted);">Sugestão: filtrar leads com proposta enviada sem resposta; enviar follow-up curto com urgência/benefício.</p><details class="checklist-dropdown"><summary>Checklist da tarefa</summary><ul><li>Abrir pipeline</li><li>Filtrar leads sem resposta</li><li>Selecionar pendentes</li><li>Usar follow-up com urgência/benefício</li><li>Enviar mensagem</li><li>Registrar follow-up</li></ul></details></div></div>
+            <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Checkpoint 2</strong><p>Registrar lições aprendidas e atualizar CRM até 18h.</p><p style="margin-top:4px;color:var(--text-muted);">Sugestão: anotar objeções comuns; atualizar status final; registrar motivo de ganho/perdido.</p><details class="checklist-dropdown"><summary>Checklist da tarefa</summary><ul><li>Abrir CRM</li><li>Registrar ganhos e perdidos</li><li>Anotar objeções comuns</li><li>Atualizar status final</li><li>Documentar lições</li><li>Salvar alterações</li></ul></details></div></div>
+          </div>
+          <div class="goal-card" style="margin-bottom:10px;">
+            <h4 style="font-size:13px;font-weight:700;color:var(--blue-900);margin-bottom:4px;">Domingo</h4>
+            <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Checkpoint 1</strong><p>Revisar <a href="https://flavio-guedes.github.io/portfolio/relatorio.html" target="_blank">relatório</a> resultado semanal vs meta de R$ 4.000.</p><p style="margin-top:4px;color:var(--text-muted);">Sugestão: comparar valor fechado com meta; identificar dias com mais conversão; anotar ajustes para próxima semana.</p><details class="checklist-dropdown"><summary>Checklist da tarefa</summary><ul><li>Abrir goalProgress</li><li>Comparar valor fechado</li><li>Identificar melhores dias</li><li>Anotar ajustes</li><li>Registrar no relatório</li></ul></details></div></div>
+            <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Checkpoint 2</strong><p>Planejar ações da próxima semana.</p><p style="margin-top:4px;color:var(--text-muted);">Sugestão: definir 3 metas principais; distribuir blocos por frente; atualizar checklist semanal.</p><details class="checklist-dropdown"><summary>Checklist da tarefa</summary><ul><li>Definir 3 metas</li><li>Distribuir blocos por frente</li><li>Atualizar checklist</li><li>Revisar <a href="https://flavio-guedes.github.io/portfolio/relatorio.html" target="_blank">relatório</a> agenda</li><li>Salvar planejamento</li></ul></details></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PIPELINE -->
+    <div id="pipeline" class="panel">
+      <div class="sub-tabs">
+        <button class="active" onclick="switchSubTab('pipe-geral', this)">Pipeline Geral</button>
+        <button onclick="switchSubTab('pipe-crm', this)">CRM</button>
+        <button onclick="switchSubTab('pipe-projetos', this)">Projetos</button>
+        <button onclick="switchSubTab('pipe-linkedin', this)">LinkedIn</button>
+        <button onclick="switchSubTab('pipe-conteudo', this)">Conteúdo</button>
+        <button onclick="switchSubTab('pipe-epq', this)">EPQ</button>
+        <button onclick="switchSubTab('pipe-portfolio', this)">Portfolio</button>
+        <button onclick="switchSubTab('pipe-outros', this)">Outros fluxos</button>
+      </div>
+
+      <div id="pipe-geral" class="sub-panel open">
+        <div class="suggestion-box">
+          <h2>Pipeline Geral</h2>
+          <p>Tarefas de todas as frentes em um único fluxo.</p>
+          <div class="crm-board" style="margin-top:12px;">
+            <div class="crm-column">
+              <h3>Planejado</h3>
+              <div class="count">Todas as frentes</div>
+              <div class="card-item"><h4>Exemplo</h4><p>Revisar <a href="https://flavio-guedes.github.io/portfolio/relatorio.html" target="_blank">relatório</a> pauta de conteúdo</p><div class="actions"><button>Mover</button><button>Excluir</button></div></div>
+              <div class="card-item"><h4>Exemplo</h4><p>Follow-up LinkedIn Top 30</p><div class="actions"><button>Mover</button><button>Excluir</button></div></div>
+              <button style="margin-top:8px;width:100%;padding:8px;border-radius:999px;border:1px dashed var(--blue-600);background:var(--blue-50);color:var(--blue-800);cursor:pointer;font-weight:700;">+ Nova tarefa</button>
+            </div>
+            <div class="crm-column">
+              <h3>A fazer</h3>
+              <div class="count">Todas as frentes</div>
+              <div class="card-item"><h4>Exemplo</h4><p>Enviar proposta para lead X</p><div class="actions"><button>Mover</button><button>Excluir</button></div></div>
+              <button style="margin-top:8px;width:100%;padding:8px;border-radius:999px;border:1px dashed var(--blue-600);background:var(--blue-50);color:var(--blue-800);cursor:pointer;font-weight:700;">+ Nova tarefa</button>
+            </div>
+            <div class="crm-column">
+              <h3>Fazendo</h3>
+              <div class="count">Todas as frentes</div>
+              <div class="card-item"><h4>Exemplo</h4><p>Atualizar forecast.html</p><div class="actions"><button>Mover</button><button>Excluir</button></div></div>
+              <button style="margin-top:8px;width:100%;padding:8px;border-radius:999px;border:1px dashed var(--blue-600);background:var(--blue-50);color:var(--blue-800);cursor:pointer;font-weight:700;">+ Nova tarefa</button>
+            </div>
+            <div class="crm-column">
+              <h3>Publicado</h3>
+              <div class="count">Todas as frentes</div>
+              <div class="card-item"><h4>Exemplo</h4><p>Publicar artigo no blog</p><div class="actions"><button>Mover</button><button>Excluir</button></div></div>
+              <button style="margin-top:8px;width:100%;padding:8px;border-radius:999px;border:1px dashed var(--blue-600);background:var(--blue-50);color:var(--blue-800);cursor:pointer;font-weight:700;">+ Nova tarefa</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="pipe-crm" class="sub-panel">
+        <div class="crm-board">
+          <div class="crm-column">
+            <h3>Pesquisa</h3>
+            <div class="count">Base: 2.117 contatos únicos</div>
+            <div class="card-item"><h4>Ações</h4><p>Segmentar por tier/grupo; Priorizar Tier 1 (1.336) e Tier 2 (671); Focar em LinkedIn (2.057 com perfil).</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Base carregada, duplicidades removidas, filtros aplicados, leads priorizados por tier/grupo.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Novos leads</h3>
+            <div class="count">Fluxo: interessados / em conversa</div>
+            <div class="card-item"><h4>Ações</h4><p>Classificar como interessado ou em conversa; registrar canal (LinkedIn优先) e intenção.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Resposta recebida, interesse confirmado, próximo passo definido.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Reunião marcada</h3>
+            <div class="count">Fluxo: dossie + perguntas</div>
+            <div class="card-item"><h4>Ações</h4><p>Levantar dossie do lead (tier/grupo/portfolio), preparar perguntas de qualificação, enviar confirmação.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Dossie pronto, perguntas prontas, link enviado, lembrete criado.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Proposta</h3>
+            <div class="count">Fluxo: orçamento baseado em informações</div>
+            <div class="card-item"><h4>Ações</h4><p>Montar orçamento com base no dossie, adaptar `<a href="https://flavio-guedes.github.io/portfolio/proposta_v3.html" target="_blank">proposta_v3.html</a>` ou `<a href="https://flavio-guedes.github.io/portfolio/proposta_padrao.html" target="_blank">proposta_padrao.html</a>`, enviar por email/LinkedIn.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Valor definido, prazo fechado, forma de pagamento, proposta enviada.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Follow-up / Ganho / Perdido</h3>
+            <div class="count">Fluxo: acompanhamento e resultado</div>
+            <div class="card-item"><h4>Ações</h4><p>Follow-up curto; se ganho, registrar contrato; se perdido, registrar motivo.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Follow-up feito, status final definido, lições registradas.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="pipe-projetos" class="sub-panel">
+        <div class="crm-board">
+          <div class="crm-column">
+            <h3>Pesquisa</h3>
+            <div class="count">Descoberta e escopo</div>
+            <div class="card-item"><h4>Ações</h4><p>Mapear objetivo, restrições e resultado esperado.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Escopo definido, restrições listadas, sucesso medido.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Backlog</h3>
+            <div class="count">Ideias e tasks priorizadas</div>
+            <div class="card-item"><h4>Ações</h4><p>Listar tasks, priorizar por impacto/esforço, definir sequência.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Tasks priorizadas, ordem definida, responsável por task.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Fazendo</h3>
+            <div class="count">Execução</div>
+            <div class="card-item"><h4>Ações</h4><p>Executar tasks, registrar bloqueios e entregas.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Task em andamento, blocker registrado, entrega documentada.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Concluído</h3>
+            <div class="count">Validação</div>
+            <div class="card-item"><h4>Ações</h4><p>Testar, validar com usuário, documentar resultado.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Teste feito, validação ok, resultado registrado.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Entregue</h3>
+            <div class="count">Publicação</div>
+            <div class="card-item"><h4>Ações</h4><p>Publicar, comunicar time, atualizar referências.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Publicado, comunicado, links atualizados.</p></div>
+          </div>
+        </div>
+      </div>
+        <div class="crm-board">
+          <div class="crm-column">
+            <h3>Pesquisa</h3>
+            <div class="count">Descoberta de perfis</div>
+            <div class="card-item"><h4>Ações</h4><p>Buscar por segmento, cargo e localização; salvar perfis.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Busca feita, filtros aplicados, perfis salvos.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Qualificação</h3>
+            <div class="count">Score e temperatura</div>
+            <div class="card-item"><h4>Ações</h4><p>Aplicar score, classificar temperatura, registrar sinais.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Score aplicado, temperatura definida, sinais registrados.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Abordagem</h3>
+            <div class="count">Mensagem personalizada</div>
+            <div class="card-item"><h4>Ações</h4><p>Enviar mensagem curta: lembre + valor + CTA.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Mensagem enviada, follow-up agendado.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Reunião</h3>
+            <div class="count">Qualificação comercial</div>
+            <div class="card-item"><h4>Ações</h4><p>Agendar, preparar dossie, levantar dor e orçamento.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Dossie pronto, perguntas prontas, link enviado.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Proposta / Follow-up / Ganho / Perdido</h3>
+            <div class="count">Fechamento</div>
+            <div class="card-item"><h4>Ações</h4><p>Enviar proposta, follow-up, registrar ganho/perdido.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Proposta enviada, follow-up feito, status final definido.</p></div>
+          </div>
+        </div>
+      </div>
+      <div id="agenda-filter-pipe-projetos" style="margin-top:14px;">
+        <div class="section" style="padding:14px;">
+          <h2 style="font-size:15px;font-weight:700;color:var(--blue-900);margin-bottom:8px;">Agenda filtrada — Projetos</h2>
+          <div class="agenda-filters">
+            <label>Filtro rápido:</label>
+            <button class="tag active" onclick="filterAgendaByTab('pipe-projetos', 'all', this)">Todas</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-projetos', 'Organização', this)">Organização</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-projetos', 'Revisão', this)">Revisão</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-projetos', 'Planejamento', this)">Planejamento</button>
+          </div>
+          <div id="agenda-list-pipe-projetos" class="agenda-list"></div>
+        </div>
+      </div>
+
+      <div id="agenda-filter-pipe-crm" style="margin-top:14px;">
+        <div class="section" style="padding:14px;">
+          <h2 style="font-size:15px;font-weight:700;color:var(--blue-900);margin-bottom:8px;">Agenda filtrada — CRM/Atendimento</h2>
+          <div class="agenda-filters">
+            <label>Filtro rápido:</label>
+            <button class="tag active" onclick="filterAgendaByTab('pipe-crm', 'all', this)">Todas</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-crm', 'Atendimento', this)">Atendimento</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-crm', 'Follow-up', this)">Follow-up</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-crm', 'Prospecção', this)">Prospecção</button>
+          </div>
+          <div id="agenda-list-pipe-crm" class="agenda-list"></div>
+        </div>
+      </div>
+
+      <div id="agenda-filter-pipe-geral" style="margin-top:14px;">
+        <div class="section" style="padding:14px;">
+          <h2 style="font-size:15px;font-weight:700;color:var(--blue-900);margin-bottom:8px;">Agenda filtrada — Todas as frentes</h2>
+          <div class="agenda-filters">
+            <label>Filtro rápido:</label>
+            <button class="tag active" onclick="filterAgendaByTab('pipe-geral', 'all', this)">Todas</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'P0', this)">P0</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'P1', this)">P1</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'P2', this)">P2</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'Prospecção', this)">Prospecção</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'Follow-up', this)">Follow-up</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'Atendimento', this)">Atendimento</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'EPQ', this)">EPQ</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'Conteúdo', this)">Conteúdo</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'Revisão', this)">Revisão</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'Organização', this)">Organização</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-geral', 'Descanso', this)">Descanso</button>
+          </div>
+          <div id="agenda-list-pipe-geral" class="agenda-list"></div>
+        </div>
+      </div>
+
+
+      <div id="pipe-linkedin" class="sub-panel">
+        <div class="crm-board">
+          <div class="crm-column">
+            <h3>Pesquisa</h3>
+            <div class="count">Descoberta de perfis</div>
+            <div class="card-item"><h4>Ações</h4><p>Buscar por segmento, cargo e localização; salvar perfis.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Busca feita, filtros aplicados, perfis salvos.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Qualificação</h3>
+            <div class="count">Score e temperatura</div>
+            <div class="card-item"><h4>Ações</h4><p>Aplicar score, classificar temperatura, registrar sinais.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Score aplicado, temperatura definida, sinais registrados.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Abordagem</h3>
+            <div class="count">Mensagem personalizada</div>
+            <div class="card-item"><h4>Ações</h4><p>Enviar mensagem curta: lembre + valor + CTA.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Mensagem enviada, follow-up agendado.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Reunião</h3>
+            <div class="count">Qualificação comercial</div>
+            <div class="card-item"><h4>Ações</h4><p>Agendar, preparar dossie, levantar dor e orçamento.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Dossie pronto, perguntas prontas, link enviado.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Proposta / Follow-up / Ganho / Perdido</h3>
+            <div class="count">Fechamento</div>
+            <div class="card-item"><h4>Ações</h4><p>Enviar proposta, follow-up, registrar ganho/perdido.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Proposta enviada, follow-up feito, status final definido.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="pipe-conteudo" class="sub-panel">
+        <div class="crm-board">
+          <div class="crm-column">
+            <h3>Ideia</h3>
+            <div class="count">Brainstorm e curadoria</div>
+            <div class="card-item"><h4>Ações</h4><p>Registrar tema, objetivo e formato.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Tema definido, objetivo claro, formato escolhido.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Pauta</h3>
+            <div class="count">Planejamento editorial</div>
+            <div class="card-item"><h4>Ações</h4><p>Definir título, ângulo, CTA e data de publicação.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Título, ângulo, CTA e data definidos.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Produção</h3>
+            <div class="count">Criação</div>
+            <div class="card-item"><h4>Ações</h4><p>Escrever/gravar/desenhar; incluir referências e exemplos.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Conteúdo produzido, revisão ortográfica feita.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Revisão</h3>
+            <div class="count">Aprovação</div>
+            <div class="card-item"><h4>Ações</h4><p>Revisar <a href="https://flavio-guedes.github.io/portfolio/relatorio.html" target="_blank">relatório</a> tom, consistência e links; validar com stakeholder.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Revisão feita, aprovação registrada, alterações aplicadas.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Publicação / Analytics</h3>
+            <div class="count">Distribuição e medição</div>
+            <div class="card-item"><h4>Ações</h4><p>Publicar nos canais, acompanhar alcance, engajamento e conversão.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Publicado, métricas coletadas, insights registrados.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="pipe-epq" class="sub-panel">
+        <div class="crm-board">
+          <div class="crm-column">
+            <h3>Pesquisa</h3>
+            <div class="count">Diagnóstico e dados</div>
+            <div class="card-item"><h4>Ações</h4><p>Mapear métricas, fontes e hipóteses.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Dados coletados, hipóteses documentadas.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Backlog</h3>
+            <div class="count">Ações priorizadas</div>
+            <div class="card-item"><h4>Ações</h4><p>Listar melhorias, priorizar por impacto/esforço.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Ações priorizadas, sequência definida.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Fazendo</h3>
+            <div class="count">Execução do projeto</div>
+            <div class="card-item"><h4>Ações</h4><p>Implementar ajustes, rodar testes, documentar mudanças.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Ajustes feitos, testes passaram, docs atualizadas.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Revisão</h3>
+            <div class="count">Validação</div>
+            <div class="card-item"><h4>Ações</h4><p>Validar com usuário, checar métricas, corrigir bugs.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Validação feita, métricas ok, bugs corrigidos.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Publicado / Medido</h3>
+            <div class="count">Resultado</div>
+            <div class="card-item"><h4>Ações</h4><p>Publicar, medir resultado, registrar aprendizados.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Publicado, métricas coletadas, aprendizados documentados.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="pipe-portfolio" class="sub-panel">
+        <div class="crm-board">
+          <div class="crm-column">
+            <h3>Pesquisa</h3>
+            <div class="count">Referências e briefing</div>
+            <div class="card-item"><h4>Ações</h4><p>Mapear referências, definir tom e objetivo da página.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Referências ok, briefing escrito.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Backlog</h3>
+            <div class="count">Seções e conteúdo</div>
+            <div class="card-item"><h4>Ações</h4><p>Listar seções, textos, imagens e CTAs.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Seções definidas, conteúdo aprovado.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Fazendo</h3>
+            <div class="count">Construção</div>
+            <div class="card-item"><h4>Ações</h4><p>Montar HTML/CSS, inserir conteúdo, ajustar responsividade.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Página montada, mobile ok, links testados.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Revisão</h3>
+            <div class="count">Validação</div>
+            <div class="card-item"><h4>Ações</h4><p>Validar em diferentes dispositivos, checar SEO e performance.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Validação ok, SEO ajustado, performance aceitável.</p></div>
+          </div>
+          <div class="crm-column">
+            <h3>Publicado</h3>
+            <div class="count">Deploy</div>
+            <div class="card-item"><h4>Ações</h4><p>Commit, push, validar no ar e atualizar links.</p></div>
+            <div class="card-item"><h4>Checklist</h4><p>Commit feito, deploy ok, links atualizados.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="pipe-outros" class="sub-panel">
+        <div class="suggestion-box">
+          <h2>Outros fluxos sugeridos</h2>
+          <ul>
+            <li><strong>Vendas:</strong> Lead → Qualificação → Proposta → Negociação → Fechamento → Pós-venda</li>
+            <li><strong>Parcerias:</strong> Identificação → Abordagem → Reunião → Proposta → Contrato → Execução</li>
+            <li><strong>Produto:</strong> Ideia → PRD → Protótipo → Validação → Lançamento → Iteração</li>
+            <li><strong>Suporte:</strong> Chamado → Triagem → Diagnóstico → Resolução → Follow-up → Encerramento</li>
+            <li><strong>Recrutamento:</strong> Vaga aberta → Triagem → Entrevista → Proposta → Contratação → Onboarding</li>
+          </ul>
+        </div>
+        <div class="suggestion-box">
+          <h2>Como usar</h2>
+          <ul>
+            <li>Cada fluxo pode ser adaptado para uma frente específica.</li>
+            <li>Use o kanban para mover cartões entre etapas.</li>
+            <li>Adicione checklist por etapa para garantir execução consistente.</li>
+            <li>Monitore taxa de conversão por etapa para identificar gargalos.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+      <div id="agenda-filter-pipe-outros" style="margin-top:14px;">
+        <div class="section" style="padding:14px;">
+          <h2 style="font-size:15px;font-weight:700;color:var(--blue-900);margin-bottom:8px;">Agenda filtrada — Outros fluxos</h2>
+          <div class="agenda-filters">
+            <label>Filtro rápido:</label>
+            <button class="tag active" onclick="filterAgendaByTab('pipe-outros', 'all', this)">Todas</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-outros', 'Revisão', this)">Revisão</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-outros', 'Organização', this)">Organização</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-outros', 'Planejamento', this)">Planejamento</button>
+          </div>
+          <div id="agenda-list-pipe-outros" class="agenda-list"></div>
+        </div>
+      </div>
+
+      <div id="agenda-filter-pipe-portfolio" style="margin-top:14px;">
+        <div class="section" style="padding:14px;">
+          <h2 style="font-size:15px;font-weight:700;color:var(--blue-900);margin-bottom:8px;">Agenda filtrada — Portfolio</h2>
+          <div class="agenda-filters">
+            <label>Filtro rápido:</label>
+            <button class="tag active" onclick="filterAgendaByTab('pipe-portfolio', 'all', this)">Todas</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-portfolio', 'Revisão', this)">Revisão</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-portfolio', 'Organização', this)">Organização</button>
+          </div>
+          <div id="agenda-list-pipe-portfolio" class="agenda-list"></div>
+        </div>
+      </div>
+
+      <div id="agenda-filter-pipe-epq" style="margin-top:14px;">
+        <div class="section" style="padding:14px;">
+          <h2 style="font-size:15px;font-weight:700;color:var(--blue-900);margin-bottom:8px;">Agenda filtrada — EPQ</h2>
+          <div class="agenda-filters">
+            <label>Filtro rápido:</label>
+            <button class="tag active" onclick="filterAgendaByTab('pipe-epq', 'all', this)">Todas</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-epq', 'EPQ', this)">EPQ</button>
+          </div>
+          <div id="agenda-list-pipe-epq" class="agenda-list"></div>
+        </div>
+      </div>
+
+      <div id="agenda-filter-pipe-conteudo" style="margin-top:14px;">
+        <div class="section" style="padding:14px;">
+          <h2 style="font-size:15px;font-weight:700;color:var(--blue-900);margin-bottom:8px;">Agenda filtrada — Conteúdo</h2>
+          <div class="agenda-filters">
+            <label>Filtro rápido:</label>
+            <button class="tag active" onclick="filterAgendaByTab('pipe-conteudo', 'all', this)">Todas</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-conteudo', 'Conteúdo', this)">Conteúdo</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-conteudo', 'EPQ', this)">EPQ</button>
+          </div>
+          <div id="agenda-list-pipe-conteudo" class="agenda-list"></div>
+        </div>
+      </div>
+
+      <div id="agenda-filter-pipe-linkedin" style="margin-top:14px;">
+        <div class="section" style="padding:14px;">
+          <h2 style="font-size:15px;font-weight:700;color:var(--blue-900);margin-bottom:8px;">Agenda filtrada — LinkedIn/Prospecção</h2>
+          <div class="agenda-filters">
+            <label>Filtro rápido:</label>
+            <button class="tag active" onclick="filterAgendaByTab('pipe-linkedin', 'all', this)">Todas</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-linkedin', 'Prospecção', this)">Prospecção</button>
+            <button class="tag" onclick="filterAgendaByTab('pipe-linkedin', 'Follow-up', this)">Follow-up</button>
+          </div>
+          <div id="agenda-list-pipe-linkedin" class="agenda-list"></div>
+        </div>
+      </div>
+
+
+    <!-- CONTEÚDO -->
+    <div id="content" class="panel">
+      <div class="sub-tabs">
+        <button class="active" onclick="switchSubTab('content-kanban', this)">Kanban</button>
+        <button onclick="switchSubTab('content-planejamento', this)">Planejamento</button>
+        <button onclick="switchSubTab('content-producao', this)">Produção</button>
+        <button onclick="switchSubTab('content-distribuicao', this)">Distribuição</button>
+        <button onclick="switchSubTab('content-analytics', this)">Analytics</button>
+      </div>
+
+      <div id="content-kanban" class="sub-panel open">
+        <div class="suggestion-box">
+          <div class="crm-board">
+            <div class="crm-column">
+              <h3>Planejado</h3>
+              <div class="count">Conteúdo</div>
+              <div class="card-item"><h4>Reels/short</h4><p>Tema: onboarding no ecossistema</p><div class="actions"><button>Mover</button><button>Excluir</button></div></div>
+              <div class="card-item"><h4>Post LinkedIn</h4><p>Tema: caso EPQ</p><div class="actions"><button>Mover</button><button>Excluir</button></div></div>
+              <button style="margin-top:8px;width:100%;padding:8px;border-radius:999px;border:1px dashed var(--blue-600);background:var(--blue-50);color:var(--blue-800);cursor:pointer;font-weight:700;">+ Nova tarefa</button>
+            </div>
+            <div class="crm-column">
+              <h3>A fazer</h3>
+              <div class="count">Conteúdo</div>
+              <div class="card-item"><h4>Artigo/blog</h4><p>Tema: integrações do ecossistema</p><div class="actions"><button>Mover</button><button>Excluir</button></div></div>
+              <button style="margin-top:8px;width:100%;padding:8px;border-radius:999px;border:1px dashed var(--blue-600);background:var(--blue-50);color:var(--blue-800);cursor:pointer;font-weight:700;">+ Nova tarefa</button>
+            </div>
+            <div class="crm-column">
+              <h3>Fazendo</h3>
+              <div class="count">Conteúdo</div>
+              <div class="card-item"><h4>Peça gráfica</h4><p>Banner para forecast.html</p><div class="actions"><button>Mover</button><button>Excluir</button></div></div>
+              <button style="margin-top:8px;width:100%;padding:8px;border-radius:999px;border:1px dashed var(--blue-600);background:var(--blue-50);color:var(--blue-800);cursor:pointer;font-weight:700;">+ Nova tarefa</button>
+            </div>
+            <div class="crm-column">
+              <h3>Publicado</h3>
+              <div class="count">Conteúdo</div>
+              <div class="card-item"><h4>Post</h4><p>Link direto para publicação</p><div class="actions"><button>Mover</button><button>Excluir</button></div></div>
+              <button style="margin-top:8px;width:100%;padding:8px;border-radius:999px;border:1px dashed var(--blue-600);background:var(--blue-50);color:var(--blue-800);cursor:pointer;font-weight:700;">+ Nova tarefa</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="content-planejamento" class="sub-panel open">
+        <div class="crm-board">
+          <div class="crm-column">
+            <h3>Calendário editorial</h3>
+            <div class="count">Próxima publicação: 30/08</div>
+            <div class="actions"><button>Editar</button><button>Adicionar</button></div>
+          </div>
+          <div class="crm-column">
+            <h3>Linhas editoriais</h3>
+            <div class="count">3 ativas</div>
+            <div class="actions"><button>Editar</button><button>Nova</button></div>
+          </div>
+          <div class="crm-column">
+            <h3>Temas da semana</h3>
+            <div class="count">5 temas</div>
+            <div class="actions"><button>Editar</button><button>Sugerir</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="content-producao" class="sub-panel">
+        <div class="crm-board">
+          <div class="crm-column">
+            <h3>Roteiros</h3>
+            <div class="count">2 em produção</div>
+            <div class="actions"><button>Editar</button><button>Novo</button></div>
+          </div>
+          <div class="crm-column">
+            <h3>Artigos</h3>
+            <div class="count">1 rascunho</div>
+            <div class="actions"><button>Editar</button><button>Publicar</button></div>
+          </div>
+          <div class="crm-column">
+            <h3>Design</h3>
+            <div class="count">3 peças</div>
+            <div class="actions"><button>Editar</button><button>Criar</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="content-distribuicao" class="sub-panel">
+        <div class="crm-board">
+          <div class="crm-column">
+            <h3>Redes sociais</h3>
+            <div class="count">Agendado: 2 posts</div>
+            <div class="actions"><button>Agendar</button><button>Publicar</button></div>
+          </div>
+          <div class="crm-column">
+            <h3>Newsletter</h3>
+            <div class="count">Próxima edição: 01/09</div>
+            <div class="actions"><button>Editar</button><button>Enviar</button></div>
+          </div>
+          <div class="crm-column">
+            <h3>Site/Blog</h3>
+            <div class="count">3 publicados</div>
+            <div class="actions"><button>Editar</button><button>Novo</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="content-analytics" class="sub-panel">
+        <div class="stats-grid">
+          <div class="stat-box"><h4>Alcance</h4><div class="value">12.4K</div></div>
+          <div class="stat-box"><h4>Engajamento</h4><div class="value">8.2%</div></div>
+          <div class="stat-box"><h4>Conversões</h4><div class="value">34</div></div>
+        </div>
+        <div class="goal-card">
+          <h2>Insights</h2>
+          <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Melhor horário</strong><p>Publicar entre 18h e 20h para maior engajamento.</p></div></div>
+          <div class="checkpoint"><input type="checkbox" onchange="toggleCheckpoint(this)"><div class="checkpoint-content"><strong>Tema em alta</strong><p>Aumentar conteúdo sobre produtividade e IA.</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EQUIPE -->
+    <div id="team" class="panel">
+      <div class="suggestion-box">
+        <h2>Perfis da equipe</h2>
+        <div class="stats-grid">
+          <div class="stat-box"><h4>Você</h4><div class="value">Leader & Decisor</div></div>
+          <div class="stat-box"><h4>ATLAS</h4><div class="value">Chief of Staff</div></div>
+          <div class="stat-box"><h4>HERMES</h4><div class="value">Master Orchestrator</div></div>
+        </div>
+      </div>
+      <div class="suggestion-box">
+        <h2>Agentes especialistas</h2>
+        <div class="stats-grid">
+          <div class="stat-box"><h4>Nexus</h4><div class="value">Tech Lead</div></div>
+          <div class="stat-box"><h4>Forge</h4><div class="value">Java Developer</div></div>
+          <div class="stat-box"><h4>Aegis</h4><div class="value">QA</div></div>
+          <div class="stat-box"><h4>Sentinel</h4><div class="value">Security</div></div>
+          <div class="stat-box"><h4>Vanguard</h4><div class="value">Creative</div></div>
+          <div class="stat-box"><h4>Oracle</h4><div class="value">Research</div></div>
+          <div class="stat-box"><h4>Strategos</h4><div class="value">Strategy</div></div>
+          <div class="stat-box"><h4>Muse</h4><div class="value">Content</div></div>
+          <div class="stat-box"><h4>Pulse</h4><div class="value">Marketing</div></div>
+          <div class="stat-box"><h4>Vector</h4><div class="value">Data</div></div>
+        </div>
+      </div>
+      <div class="suggestion-box">
+        <h2>Ferramentas integradas</h2>
+        <div class="stats-grid">
+          <div class="stat-box"><h4>GitHub</h4><div class="value">Code/CI/CD</div></div>
+          <div class="stat-box"><h4>Drive</h4><div class="value">Arquivos/Dados</div></div>
+          <div class="stat-box"><h4>Telegram</h4><div class="value">Comunicação</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="risk">
+      <h3>Risco principal</h3>
+      <div>Bloqueios externos de quota/autenticação podem atrasar integrações de dados em tempo real.</div>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tab, btn) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('open'));
+      document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+      document.getElementById(tab).classList.add('open');
+      btn.classList.add('active');
+    }
+    function switchSubTab(tab, btn) {
+      const parent = btn.closest('.panel');
+      parent.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('open'));
+      parent.querySelectorAll('.sub-tabs button').forEach(b => b.classList.remove('active'));
+      document.getElementById(tab).classList.add('open');
+      btn.classList.add('active');
+    }
+    function toggleCheckpoint(checkbox) {
+      const cp = checkbox.closest('.checkpoint');
+      if (checkbox.checked) {
+        cp.classList.add('done');
+      } else {
+        cp.classList.remove('done');
+      }
+    }
+    function downloadTasks(front){
+      const map = {
+        portfolio: ['Páginas foco','Proposta e CV'],
+        linkedin: ['Painel pipelkd.html','Top 30 Leads'],
+        email: ['Painel email.html'],
+        crm: ['Base local'],
+        epq: ['forecast.html'],
+        beni: ['Áudios do Benício'],
+        gmail: ['CRM do Gmail']
+      };
+      const projects = map[front] || [];
+      let text = `Tarefas - ${front}\n\n`;
+      projects.forEach(p => { text += `- ${p}\n`; });
+      const blob = new Blob([text], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `tarefas-${front}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+  </script>
+
+<script>
+function renderMonthAgenda() {
+  const month = parseInt(document.getElementById('month-select').value);
+  const tag = document.getElementById('tag-select').value;
+  const year = 2026;
+  const container = document.getElementById('month-grid-container');
+  const listContainer = document.getElementById('agenda-list-container');
+  container.innerHTML = '';
+  listContainer.innerHTML = '';
+
+  const monthNames = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  document.querySelector('header p').textContent = 'Agenda mensal — ' + monthNames[month-1] + '/' + year;
+
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const weekDays = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+  const firstWeekday = new Date(year, month-1, 1).getDay(); // 0=dom
+  const startOffset = (firstWeekday + 6) % 7; // 0=segunda
+
+  // Dummy grid for days
+  const totalCells = Math.ceil((startOffset + daysInMonth) / 7) * 7;
+  for (let i=0; i<startOffset; i++) {
+    const empty = document.createElement('div');
+    empty.className = 'month-col';
+    container.appendChild(empty);
+  }
+  for (let day=1; day<=daysInMonth; day++) {
+    const col = document.createElement('div');
+    col.className = 'month-col';
+    const date = new Date(year, month-1, day);
+    const weekday = date.getDay();
+    const dayLabel = document.createElement('div');
+    dayLabel.className = 'day-row';
+    dayLabel.textContent = weekDays[weekday] + ' ' + day;
+    col.appendChild(dayLabel);
+    const key = month + ',' + day;
+    const evts = window.__agendaData && window.__agendaData[key] ? window.__agendaData[key] : [];
+    evts.forEach(ev => {
+      const [time, title, tags] = ev;
+      if (tag !== 'all' && !tags.includes(tag)) return;
+      const card = document.createElement('div');
+      card.className = 'ev ' + (tags[0] || '');
+      card.innerHTML = '<div class="time">' + time + '</div>' +
+                       '<div class="title">' + title + '</div>' +
+                       '<div class="tags">' + tags.map(t => '<span class="tag">' + t + '</span>').join('') + '</div>';
+      col.appendChild(card);
+      // also append to list view
+      const row = document.createElement('div');
+      row.className = 'ev ' + (tags[0] || '');
+      row.innerHTML = '<div class="time">' + time + '</div>' +
+                      '<div class="title">' + title + ' (' + weekDays[weekday] + ' ' + day + ')</div>' +
+                      '<div class="tags">' + tags.map(t => '<span class="tag">' + t + '</span>').join('') + '</div>';
+      listContainer.appendChild(row);
+    });
+    container.appendChild(col);
+  }
+}
+
+function clearAgendaFilters() {
+  document.getElementById('tag-select').value = 'all';
+  renderMonthAgenda();
+}
+window.__agendaData = {"9,1": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,2": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,3": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,4": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,7": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,8": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,9": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,10": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,11": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,14": [["08:00 - 10:00", "PMERJ Manhã (aula)", ["P0", "PMERJ", "Manhã"]], ["10:00 - 12:00", "Básica Manhã (aula)", ["P0", "Básica", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 15:00", "GCM Manhã/Noite (aula)", ["P0", "GCM", "Tarde"]], ["15:00 - 17:00", "ESA/EAM/EEAR Manhã/Noite (aula)", ["P0", "ESA", "Tarde"]], ["17:00 - 18:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]]], "9,15": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,16": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,17": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,18": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,21": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,22": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,23": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,24": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,25": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,28": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,29": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,30": [["09:00 - 09:30", "Prospecção qualificada", ["P0", "Prospecção", "Manhã"]], ["09:30 - 10:30", "Follow-up e atendimentos", ["P0", "Follow-up", "Manhã"]], ["10:30 - 11:00", "EPQ / Métricas / Ajustes", ["P1", "EPQ", "Manhã"]], ["11:00 - 12:00", "Conteúdo e criativos", ["P1", "Conteúdo", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Atendimento e follow-up", ["P0", "Atendimento", "Tarde"]], ["14:00 - 15:00", "Prospecção e abordagens", ["P0", "Prospecção", "Tarde"]], ["15:00 - 16:00", "EPQ e otimizações", ["P1", "EPQ", "Tarde"]], ["16:00 - 17:00", "Revisão e planejamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Organização e fechamento", ["P2", "Organização", "Tarde"]]], "9,5": [["09:00 - 09:30", "Revisão geral", ["P1", "Revisão", "Manhã"]], ["09:30 - 10:30", "Prospecção leve e follow-up", ["P0", "Prospecção", "Manhã"]], ["10:30 - 11:00", "Conteúdo pendente", ["P1", "Conteúdo", "Manhã"]], ["11:00 - 12:00", "Atendimento rápido", ["P0", "Atendimento", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Revisão de métricas", ["P1", "EPQ", "Tarde"]], ["14:00 - 15:00", "Planejamento semanal", ["P1", "Planejamento", "Tarde"]], ["15:00 - 16:00", "Organização leve", ["P2", "Organização", "Tarde"]], ["16:00 - 17:00", "Follow-up final", ["P0", "Follow-up", "Tarde"]], ["17:00 - 18:00", "Descanso/Reflexão", ["P2", "Descanso", "Tarde"]]], "9,12": [["08:00 - 10:00", "PMERJ Sábado (aula)", ["P0", "PMERJ", "Sábado"]], ["10:00 - 12:00", "Básica Sábado (aula)", ["P0", "Básica", "Sábado"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 15:00", "Atendimento pós-aula", ["P0", "Atendimento", "Tarde"]], ["15:00 - 17:00", "Follow-up matrículas", ["P0", "Follow-up", "Tarde"]]], "9,19": [["08:00 - 10:00", "GCM Sábado (aula)", ["P0", "GCM", "Sábado"]], ["10:00 - 12:00", "Atendimento e follow-up", ["P0", "Atendimento", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 15:00", "Follow-up e matrículas", ["P0", "Follow-up", "Tarde"]], ["15:00 - 17:00", "Revisão e fechamento", ["P1", "Revisão", "Tarde"]], ["17:00 - 18:00", "Planejamento próxima semana", ["P1", "Planejamento", "Tarde"]]], "9,26": [["09:00 - 09:30", "Revisão geral", ["P1", "Revisão", "Manhã"]], ["09:30 - 10:30", "Prospecção leve e follow-up", ["P0", "Prospecção", "Manhã"]], ["10:30 - 11:00", "Conteúdo pendente", ["P1", "Conteúdo", "Manhã"]], ["11:00 - 12:00", "Atendimento rápido", ["P0", "Atendimento", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Revisão de métricas", ["P1", "EPQ", "Tarde"]], ["14:00 - 15:00", "Planejamento semanal", ["P1", "Planejamento", "Tarde"]], ["15:00 - 16:00", "Organização leve", ["P2", "Organização", "Tarde"]], ["16:00 - 17:00", "Follow-up final", ["P0", "Follow-up", "Tarde"]], ["17:00 - 18:00", "Descanso/Reflexão", ["P2", "Descanso", "Tarde"]]], "9,6": [["09:00 - 10:00", "Revisão semanal leve", ["P2", "Revisão", "Manhã"]], ["10:00 - 11:00", "Planejamento semanal", ["P1", "Planejamento", "Manhã"]], ["11:00 - 12:00", "Backup e organização", ["P2", "Organização", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Descanso/Reflexão", ["P2", "Descanso", "Tarde"]], ["14:00 - 15:00", "Revisão de links e ajustes", ["P1", "Revisão", "Tarde"]], ["15:00 - 16:00", "Preparação para segunda", ["P1", "Planejamento", "Tarde"]], ["16:00 - 17:00", "Tempo livre", ["P2", "Descanso", "Tarde"]], ["17:00 - 18:00", "Revisão final", ["P2", "Revisão", "Tarde"]]], "9,13": [["09:00 - 10:00", "Revisão semanal leve", ["P2", "Revisão", "Manhã"]], ["10:00 - 11:00", "Planejamento semanal", ["P1", "Planejamento", "Manhã"]], ["11:00 - 12:00", "Backup e organização", ["P2", "Organização", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Descanso/Reflexão", ["P2", "Descanso", "Tarde"]], ["14:00 - 15:00", "Revisão de links e ajustes", ["P1", "Revisão", "Tarde"]], ["15:00 - 16:00", "Preparação para segunda", ["P1", "Planejamento", "Tarde"]], ["16:00 - 17:00", "Tempo livre", ["P2", "Descanso", "Tarde"]], ["17:00 - 18:00", "Revisão final", ["P2", "Revisão", "Tarde"]]], "9,20": [["09:00 - 10:00", "Revisão semanal leve", ["P2", "Revisão", "Manhã"]], ["10:00 - 11:00", "Planejamento semanal", ["P1", "Planejamento", "Manhã"]], ["11:00 - 12:00", "Backup e organização", ["P2", "Organização", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Descanso/Reflexão", ["P2", "Descanso", "Tarde"]], ["14:00 - 15:00", "Revisão de links e ajustes", ["P1", "Revisão", "Tarde"]], ["15:00 - 16:00", "Preparação para segunda", ["P1", "Planejamento", "Tarde"]], ["16:00 - 17:00", "Tempo livre", ["P2", "Descanso", "Tarde"]], ["17:00 - 18:00", "Revisão final", ["P2", "Revisão", "Tarde"]]], "9,27": [["09:00 - 10:00", "Revisão semanal leve", ["P2", "Revisão", "Manhã"]], ["10:00 - 11:00", "Planejamento semanal", ["P1", "Planejamento", "Manhã"]], ["11:00 - 12:00", "Backup e organização", ["P2", "Organização", "Manhã"]], ["12:00 - 13:00", "Almoço", ["P2", "Almoço", "Tarde"]], ["13:00 - 14:00", "Descanso/Reflexão", ["P2", "Descanso", "Tarde"]], ["14:00 - 15:00", "Revisão de links e ajustes", ["P1", "Revisão", "Tarde"]], ["15:00 - 16:00", "Preparação para segunda", ["P1", "Planejamento", "Tarde"]], ["16:00 - 17:00", "Tempo livre", ["P2", "Descanso", "Tarde"]], ["17:00 - 18:00", "Revisão final", ["P2", "Revisão", "Tarde"]]]};
+renderMonthAgenda();
+</script>
+<script>
+function filterAgendaByTab(tabId, tag, btn) {
+  const list = document.getElementById('agenda-list-' + tabId);
+  if (!list) return;
+  const buttons = btn.parentElement.querySelectorAll('.tag');
+  buttons.forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const data = window.__agendaData || {};
+  let items = [];
+  Object.keys(data).forEach(key => {
+    data[key].forEach(ev => {
+      const [time, title, tags] = ev;
+      if (tag === 'all' || tags.includes(tag)) {
+        const parts = key.split(',');
+        items.push({ month: parseInt(parts[0]), day: parseInt(parts[1]), time, title, tags });
+      }
+    });
+  });
+
+  items.sort((a, b) => {
+    if (a.month !== b.month) return a.month - b.month;
+    return a.day - b.day;
+  });
+
+  list.innerHTML = '';
+  if (items.length === 0) {
+    list.innerHTML = '<div class="ev" style="color:var(--text-muted);font-size:12px;">Nenhum evento encontrado para este filtro.</div>';
+    return;
+  }
+
+  items.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'ev ' + (item.tags[0] || '');
+    row.innerHTML = '<div class="time">' + item.time + '</div>' +
+                    '<div class="title">' + item.title + ' (' + item.day + '/' + item.month + ')</div>' +
+                    '<div class="tags">' + item.tags.map(t => '<span class="tag">' + t + '</span>').join('') + '</div>';
+    list.appendChild(row);
+  });
+}
+</script>
+</body>
+</html>
