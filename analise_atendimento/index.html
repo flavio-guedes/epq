@@ -13,7 +13,7 @@
   --navy:#0a1f3b;
   --blue:#1b3a8a;
   --gold:#d4a843;
-  --bg:#f3f4f7;
+  --bg:#f6f7fb;
   --card:#ffffff;
   --text:#0f172a;
   --muted:#6b7280;
@@ -24,70 +24,107 @@
   --warm:#f97316;
   --nurture:#eab308;
   --cold:#94a3b8;
+  --shadow:0 6px 18px rgba(15,23,41,.06);
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
-body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;background:var(--bg);color:var(--text)}
-.wrap{max-width:1200px;margin:0 auto;padding:24px 16px}
-header.brand{display:flex;align-items:center;gap:14px;margin-bottom:18px}
-.brand-mark{height:42px;width:42px;background:linear-gradient(135deg,var(--blue),var(--navy));border-radius:12px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:18px}
-.brand h1{font-size:20px;margin:0;line-height:1.2}
-.brand p{margin:2px 0 0;color:var(--muted);font-size:13px}
-.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
-.input,.select{padding:10px 12px;border:1px #e5e7eb solid;border-radius:12px;background:#fff;font-size:14px;min-width:220px}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;background:var(--bg);color:var(--text);line-height:1.45}
+.wrap{max-width:1240px;margin:0 auto;padding:28px 18px 60px}
+
+header.brand{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:22px;flex-wrap:wrap}
+.brand-left{display:flex;align-items:center;gap:14px}
+.brand-mark{height:46px;width:46px;background:linear-gradient(135deg,var(--blue),var(--navy));border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:18px;box-shadow:var(--shadow)}
+.brand h1{font-size:22px;margin:0;line-height:1.15}
+.brand p{margin:3px 0 0;color:var(--muted);font-size:13px}
+.brand-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.link-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid #e5e7eb;background:#fff;text-decoration:none;color:#0f172a;font-size:13px;font-weight:600;box-shadow:var(--shadow)}
+.link-btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0;padding:14px;background:#fff;border:1px solid #e5e7eb;border-radius:16px;box-shadow:var(--shadow)}
+.input,.select{padding:11px 13px;border:1px #e5e7eb solid;border-radius:12px;background:#fff;font-size:14px;min-width:220px}
 .select{min-width:180px}
-.kpi{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-@media(min-width:680px){.kpi{grid-template-columns:repeat(5,1fr)}}
-.card{background:var(--card);border:1px solid #e5e7eb;border-radius:16px;padding:16px;box-shadow:0 1px 2px rgba(15,23,41,.04)}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:12px;border:1px solid #e5e7eb;background:#fff;font-size:13px;font-weight:600;cursor:pointer;user-select:none}
+.pill.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+.kpi{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}
+@media(min-width:700px){.kpi{grid-template-columns:repeat(5,1fr)}}
+.card{background:var(--card);border:1px solid #e5e7eb;border-radius:16px;padding:18px;box-shadow:var(--shadow)}
 .kpi .card{text-align:center}
-.kpi .value{font-size:26px;font-weight:800;margin:4px 0}
-.kpi .label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.kpi .value{font-size:28px;font-weight:800;margin:6px 0;letter-spacing:-.02em}
+.kpi .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
 .kpi .hint{font-size:11px;color:var(--muted);margin-top:4px}
-.section{margin-top:18px}
-.section-title{font-size:16px;font-weight:700;margin:0 0 10px}
-.funnel{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-@media(min-width:860px){.funnel{grid-template-columns:repeat(6,1fr)}}
-.funnel .step{background:var(--card);border:1px solid #e5e7eb;border-radius:14px;padding:14px;text-align:center}
-.funnel .stage{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+.section{margin-top:22px}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.section-title{font-size:16px;font-weight:700;margin:0}
+
+.funnel{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:900px){.funnel{grid-template-columns:repeat(6,1fr)}}
+.funnel .step{background:var(--card);border:1px solid #e5e7eb;border-radius:14px;padding:14px;text-align:center;box-shadow:var(--shadow)}
+.funnel .stage{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
 .funnel .count{font-size:26px;font-weight:800;margin:6px 0}
 .funnel .pct{font-size:12px;color:var(--muted)}
-.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-table{width:100%;border-collapse:collapse;min-width:980px;font-size:13px}
-th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #e5e7eb)}
+
+.grid-2{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:980px){.grid-2{grid-template-columns:1fr 1fr}}
+
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid #e5e7eb;border-radius:16px;background:#fff;box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse;min-width:1040px;font-size:13px}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid #e5e7eb)}
 th{font-weight:600;color:#374151;background:#f9fafb;position:sticky;top:0}
 tr:hover td{background:#f8fafc)}
-.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
 .badge-hot{background:#fee2e2;color:#991b1b}
 .badge-warm{background:#ffedd5;color:#9a3412}
 .badge-nurture{background:#fef9c3;color:#713f12}
 .badge-cold{background:#e2e8f0;color:#334155}
-.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;font-size:13px;cursor:pointer}
-.pill.active{background:var(--navy);color:#fff;border-color:var(--navy)}
-.grid-2{display:grid;grid-template-columns:1fr;gap:14px}
-@media(min-width:960px){.grid-2{grid-template-columns:1fr 1fr}}
+
 .timeline{display:flex;flex-direction:column;gap:10px}
 .tl-item{display:flex;gap:10px}
-.tl-dot{width:10px;min-width:10px;height:10px;border-radius:50%;background:#cbd5e1;margin-top:6px}
+.tl-dot{width:10px;min-width:10px;height:10px;border-radius:50%;background:#cbd5e1;margin-top:7px}
 .tl-dot.g{background:#16a34a}.tl-dot.y{background:#eab308}.tl-dot.r{background:#ef4444}.tl-dot.b{background:#0f172a}
 .tl-content{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px;flex:1}
 .tl-meta{font-size:11px;color:var(--muted)}
 .tl-text{font-size:13px;margin-top:2px}
-.lead-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px}
+
+.lead-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px;box-shadow:var(--shadow)}
 .lead-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .lead-title{font-weight:700;font-size:15px}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 button.btn{padding:9px 12px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;font-size:13px;font-weight:600}
 button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+
 .empty{color:var(--muted);font-size:13px;padding:8px 0}
+
+.row-list{display:flex;flex-direction:column;gap:10px}
+@media(min-width:980px){.row-list{display:table;width:100%;border-collapse:collapse}}
+@media(min-width:980px){.row-item{display:table-row}.row-item>*{display:table-cell;vertical-align:top;padding:12px 14px;border-bottom:1px solid #e5e7eb}}
+.row-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:12px;box-shadow:var(--shadow)}
+.row-title{font-weight:700;font-size:14px}
+.row-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.row-meta{font-size:12px;color:#374151;margin-top:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.row-actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+
+.report{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:16px;box-shadow:var(--shadow)}
+.report h3{font-size:14px;margin:10px 0 6px;color:#111827}
+.report ul{padding-left:18px;margin:0}
+.report li{margin:6px 0;font-size:13px;line-height:1.55}
+.muted{color:var(--muted)}
 </style>
 </head>
 <body>
 <div class="wrap" id="app">
   <header class="brand">
-    <div class="brand-mark">EPQ</div>
-    <div>
-      <h1>Análise de Atendimento — Funil e Jornada</h1>
-      <p>Dados extraídos das conversas do WhatsApp. Nenhum dado inventado.</p>
+    <div class="brand-left">
+      <div class="brand-mark">EPQ</div>
+      <div>
+        <h1>Análise de Atendimento — Funil e Jornada</h1>
+        <p>Dados extraídos das conversas do WhatsApp. Nenhum dado inventado.</p>
+      </div>
+    </div>
+    <div class="brand-actions">
+      <a class="link-btn" href="https://github.com/flavio-guedes/epq" target="_blank" rel="noreferrer">GitHub</a>
+      <a class="link-btn primary" href="https://flavio-guedes.github.io/epq/analise_atendimento/" target="_blank" rel="noreferrer">Abrir painel</a>
     </div>
   </header>
 
@@ -106,11 +143,11 @@ button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
     <div class="card"><div class="label">Quentes / recuperáveis</div><div class="value">{{kpi.hotRec}}</div><div class="hint">Ação imediata</div></div>
     <div class="card"><div class="label">Com resposta</div><div class="value">{{kpi.resp}}</div><div class="hint">Conversas com troca</div></div>
     <div class="card"><div class="label">Sem resposta</div><div class="value">{{kpi.semResp}}</div><div class="hint">Follow-up necessário</div></div>
-    <div class="card"><div class="label">Principal objeção</div><div class="value" style="font-size:14px">{{kpi.objTop||'—'}}</div><div class="hint">Padrão observado</div></div>
+    <div class="card"><div class="label">Principal objeção</div><div class="value" style="font-size:13px;margin-top:8px">{{kpi.objTop||'—'}}</div><div class="hint">Padrão observado</div></div>
   </div>
 
-  <div class="section card">
-    <div class="section-title">Funil observado</div>
+  <div class="section">
+    <div class="section-head"><div class="section-title">Funil observado</div></div>
     <div class="funnel">
       <div class="step" v-for="s in funnel" :key="s.stage">
         <div class="stage">{{s.stage}}</div>
@@ -122,10 +159,10 @@ button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
 
   <div class="section grid-2">
     <div class="card">
-      <div class="section-title">Ranking de objeções</div>
+      <div class="section-head"><div class="section-title">Ranking de objeções</div></div>
       <div v-if="objRank.length===0" class="empty">Sem objeções explícitas suficientes nesta amostra.</div>
       <div v-else>
-        <div v-for="o in objRank" :key="o.categoria" style="padding:8px 0;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center">
+        <div v-for="o in objRank" :key="o.categoria" style="padding:9px 0;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center">
           <div>
             <div style="font-weight:600;font-size:14px">{{o.categoria}}</div>
             <div style="font-size:12px;color:var(--muted)">{{o.freq}} ocorrência(s)</div>
@@ -135,7 +172,7 @@ button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
       </div>
     </div>
     <div class="card">
-      <div class="section-title">Atendimento — acertos e erros comuns</div>
+      <div class="section-head"><div class="section-title">Atendimento — acertos e erros comuns</div></div>
       <div style="font-size:13px;line-height:1.6">
         <div><strong style="color:var(--ok)">✓ Acertos:</strong> agendamento rápido de aula experimental, clareza em turnos/valores, saudação curta.</div>
         <div style="margin-top:8px"><strong style="color:var(--bad)">✗ Erros:</strong> follow-up lento, ausência de CTA após passar valores, respostas genéricas sem diagnóstico.</div>
@@ -145,7 +182,7 @@ button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
   </div>
 
   <div class="section">
-    <div class="section-title">Leads</div>
+    <div class="section-head"><div class="section-title">Leads</div></div>
     <div class="table-wrap">
       <table>
         <thead>
@@ -183,7 +220,7 @@ button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
 
   <div class="section grid-2">
     <div class="card">
-      <div class="section-title">Jornada do lead</div>
+      <div class="section-head"><div class="section-title">Jornada do lead</div></div>
       <div class="timeline">
         <div v-for="(t,i) in selected.jornada" :key="i" class="tl-item">
           <div class="tl-dot" :class="dot(t.status)"></div>
@@ -196,42 +233,59 @@ button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
       <div v-if="!selected.jornada.length" class="empty">Selecione um lead para visualizar a jornada.</div>
     </div>
     <div class="card">
-      <div class="section-title">Correções de rota</div>
-      <div style="font-size:13px;line-height:1.6">
-        <div><strong>Problema:</strong> Follow-up lento e genérico em alguns leads.</div>
-        <div><strong>Evidência:</strong> Sabrina, Matheus, Gabriel e Dom Burgue não receberam agendamento rápido.</div>
-        <div><strong>Impacto:</strong> Perda de momentum já na etapa de qualificação.</div>
-        <div><strong>Recomendação:</strong> Responder em até 30 min e sempre fechar com CTA de aula experimental.</div>
-        <div style="margin-top:8px"><strong>Problema:</strong> Objeção de preço/valor tratada só quando o lead pergunta.</div>
-        <div><strong>Recomendação:</strong> Antecipar valor e garantia no primeiro contato.</div>
+      <div class="section-head"><div class="section-title">Correções de rota</div></div>
+      <div class="report">
+        <h3>Problema</h3>
+        <ul>
+          <li>Follow-up lento e genérico em alguns leads.</li>
+          <li>Objeção de preço/valor tratada só quando o lead pergunta.</li>
+        </ul>
+        <h3>Evidência</h3>
+        <ul>
+          <li>Sabrina, Matheus, Gabriel e Dom Burgue não receberam agendamento rápido.</li>
+          <li>Douglas foi exceção: avanço rápido e aula experimental agendada.</li>
+        </ul>
+        <h3>Impacto</h3>
+        <ul>
+          <li>Perda de momentum já na etapa de qualificação.</li>
+        </ul>
+        <h3>Recomendação</h3>
+        <ul>
+          <li>Responder em até 30 min e sempre fechar com CTA de aula experimental.</li>
+          <li>Antecipar valor e garantia no primeiro contato.</li>
+        </ul>
       </div>
     </div>
   </div>
 
   <div class="section grid-2">
     <div class="card">
-      <div class="section-title">Meta Ads — recomendações</div>
-      <div style="font-size:13px;line-height:1.6">
-        <div>1. Anúncios que perguntam “tem vaga?” funcionam bem para PMERJ.</div>
-        <div>2. Leads de GCM pedem oferta específica; usar criativos segmentados por cidade.</div>
-        <div>3. Reforçar método para iniciantes no copy para reduzir “pouca base”.</div>
-        <div>4. Follow-up automático com aula experimental em até 30 minutos.</div>
+      <div class="section-head"><div class="section-title">Meta Ads — recomendações</div></div>
+      <div class="report">
+        <ul>
+          <li>Anúncios que perguntam “tem vaga?” funcionam bem para PMERJ.</li>
+          <li>Leads de GCM pedem oferta específica; usar criativos segmentados por cidade.</li>
+          <li>Reforçar método para iniciantes no copy para reduzir “pouca base”.</li>
+          <li>Follow-up automático com aula experimental em até 30 minutos.</li>
+        </ul>
       </div>
     </div>
     <div class="card">
-      <div class="section-title">What To Do Now</div>
-      <div style="font-size:13px;line-height:1.6">
-        <div>1. Recuperar Douglas e Claudia com confirmação de presença.</div>
-        <div>2. Reativar Matheus, Sabrina, Gabriel e Patrick com aula experimental.</div>
-        <div>3. Cadastrar +55 21 97960-7938 para aviso de GCM São Gonçalo.</div>
-        <div>4. Revisar copy do anúncio para antecipar método para iniciantes.</div>
-        <div>5. Ajustar script para responder preço/valor com garantia já na primeira troca.</div>
+      <div class="section-head"><div class="section-title">What To Do Now</div></div>
+      <div class="report">
+        <ol style="padding-left:18px;margin:0">
+          <li>Recuperar Douglas e Claudia com confirmação de presença.</li>
+          <li>Reativar Matheus, Sabrina, Gabriel e Patrick com aula experimental.</li>
+          <li>Criar follow-up automático para GCM São Gonçalo.</li>
+          <li>Revisar copy do anúncio para antecipar método para iniciantes.</li>
+          <li>Ajustar script para responder preço/valor com garantia já na primeira troca.</li>
+        </ol>
       </div>
     </div>
   </div>
 
   <div v-if="lead" class="section card" style="margin-top:14px">
-    <div class="section-title">{{lead.name}}</div>
+    <div class="section-head"><div class="section-title">{{lead.name}}</div></div>
     <div class="grid-2">
       <div>
         <div style="font-size:13px"><strong>Origem:</strong> {{lead.source}}</div>
