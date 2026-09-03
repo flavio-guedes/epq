@@ -1,0 +1,1320 @@
+{
+  "total": 12,
+  "unicos": 12,
+  "registros": [
+    {
+      "id": "20260903125922_Conversa do WhatsApp com +55 21 97750-2998",
+      "arquivo": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/00 - Planejamento/00 - Dados/00 - Conversas Whatsapp/02 - Leads/Conversa do WhatsApp com +55 21 97750-2998.txt",
+      "nome_arquivo": "Conversa do WhatsApp com +55 21 97750-2998.txt",
+      "nome": "+55 21 97750-2998",
+      "whatsapp": "+55 21 9775-02998",
+      "email": "",
+      "origem": "INSTAGRAM",
+      "curso": "PRF/PMERJ",
+      "turma": "PRF/PMERJ",
+      "turno": "Tarde",
+      "objetivo": "Aprovação em concurso policial",
+      "temperatura_inicial": "Quente",
+      "temperatura_atual": "Quente",
+      "estagio": "EM ATENDIMENTO",
+      "status": "ativo",
+      "ultima_acao": "Atendimento iniciado",
+      "proxima_acao": "REABRIR CONVERSA",
+      "proximo_followup": "2026-09-03",
+      "sondagem": "SIM",
+      "diagnostico": "PARCIAL",
+      "aula_oferecida": "NÃO",
+      "aula_agendada": "NÃO",
+      "oferta_apresentada": "NÃO",
+      "objetao_tratada": "NÃO",
+      "followup_realizado": "SIM",
+      "primeira_resposta_epq_minutos": null,
+      "tempo_medio_resposta_minutos": 249.0,
+      "inicio": "2026-09-02T17:19:00",
+      "ultima_interacao": "2026-09-03T08:41:00",
+      "total_mensagens": 7,
+      "score_atendimento": 55,
+      "jornada": [
+        {
+          "dt": "2026-09-02T17:19:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Anúncio do Instagram Mostrar detalhes Preencha seus dados para receber informações sobre a turma preparatória para a PMERJ."
+        },
+        {
+          "dt": "2026-09-02T17:19:00",
+          "from": "+55 21 97750-2998",
+          "note": "Olá! Posso ter mais informações sobre isso?"
+        },
+        {
+          "dt": "2026-09-02T17:33:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Olá, boa tarde! Qual é o seu nome?"
+        },
+        {
+          "dt": "2026-09-02T18:38:00",
+          "from": "+55 21 97750-2998",
+          "note": "Gabriel"
+        },
+        {
+          "dt": "2026-09-02T19:05:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Certo! qual o concurso que você tem interesse Gabriel?"
+        },
+        {
+          "dt": "2026-09-03T06:27:00",
+          "from": "+55 21 97750-2998",
+          "note": "PRF e pmrj"
+        },
+        {
+          "dt": "2026-09-03T08:41:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Olá, bom dia, Gabriel. Dando prosseguimento ao seu atendimento. Temos uma turma para a PMERJ, nos turnos da manhã, noite ou sábado. Qual sua preferência?"
+        }
+      ],
+      "status_importacao": "NOVO",
+      "evidencias": {
+        "tem_resposta_rapida": "NÃO",
+        "tem_boas_vindas": "NÃO",
+        "tem_diagnostico": "PARCIAL",
+        "tem_agendamento": "NÃO"
+      }
+    },
+    {
+      "id": "20260903125922_Conversa do WhatsApp com +55 21 97949-7338",
+      "arquivo": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/00 - Planejamento/00 - Dados/00 - Conversas Whatsapp/02 - Leads/Conversa do WhatsApp com +55 21 97949-7338.txt",
+      "nome_arquivo": "Conversa do WhatsApp com +55 21 97949-7338.txt",
+      "nome": "+55 21 97949-7338",
+      "whatsapp": "+55 21 9794-97338",
+      "email": "",
+      "origem": "INSTAGRAM",
+      "curso": "GCM",
+      "turma": "GCM",
+      "turno": "DESCONHECIDO",
+      "objetivo": "Aprovação em concurso policial",
+      "temperatura_inicial": "Quente",
+      "temperatura_atual": "Quente",
+      "estagio": "NOVO",
+      "status": "ativo",
+      "ultima_acao": "Atendimento iniciado",
+      "proxima_acao": "RESPONDER AGORA",
+      "proximo_followup": "2026-09-03",
+      "sondagem": "NÃO",
+      "diagnostico": "PARCIAL",
+      "aula_oferecida": "NÃO",
+      "aula_agendada": "NÃO",
+      "oferta_apresentada": "NÃO",
+      "objetao_tratada": "NÃO",
+      "followup_realizado": "SIM",
+      "primeira_resposta_epq_minutos": null,
+      "tempo_medio_resposta_minutos": 0.0,
+      "inicio": "2026-09-03T11:17:00",
+      "ultima_interacao": "2026-09-03T11:26:00",
+      "total_mensagens": 3,
+      "score_atendimento": 65,
+      "jornada": [
+        {
+          "dt": "2026-09-03T11:17:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Anúncio do Instagram Mostrar detalhes Olá, temos turmas de GCM Maricá e São Gonçalo começando em 14/09 e 19/09. Quer fazer parte?"
+        },
+        {
+          "dt": "2026-09-03T11:17:00",
+          "from": "+55 21 97949-7338",
+          "note": "Olá! Posso ter mais informações sobre isso?"
+        },
+        {
+          "dt": "2026-09-03T11:26:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Olá, Tudo bem? Me chamo Clara aqui do EPQ e estarei dando continuidade ao seu atendimento."
+        }
+      ],
+      "status_importacao": "NOVO",
+      "evidencias": {
+        "tem_resposta_rapida": "NÃO",
+        "tem_boas_vindas": "NÃO",
+        "tem_diagnostico": "PARCIAL",
+        "tem_agendamento": "NÃO"
+      }
+    },
+    {
+      "id": "20260903125922_Conversa do WhatsApp com +55 21 97960-7938",
+      "arquivo": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/00 - Planejamento/00 - Dados/00 - Conversas Whatsapp/02 - Leads/Conversa do WhatsApp com +55 21 97960-7938.txt",
+      "nome_arquivo": "Conversa do WhatsApp com +55 21 97960-7938.txt",
+      "nome": "+55 21 97960-7938",
+      "whatsapp": "+55 21 9796-07938",
+      "email": "",
+      "origem": "DESCONHECIDO",
+      "curso": "GCM",
+      "turma": "GCM",
+      "turno": "Noite",
+      "objetivo": "Aprovação em concurso policial",
+      "temperatura_inicial": "Quente",
+      "temperatura_atual": "Quente",
+      "estagio": "OBJEÇÃO",
+      "status": "ativo",
+      "ultima_acao": "Atendimento iniciado",
+      "proxima_acao": "TRATAR OBJEÇÃO",
+      "proximo_followup": "2026-09-02",
+      "sondagem": "SIM",
+      "diagnostico": "SIM",
+      "aula_oferecida": "NÃO",
+      "aula_agendada": "NÃO",
+      "oferta_apresentada": "NÃO",
+      "objetao_tratada": "SIM",
+      "followup_realizado": "SIM",
+      "primeira_resposta_epq_minutos": null,
+      "tempo_medio_resposta_minutos": 6256.6,
+      "inicio": "2026-08-03T08:15:00",
+      "ultima_interacao": "2026-09-02T18:49:00",
+      "total_mensagens": 22,
+      "score_atendimento": 65,
+      "jornada": [
+        {
+          "dt": "2026-08-03T08:15:00",
+          "from": "+55 21 97960-7938",
+          "note": "Bom dia! Vocês teriam turmas presenciais para GCM São Gonçalo RJ?"
+        },
+        {
+          "dt": "2026-08-03T08:40:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Bom dia, por enquanto os alunos que querem a GCMSG, estão na turma da PMERJ, até pq o conteúdo é o mesmo, só acrescenta uma disciplina diferente!"
+        },
+        {
+          "dt": "2026-08-03T08:42:00",
+          "from": "+55 21 97960-7938",
+          "note": "Pmerj tem redação e GCM não tem. Pelo menos até o último edital não tinha."
+        },
+        {
+          "dt": "2026-08-03T08:43:00",
+          "from": "+55 21 97960-7938",
+          "note": "Mas tem a pretensão de abrir caso o edital saia ou não?"
+        },
+        {
+          "dt": "2026-08-03T08:45:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Em todo caso, você tmb já se prepara pra PMERJ com redação!"
+        },
+        {
+          "dt": "2026-08-03T08:45:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Temos sim, já vamos até iniciar a divulgação da turma!"
+        },
+        {
+          "dt": "2026-08-03T08:46:00",
+          "from": "+55 21 97960-7938",
+          "note": "Não. Tô com trauma de pmerj rs. Fiz o último concurso, passei e caí no TAF."
+        },
+        {
+          "dt": "2026-08-03T08:46:00",
+          "from": "+55 21 97960-7938",
+          "note": "Só quero GCM mesmo, por hora."
+        },
+        {
+          "dt": "2026-08-03T08:46:00",
+          "from": "+55 21 97960-7938",
+          "note": "Assim que anunciarem a turma, dou preferência então pra fechar com vocês."
+        },
+        {
+          "dt": "2026-08-03T08:47:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Dentro da nossa unidade, temos um centro de preparação voltado exclusivamente para os TAFs das carreiras policiais e militares!"
+        },
+        {
+          "dt": "2026-08-03T08:47:00",
+          "from": "+55 21 97960-7938",
+          "note": "Bacana .. ❤️"
+        },
+        {
+          "dt": "2026-08-03T08:48:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Pq você não entra logo agora na turma da PMERJ que iniciou agora, e já vai pegando os conteúdos básicos e quando abrir a GCMSG você migra pra ela?"
+        },
+        {
+          "dt": "2026-08-03T08:50:00",
+          "from": "+55 21 97960-7938",
+          "note": "Não quero não."
+        },
+        {
+          "dt": "2026-08-03T08:50:00",
+          "from": "+55 21 97960-7938",
+          "note": "Assim que abrir, entro em contato com vocês novamente."
+        },
+        {
+          "dt": "2026-08-03T08:51:00",
+          "from": "+55 21 97960-7938",
+          "note": "Muito obrigada pelas informações."
+        },
+        {
+          "dt": "2026-08-03T08:55:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Salva nosso contato, acompanhe nossas postagens sobre este e diversos outros concursos!"
+        },
+        {
+          "dt": "2026-08-03T08:57:00",
+          "from": "+55 21 97960-7938",
+          "note": "Ta ok."
+        },
+        {
+          "dt": "2026-08-03T08:58:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Qual seu nome e seu bairro?"
+        },
+        {
+          "dt": "2026-08-03T08:58:00",
+          "from": "+55 21 97960-7938",
+          "note": "Mesquita- Centro"
+        },
+        {
+          "dt": "2026-08-03T09:00:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "perfeito, vamos salvar aqui seu contato!"
+        },
+        {
+          "dt": "2026-09-02T18:49:00",
+          "from": "+55 21 97960-7938",
+          "note": "Boa noite! Já temos alguma previsão para turmas da GCM São Gonçalo?"
+        },
+        {
+          "dt": "2026-09-02T18:49:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Olá! Seja muito bem-vindo(a) ao Curso EPQ – Estudando por Questões! 📚🚀"
+        }
+      ],
+      "status_importacao": "NOVO",
+      "evidencias": {
+        "tem_resposta_rapida": "NÃO",
+        "tem_boas_vindas": "SIM",
+        "tem_diagnostico": "SIM",
+        "tem_agendamento": "NÃO"
+      }
+    },
+    {
+      "id": "20260903125922_Conversa do WhatsApp com +55 21 98675-6890",
+      "arquivo": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/00 - Planejamento/00 - Dados/00 - Conversas Whatsapp/02 - Leads/Conversa do WhatsApp com +55 21 98675-6890.txt",
+      "nome_arquivo": "Conversa do WhatsApp com +55 21 98675-6890.txt",
+      "nome": "+55 21 98675-6890",
+      "whatsapp": "+55 21 9867-56890",
+      "email": "",
+      "origem": "INSTAGRAM",
+      "curso": "PMERJ",
+      "turma": "PMERJ",
+      "turno": "Sábado",
+      "objetivo": "Aprovação em concurso policial",
+      "temperatura_inicial": "Morno",
+      "temperatura_atual": "Morno",
+      "estagio": "NOVO",
+      "status": "ativo",
+      "ultima_acao": "Atendimento iniciado",
+      "proxima_acao": "RESPONDER AGORA",
+      "proximo_followup": "2026-09-03",
+      "sondagem": "NÃO",
+      "diagnostico": "PARCIAL",
+      "aula_oferecida": "NÃO",
+      "aula_agendada": "NÃO",
+      "oferta_apresentada": "NÃO",
+      "objetao_tratada": "NÃO",
+      "followup_realizado": "SIM",
+      "primeira_resposta_epq_minutos": null,
+      "tempo_medio_resposta_minutos": 0.0,
+      "inicio": "2026-09-03T09:32:00",
+      "ultima_interacao": "2026-09-03T10:10:00",
+      "total_mensagens": 4,
+      "score_atendimento": 65,
+      "jornada": [
+        {
+          "dt": "2026-09-03T09:32:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Anúncio do Instagram Mostrar detalhes Oi! Como podemos ajudar?"
+        },
+        {
+          "dt": "2026-09-03T09:32:00",
+          "from": "+55 21 98675-6890",
+          "note": "Olá! Posso ter mais informações sobre isso?"
+        },
+        {
+          "dt": "2026-09-03T10:09:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Olá , tudo bem? Somos da unidade de Nilópolis- “*EPQ- estudando por questões*”"
+        },
+        {
+          "dt": "2026-09-03T10:10:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Nós temos a turma da PMERJ, turno da manhã, noite e sábado, qual seria a sua preferência?"
+        }
+      ],
+      "status_importacao": "NOVO",
+      "evidencias": {
+        "tem_resposta_rapida": "NÃO",
+        "tem_boas_vindas": "NÃO",
+        "tem_diagnostico": "PARCIAL",
+        "tem_agendamento": "NÃO"
+      }
+    },
+    {
+      "id": "20260903125922_Conversa do WhatsApp com +55 22 98866-7870",
+      "arquivo": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/00 - Planejamento/00 - Dados/00 - Conversas Whatsapp/02 - Leads/Conversa do WhatsApp com +55 22 98866-7870.txt",
+      "nome_arquivo": "Conversa do WhatsApp com +55 22 98866-7870.txt",
+      "nome": "+55 22 98866-7870",
+      "whatsapp": "+55 22 9886-67870",
+      "email": "",
+      "origem": "INSTAGRAM",
+      "curso": "PMERJ",
+      "turma": "PMERJ",
+      "turno": "Noite",
+      "objetivo": "Aprovação em concurso policial",
+      "temperatura_inicial": "Quente",
+      "temperatura_atual": "Quente",
+      "estagio": "EM ATENDIMENTO",
+      "status": "ativo",
+      "ultima_acao": "Atendimento iniciado",
+      "proxima_acao": "REABRIR CONVERSA",
+      "proximo_followup": "2026-09-02",
+      "sondagem": "NÃO",
+      "diagnostico": "PARCIAL",
+      "aula_oferecida": "NÃO",
+      "aula_agendada": "NÃO",
+      "oferta_apresentada": "NÃO",
+      "objetao_tratada": "NÃO",
+      "followup_realizado": "SIM",
+      "primeira_resposta_epq_minutos": null,
+      "tempo_medio_resposta_minutos": 0.0,
+      "inicio": "2026-09-01T22:39:00",
+      "ultima_interacao": "2026-09-02T19:40:00",
+      "total_mensagens": 4,
+      "score_atendimento": 65,
+      "jornada": [
+        {
+          "dt": "2026-09-01T22:39:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Anúncio do Instagram Mostrar detalhes Preencha seus dados para receber informações sobre a turma preparatória para a PMERJ."
+        },
+        {
+          "dt": "2026-09-01T22:39:00",
+          "from": "+55 22 98866-7870",
+          "note": "Olá! Posso ter mais informações sobre isso?"
+        },
+        {
+          "dt": "2026-09-01T22:41:00",
+          "from": "+55 22 98866-7870",
+          "note": "‎Cadastre-se agora (Resposta recebida)"
+        },
+        {
+          "dt": "2026-09-02T19:40:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Olá Bianca, Boa Noite! Como posso te ajudar?"
+        }
+      ],
+      "status_importacao": "NOVO",
+      "evidencias": {
+        "tem_resposta_rapida": "NÃO",
+        "tem_boas_vindas": "NÃO",
+        "tem_diagnostico": "PARCIAL",
+        "tem_agendamento": "NÃO"
+      }
+    },
+    {
+      "id": "20260903125922_Conversa do WhatsApp com Claudia PMERJ",
+      "arquivo": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/00 - Planejamento/00 - Dados/00 - Conversas Whatsapp/02 - Leads/Conversa do WhatsApp com Claudia PMERJ.txt",
+      "nome_arquivo": "Conversa do WhatsApp com Claudia PMERJ.txt",
+      "nome": "Claudia Monteiro",
+      "whatsapp": null,
+      "email": "",
+      "origem": "INSTAGRAM",
+      "curso": "PMERJ",
+      "turma": "PMERJ",
+      "turno": "Sábado",
+      "objetivo": "Aprovação em concurso policial",
+      "temperatura_inicial": "Quente",
+      "temperatura_atual": "Quente",
+      "estagio": "OFERTA",
+      "status": "ativo",
+      "ultima_acao": "Atendimento iniciado",
+      "proxima_acao": "REABRIR CONVERSA",
+      "proximo_followup": "2026-09-03",
+      "sondagem": "NÃO",
+      "diagnostico": "PARCIAL",
+      "aula_oferecida": "SIM",
+      "aula_agendada": "NÃO",
+      "oferta_apresentada": "SIM",
+      "objetao_tratada": "NÃO",
+      "followup_realizado": "SIM",
+      "primeira_resposta_epq_minutos": 0.0,
+      "tempo_medio_resposta_minutos": 1.6,
+      "inicio": "2026-09-03T09:39:00",
+      "ultima_interacao": "2026-09-03T11:11:00",
+      "total_mensagens": 31,
+      "score_atendimento": 75,
+      "jornada": [
+        {
+          "dt": "2026-09-03T09:39:00",
+          "from": "SISTEMA",
+          "note": "‎Claudia PMERJ está na sua lista de contatos"
+        },
+        {
+          "dt": "2026-09-03T09:39:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Anúncio do Instagram Mostrar detalhes Preencha seus dados para receber informações sobre a turma preparatória para a PMERJ."
+        },
+        {
+          "dt": "2026-09-03T09:39:00",
+          "from": "Claudia PMERJ",
+          "note": "Olá! Posso ter mais informações sobre isso?"
+        },
+        {
+          "dt": "2026-09-03T09:39:00",
+          "from": "Claudia PMERJ",
+          "note": "Holla bom dia"
+        },
+        {
+          "dt": "2026-09-03T09:39:00",
+          "from": "Claudia PMERJ",
+          "note": "Gostaria de saber mais sobre o preparatório pra PMERJ??"
+        },
+        {
+          "dt": "2026-09-03T09:59:00",
+          "from": "Claudia PMERJ",
+          "note": "Quando irão começar novas turmas ?"
+        },
+        {
+          "dt": "2026-09-03T10:23:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Olá , tudo bem? Somos da unidade de Nilopolis- “*EPQ- estudando por questões*”"
+        },
+        {
+          "dt": "2026-09-03T10:31:00",
+          "from": "Claudia PMERJ",
+          "note": "Assim ..."
+        },
+        {
+          "dt": "2026-09-03T10:32:00",
+          "from": "Claudia PMERJ",
+          "note": "Mais são turmas novas que irão começar ?"
+        },
+        {
+          "dt": "2026-09-03T10:32:00",
+          "from": "Claudia PMERJ",
+          "note": "Ao sábado começa que horas ?"
+        },
+        {
+          "dt": "2026-09-03T10:32:00",
+          "from": "Claudia PMERJ",
+          "note": "Quais os valores ?"
+        },
+        {
+          "dt": "2026-09-03T10:40:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Certo, me informa seu nome por gentileza?"
+        },
+        {
+          "dt": "2026-09-03T10:45:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "A turma de manhã está terminando agora e vai inicar uma nova no dia 14/09. Já a de noite começou tem uns 20 dias então ainda da tempo de entrar."
+        },
+        {
+          "dt": "2026-09-03T10:45:00",
+          "from": "Claudia PMERJ",
+          "note": "Claudia Monteiro"
+        },
+        {
+          "dt": "2026-09-03T10:46:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Perfeito! o horário de manhã é de 9h às 12h e de noite de 19h às 22h, essas aulas ocorrem de segunda à sexta."
+        },
+        {
+          "dt": "2026-09-03T10:48:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Se optar pelas aulas de sábado,  a turma irá abrir dia 19/09 com o horário de 9h ás 16:30."
+        },
+        {
+          "dt": "2026-09-03T10:49:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Qual ficaria melhor pra você?"
+        },
+        {
+          "dt": "2026-09-03T10:51:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "A turma tem duração de cinco meses com o investimento de *5x 300,00 no Pix 5x 330,00 no cartão* +a taxa de material no valor de *R$ 50,00*"
+        },
+        {
+          "dt": "2026-09-03T10:52:00",
+          "from": "Claudia PMERJ",
+          "note": "No caso essas já começaram ?"
+        },
+        {
+          "dt": "2026-09-03T10:53:00",
+          "from": "Claudia PMERJ",
+          "note": "Sábado só tem esse horário ?"
+        },
+        {
+          "dt": "2026-09-03T10:55:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Não, carreiras policiais estão sem limite de idade."
+        },
+        {
+          "dt": "2026-09-03T10:56:00",
+          "from": "Claudia PMERJ",
+          "note": "Assim  tendi"
+        },
+        {
+          "dt": "2026-09-03T10:57:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "A turma de manhã vai abrir novamente dia 14/09 e a de noite começou tem pouco tempo então da tempo de iniciar!"
+        },
+        {
+          "dt": "2026-09-03T10:57:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "No momento sim!"
+        },
+        {
+          "dt": "2026-09-03T10:58:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Você pode vir uma semana para fazer aula experimental e conhecer a nossa metodologia"
+        },
+        {
+          "dt": "2026-09-03T10:58:00",
+          "from": "Claudia PMERJ",
+          "note": "Tá bom"
+        },
+        {
+          "dt": "2026-09-03T11:06:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Deseja agendar uma aula experimental? amanhã teremos aula de matemática de noite!"
+        },
+        {
+          "dt": "2026-09-03T11:07:00",
+          "from": "Claudia PMERJ",
+          "note": "Sim"
+        },
+        {
+          "dt": "2026-09-03T11:09:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Perfeito Claudia, agendada para amanhã, te aguardamos ás 19h 😉"
+        },
+        {
+          "dt": "2026-09-03T11:11:00",
+          "from": "Claudia PMERJ",
+          "note": "Obg"
+        },
+        {
+          "dt": "2026-09-03T11:11:00",
+          "from": "Claudia PMERJ",
+          "note": "Tenham uma abençoada quinta"
+        }
+      ],
+      "status_importacao": "ATUALIZAR",
+      "evidencias": {
+        "tem_resposta_rapida": "SIM",
+        "tem_boas_vindas": "NÃO",
+        "tem_diagnostico": "PARCIAL",
+        "tem_agendamento": "NÃO"
+      }
+    },
+    {
+      "id": "20260903125922_Conversa do WhatsApp com Dom burgue Artesanal",
+      "arquivo": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/00 - Planejamento/00 - Dados/00 - Conversas Whatsapp/02 - Leads/Conversa do WhatsApp com Dom burgue Artesanal.txt",
+      "nome_arquivo": "Conversa do WhatsApp com Dom burgue Artesanal.txt",
+      "nome": "Dom burgue Artesanal",
+      "whatsapp": null,
+      "email": "",
+      "origem": "INSTAGRAM",
+      "curso": "PMERJ",
+      "turma": "PMERJ",
+      "turno": "Sábado",
+      "objetivo": "Aprovação em concurso policial",
+      "temperatura_inicial": "Quente",
+      "temperatura_atual": "Quente",
+      "estagio": "OFERTA",
+      "status": "ativo",
+      "ultima_acao": "Atendimento iniciado",
+      "proxima_acao": "REABRIR CONVERSA",
+      "proximo_followup": "2026-09-03",
+      "sondagem": "NÃO",
+      "diagnostico": "PARCIAL",
+      "aula_oferecida": "SIM",
+      "aula_agendada": "NÃO",
+      "oferta_apresentada": "SIM",
+      "objetao_tratada": "NÃO",
+      "followup_realizado": "SIM",
+      "primeira_resposta_epq_minutos": 0.0,
+      "tempo_medio_resposta_minutos": 4.6,
+      "inicio": "2026-09-02T22:11:00",
+      "ultima_interacao": "2026-09-03T11:05:00",
+      "total_mensagens": 18,
+      "score_atendimento": 75,
+      "jornada": [
+        {
+          "dt": "2026-09-02T22:11:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Anúncio do Facebook Mostrar detalhes Preencha seus dados para receber informações sobre a turma preparatória para a PMERJ."
+        },
+        {
+          "dt": "2026-09-02T22:11:00",
+          "from": "Dom burgue Artesanal",
+          "note": "Olá! Posso ter mais informações sobre isso?"
+        },
+        {
+          "dt": "2026-09-03T09:08:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Olá, bom dia!!"
+        },
+        {
+          "dt": "2026-09-03T09:21:00",
+          "from": "Dom burgue Artesanal",
+          "note": "Patrick"
+        },
+        {
+          "dt": "2026-09-03T10:16:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Como posso te ajudar?"
+        },
+        {
+          "dt": "2026-09-03T10:18:00",
+          "from": "Dom burgue Artesanal",
+          "note": "Gostaria de sabe sobre o preparatorio para PM"
+        },
+        {
+          "dt": "2026-09-03T10:24:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Olá , tudo bem? Somos da unidade de Nilopolis- “*EPQ- estudando por questões*”"
+        },
+        {
+          "dt": "2026-09-03T10:34:00",
+          "from": "Dom burgue Artesanal",
+          "note": "Quais horarios"
+        },
+        {
+          "dt": "2026-09-03T10:38:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "De manhã de 9h ás 12h e de noite de 19h ás 22h, qual horário ficaria melhor pra você?"
+        },
+        {
+          "dt": "2026-09-03T10:44:00",
+          "from": "Dom burgue Artesanal",
+          "note": "12h"
+        },
+        {
+          "dt": "2026-09-03T10:45:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "De manhã, certo?"
+        },
+        {
+          "dt": "2026-09-03T10:45:00",
+          "from": "Dom burgue Artesanal",
+          "note": "Isso"
+        },
+        {
+          "dt": "2026-09-03T10:46:00",
+          "from": "Dom burgue Artesanal",
+          "note": "São qauis dias"
+        },
+        {
+          "dt": "2026-09-03T10:51:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "De segunda à sexta"
+        },
+        {
+          "dt": "2026-09-03T10:52:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "A turma de manhã está terminando agora e vai inicar uma nova dia 14/09"
+        },
+        {
+          "dt": "2026-09-03T10:53:00",
+          "from": "Dom burgue Artesanal",
+          "note": "Qual valor"
+        },
+        {
+          "dt": "2026-09-03T10:59:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "A turma tem duração de cinco meses com o investimento de *5x 300,00 no Pix 5x 330,00 no cartão* +a taxa de material no valor de *R$ 50,00* que você paga apenas uma vez."
+        },
+        {
+          "dt": "2026-09-03T11:05:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Deseja agendar uma aula experimental?"
+        }
+      ],
+      "status_importacao": "REVISÃO NECESSÁRIA",
+      "evidencias": {
+        "tem_resposta_rapida": "SIM",
+        "tem_boas_vindas": "NÃO",
+        "tem_diagnostico": "PARCIAL",
+        "tem_agendamento": "NÃO"
+      }
+    },
+    {
+      "id": "20260903125922_Conversa do WhatsApp com Douglas PMERJ",
+      "arquivo": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/00 - Planejamento/00 - Dados/00 - Conversas Whatsapp/02 - Leads/Conversa do WhatsApp com Douglas PMERJ.txt",
+      "nome_arquivo": "Conversa do WhatsApp com Douglas PMERJ.txt",
+      "nome": "Douglas",
+      "whatsapp": null,
+      "email": "",
+      "origem": "INSTAGRAM",
+      "curso": "PMERJ",
+      "turma": "PMERJ",
+      "turno": "Tarde",
+      "objetivo": "Aprovação em concurso policial",
+      "temperatura_inicial": "Quente",
+      "temperatura_atual": "Quente",
+      "estagio": "OFERTA",
+      "status": "ativo",
+      "ultima_acao": "Atendimento iniciado",
+      "proxima_acao": "CONFIRMAR PRESENÇA",
+      "proximo_followup": "2026-09-02",
+      "sondagem": "NÃO",
+      "diagnostico": "SIM",
+      "aula_oferecida": "SIM",
+      "aula_agendada": "SIM",
+      "oferta_apresentada": "SIM",
+      "objetao_tratada": "NÃO",
+      "followup_realizado": "SIM",
+      "primeira_resposta_epq_minutos": 0.0,
+      "tempo_medio_resposta_minutos": 19.0,
+      "inicio": "2026-08-24T21:06:00",
+      "ultima_interacao": "2026-09-02T13:10:00",
+      "total_mensagens": 34,
+      "score_atendimento": 90,
+      "jornada": [
+        {
+          "dt": "2026-08-24T21:06:00",
+          "from": "SISTEMA",
+          "note": "‎Douglas PMERJ está na sua lista de contatos"
+        },
+        {
+          "dt": "2026-08-24T21:06:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Anúncio do Instagram Mostrar detalhes Preencha seus dados para receber informações sobre a turma preparatória para a PMERJ."
+        },
+        {
+          "dt": "2026-08-24T21:06:00",
+          "from": "Douglas PMERJ",
+          "note": "Olá! Posso ter mais informações sobre isso?"
+        },
+        {
+          "dt": "2026-08-25T08:44:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Olá, bom dia. Tudo bem?"
+        },
+        {
+          "dt": "2026-08-25T18:11:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Olá, boa noite! tudo bem?me informa seu nome por gentileza"
+        },
+        {
+          "dt": "2026-09-01T23:03:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Anúncio do Instagram Mostrar detalhes Preencha seus dados para receber informações sobre a turma preparatória para a PMERJ."
+        },
+        {
+          "dt": "2026-09-01T23:03:00",
+          "from": "Douglas PMERJ",
+          "note": "Olá! Posso ter mais informações sobre isso?"
+        },
+        {
+          "dt": "2026-09-02T03:54:00",
+          "from": "Douglas PMERJ",
+          "note": "‎Cadastre-se agora (Resposta recebida)"
+        },
+        {
+          "dt": "2026-09-02T03:54:00",
+          "from": "Douglas PMERJ",
+          "note": "Oi bom dia"
+        },
+        {
+          "dt": "2026-09-02T08:10:00",
+          "from": "Douglas PMERJ",
+          "note": "Bom dia"
+        },
+        {
+          "dt": "2026-09-02T09:47:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Olá, bom dia!"
+        },
+        {
+          "dt": "2026-09-02T11:23:00",
+          "from": "Douglas PMERJ",
+          "note": "Queria saber se tem vaga pra estudar pra pmrj aí no curso de vcs"
+        },
+        {
+          "dt": "2026-09-02T11:23:00",
+          "from": "Douglas PMERJ",
+          "note": "E tbm a dúvida é tenho pouca base de estudo"
+        },
+        {
+          "dt": "2026-09-02T11:23:00",
+          "from": "Douglas PMERJ",
+          "note": "Tem algum problema?"
+        },
+        {
+          "dt": "2026-09-02T11:26:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Qual seu nome?"
+        },
+        {
+          "dt": "2026-09-02T11:27:00",
+          "from": "Douglas PMERJ",
+          "note": "Douglas"
+        },
+        {
+          "dt": "2026-09-02T11:31:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Nos temos a turma da PMERJ, turno da manhã, noite e sábado, qual seria a sua preferência?"
+        },
+        {
+          "dt": "2026-09-02T11:42:00",
+          "from": "Douglas PMERJ",
+          "note": "Eu quero a noite"
+        },
+        {
+          "dt": "2026-09-02T11:42:00",
+          "from": "Douglas PMERJ",
+          "note": "Pq trabalho pela manhã"
+        },
+        {
+          "dt": "2026-09-02T11:42:00",
+          "from": "Douglas PMERJ",
+          "note": "Como funciona o curso de vcs ?"
+        },
+        {
+          "dt": "2026-09-02T11:42:00",
+          "from": "Douglas PMERJ",
+          "note": "Como eu falei não tenho uma base boa"
+        },
+        {
+          "dt": "2026-09-02T11:42:00",
+          "from": "Douglas PMERJ",
+          "note": "Precisava aprender tudo msm"
+        },
+        {
+          "dt": "2026-09-02T11:43:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "5 meses de duração"
+        },
+        {
+          "dt": "2026-09-02T11:44:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Podemos agendar uma aula experimental, qual seria a sua  disponibilidade?"
+        },
+        {
+          "dt": "2026-09-02T11:47:00",
+          "from": "Douglas PMERJ",
+          "note": "Posso ir a tarde"
+        },
+        {
+          "dt": "2026-09-02T11:47:00",
+          "from": "Douglas PMERJ",
+          "note": "Ou hj msm"
+        },
+        {
+          "dt": "2026-09-02T11:48:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Pode esta vindo na turma da noite, as 19h"
+        },
+        {
+          "dt": "2026-09-02T11:49:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Podemos colocar seu nome na lista?"
+        },
+        {
+          "dt": "2026-09-02T12:11:00",
+          "from": "Douglas PMERJ",
+          "note": "Pode sim"
+        },
+        {
+          "dt": "2026-09-02T12:11:00",
+          "from": "Douglas PMERJ",
+          "note": "Aí vou aprender todas as matérias né ?"
+        },
+        {
+          "dt": "2026-09-02T12:11:00",
+          "from": "Douglas PMERJ",
+          "note": "Direito matemática e português"
+        },
+        {
+          "dt": "2026-09-02T12:12:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "sim, correto!"
+        },
+        {
+          "dt": "2026-09-02T13:10:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Te aguardo as 19h!!"
+        },
+        {
+          "dt": "2026-09-02T13:10:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Seja bem-vindo!!"
+        }
+      ],
+      "status_importacao": "ATUALIZAR",
+      "evidencias": {
+        "tem_resposta_rapida": "SIM",
+        "tem_boas_vindas": "SIM",
+        "tem_diagnostico": "SIM",
+        "tem_agendamento": "SIM"
+      }
+    },
+    {
+      "id": "20260903125922_Conversa do WhatsApp com Matheus PMERJ",
+      "arquivo": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/00 - Planejamento/00 - Dados/00 - Conversas Whatsapp/02 - Leads/Conversa do WhatsApp com Matheus PMERJ.txt",
+      "nome_arquivo": "Conversa do WhatsApp com Matheus PMERJ.txt",
+      "nome": "Matheus",
+      "whatsapp": null,
+      "email": "",
+      "origem": "INSTAGRAM",
+      "curso": "PMERJ",
+      "turma": "PMERJ",
+      "turno": "Sábado",
+      "objetivo": "Aprovação em concurso policial",
+      "temperatura_inicial": "Quente",
+      "temperatura_atual": "Quente",
+      "estagio": "OFERTA",
+      "status": "ativo",
+      "ultima_acao": "Atendimento iniciado",
+      "proxima_acao": "REABRIR CONVERSA",
+      "proximo_followup": "2026-09-02",
+      "sondagem": "NÃO",
+      "diagnostico": "PARCIAL",
+      "aula_oferecida": "SIM",
+      "aula_agendada": "NÃO",
+      "oferta_apresentada": "SIM",
+      "objetao_tratada": "NÃO",
+      "followup_realizado": "SIM",
+      "primeira_resposta_epq_minutos": 0.0,
+      "tempo_medio_resposta_minutos": 0.5,
+      "inicio": "2026-09-02T11:32:00",
+      "ultima_interacao": "2026-09-02T12:05:00",
+      "total_mensagens": 16,
+      "score_atendimento": 75,
+      "jornada": [
+        {
+          "dt": "2026-09-02T11:32:00",
+          "from": "SISTEMA",
+          "note": "‎Matheus PMERJ está na sua lista de contatos"
+        },
+        {
+          "dt": "2026-09-02T11:32:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Anúncio do Instagram Mostrar detalhes Preencha seus dados para receber informações sobre a turma preparatória para a PMERJ."
+        },
+        {
+          "dt": "2026-09-02T11:32:00",
+          "from": "Matheus PMERJ",
+          "note": "Olá! Posso ter mais informações sobre isso?"
+        },
+        {
+          "dt": "2026-09-02T11:33:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Nós temos a turma da PMERJ, turno da manhã, noite e sábado, qual seria a sua preferência?"
+        },
+        {
+          "dt": "2026-09-02T11:34:00",
+          "from": "Matheus PMERJ",
+          "note": "Noite"
+        },
+        {
+          "dt": "2026-09-02T11:34:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Qual seu nome?"
+        },
+        {
+          "dt": "2026-09-02T11:34:00",
+          "from": "Matheus PMERJ",
+          "note": "Matheus"
+        },
+        {
+          "dt": "2026-09-02T11:45:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "5 meses de duração"
+        },
+        {
+          "dt": "2026-09-02T11:45:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Podemos agendar uma aula experimental, qual seria a sua  disponibilidade?"
+        },
+        {
+          "dt": "2026-09-02T11:46:00",
+          "from": "Matheus PMERJ",
+          "note": "Mais no caso a turma já começou ?"
+        },
+        {
+          "dt": "2026-09-02T11:46:00",
+          "from": "Matheus PMERJ",
+          "note": "Qual seria o valor da mensalidade?"
+        },
+        {
+          "dt": "2026-09-02T11:46:00",
+          "from": "Matheus PMERJ",
+          "note": "O curso tá incluindo todas as matérias do concurso?"
+        },
+        {
+          "dt": "2026-09-02T11:46:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "*VALORES TURMA PMERJ*"
+        },
+        {
+          "dt": "2026-09-02T11:47:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Começou na segunda semana de julho"
+        },
+        {
+          "dt": "2026-09-02T11:47:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Todas matérias do edital."
+        },
+        {
+          "dt": "2026-09-02T12:05:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Podemos agendar uma aula experimental, qual seria a sua  disponibilidade?"
+        }
+      ],
+      "status_importacao": "ATUALIZAR",
+      "evidencias": {
+        "tem_resposta_rapida": "SIM",
+        "tem_boas_vindas": "NÃO",
+        "tem_diagnostico": "PARCIAL",
+        "tem_agendamento": "NÃO"
+      }
+    },
+    {
+      "id": "20260903125922_Conversa do WhatsApp com Mylena PMERJ",
+      "arquivo": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/00 - Planejamento/00 - Dados/00 - Conversas Whatsapp/02 - Leads/Conversa do WhatsApp com Mylena PMERJ.txt",
+      "nome_arquivo": "Conversa do WhatsApp com Mylena PMERJ.txt",
+      "nome": "Mylena",
+      "whatsapp": null,
+      "email": "",
+      "origem": "INSTAGRAM",
+      "curso": "PMERJ",
+      "turma": "PMERJ",
+      "turno": "DESCONHECIDO",
+      "objetivo": "Aprovação em concurso policial",
+      "temperatura_inicial": "Quente",
+      "temperatura_atual": "Quente",
+      "estagio": "EM ATENDIMENTO",
+      "status": "ativo",
+      "ultima_acao": "Atendimento iniciado",
+      "proxima_acao": "REABRIR CONVERSA",
+      "proximo_followup": "2026-09-02",
+      "sondagem": "NÃO",
+      "diagnostico": "PARCIAL",
+      "aula_oferecida": "NÃO",
+      "aula_agendada": "NÃO",
+      "oferta_apresentada": "NÃO",
+      "objetao_tratada": "NÃO",
+      "followup_realizado": "SIM",
+      "primeira_resposta_epq_minutos": 13.0,
+      "tempo_medio_resposta_minutos": 0.0,
+      "inicio": "2026-09-02T09:06:00",
+      "ultima_interacao": "2026-09-02T09:46:00",
+      "total_mensagens": 4,
+      "score_atendimento": 65,
+      "jornada": [
+        {
+          "dt": "2026-09-02T09:19:00",
+          "from": "SISTEMA",
+          "note": "‎Mylena PMERJ está na sua lista de contatos"
+        },
+        {
+          "dt": "2026-09-02T09:06:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Anúncio do Instagram Mostrar detalhes Preencha seus dados para receber informações sobre a turma preparatória para a PMERJ."
+        },
+        {
+          "dt": "2026-09-02T09:06:00",
+          "from": "Mylena PMERJ",
+          "note": "Olá! Posso ter mais informações sobre isso?"
+        },
+        {
+          "dt": "2026-09-02T09:46:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Olá, bom dia.  Tudo bem? Qual é seu nome?"
+        }
+      ],
+      "status_importacao": "ATUALIZAR",
+      "evidencias": {
+        "tem_resposta_rapida": "SIM",
+        "tem_boas_vindas": "NÃO",
+        "tem_diagnostico": "PARCIAL",
+        "tem_agendamento": "NÃO"
+      }
+    },
+    {
+      "id": "20260903125922_Conversa do WhatsApp com Natan PMERJ",
+      "arquivo": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/00 - Planejamento/00 - Dados/00 - Conversas Whatsapp/02 - Leads/Conversa do WhatsApp com Natan PMERJ.txt",
+      "nome_arquivo": "Conversa do WhatsApp com Natan PMERJ.txt",
+      "nome": "Natan",
+      "whatsapp": null,
+      "email": "",
+      "origem": "INSTAGRAM",
+      "curso": "DESCONHECIDO",
+      "turma": "DESCONHECIDO",
+      "turno": "DESCONHECIDO",
+      "objetivo": "Aprovação em concurso policial",
+      "temperatura_inicial": "Frio",
+      "temperatura_atual": "Frio",
+      "estagio": "NOVO",
+      "status": "ativo",
+      "ultima_acao": "Atendimento iniciado",
+      "proxima_acao": "RESPONDER AGORA",
+      "proximo_followup": "2026-09-02",
+      "sondagem": "NÃO",
+      "diagnostico": "PARCIAL",
+      "aula_oferecida": "NÃO",
+      "aula_agendada": "NÃO",
+      "oferta_apresentada": "NÃO",
+      "objetao_tratada": "NÃO",
+      "followup_realizado": "NÃO",
+      "primeira_resposta_epq_minutos": null,
+      "tempo_medio_resposta_minutos": null,
+      "inicio": "2026-09-02T14:41:00",
+      "ultima_interacao": "2026-09-02T14:41:00",
+      "total_mensagens": 1,
+      "score_atendimento": 45,
+      "jornada": [
+        {
+          "dt": "2026-09-02T14:41:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Olá, Natan!"
+        }
+      ],
+      "status_importacao": "ATUALIZAR",
+      "evidencias": {
+        "tem_resposta_rapida": "NÃO",
+        "tem_boas_vindas": "NÃO",
+        "tem_diagnostico": "PARCIAL",
+        "tem_agendamento": "NÃO"
+      }
+    },
+    {
+      "id": "20260903125922_Conversa do WhatsApp com Sabrina PMERJ",
+      "arquivo": "/Users/mac/Library/CloudStorage/GoogleDrive-flavioguedesmkt@gmail.com/Meu Drive/_Profissional/_Freelancer/2026/Ativos/Estudando por Questoes/Marketing EPQ/00 - Planejamento/00 - Dados/00 - Conversas Whatsapp/02 - Leads/Conversa do WhatsApp com Sabrina PMERJ.txt",
+      "nome_arquivo": "Conversa do WhatsApp com Sabrina PMERJ.txt",
+      "nome": "Sabrina",
+      "whatsapp": null,
+      "email": "",
+      "origem": "INSTAGRAM",
+      "curso": "PMERJ",
+      "turma": "PMERJ",
+      "turno": "Sábado",
+      "objetivo": "Aprovação em concurso policial",
+      "temperatura_inicial": "Quente",
+      "temperatura_atual": "Quente",
+      "estagio": "OFERTA",
+      "status": "ativo",
+      "ultima_acao": "Atendimento iniciado",
+      "proxima_acao": "REABRIR CONVERSA",
+      "proximo_followup": "2026-09-02",
+      "sondagem": "NÃO",
+      "diagnostico": "SIM",
+      "aula_oferecida": "SIM",
+      "aula_agendada": "NÃO",
+      "oferta_apresentada": "SIM",
+      "objetao_tratada": "NÃO",
+      "followup_realizado": "SIM",
+      "primeira_resposta_epq_minutos": 0.0,
+      "tempo_medio_resposta_minutos": 4.7,
+      "inicio": "2026-09-02T09:20:00",
+      "ultima_interacao": "2026-09-02T10:50:00",
+      "total_mensagens": 18,
+      "score_atendimento": 85,
+      "jornada": [
+        {
+          "dt": "2026-09-02T09:20:00",
+          "from": "SISTEMA",
+          "note": "‎Sabrina PMERJ está na sua lista de contatos"
+        },
+        {
+          "dt": "2026-09-02T09:20:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Anúncio do Instagram Mostrar detalhes Preencha seus dados para receber informações sobre a turma preparatória para a PMERJ."
+        },
+        {
+          "dt": "2026-09-02T09:20:00",
+          "from": "Sabrina PMERJ",
+          "note": "Olá! Posso ter mais informações sobre isso?"
+        },
+        {
+          "dt": "2026-09-02T09:46:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Olá, bom dia.  Tudo bem? Qual é seu nome?"
+        },
+        {
+          "dt": "2026-09-02T09:47:00",
+          "from": "Sabrina PMERJ",
+          "note": "Sabrina, só quero saber o valor e o horário das aulas"
+        },
+        {
+          "dt": "2026-09-02T09:53:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Qual turma"
+        },
+        {
+          "dt": "2026-09-02T09:53:00",
+          "from": "Sabrina PMERJ",
+          "note": "Eu não entrei ainda <Mensagem editada>"
+        },
+        {
+          "dt": "2026-09-02T09:53:00",
+          "from": "Sabrina PMERJ",
+          "note": "Quero saber o valor"
+        },
+        {
+          "dt": "2026-09-02T10:01:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Olá, Sabrina, você gostaria de informações sobre a turma da PMERJ?"
+        },
+        {
+          "dt": "2026-09-02T10:06:00",
+          "from": "Sabrina PMERJ",
+          "note": "Sim"
+        },
+        {
+          "dt": "2026-09-02T10:06:00",
+          "from": "Sabrina PMERJ",
+          "note": "Valor e os horário que pode realizar a aula"
+        },
+        {
+          "dt": "2026-09-02T10:08:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Temos a turma da PMERJ manha, noite e sábado"
+        },
+        {
+          "dt": "2026-09-02T10:25:00",
+          "from": "Sabrina PMERJ",
+          "note": "Valor?"
+        },
+        {
+          "dt": "2026-09-02T10:26:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "*VALORES TURMA PMERJ*"
+        },
+        {
+          "dt": "2026-09-02T10:26:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Estamos montando uma lista com os interessados nesse concurso, posso colocar seu nome?"
+        },
+        {
+          "dt": "2026-09-02T10:31:00",
+          "from": "Sabrina PMERJ",
+          "note": "E seria quanto tempo?"
+        },
+        {
+          "dt": "2026-09-02T10:37:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "5 meses de duração"
+        },
+        {
+          "dt": "2026-09-02T10:50:00",
+          "from": "Curso Estudando Por Questões",
+          "note": "Podemos agendar uma aula experimental, qual seria a sua  disponibilidade? <Mensagem editada>"
+        }
+      ],
+      "status_importacao": "ATUALIZAR",
+      "evidencias": {
+        "tem_resposta_rapida": "SIM",
+        "tem_boas_vindas": "NÃO",
+        "tem_diagnostico": "SIM",
+        "tem_agendamento": "NÃO"
+      }
+    }
+  ]
+}
