@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPQ · Inteligência Comercial</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg-0:#0C1220;
+  --bg-1:#111A2C;
+  --bg-2:#182338;
+  --bg-3:#1F2C45;
+  --line:rgba(210,222,245,0.09);
+  --line-strong:rgba(210,222,245,0.16);
+  --ink:#EAEFF9;
+  --ink-dim:#94A2BE;
+  --ink-faint:#5B6884;
+  --amber:#E8A33D;
+  --amber-dim:rgba(232,163,61,0.14);
+  --blue:#5B8DEF;
+  --blue-dim:rgba(91,141,239,0.14);
+  --green:#4CAF7D;
+  --green-dim:rgba(76,175,125,0.14);
+  --red:#E2604F;
+  --red-dim:rgba(226,96,79,0.14);
+  --grey:#7C8BA8;
+  --grey-dim:rgba(124,139,168,0.14);
+  --radius:10px;
+  --radius-sm:6px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:var(--bg-0);
+  color:var(--ink);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  font-size:14px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,.display{
+  font-family:'Barlow Semi Condensed','Inter',sans-serif;
+  font-weight:600;
+  letter-spacing:0.01em;
+}
+::-webkit-scrollbar{width:8px;height:8px;}
+::-webkit-scrollbar-thumb{background:var(--bg-3);border-radius:4px;}
+a{color:inherit;}
+
+/* Shell */
+.mobile-nav{display:none;}
+.shell{display:flex;min-height:100vh;}
+.sidebar{
+  width:236px;flex-shrink:0;background:var(--bg-1);
+  border-right:1px solid var(--line);
+  padding:22px 14px;position:sticky;top:0;height:100vh;
+  display:flex;flex-direction:column;gap:22px;
+}
+.brand{padding:0 8px;}
+.brand .mark{font-family:'Barlow Semi Condensed';font-weight:700;font-size:20px;letter-spacing:0.02em;}
+.brand .mark span{color:var(--amber);}
+.brand .sub{color:var(--ink-faint);font-size:11.5px;margin-top:2px;}
+nav{display:flex;flex-direction:column;gap:2px;flex:1;}
+.navitem{
+  display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--radius-sm);
+  color:var(--ink-dim);cursor:pointer;font-size:13.5px;border-left:2px solid transparent;
+}
+.navitem:hover{color:var(--ink);background:var(--bg-2);}
+.navitem.active{color:var(--ink);background:var(--bg-2);border-left:2px solid var(--amber);}
+.navitem .dot{width:6px;height:6px;border-radius:50%;background:var(--ink-faint);flex-shrink:0;}
+.navitem.active .dot{background:var(--amber);}
+.desktop-only{display:block;}
+@media(max-width:900px){.desktop-only{display:none;}}
+.sidebar-foot{color:var(--ink-faint);font-size:11px;padding:0 8px;border-top:1px solid var(--line);padding-top:14px;}
+
+main{flex:1;min-width:0;padding:24px 28px 60px;max-width:1240px;}
+.section{display:none;}
+.section.active{display:block;animation:rise .35s ease;}
+@keyframes rise{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+.pagehead{margin-bottom:18px;}
+.pagehead h1{font-size:22px;}
+.pagehead p{color:var(--ink-dim);margin-top:4px;font-size:13px;max-width:640px;}
+
+/* Cards */
+.grid-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px;}
+@media(max-width:900px){.grid-cards{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:520px){.grid-cards{grid-template-columns:1fr;}}
+.kcard{
+  background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px;
+}
+.kcard .num{font-family:'Barlow Semi Condensed';font-size:28px;font-weight:700;line-height:1;}
+.kcard .lbl{color:var(--ink-dim);font-size:11.5px;margin-top:5px;}
+.kcard.accent-amber .num{color:var(--amber);}
+.kcard.accent-green .num{color:var(--green);}
+.kcard.accent-red .num{color:var(--red);}
+.kcard.accent-blue .num{color:var(--blue);}
+
+.panel{
+  background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px;margin-bottom:16px;
+}
+.panel h2{font-size:15px;margin-bottom:3px;}
+.panel .sub{color:var(--ink-dim);font-size:12px;margin-bottom:12px;}
+.panel-2col{display:grid;grid-template-columns:1.3fr 1fr;gap:14px;}
+@media(max-width:900px){.panel-2col{grid-template-columns:1fr;}}
+
+/* badges */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:100px;font-size:11px;font-weight:600;white-space:nowrap;}
+.b-matricula{background:var(--green-dim);color:var(--green);}
+.b-negociacao{background:var(--amber-dim);color:var(--amber);}
+.b-objecao{background:var(--red-dim);color:var(--red);}
+.b-qualificando{background:var(--blue-dim);color:var(--blue);}
+.b-novo{background:var(--grey-dim);color:var(--grey);}
+.b-recuperavel{background:var(--amber-dim);color:var(--amber);}
+.b-semresposta{background:var(--red-dim);color:var(--red);}
+.b-perdido{background:var(--grey-dim);color:var(--ink-faint);}
+
+.tag{display:inline-flex;padding:2px 7px;border-radius:100px;font-size:11px;background:var(--bg-2);color:var(--ink-dim);border:1px solid var(--line);}
+
+/* funnel */
+.funnel{display:flex;flex-direction:column;gap:6px;}
+.frow{display:grid;grid-template-columns:1fr;gap:6px;}
+@media(min-width:640px){.frow{grid-template-columns:170px 1fr 60px;gap:10px;}}
+.frow .flabel{font-size:12.5px;color:var(--ink-dim);}
+.fbar-track{background:var(--bg-2);border-radius:6px;overflow:hidden;height:18px;position:relative;}
+.fbar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--amber));border-radius:6px;}
+.frow .fval{font-size:12.5px;color:var(--ink);text-align:right;font-variant-numeric:tabular-nums;}
+
+/* objections table */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:720px;}
+th{text-align:left;color:var(--ink-faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.03em;padding:8px 10px;border-bottom:1px solid var(--line-strong);}
+td{padding:10px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+tr:last-child td{border-bottom:none;}
+.obj-bar{background:var(--bg-2);border-radius:4px;height:8px;width:100px;overflow:hidden;display:inline-block;vertical-align:middle;margin-right:8px;}
+.obj-bar i{display:block;height:100%;background:var(--amber);}
+
+/* leads table controls */
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:stretch;}
+.controls input[type=text]{
+  background:var(--bg-2);border:1px solid var(--line-strong);color:var(--ink);
+  padding:10px 12px;border-radius:var(--radius-sm);font-size:14px;flex:1 1 220px;min-width:0;
+}
+.controls select{
+  background:var(--bg-2);border:1px solid var(--line-strong);color:var(--ink);
+  padding:10px 10px;border-radius:var(--radius-sm);font-size:14px;
+}
+.count-pill{color:var(--ink-faint);font-size:12px;width:100%;margin-top:8px;}
+
+.leadrow{cursor:pointer;}
+.leadrow:hover{background:var(--bg-2);}
+.leadrow .name{font-weight:600;}
+.leadrow .phone{color:var(--ink-faint);font-size:11.5px;}
+.score{font-family:'Barlow Semi Condensed';font-weight:700;font-size:15px;}
+.score-hot{color:var(--red);}
+.score-warm{color:var(--amber);}
+.score-nurture{color:var(--blue);}
+.score-cold{color:var(--ink-faint);}
+.prio{font-size:11.5px;font-weight:600;}
+.prio-alta{color:var(--red);}
+.prio-media{color:var(--amber);}
+.prio-baixa{color:var(--ink-faint);}
+
+/* modal */
+.overlay{position:fixed;inset:0;background:rgba(6,9,16,.72);display:none;align-items:flex-start;justify-content:center;padding:24px 16px;z-index:50;overflow:auto;}
+.overlay.show{display:flex;}
+.modal{background:var(--bg-1);border:1px solid var(--line-strong);border-radius:var(--radius);max-width:640px;width:100%;padding:18px;}
+@media(max-width:480px){.modal{padding:14px;}}
+.modal .mhead{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.modal h3{font-size:18px;}
+@media(max-width:480px){.modal h3{font-size:16px;}}
+.modal .close{cursor:pointer;color:var(--ink-faint);font-size:20px;line-height:1;padding:2px 6px;}
+.modal .close:hover{color:var(--ink);}
+.mmeta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.timeline{display:flex;flex-direction:column;gap:10px;margin-top:6px;}
+.tstep{display:grid;grid-template-columns:16px 1fr;gap:10px;}
+.tstep .tdot{width:10px;height:10px;border-radius:50%;margin-top:3px;}
+.tdot.g{background:var(--green);} .tdot.y{background:var(--amber);} .tdot.r{background:var(--red);} .tdot.k{background:var(--ink-faint);}
+.tstep .tbody{font-size:12.5px;color:var(--ink-dim);}
+.tstep .tbody b{color:var(--ink);}
+.nextaction{margin-top:14px;padding:12px 14px;background:var(--bg-2);border-radius:var(--radius-sm);border:1px solid var(--line);}
+.nextaction .lbl{color:var(--ink-faint);font-size:11px;text-transform:uppercase;letter-spacing:.03em;margin-bottom:4px;}
+
+/* route corrections */
+.rc{border:1px solid var(--line);border-radius:var(--radius-sm);padding:14px 14px;margin-bottom:10px;}
+.rc .rc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:10px;flex-wrap:wrap;}
+.rc h4{font-size:14px;}
+.rc dl{display:grid;grid-template-columns:1fr;gap:4px 10px;font-size:12.5px;}
+@media(min-width:640px){.rc dl{grid-template-columns:110px 1fr;}}
+.rc dt{color:var(--ink-faint);}
+.rc dd{color:var(--ink-dim);}
+
+/* growth */
+.gcol h4{font-size:13px;color:var(--amber);margin-bottom:8px;text-transform:uppercase;letter-spacing:.03em;}
+.gcol ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.gcol li{font-size:13px;color:var(--ink-dim);padding-left:14px;position:relative;}
+.gcol li::before{content:"–";position:absolute;left:0;color:var(--ink-faint);}
+.growth-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+@media(max-width:900px){.growth-grid{grid-template-columns:1fr;}}
+
+/* action now */
+.actioncard{display:grid;grid-template-columns:44px 1fr;grid-template-rows:auto auto;gap:6px 12px;padding:14px 16px;border:1px solid var(--line);border-radius:var(--radius-sm);margin-bottom:8px;}
+@media(min-width:640px){.actioncard{grid-template-columns:52px 1fr 90px;grid-template-rows:auto;gap:14px;}}
+.actioncard .rank{font-family:'Barlow Semi Condensed';font-size:24px;font-weight:700;color:var(--ink-faint);}
+.actioncard .atitle{font-weight:600;font-size:13.5px;margin-bottom:2px;}
+.actioncard .adesc{color:var(--ink-dim);font-size:12.5px;}
+.actioncard .atag{justify-self:start;}
+@media(min-width:640px){.actioncard .atag{justify-self:end;}}
+
+.chart-wrap{position:relative;height:220px;}
+@media(max-width:520px){.chart-wrap{height:180px;}}
+.evidence{font-size:12px;color:var(--ink-faint);font-style:italic;margin-top:4px;}
+.confirm-tag{font-size:10.5px;padding:1px 6px;border-radius:4px;border:1px solid var(--line-strong);color:var(--ink-faint);}
+
+@media(max-width:900px){
+  .shell{flex-direction:column;}
+  .sidebar{
+    position:static;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--line);
+    padding:14px 14px;gap:12px;
+  }
+  .mobile-nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+  .mobile-nav .navitem{border-left:none;padding:8px 10px;background:var(--bg-2);border:1px solid var(--line);border-radius:var(--radius-sm);}
+  main{padding:18px 16px 50px;max-width:100%;}
+  .panel{padding:14px;}
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="mark">EPQ<span>·</span>CRM</div>
+      <div class="sub">Inteligência comercial de leads</div>
+    </div>
+    <nav id="nav">
+      <div class="navitem active desktop-only" data-target="dashboard"><span class="dot"></span>Dashboard</div>
+      <div class="navitem desktop-only" data-target="funil"><span class="dot"></span>Funil</div>
+      <div class="navitem desktop-only" data-target="objecoes"><span class="dot"></span>Objeções</div>
+      <div class="navitem desktop-only" data-target="atendimento"><span class="dot"></span>Atendimento</div>
+      <div class="navitem desktop-only" data-target="leads"><span class="dot"></span>Leads</div>
+      <div class="navitem desktop-only" data-target="correcoes"><span class="dot"></span>Correções de rota</div>
+      <div class="navitem desktop-only" data-target="growth"><span class="dot"></span>Growth</div>
+      <div class="navitem desktop-only" data-target="acao"><span class="dot"></span>Ação agora</div>
+    </nav>
+    <div class="mobile-nav" id="mobileNav"></div>
+    <div class="sidebar-foot">14 conversas únicas analisadas<br>03/09/2026 · fonte: WhatsApp</div>
+  </aside>
+
+  <main>
+
+    <!-- DASHBOARD -->
+    <section class="section active" id="sec-dashboard">
+      <div class="pagehead">
+        <h1>Painel de leads · EPQ</h1>
+        <p>Leitura consolidada das conversas de WhatsApp originadas de anúncios (Meta Ads), com foco no que precisa mudar para gerar mais matrículas.</p>
+      </div>
+      <div class="grid-cards">
+        <div class="kcard"><div class="num">14</div><div class="lbl">Leads analisados</div></div>
+        <div class="kcard accent-red"><div class="num">2</div><div class="lbl">Quentes (aula experimental agendada)</div></div>
+        <div class="kcard accent-amber"><div class="num">6</div><div class="lbl">Recuperáveis / em negociação</div></div>
+        <div class="kcard accent-blue"><div class="num">0</div><div class="lbl">Matrículas confirmadas (pagamento)</div></div>
+        <div class="kcard accent-red"><div class="num">4</div><div class="lbl">Sem resposta do atendimento</div></div>
+        <div class="kcard"><div class="num">0</div><div class="lbl">Perdidos (recusa explícita)</div></div>
+        <div class="kcard accent-amber"><div class="num">Preço</div><div class="lbl">Objeção/dúvida mais frequente</div></div>
+        <div class="kcard accent-red"><div class="num">Resposta lenta</div><div class="lbl">Principal gargalo do funil</div></div>
+      </div>
+
+      <div class="panel">
+        <h2>Resumo executivo</h2>
+        <p class="sub">Leitura direta do que as 14 conversas mostram</p>
+        <p style="color:var(--ink-dim);font-size:13.5px;max-width:760px;">
+        Nenhum lead chegou a matrícula paga no período coberto — os dois melhores casos (Claudia, Douglas) pararam em <b style="color:var(--ink)">aula experimental agendada</b>, que é a etapa de maior valor observada no funil real. O problema dominante não é a objeção de preço em si — quando o preço é apresentado, a maioria dos leads segue perguntando (sinal de interesse mantido). O problema é <b style="color:var(--ink)">o que acontece antes e depois</b> do preço: tempo de resposta de horas a mais de um dia em vários atendimentos, CTAs de aula experimental que ficam sem segunda tentativa, e ao menos três leads que clicaram em anúncio de GCM Maricá/São Gonçalo e caíram num atendimento que só vende PMERJ.
+        </p>
+      </div>
+
+      <div class="panel-2col">
+        <div class="panel" style="margin-bottom:0;">
+          <h2>Distribuição por status</h2>
+          <div class="chart-wrap"><canvas id="chartStatus"></canvas></div>
+        </div>
+        <div class="panel" style="margin-bottom:0;">
+          <h2>Lead score</h2>
+          <div class="chart-wrap"><canvas id="chartScore"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FUNIL -->
+    <section class="section" id="sec-funil">
+      <div class="pagehead">
+        <h1>Funil observado</h1>
+        <p>Contagem real por etapa, a partir do comportamento em cada conversa — não estimativa.</p>
+      </div>
+      <div class="panel">
+        <div class="funnel" id="funnelWrap"></div>
+        <p class="evidence">Conversão de "recebeu oferta de preço" → "aula experimental agendada": 2 de 9 (22%). Nenhum dado suficiente sobre conversão de aula experimental → matrícula paga nesta amostra.</p>
+      </div>
+      <div class="panel">
+        <h2>Linha do tempo — os dois casos que avançaram</h2>
+        <p class="sub">O que aconteceu de diferente nesses dois atendimentos</p>
+        <div class="growth-grid">
+          <div>
+            <h4 style="color:var(--green);font-size:13px;text-transform:uppercase;letter-spacing:.03em;margin-bottom:8px;">Claudia Monteiro</h4>
+            <p style="font-size:12.5px;color:var(--ink-dim);">Fez 6 perguntas seguidas (turmas novas, dias, horário, sábado, valores) — o atendimento respondeu a cada uma individualmente, sem pular nenhuma, incluindo a de idade mínima. Fechou oferecendo aula experimental com data e horário específico ("amanhã, aula de matemática, 19h"), não uma pergunta aberta. Lead confirmou na hora.</p>
+          </div>
+          <div>
+            <h4 style="color:var(--green);font-size:13px;text-transform:uppercase;letter-spacing:.03em;margin-bottom:8px;">Douglas</h4>
+            <p style="font-size:12.5px;color:var(--ink-dim);">Declarou objeção real ("tenho pouca base de estudo, precisava aprender tudo mesmo") logo no início. O atendimento não ignorou — confirmou depois que o curso cobre direito, matemática e português desde a base. Ofereceu horário específico no mesmo dia, e fechou com mensagem de acolhimento ("Seja bem-vindo!!").</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OBJEÇÕES -->
+    <section class="section" id="sec-objecoes">
+      <div class="pagehead">
+        <h1>Matriz de objeções</h1>
+        <p>Categorias com evidência nas conversas. Frequência = número de conversas em que a questão apareceu (declarada) ou é hipótese sustentada (oculta).</p>
+      </div>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Objeção / dúvida</th><th>Tipo</th><th>Frequência</th><th>Resposta usada</th><th>Foi adequada?</th><th>Oportunidade</th></tr></thead>
+          <tbody id="objTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ATENDIMENTO -->
+    <section class="section" id="sec-atendimento">
+      <div class="pagehead">
+        <h1>Auditoria do atendimento</h1>
+        <p>Notas 0–10 com base no que está documentado nas conversas — não uma média de qualidade geral da equipe.</p>
+      </div>
+      <div class="panel-2col">
+        <div class="panel" style="margin-bottom:0;">
+          <h2>Notas por critério</h2>
+          <div class="chart-wrap"><canvas id="chartAudit"></canvas></div>
+        </div>
+        <div class="panel" style="margin-bottom:0;">
+          <h2>Acertos e erros</h2>
+          <h4 style="color:var(--green);font-size:12px;text-transform:uppercase;letter-spacing:.03em;margin:4px 0 6px;">Acertos</h4>
+          <ul style="list-style:none;font-size:12.5px;color:var(--ink-dim);display:flex;flex-direction:column;gap:6px;margin-bottom:14px;">
+            <li>Respostas completas a perguntas múltiplas em uma única mensagem (caso Claudia)</li>
+            <li>Reconhecimento direto de objeção de confiança, sem minimizar (caso Douglas)</li>
+            <li>Tabela de valores sempre clara e padronizada</li>
+            <li>CTA de aula experimental presente na maioria das conversas avançadas</li>
+          </ul>
+          <h4 style="color:var(--red);font-size:12px;text-transform:uppercase;letter-spacing:.03em;margin:4px 0 6px;">Erros / erros críticos</h4>
+          <ul style="list-style:none;font-size:12.5px;color:var(--ink-dim);display:flex;flex-direction:column;gap:6px;">
+            <li><b style="color:var(--red);font-weight:600;">Crítico:</b> pergunta direta e específica do lead (estacionamento) nunca respondida</li>
+            <li><b style="color:var(--red);font-weight:600;">Crítico:</b> lead recorrente com histórico de 1 mês reiniciado do zero com mensagem padrão</li>
+            <li>Gaps de resposta de horas a >20h em vários atendimentos</li>
+            <li>CTA de aula experimental repetido de forma idêntica sem oferecer horário fechado</li>
+            <li>Nenhuma segunda tentativa de contato quando o lead para de responder</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEADS -->
+    <section class="section" id="sec-leads">
+      <div class="pagehead">
+        <h1>Leads</h1>
+        <p>Clique em um lead para ver a jornada completa e a próxima ação recomendada.</p>
+      </div>
+      <div class="panel">
+        <div class="controls">
+          <input type="text" id="searchInput" placeholder="Buscar lead...">
+          <select id="filterStatus"><option value="">Status: todos</option></select>
+          <select id="filterObj"><option value="">Objeção: todas</option></select>
+          <select id="filterPrio"><option value="">Prioridade: todas</option></select>
+          <select id="sortBy">
+            <option value="score-desc">Ordenar: score (maior)</option>
+            <option value="score-asc">Ordenar: score (menor)</option>
+            <option value="prio">Ordenar: prioridade</option>
+          </select>
+          <span class="count-pill" id="countPill"></span>
+        </div>
+        <table>
+          <thead><tr><th>Lead</th><th>Status</th><th>Score</th><th>Origem</th><th>Objeção / dor</th><th>Última interação</th><th>Prioridade</th></tr></thead>
+          <tbody id="leadsTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- CORREÇÕES -->
+    <section class="section" id="sec-correcoes">
+      <div class="pagehead">
+        <h1>Correções de rota</h1>
+        <p>Problemas identificados no funil completo — tráfego, oferta, atendimento e follow-up — com evidência específica.</p>
+      </div>
+      <div id="rcWrap"></div>
+    </section>
+
+    <!-- GROWTH -->
+    <section class="section" id="sec-growth">
+      <div class="pagehead">
+        <h1>Recomendações de growth</h1>
+        <p>O que as conversas ensinam sobre tráfego, criativos, oferta e atendimento.</p>
+      </div>
+      <div class="panel">
+        <h2>Se eu fosse otimizar a campanha hoje</h2>
+        <div class="growth-grid" style="margin-top:10px;">
+          <div class="gcol">
+            <h4>Meta Ads</h4>
+            <ul>
+              <li>Pausar ou reduzir verba dos anúncios de GCM Maricá/São Gonçalo até a turma existir de fato — 3 leads chegaram por essa promessa e caíram em atendimento que só oferece PMERJ</li>
+              <li>Testar anúncio específico "lista de espera GCM" com expectativa correta, separado do anúncio de PMERJ</li>
+              <li>Anúncios de PMERJ que já geram pergunta direta de preço/turno (98754-4064, Dom burgue, Sabrina, Matheus) trazem lead mais qualificado — priorizar esse formato</li>
+            </ul>
+          </div>
+          <div class="gcol">
+            <h4>Criativos</h4>
+            <ul>
+              <li>O que o lead quer ouvir: horário compatível com trabalho (noite aparece como preferência recorrente) e que "dá tempo de entrar" na turma</li>
+              <li>O que ele teme: não ter base suficiente (caso Douglas) — criativo de prova social "comecei do zero" reduz essa barreira antes do WhatsApp</li>
+              <li>Criativo de quebra de objeção sobre TAF/idade mínima — pergunta recorrente que hoje só é respondida manualmente</li>
+            </ul>
+          </div>
+          <div class="gcol">
+            <h4>Oferta</h4>
+            <ul>
+              <li>Preço é sempre apresentado "cru" (tabela), sem prova social, garantia ou urgência de vaga — reforçar com número de vagas restantes na turma ou depoimento curto</li>
+              <li>Deixar explícito que o conteúdo cobre desde a base (direito, matemática, português) já na resposta automática, não só quando o lead pergunta</li>
+              <li>Testar oferta de fechamento no ato da aula experimental (desconto ou condição válida só no dia)</li>
+            </ul>
+          </div>
+          <div class="gcol">
+            <h4>WhatsApp / follow-up</h4>
+            <ul>
+              <li>Definir SLA de primeira resposta — hoje varia de minutos a mais de 20h</li>
+              <li>Criar sequência de reengajamento automática (D+1, D+3, D+7) para quem recebe preço e não responde</li>
+              <li>Salvar e reutilizar histórico de leads recorrentes — não reiniciar com mensagem padrão quando já existe conversa anterior</li>
+              <li>Trocar "qual sua disponibilidade?" por horário fechado sugerido — funcionou nos dois casos que avançaram</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AÇÃO AGORA -->
+    <section class="section" id="sec-acao">
+      <div class="pagehead">
+        <h1>What to do now</h1>
+        <p>Ações priorizadas, na ordem em que devem ser feitas.</p>
+      </div>
+      <div id="actionWrap"></div>
+    </section>
+
+  </main>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modalBody"></div>
+</div>
+
+<script>
+/* ============ DATA (extraído das conversas fornecidas — 14 leads únicos) ============ */
+const leads = [
+{
+  id:1, name:"João", phone:"+55 21 98754-4064", origin:"Facebook Ads · PMERJ", confirm:"CONFIRMADO",
+  status:"negociacao", score:58, priority:"alta", objection:"Preço apresentado, sem follow-up",
+  last:"03/09 14:21", desire:"Turno noite, PMERJ soldado",
+  timeline:[
+    {c:"g",t:"Entrou pelo anúncio de Facebook (PMERJ)"},
+    {c:"g",t:"Informou nome e concurso de interesse (PMERJ soldado) após ~1h30 de intervalo"},
+    {c:"g",t:"Escolheu turno noite quando questionado"},
+    {c:"y",t:"Recebeu valores completos (parcelamento, material, camisa) — conversa parada aqui, sem CTA de fechamento"}
+  ],
+  action:"Follow-up hoje reforçando valor + condição atual, com convite direto para aula experimental em horário fechado (ex: 'amanhã 19h, te aguardo').",
+  reason:"Recebeu oferta de preço mas não recebeu nenhum convite de próximo passo — parou por falta de CTA, não por recusa."
+},
+{
+  id:2, name:"Lead GCM (96548-9633)", phone:"+55 21 96548-9633", origin:"Instagram Ads · GCM Maricá/SG", confirm:"CONFIRMADO",
+  status:"semresposta", score:45, priority:"alta", objection:"Preço manhã + estacionamento (não identificado — nunca respondido)",
+  last:"03/09 14:16", desire:"GCM Maricá/São Gonçalo, turno manhã",
+  timeline:[
+    {c:"g",t:"Entrou pelo anúncio específico de GCM Maricá/São Gonçalo"},
+    {c:"g",t:"Perguntou valor da turma da manhã e se há estacionamento — pergunta dupla, direta, sinal de intenção alta"},
+    {c:"r",t:"Nenhuma resposta do atendimento até o fim da conversa"}
+  ],
+  action:"Responder imediatamente às duas perguntas (preço + estacionamento). Se a turma de GCM ainda não existe, ser transparente sobre isso e oferecer lista de espera.",
+  reason:"Erro crítico de atendimento — pergunta de compra direta ficou sem resposta."
+},
+{
+  id:3, name:"Gabriel", phone:"+55 21 97750-2998", origin:"Instagram Ads · PMERJ", confirm:"CONFIRMADO",
+  status:"qualificando", score:50, priority:"media", objection:"Nenhuma — aguardando resposta do turno",
+  last:"03/09 08:41", desire:"PRF e PMERJ",
+  timeline:[
+    {c:"g",t:"Entrou pelo anúncio, respondeu nome (Gabriel) após intervalo de ~1h"},
+    {c:"g",t:"Declarou interesse em dois concursos: PRF e PMERJ"},
+    {c:"y",t:"Atendimento perguntou preferência de turno (manhã/noite/sábado) — sem resposta do lead ainda"}
+  ],
+  action:"Se não responder em 24h, enviar follow-up com sugestão de turno mais compatível com quem também mira PRF (geralmente já trabalha ou estuda em outro turno).",
+  reason:"Lead qualificado com dois concursos declarados — vale a pena insistir."
+},
+{
+  id:4, name:"Lead PMERJ (98675-6890)", phone:"+55 21 98675-6890", origin:"Instagram Ads · PMERJ", confirm:"CONFIRMADO",
+  status:"novo", score:40, priority:"media", objection:"Nenhuma — aguardando escolha de turno",
+  last:"03/09 10:10", desire:"PMERJ, turno não definido",
+  timeline:[
+    {c:"g",t:"Entrou pelo anúncio, atendimento se identificou como unidade Nilópolis"},
+    {c:"y",t:"Perguntou turno preferido — sem resposta do lead até o momento"}
+  ],
+  action:"Follow-up em 24h perguntando de forma mais específica ('prefere vir de manhã, à noite ou no sábado?').",
+  reason:"Conversa recente, ainda dentro da janela normal de resposta."
+},
+{
+  id:5, name:"Patrick", phone:"Dom burgue Artesanal", origin:"Facebook Ads · PMERJ", confirm:"CONFIRMADO",
+  status:"negociacao", score:65, priority:"alta", objection:"Preço + CTA de aula experimental sem resposta",
+  last:"03/09 11:05", desire:"Turno manhã, PMERJ",
+  timeline:[
+    {c:"g",t:"Entrou pelo anúncio, respondeu nome (Patrick) no dia seguinte"},
+    {c:"g",t:"Perguntou horários, escolheu manhã (12h), perguntou dias da semana"},
+    {c:"g",t:"Perguntou valor diretamente — recebeu tabela completa"},
+    {c:"y",t:"Atendimento ofereceu aula experimental — conversa parada aqui, sem resposta"}
+  ],
+  action:"Follow-up com horário fechado de aula experimental de manhã, reforçando que a turma de manhã reabre dia 14/09.",
+  reason:"Fez 4 perguntas de qualificação seguidas — engajamento alto, só faltou fechar o CTA."
+},
+{
+  id:6, name:"Claudia Monteiro", phone:"Claudia PMERJ", origin:"Instagram Ads · PMERJ", confirm:"CONFIRMADO",
+  status:"matricula", score:85, priority:"alta", objection:"Superada — dúvidas sobre turmas, horários e idade, todas respondidas",
+  last:"03/09 11:11", desire:"PMERJ, aula experimental à noite",
+  timeline:[
+    {c:"g",t:"Entrou pelo anúncio, fez 5 perguntas em sequência sobre turmas, dias e valores"},
+    {c:"g",t:"Atendimento respondeu nome, horários (manhã 9h-12h, noite 19h-22h, sábado 9h-16h30) e valores em mensagens completas"},
+    {c:"y",t:"Perguntou se as turmas já começaram e sobre idade mínima — sinal de hesitação/verificação antes de decidir"},
+    {c:"g",t:"Atendimento respondeu 'sem limite de idade' e ofereceu aula experimental com data e horário fechados"},
+    {c:"g",t:"Lead confirmou presença — agendada para o dia seguinte, 19h"}
+  ],
+  action:"Confirmar presença por mensagem no dia da aula e preparar oferta de fechamento (matrícula) para o momento pós-aula, aproveitando o embalo.",
+  reason:"Melhor exemplo de atendimento completo do lote — não pulou nenhuma pergunta e fechou com CTA específico."
+},
+{
+  id:7, name:"Lead GCM (97949-7338)", phone:"+55 21 97949-7338", origin:"Instagram Ads · GCM Maricá/SG", confirm:"CONFIRMADO",
+  status:"novo", score:28, priority:"baixa", objection:"Não identificado — conversa em estágio inicial",
+  last:"03/09 11:26", desire:"GCM Maricá/São Gonçalo",
+  timeline:[
+    {c:"g",t:"Entrou pelo anúncio específico de GCM Maricá/São Gonçalo"},
+    {c:"y",t:"Atendimento pediu o nome — sem resposta do lead ainda"}
+  ],
+  action:"Follow-up em 24h. Atenção: mesmo padrão de anúncio de GCM que já gerou frustração em outros leads — preparar resposta transparente sobre a turma.",
+  reason:"Conversa muito recente para classificar."
+},
+{
+  id:8, name:"Bianca", phone:"+55 22 98866-7870", origin:"Instagram Ads · PMERJ", confirm:"CONFIRMADO",
+  status:"recuperavel", score:35, priority:"alta", objection:"Nenhuma declarada — atendimento demorou 21h para responder",
+  last:"02/09 19:40", desire:"PMERJ (interesse não detalhado ainda)",
+  timeline:[
+    {c:"g",t:"Entrou pelo anúncio e clicou em 'Cadastre-se agora'"},
+    {c:"r",t:"Atendimento só respondeu quase 21 horas depois ('Boa noite, como posso te ajudar?')"}
+  ],
+  action:"Retomar contato hoje com pergunta objetiva de qualificação (concurso + turno), assumindo o atraso e oferecendo agilidade agora.",
+  reason:"Erro crítico de tempo de resposta — lead pode já ter buscado outra opção."
+},
+{
+  id:9, name:"Mylena", phone:"Mylena PMERJ", origin:"Instagram Ads · PMERJ", confirm:"CONFIRMADO",
+  status:"semresposta", score:25, priority:"baixa", objection:"Não identificado",
+  last:"02/09 09:46", desire:"PMERJ (não detalhado)",
+  timeline:[
+    {c:"g",t:"Entrou pelo anúncio"},
+    {c:"y",t:"Atendimento pediu o nome — sem resposta do lead"}
+  ],
+  action:"Follow-up simples perguntando se ainda tem interesse.",
+  reason:"Conversa estagnada há mais de 24h no estágio inicial."
+},
+{
+  id:10, name:"Sabrina", phone:"Sabrina PMERJ", origin:"Instagram Ads · PMERJ", confirm:"CONFIRMADO",
+  status:"negociacao", score:60, priority:"alta", objection:"Preço — pediu 3 vezes antes de receber resposta direta",
+  last:"02/09 10:50", desire:"PMERJ, quer valor e horário",
+  timeline:[
+    {c:"g",t:"Entrou pelo anúncio, foi direto: 'só quero saber o valor e o horário'"},
+    {c:"y",t:"Atendimento perguntou 'qual turma' antes de responder — lead insistiu duas vezes: 'quero saber o valor'"},
+    {c:"g",t:"Atendimento enviou tabela de valores completa e propôs colocar o nome numa lista de interessados"},
+    {c:"g",t:"Perguntou duração — respondido (5 meses)"},
+    {c:"y",t:"Atendimento perguntou disponibilidade para aula experimental — sem resposta do lead"}
+  ],
+  action:"Follow-up oferecendo horário fechado de aula experimental, sem repetir pergunta aberta.",
+  reason:"Lead pediu preço 3 vezes de forma direta — alta intenção, mas atendimento inicial mais lento que o necessário pode ter esfriado o momentum."
+},
+{
+  id:11, name:"Matheus", phone:"Matheus PMERJ", origin:"Instagram Ads · PMERJ", confirm:"CONFIRMADO",
+  status:"negociacao", score:68, priority:"alta", objection:"Preço, se a turma já começou, se cobre todas as matérias — todas respondidas",
+  last:"02/09 12:05", desire:"PMERJ, turno noite",
+  timeline:[
+    {c:"g",t:"Entrou pelo anúncio, escolheu turno noite e informou nome rapidamente"},
+    {c:"g",t:"Fez 3 perguntas em sequência: se a turma já começou, valor, se cobre todas as matérias do edital"},
+    {c:"g",t:"Atendimento respondeu tudo em uma única mensagem completa"},
+    {c:"y",t:"Atendimento perguntou disponibilidade para aula experimental duas vezes seguidas (mesma pergunta) — sem resposta"}
+  ],
+  action:"Enviar horário fechado de aula experimental em vez de repetir a pergunta aberta.",
+  reason:"Respostas rápidas e completas do lead nas primeiras trocas — perfil de alta intenção que esfriou por falta de CTA fechado."
+},
+{
+  id:12, name:"Douglas", phone:"Douglas PMERJ", origin:"Instagram Ads · PMERJ", confirm:"CONFIRMADO",
+  status:"matricula", score:90, priority:"alta", objection:"Falta de confiança (base de estudo fraca) — superada",
+  last:"02/09 13:10", desire:"PMERJ, turno noite, aula experimental no mesmo dia",
+  timeline:[
+    {c:"k",t:"Primeiro contato em 24/08 (outro anúncio) — atendimento não deu continuidade, conversa esfriou"},
+    {c:"g",t:"Retornou em 01/09 por novo anúncio, atendimento reengajou na manhã seguinte"},
+    {c:"y",t:"Declarou objeção real: 'tenho pouca base de estudo... tem algum problema?'"},
+    {c:"g",t:"Atendimento não ignorou a dúvida — confirmou depois que o curso cobre direito, matemática e português desde a base"},
+    {c:"g",t:"Pediu para vir no mesmo dia à tarde — atendimento ofereceu horário fechado (19h) e confirmou presença"},
+    {c:"g",t:"Fechou com mensagem de acolhimento: 'Seja bem-vindo!!'"}
+  ],
+  action:"Confirmar presença na aula e, no fechamento, usar a mesma objeção (base fraca) como gancho para reforçar suporte extra do curso.",
+  reason:"Objeção de confiança tratada com reasseguramento direto — segundo melhor exemplo de atendimento do lote, apesar do primeiro contato ter esfriado por 8 dias."
+},
+{
+  id:13, name:"Natan", phone:"Natan PMERJ", origin:"Visita presencial à unidade", confirm:"CONFIRMADO",
+  status:"matricula", score:80, priority:"alta", objection:"Nenhuma — já visitou a unidade",
+  last:"02/09 14:41", desire:"Aula experimental (já esteve na unidade)",
+  timeline:[
+    {c:"g",t:"Visitou a unidade presencialmente antes do contato por WhatsApp"},
+    {c:"y",t:"Atendimento pediu nome completo para colocar na lista de aula experimental — sem resposta registrada"}
+  ],
+  action:"Obter nome completo e confirmar data da aula experimental — lead já demonstrou intenção máxima (visita presencial).",
+  reason:"Maior sinal de intenção possível (visita física) — não deveria estar parado numa simples confirmação de nome."
+},
+{
+  id:14, name:"Lead GCM São Gonçalo (97960-7938)", phone:"+55 21 97960-7938", origin:"Orgânico (dúvida direta) + retorno via anúncio GCM", confirm:"CONFIRMADO",
+  status:"recuperavel", score:55, priority:"alta", objection:"Objeção real: trauma de reprovação no TAF da PMERJ — recusou redirecionamento 2 vezes",
+  last:"02/09 18:49", desire:"Exclusivamente GCM São Gonçalo",
+  timeline:[
+    {c:"g",t:"Primeiro contato (03/08): perguntou sobre turma presencial de GCM São Gonçalo"},
+    {c:"y",t:"Atendimento tentou redirecionar para a turma de PMERJ ('o conteúdo é o mesmo')"},
+    {c:"r",t:"Lead recusou e revelou objeção real: já passou na PMERJ antes e reprovou no TAF — 'tô com trauma'"},
+    {c:"r",t:"Atendimento insistiu de novo oferecendo para 'entrar na turma de PMERJ e migrar depois' — lead recusou pela 2ª vez, de forma direta ('Não quero não')"},
+    {c:"g",t:"Atendimento recuou, ofereceu informação sobre centro de preparação para TAF — lead reagiu bem ('Bacana ❤️')"},
+    {c:"g",t:"Atendimento coletou nome e bairro para lista de espera da GCM"},
+    {c:"r",t:"Um mês depois (02/09) lead retornou perguntando por novidade da GCM — atendimento não reconheceu o histórico e respondeu com mensagem padrão de boas-vindas, pedindo nome e dúvida do zero"}
+  ],
+  action:"Atendimento humano dedicado, citando o histórico e a objeção do TAF diretamente. Informar sobre a turma de GCM assim que houver edital, sem tentar redirecionar para PMERJ novamente.",
+  reason:"Objeção real e específica, tratada com insistência excessiva no primeiro contato e depois com perda total de contexto no retorno — risco alto de perder um lead que voltou sozinho por interesse genuíno."
+}
+];
+
+/* Objeções matriz */
+const objData = [
+ {name:"Preço", type:"Declarada", freq:8, resp:"Tabela de valores padrão (parcelamento + material + camisa)", ok:"Parcial — resposta correta, mas sem reforço de valor, garantia ou urgência", opp:"Adicionar prova social e vagas limitadas junto à tabela de preço"},
+ {name:"Horário/turno", type:"Declarada", freq:9, resp:"Descrição de turnos manhã/noite/sábado com horários exatos", ok:"Sim", opp:"Automatizar como primeira pergunta do funil, antes de pedir o nome"},
+ {name:"Concurso errado disponível (GCM vs PMERJ)", type:"Oculta/sistêmica", freq:3, resp:"Redirecionamento para turma de PMERJ", ok:"Não — gerou recusa explícita em 1 caso e silêncio total em 2", opp:"Página de espera dedicada para GCM + anúncio separado com expectativa correta"},
+ {name:"Falta de confiança / base fraca", type:"Declarada", freq:1, resp:"Reasseguramento direto sobre conteúdo desde a base", ok:"Sim", opp:"Criativo de prova social 'comecei do zero' para reduzir a barreira antes do WhatsApp"},
+ {name:"Idade mínima / TAF", type:"Declarada", freq:2, resp:"Resposta pontual quando perguntado", ok:"Sim, quando respondido", opp:"Incluir no material automático de boas-vindas"},
+ {name:"Trauma com concurso anterior (reprovação TAF)", type:"Real, revelada aos poucos", freq:1, resp:"Insistência em redirecionar para PMERJ", ok:"Não — piorou a objeção antes de recuar", opp:"Treinar atendimento para não insistir após 2 recusas explícitas"},
+ {name:"Tempo de resposta do atendimento", type:"Sistêmica (não é do lead)", freq:5, resp:"—", ok:"Não aplicável", opp:"Definir SLA de resposta e alertas para leads de anúncio"},
+];
+
+/* Route corrections */
+const routeCorrections = [
+ {area:"Tráfego / Oferta", problem:"Anúncios de GCM Maricá e São Gonçalo geram leads para uma turma que ainda não existe de fato", why:"O criativo promete algo que só a PMERJ atende hoje", evidence:"3 leads distintos (96548-9633, 97949-7338, 97960-7938) chegaram por esse anúncio específico", impact:"Alto — leads de alta intenção ficam sem resposta ou recusam redirecionamento", fix:"Pausar/ajustar o anúncio ou criar fluxo dedicado de lista de espera com expectativa correta", priority:"Crítica"},
+ {area:"Atendimento", problem:"Tempo de primeira resposta varia de minutos a mais de 20 horas", why:"Não há SLA definido nem alerta de lead novo de anúncio", evidence:"Bianca esperou ~21h; João esperou ~1h30 só para o nome ser perguntado", impact:"Alto — leads quentes de anúncio esfriam rápido sem resposta imediata", fix:"Definir SLA (ex: 15 min em horário comercial) e alerta automático de lead novo", priority:"Crítica"},
+ {area:"Follow-up", problem:"Nenhuma segunda tentativa de contato quando o lead para de responder após receber o preço", why:"Não existe sequência de reengajamento estruturada", evidence:"João, Patrick, Sabrina e Matheus pararam exatamente após receber valores, sem segundo toque", impact:"Alto — provável causa isolada da maior parte dos leads 'sem resposta' pós-oferta", fix:"Criar sequência automática D+1 / D+3 / D+7 para leads parados após oferta de preço", priority:"Alta"},
+ {area:"CRM / histórico", problem:"Atendimento reinicia do zero com leads recorrentes, ignorando conversas anteriores", why:"Não há indicação de consulta ao histórico antes de responder", evidence:"Lead 97960-7938 retornou após 1 mês com objeção conhecida (trauma de TAF) e recebeu mensagem padrão de boas-vindas", impact:"Médio-alto — desperdiça rapport já construído e obriga o lead a se reexplicar", fix:"Consultar e citar o histórico antes de responder qualquer lead recorrente", priority:"Alta"},
+ {area:"Atendimento", problem:"CTA de aula experimental usa pergunta aberta ('qual sua disponibilidade?') em vez de horário fechado", why:"Padrão de mensagem repetido sem ajuste", evidence:"Repetida 2x sem resposta com Matheus; sem resposta com Sabrina e Patrick — nos dois casos que fecharam (Claudia, Douglas) o convite veio com data e hora definidas", impact:"Médio — CTA aberto reduz taxa de confirmação", fix:"Padronizar convite de aula experimental sempre com data e horário específicos", priority:"Média"},
+ {area:"Oferta", problem:"Preço é apresentado sem prova social, garantia ou senso de urgência", why:"Mensagem de valores é puramente informativa", evidence:"Mesma tabela de valores repetida em 6+ conversas, sem variação de reforço", impact:"Médio — pode reduzir taxa de avanço de 'recebeu preço' para 'aula experimental'", fix:"Incluir vaga limitada, depoimento curto ou garantia junto à tabela de preço", priority:"Média"},
+];
+
+/* What to do now */
+const actions = [
+ {t:"Responder AGORA às perguntas paradas de compra direta", d:"Lead 96548-9633 pediu preço + estacionamento e nunca recebeu resposta — risco de perda imediata.", tag:"Crítica"},
+ {t:"Retomar Bianca (98866-7870) com pedido de desculpa implícito pela demora", d:"21h de espera na primeira resposta — reengajar hoje com pergunta objetiva.", tag:"Crítica"},
+ {t:"Confirmar presença de Claudia, Douglas e Natan nas aulas experimentais", d:"São os três leads mais quentes do lote — preparar fechamento de matrícula para o momento pós-aula.", tag:"Alta"},
+ {t:"Resgatar o lead 97960-7938 com atendimento humano dedicado", d:"Objeção real conhecida (trauma de TAF) — não redirecionar de novo para PMERJ; citar o histórico.", tag:"Alta"},
+ {t:"Follow-up de horário fechado para João, Patrick, Sabrina e Matheus", d:"Todos pararam após receber o preço — oferecer data e hora específicas de aula experimental.", tag:"Alta"},
+ {t:"Definir SLA de resposta para leads vindos de anúncio", d:"Meta sugerida: primeira resposta em até 15 minutos em horário comercial.", tag:"Alta"},
+ {t:"Pausar ou ajustar os anúncios de GCM Maricá/São Gonçalo", d:"Gerando leads para uma turma que ainda não existe — criar fluxo de lista de espera dedicado.", tag:"Média"},
+ {t:"Criar sequência de follow-up automática (D+1 / D+3 / D+7)", d:"Para todo lead que recebe preço e não responde em 24h.", tag:"Média"},
+ {t:"Padronizar CTA de aula experimental com horário fechado", d:"Trocar pergunta aberta por convite direto ('te aguardo amanhã às 19h').", tag:"Média"},
+ {t:"Reforçar a oferta com prova social e urgência de vaga", d:"Testar uma linha adicional na mensagem de preço (ex: 'restam X vagas nesta turma').", tag:"Média"},
+];
+
+/* ============ RENDER ============ */
+const statusMeta = {
+  matricula:{label:"Matrícula/aula agendada",cls:"b-matricula"},
+  negociacao:{label:"Negociação",cls:"b-negociacao"},
+  objecao:{label:"Objeção",cls:"b-objecao"},
+  qualificando:{label:"Qualificando",cls:"b-qualificando"},
+  novo:{label:"Novo",cls:"b-novo"},
+  recuperavel:{label:"Recuperável",cls:"b-recuperavel"},
+  semresposta:{label:"Sem resposta",cls:"b-semresposta"},
+  perdido:{label:"Perdido",cls:"b-perdido"},
+};
+
+function scoreClass(s){ if(s>=80) return "score-hot"; if(s>=60) return "score-warm"; if(s>=40) return "score-nurture"; return "score-cold"; }
+function scoreLabel(s){ if(s>=80) return "🔥 HOT"; if(s>=60) return "🟠 WARM"; if(s>=40) return "🟡 NURTURE"; return "⚪ COLD"; }
+
+// Dashboard charts
+function renderCharts(){
+  const statusCounts = {};
+  leads.forEach(l=>{ statusCounts[l.status]=(statusCounts[l.status]||0)+1; });
+  const labels = Object.keys(statusCounts).map(k=>statusMeta[k].label);
+  const data = Object.values(statusCounts);
+  new Chart(document.getElementById('chartStatus'), {
+    type:'doughnut',
+    data:{labels, datasets:[{data, backgroundColor:['#4CAF7D','#E8A33D','#E2604F','#5B8DEF','#7C8BA8','#E8A33D','#E2604F','#5B6884'], borderWidth:0}]},
+    options:{plugins:{legend:{position:'right', labels:{color:'#94A2BE', boxWidth:10, font:{size:11}}}}, cutout:'62%'}
+  });
+
+  const buckets = {HOT:0, WARM:0, NURTURE:0, COLD:0};
+  leads.forEach(l=>{ if(l.score>=80) buckets.HOT++; else if(l.score>=60) buckets.WARM++; else if(l.score>=40) buckets.NURTURE++; else buckets.COLD++; });
+  new Chart(document.getElementById('chartScore'), {
+    type:'bar',
+    data:{labels:Object.keys(buckets), datasets:[{data:Object.values(buckets), backgroundColor:['#E2604F','#E8A33D','#5B8DEF','#5B6884'], borderRadius:4}]},
+    options:{plugins:{legend:{display:false}}, scales:{x:{ticks:{color:'#94A2BE'},grid:{display:false}}, y:{ticks:{color:'#94A2BE',stepSize:1},grid:{color:'rgba(210,222,245,0.06)'}}}}
+  });
+
+  new Chart(document.getElementById('chartAudit'), {
+    type:'radar',
+    data:{labels:['Velocidade','Clareza','Empatia','Qualificação','Trat. objeções','Oferta','CTA','Follow-up'],
+      datasets:[{data:[4,8,7,7,6,7,6,3], backgroundColor:'rgba(232,163,61,0.18)', borderColor:'#E8A33D', pointBackgroundColor:'#E8A33D'}]},
+    options:{plugins:{legend:{display:false}}, scales:{r:{min:0,max:10,ticks:{color:'#5B6884',backdropColor:'transparent',stepSize:2},grid:{color:'rgba(210,222,245,0.08)'},angleLines:{color:'rgba(210,222,245,0.08)'},pointLabels:{color:'#94A2BE',font:{size:11}}}}}
+  });
+}
+
+// Funnel
+function renderFunnel(){
+  const steps = [
+    {l:"Leads (anúncio)", v:14},
+    {l:"Responderam / engajaram", v:12},
+    {l:"Qualificados (nome + concurso)", v:11},
+    {l:"Receberam oferta de preço", v:9},
+    {l:"Aula experimental agendada", v:2},
+  ];
+  const max = steps[0].v;
+  const wrap = document.getElementById('funnelWrap');
+  wrap.innerHTML = steps.map(s=>`
+    <div class="frow">
+      <div class="flabel">${s.l}</div>
+      <div class="fbar-track"><div class="fbar-fill" style="width:${(s.v/max*100).toFixed(0)}%"></div></div>
+      <div class="fval">${s.v}</div>
+    </div>`).join('');
+}
+
+// Objections table
+function renderObjTable(){
+  const maxFreq = Math.max(...objData.map(o=>o.freq));
+  document.getElementById('objTable').innerHTML = objData.map(o=>`
+    <tr>
+      <td><b>${o.name}</b><br><span class="tag" style="margin-top:4px;">${o.type}</span></td>
+      <td>${o.type}</td>
+      <td><span class="obj-bar"><i style="width:${(o.freq/maxFreq*100).toFixed(0)}%"></i></span>${o.freq}</td>
+      <td style="color:var(--ink-dim);max-width:220px;">${o.resp}</td>
+      <td style="color:var(--ink-dim);max-width:200px;">${o.ok}</td>
+      <td style="color:var(--ink-dim);max-width:220px;">${o.opp}</td>
+    </tr>`).join('');
+}
+
+// Leads table
+function populateFilters(){
+  const statusSel = document.getElementById('filterStatus');
+  Object.keys(statusMeta).forEach(k=>{
+    const opt = document.createElement('option'); opt.value=k; opt.textContent=statusMeta[k].label;
+    statusSel.appendChild(opt);
+  });
+  const objSel = document.getElementById('filterObj');
+  const uniqueObj = [...new Set(leads.map(l=>l.objection.split('—')[0].split(',')[0].trim()))];
+  uniqueObj.forEach(o=>{ const opt=document.createElement('option'); opt.value=o; opt.textContent=o; objSel.appendChild(opt); });
+  const prioSel = document.getElementById('filterPrio');
+  ['alta','media','baixa'].forEach(p=>{ const opt=document.createElement('option'); opt.value=p; opt.textContent=p==='alta'?'Alta':p==='media'?'Média':'Baixa'; prioSel.appendChild(opt); });
+}
+
+function renderLeadsTable(){
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const fs = document.getElementById('filterStatus').value;
+  const fo = document.getElementById('filterObj').value;
+  const fp = document.getElementById('filterPrio').value;
+  const sort = document.getElementById('sortBy').value;
+
+  let filtered = leads.filter(l=>{
+    if(q && !l.name.toLowerCase().includes(q) && !l.phone.toLowerCase().includes(q)) return false;
+    if(fs && l.status!==fs) return false;
+    if(fo && !l.objection.startsWith(fo)) return false;
+    if(fp && l.priority!==fp) return false;
+    return true;
+  });
+
+  if(sort==='score-desc') filtered.sort((a,b)=>b.score-a.score);
+  if(sort==='score-asc') filtered.sort((a,b)=>a.score-b.score);
+  if(sort==='prio') { const order={alta:0,media:1,baixa:2}; filtered.sort((a,b)=>order[a.priority]-order[b.priority]); }
+
+  document.getElementById('countPill').textContent = filtered.length + ' de ' + leads.length + ' leads';
+
+  document.getElementById('leadsTable').innerHTML = filtered.map(l=>`
+    <tr class="leadrow" onclick="openLead(${l.id})">
+      <td><div class="name">${l.name}</div><div class="phone">${l.phone}</div></td>
+      <td><span class="badge ${statusMeta[l.status].cls}">${statusMeta[l.status].label}</span></td>
+      <td><span class="score ${scoreClass(l.score)}">${l.score}</span><br><span style="font-size:10.5px;color:var(--ink-faint);">${scoreLabel(l.score)}</span></td>
+      <td style="color:var(--ink-dim);font-size:12.5px;">${l.origin}</td>
+      <td style="color:var(--ink-dim);font-size:12.5px;max-width:220px;">${l.objection}</td>
+      <td style="color:var(--ink-dim);font-size:12.5px;">${l.last}</td>
+      <td class="prio prio-${l.priority}">${l.priority==='alta'?'Alta':l.priority==='media'?'Média':'Baixa'}</td>
+    </tr>`).join('');
+}
+
+function openLead(id){
+  const l = leads.find(x=>x.id===id);
+  const modal = document.getElementById('modalBody');
+  modal.innerHTML = `
+    <div class="mhead">
+      <div>
+        <h3>${l.name}</h3>
+        <div style="color:var(--ink-faint);font-size:12.5px;margin-top:2px;">${l.phone} · ${l.origin}</div>
+      </div>
+      <div class="close" onclick="closeModal()">✕</div>
+    </div>
+    <div class="mmeta">
+      <span class="badge ${statusMeta[l.status].cls}">${statusMeta[l.status].label}</span>
+      <span class="tag">Score <b class="${scoreClass(l.score)}" style="margin-left:4px;">${l.score}</b> ${scoreLabel(l.score)}</span>
+      <span class="tag">Prioridade: ${l.priority==='alta'?'Alta':l.priority==='media'?'Média':'Baixa'}</span>
+      <span class="confirm-tag">${l.confirm}</span>
+    </div>
+    <div style="font-size:12.5px;color:var(--ink-dim);margin-bottom:14px;"><b style="color:var(--ink)">Objeção/dor:</b> ${l.objection}</div>
+    <h4 style="font-size:13px;margin-bottom:6px;color:var(--ink-dim);">Jornada</h4>
+    <div class="timeline">
+      ${l.timeline.map(t=>`<div class="tstep"><div class="tdot ${t.c}"></div><div class="tbody">${t.t}</div></div>`).join('')}
+    </div>
+    <div class="nextaction">
+      <div class="lbl">Próxima ação</div>
+      <div style="font-size:13px;">${l.action}</div>
+      <div style="font-size:12px;color:var(--ink-faint);margin-top:8px;"><b style="color:var(--ink-dim)">Motivo:</b> ${l.reason}</div>
+    </div>
+  `;
+  document.getElementById('overlay').classList.add('show');
+}
+function closeModal(){ document.getElementById('overlay').classList.remove('show'); }
+document.getElementById('overlay').addEventListener('click', e=>{ if(e.target.id==='overlay') closeModal(); });
+
+// Route corrections
+function renderRoute(){
+  document.getElementById('rcWrap').innerHTML = routeCorrections.map(r=>`
+    <div class="rc">
+      <div class="rc-head">
+        <h4>${r.area} — ${r.problem}</h4>
+        <span class="badge ${r.priority==='Crítica'?'b-objecao':r.priority==='Alta'?'b-negociacao':'b-qualificando'}">${r.priority}</span>
+      </div>
+      <dl>
+        <dt>Por quê</dt><dd>${r.why}</dd>
+        <dt>Evidência</dt><dd>${r.evidence}</dd>
+        <dt>Impacto</dt><dd>${r.impact}</dd>
+        <dt>O que mudar</dt><dd>${r.fix}</dd>
+      </dl>
+    </div>`).join('');
+}
+
+// Actions
+function renderActions(){
+  document.getElementById('actionWrap').innerHTML = actions.map((a,i)=>`
+    <div class="actioncard">
+      <div class="rank">${String(i+1).padStart(2,'0')}</div>
+      <div><div class="atitle">${a.t}</div><div class="adesc">${a.d}</div></div>
+      <span class="badge ${a.tag==='Crítica'?'b-objecao':a.tag==='Alta'?'b-negociacao':'b-qualificando'}">${a.tag}</span>
+    </div>`).join('');
+}
+
+// Nav
+function buildMobileNav(){
+  const wrap = document.getElementById('mobileNav');
+  if(!wrap) return;
+  document.querySelectorAll('#nav .navitem').forEach(item=>{
+    const clone = document.createElement('div');
+    clone.className = 'navitem';
+    clone.dataset.target = item.dataset.target;
+    clone.innerHTML = item.innerHTML;
+    wrap.appendChild(clone);
+  });
+}
+function wireNav(){
+  document.querySelectorAll('#nav .navitem, #mobileNav .navitem').forEach(item=>{
+    item.addEventListener('click', ()=>{
+      const target = item.dataset.target;
+      if(!target) return;
+      document.querySelectorAll('#nav .navitem').forEach(n=>n.classList.remove('active'));
+      document.querySelectorAll('#mobileNav .navitem').forEach(n=>n.classList.remove('active'));
+      item.classList.add('active');
+      document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+      const sec = document.getElementById('sec-'+target);
+      if(sec) sec.classList.add('active');
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+}
+buildMobileNav();
+wireNav();
+
+['searchInput','filterStatus','filterObj','filterPrio','sortBy'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', renderLeadsTable);
+  document.getElementById(id).addEventListener('change', renderLeadsTable);
+});
+
+populateFilters();
+renderCharts();
+renderFunnel();
+renderObjTable();
+renderLeadsTable();
+renderRoute();
+renderActions();
+</script>
+</body>
+</html>
