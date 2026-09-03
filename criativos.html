@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPQ · Painel de Criativos</title>
+<style>
+  :root{
+    --bg-0:#0C1220;
+    --bg-1:#111A2C;
+    --bg-2:#182338;
+    --bg-3:#1F2C45;
+    --line:rgba(210,222,245,0.09);
+    --line-strong:rgba(210,222,245,0.16);
+    --ink:#EAEFF9;
+    --ink-dim:#94A2BE;
+    --ink-faint:#5B6884;
+    --amber:#E8A33D;
+    --amber-dim:rgba(232,163,61,0.14);
+    --blue:#5B8DEF;
+    --blue-dim:rgba(91,141,239,0.14);
+    --green:#4CAF7D;
+    --green-dim:rgba(76,175,125,0.14);
+    --red:#E2604F;
+    --red-dim:rgba(226,96,79,0.14);
+    --grey:#7C8BA8;
+    --radius:10px;
+    --radius-sm:6px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg-0);color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:14px;line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Barlow Semi Condensed','Inter',sans-serif;
+    font-weight:600;letter-spacing:0.01em;
+  }
+  ::-webkit-scrollbar{width:8px;height:8px;}
+  ::-webkit-scrollbar-thumb{background:var(--bg-3);border-radius:4px;}
+
+  .shell{display:flex;min-height:100vh;}
+  .sidebar{
+    width:240px;flex-shrink:0;background:var(--bg-1);
+    border-right:1px solid var(--line);
+    padding:22px 14px;position:sticky;top:0;height:100vh;
+    display:flex;flex-direction:column;gap:18px;
+  }
+  .brand{padding:0 8px;}
+  .brand .mark{
+    font-family:'Barlow Semi Condensed';font-weight:700;
+    font-size:20px;letter-spacing:0.02em;
+  }
+  .brand .mark span{color:var(--amber);}
+  .brand .sub{color:var(--ink-faint);font-size:11.5px;margin-top:2px;}
+  nav{display:flex;flex-direction:column;gap:2px;flex:1;}
+  .navitem{
+    display:flex;align-items:center;gap:10px;padding:9px 10px;
+    border-radius:var(--radius-sm);color:var(--ink-dim);
+    cursor:pointer;font-size:13.5px;border-left:2px solid transparent;
+  }
+  .navitem:hover{color:var(--ink);background:var(--bg-2);}
+  .navitem.active{color:var(--ink);background:var(--bg-2);border-left:2px solid var(--amber);}
+  .navitem .dot{width:6px;height:6px;border-radius:50%;background:var(--ink-faint);flex-shrink:0;}
+  .navitem.active .dot{background:var(--amber);}
+  .sidebar-foot{
+    color:var(--ink-faint);font-size:11px;padding:0 8px;
+    border-top:1px solid var(--line);padding-top:14px;
+  }
+
+  main{flex:1;min-width:0;padding:24px 28px 60px;max-width:1240px;}
+  .pagehead{margin-bottom:18px;}
+  .pagehead h1{font-size:22px;}
+  .pagehead p{color:var(--ink-dim);margin-top:4px;font-size:13px;max-width:760px;}
+
+  .controls{
+    display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:stretch;
+  }
+  .controls input[type=text]{
+    background:var(--bg-2);border:1px solid var(--line-strong);color:var(--ink);
+    padding:10px 12px;border-radius:var(--radius-sm);font-size:14px;
+    flex:1 1 220px;min-width:0;
+  }
+  .controls select{
+    background:var(--bg-2);border:1px solid var(--line-strong);color:var(--ink);
+    padding:10px 10px;border-radius:var(--radius-sm);font-size:14px;
+  }
+  .count-pill{color:var(--ink-faint);font-size:12px;width:100%;margin-top:8px;}
+
+  .grid{display:grid;grid-template-columns:repeat(1,1fr);gap:12px;}
+  @media(min-width:860px){ .grid{grid-template-columns:repeat(2,1fr);} }
+
+  .card{
+    background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);
+    padding:14px;
+  }
+  .card .top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .card .title{font-size:15px;font-weight:600;}
+  .badge{
+    display:inline-flex;align-items:center;gap:5px;padding:3px 8px;
+    border-radius:100px;font-size:11px;font-weight:600;white-space:nowrap;
+  }
+  .b-pmerj{background:rgba(91,141,239,0.14);color:#5B8DEF;}
+  .b-basica{background:var(--green-dim);color:var(--green);}
+  .b-gcm{background:var(--amber-dim);color:var(--amber);}
+  .b-militar{background:var(--red-dim);color:var(--red);}
+  .b-aquecimento{background:rgba(124,139,168,0.14);color:var(--grey);}
+  .b-remarketing{background:rgba(210,222,245,0.08);color:var(--ink-dim);}
+
+  .meta{font-size:12px;color:var(--ink-dim);display:flex;flex-direction:column;gap:6px;}
+  .meta .row{display:grid;grid-template-columns:110px 1fr;gap:6px;}
+  .meta .row b{color:var(--ink-faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.03em;}
+  .copy{color:var(--ink);font-size:12.5px;line-height:1.5;}
+  .cta{
+    margin-top:10px;padding:8px 10px;background:var(--bg-2);
+    border:1px solid var(--line-strong);border-radius:var(--radius-sm);
+    font-size:12.5px;color:var(--ink);
+  }
+  .cta b{color:var(--amber);}
+
+  @media(max-width:900px){
+    .shell{flex-direction:column;}
+    .sidebar{position:static;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--line);padding:14px 14px;gap:12px;}
+    main{padding:18px 16px 50px;max-width:100%;}
+    .card{padding:14px;}
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="mark">EPQ<span>·</span>Criativos</div>
+      <div class="sub">Painel de anúncios</div>
+    </div>
+    <nav id="nav">
+      <div class="navitem active" data-filter="all"><span class="dot"></span>Todos</div>
+      <div class="navitem" data-filter="pmerj"><span class="dot"></span>PMERJ</div>
+      <div class="navitem" data-filter="basica"><span class="dot"></span>Básica</div>
+      <div class="navitem" data-filter="gcm"><span class="dot"></span>GCM</div>
+      <div class="navitem" data-filter="militar"><span class="dot"></span>Militar</div>
+      <div class="navitem" data-filter="aquecimento"><span class="dot"></span>Aquecimento</div>
+      <div class="navitem" data-filter="remarketing"><span class="dot"></span>Remarketing</div>
+    </nav>
+    <div class="sidebar-foot">Base: plano-ads-funil-epq.md<br>03/09/2026</div>
+  </aside>
+
+  <main>
+    <div class="pagehead">
+      <h1>Criativos de anúncios</h1>
+      <p>Copy exata, direcionamento criativo e regras de uso por campanha.</p>
+    </div>
+
+    <div class="controls">
+      <input type="text" id="searchInput" placeholder="Buscar criativo...">
+      <select id="filterSegment">
+        <option value="all">Segmento: todos</option>
+        <option value="pmerj">PMERJ</option>
+        <option value="basica">Básica</option>
+        <option value="gcm">GCM</option>
+        <option value="militar">Militar</option>
+        <option value="aquecimento">Aquecimento</option>
+        <option value="remarketing">Remarketing</option>
+      </select>
+      <span class="count-pill" id="countPill"></span>
+    </div>
+
+    <div class="grid" id="grid"></div>
+  </main>
+</div>
+
+<script>
+const creatives = [
+  {
+    id:'pmerj-sabado',
+    segment:'pmerj',
+    title:'PMERJ Sábado — Início 12/09',
+    badge:'b-pmerj',
+    badgeLabel:'PMERJ',
+    headline:'PMERJ Sábado começa em 12/09',
+    art:'Método banca por banca para PMERJ. Aula experimental antes de decidir.',
+    copy:'Se você já tentou e não passou, o erro geralmente é estudar sem método direcionado para a banca PMERJ. Turma de sábado começa em 12/09. Faça uma aula experimental antes de decidir.',
+    cta:'Quero fazer uma aula experimental',
+    destino:'WhatsApp com saudação para PMERJ Sábado',
+    formatos:'Reels / Stories 9:16 e Post quadrado 1:1'
+  },
+  {
+    id:'pmerj-manha',
+    segment:'pmerj',
+    title:'PMERJ Manhã — Início 14/09',
+    badge:'b-pmerj',
+    badgeLabel:'PMERJ',
+    headline:'PMERJ Manhã começa em 14/09',
+    art:'Quem já estuda e não avança precisa de método + acompanhamento.',
+    copy:'Estuda por conta e não vê evolução no ritmo da PMERJ? Turma de manhã começa em 14/09, com método direcionado e acompanhamento. Faça uma aula experimental.',
+    cta:'Quero fazer uma aula experimental',
+    destino:'WhatsApp com saudação para PMERJ Manhã',
+    formatos:'Reels / Stories 9:16 e Post 1:1'
+  },
+  {
+    id:'basica-sabado',
+    segment:'basica',
+    title:'Básica Sábado — Início 12/09',
+    badge:'b-basica',
+    badgeLabel:'Básica',
+    headline:'Básica Sábado começa em 12/09',
+    art:'Comece do jeito certo para não perder tempo.',
+    copy:'Se você está perdido no edital e não sabe por onde começar, a turma Básica começa em 12/09. Método simples, acompanhamento inicial e aula experimental para entrar com base.',
+    cta:'Quero começar sábado',
+    destino:'WhatsApp com saudação para Básica Sábado',
+    formatos:'Reels / Stories 9:16 e Post 1:1'
+  },
+  {
+    id:'basica-manha',
+    segment:'basica',
+    title:'Básica Manhã — Início 14/09',
+    badge:'b-basica',
+    badgeLabel:'Básica',
+    headline:'Básica Manhã começa em 14/09',
+    art:'Para iniciante não ficar para trás.',
+    copy:'Começar do zero gera ansiedade. A turma Básica Manhã começa em 14/09 com método para iniciante e acompanhamento desde a primeira aula. Faça uma aula experimental.',
+    cta:'Quero começar manhã',
+    destino:'WhatsApp com saudação para Básica Manhã',
+    formatos:'Reels / Stories 9:16 e Post 1:1'
+  },
+  {
+    id:'basica-noite',
+    segment:'basica',
+    title:'Básica Noite — Início 14/09',
+    badge:'b-basica',
+    badgeLabel:'Básica',
+    headline:'Básica Noite começa em 14/09',
+    art:'Flexibilidade noturna para quem trabalha ou estuda de dia.',
+    copy:'Se falta horário à noite, a turma Básica começa em 14/09 no período noturno. Aula experimental para você conhecer antes de decidir.',
+    cta:'Quero vaga noite',
+    destino:'WhatsApp com saudação para Básica Noite',
+    formatos:'Reels / Stories 9:16 e Post 1:1'
+  },
+  {
+    id:'gcm-manha',
+    segment:'gcm',
+    title:'GCM Maricá/São Gonçalo Manhã — Início 14/09',
+    badge:'b-gcm',
+    badgeLabel:'GCM',
+    headline:'GCM Maricá/São Gonçalo Manhã começa em 14/09',
+    art:'Preparação direcionada para GCM local.',
+    copy:'A preparação para GCM exige método específico para a banca municipal. Turma de manhã começa em 14/09. Faça uma aula experimental.',
+    cta:'Quero fazer uma aula experimental',
+    destino:'WhatsApp com saudação para GCM Manhã',
+    formatos:'Reels / Stories 9:16 e Post 1:1'
+  },
+  {
+    id:'gcm-noite',
+    segment:'gcm',
+    title:'GCM Maricá/São Gonçalo Noite — Início 14/09',
+    badge:'b-gcm',
+    badgeLabel:'GCM',
+    headline:'GCM Maricá/São Gonçalo Noite começa em 14/09',
+    art:'Horário noturno compatível com trabalho.',
+    copy:'Trabalha de dia e precisa estudar para GCM? Turma noturna começa em 14/09, com preparação direcionada. Faça uma aula experimental.',
+    cta:'Quero fazer uma aula experimental',
+    destino:'WhatsApp com saudação para GCM Noite',
+    formatos:'Reels / Stories 9:16 e Post 1:1'
+  },
+  {
+    id:'gcm-sabado',
+    segment:'gcm',
+    title:'GCM Maricá/São Gonçalo Sábado — Início 19/09',
+    badge:'b-gcm',
+    badgeLabel:'GCM',
+    headline:'GCM Sábado começa em 19/09',
+    art:'Sábado para quem não tem horário na semana.',
+    copy:'Se falta horário durante a semana, a turma GCM de sábado começa em 19/09. Preparação direcionada e método municipal. Faça uma aula experimental.',
+    cta:'Quero fazer uma aula experimental',
+    destino:'WhatsApp com saudação para GCM Sábado',
+    formatos:'Reels / Stories 9:16 e Post 1:1'
+  },
+  {
+    id:'militar-manha',
+    segment:'militar',
+    title:'ESA/EAM/EEAR Manhã — Início 14/09',
+    badge:'b-militar',
+    badgeLabel:'Militar',
+    headline:'Preparação militar começa em 14/09',
+    art:'Método específico para ESA/EAM/EEAR.',
+    copy:'Preparação para Forças Armadas exige método direcionado para ESA/EAM/EEAR. Turma de manhã começa em 14/09. Faça uma aula experimental.',
+    cta:'Quero fazer uma aula experimental',
+    destino:'WhatsApp com saudação para Militar Manhã',
+    formatos:'Reels / Stories 9:16 e Post 1:1'
+  },
+  {
+    id:'militar-noite',
+    segment:'militar',
+    title:'ESA/EAM/EEAR Noite — Início 14/09',
+    badge:'b-militar',
+    badgeLabel:'Militar',
+    headline:'Militar Noite começa em 14/09',
+    art:'Conciliação trabalho + estudo para ESA/EAM/EEAR.',
+    copy:'Se trabalha e estuda para ESA/EAM/EEAR, a turma noturna começa em 14/09 com método militar. Faça uma aula experimental.',
+    cta:'Quero fazer uma aula experimental',
+    destino:'WhatsApp com saudação para Militar Noite',
+    formatos:'Reels / Stories 9:16 e Post 1:1'
+  },
+  {
+    id:'aquecimento',
+    segment:'aquecimento',
+    title:'Aquecimento — PMERJ / GM / PF / Militar',
+    badge:'b-aquecimento',
+    badgeLabel:'Aquecimento',
+    headline:'Preparação para concursos de segurança',
+    art:'Método banca por banca + acompanhamento próximo.',
+    copy:'Estudar sem método direcionado atrasa a aprovação. Veja o que diferencia a preparação para PMERJ, Guarda Municipal, PF e Forças Armadas.',
+    cta:'Assista / Salve / Participe',
+    destino:'Reels / vídeo de valor ou LP principal',
+    formatos:'Reels / Stories 9:16'
+  },
+  {
+    id:'remarketing',
+    segment:'remarketing',
+    title:'Remarketing — Visitantes / Engajados / Leads pendentes',
+    badge:'b-remarketing',
+    badgeLabel:'Remarketing',
+    headline:'Ainda dá tempo de começar',
+    art:'Aula experimental disponível + data real da turma.',
+    copy:'Você já demonstrou interesse. Veja a data da próxima turma e agende uma aula experimental antes de decidir.',
+    cta:'Agende aula experimental / Chame no WhatsApp',
+    destino:'WhatsApp com retomada por campanha/turma',
+    formatos:'Stories 9:16 e Reels'
+  }
+];
+
+function esc(s){
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+function render(){
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const f = document.getElementById('filterSegment').value;
+  const navActive = document.querySelector('.navitem.active');
+  const navFilter = navActive ? navActive.dataset.filter : 'all';
+
+  const useFilter = f !== 'all' ? f : navFilter;
+
+  const filtered = creatives.filter(c=>{
+    const matchesSearch = !q ||
+      c.title.toLowerCase().includes(q) ||
+      c.copy.toLowerCase().includes(q) ||
+      c.headline.toLowerCase().includes(q);
+    const matchesFilter = useFilter === 'all' || c.segment === useFilter;
+    return matchesSearch && matchesFilter;
+  });
+
+  document.getElementById('countPill').textContent = filtered.length + ' de ' + creatives.length + ' criativos';
+
+  document.getElementById('grid').innerHTML = filtered.map(c=>`
+    <div class="card" data-segment="${esc(c.segment)}">
+      <div class="top">
+        <div class="title">${esc(c.title)}</div>
+        <span class="badge ${esc(c.badge)}">${esc(c.badgeLabel)}</span>
+      </div>
+      <div class="meta">
+        <div class="row"><b>Headline</b><div>${esc(c.headline)}</div></div>
+        <div class="row"><b>Texto da arte</b><div>${esc(c.art)}</div></div>
+        <div class="row"><b>Copy</b><div class="copy">${esc(c.copy)}</div></div>
+        <div class="row"><b>CTA</b><div><b>${esc(c.cta)}</b></div></div>
+        <div class="row"><b>Destino</b><div>${esc(c.destino)}</div></div>
+        <div class="row"><b>Formato</b><div>${esc(c.formatos)}</div></div>
+      </div>
+      <div class="cta">Direcionamento: manter data real, não prometer aprovação, sem valores no anúncio, CTA para aula experimental.</div>
+    </div>
+  `).join('');
+}
+
+document.querySelectorAll('#nav .navitem').forEach(item=>{
+  item.addEventListener('click', ()=>{
+    document.querySelectorAll('#nav .navitem').forEach(n=>n.classList.remove('active'));
+    item.classList.add('active');
+    document.getElementById('filterSegment').value = 'all';
+    render();
+  });
+});
+
+['searchInput','filterSegment'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', render);
+  document.getElementById(id).addEventListener('change', render);
+});
+
+render();
+</script>
+</body>
+</html>
