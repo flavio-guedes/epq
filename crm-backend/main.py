@@ -13,6 +13,7 @@ from schemas import (
     InteractionCreate, InteractionOut, AuditLogOut, ChangePassword, KPIOut
 )
 from auth import verify_password, create_access_token, decode_token, hash_password
+from routing import available_attendants, suggest_assignee, assign_lead, build_queue, MODE
 
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY", "super-secret-key")
@@ -245,5 +246,131 @@ def kpis(db: Session = Depends(get_db), authorization: Optional[str] = None):
     )
 
 @app.get("/health")
-def health():
+def health() -> dict:
     return {"status": "ok"}
+
+
+@app.get("/routing/availability")
+def routing_availability(authorization: str = None, db: Session = Depends(get_db)):
+    if not authorization or not authorization.lower().startswith("bearer "):
+        raise HTTPException(status_code=401, detail="Token ausente")
+    user = get_current_user(authorization.split(" ", 1)[1], db)
+    if user.perfil not in [UserProfile.ADMIN_MASTER.value, UserProfile.GESTOR.value]:
+        raise HTTPException(status_code=403, detail="Sem permissão")
+    attendants = available_attendants(db)
+    return {"mode": MODE, "attendants": attendants}
+
+
+@app.get("/routing/queue")
+def routing_queue(authorization: str = None, db: Session = Depends(get_db)):
+    if not authorization or not authorization.lower().startswith("bearer "):
+        raise HTTPException(status_code=401, detail="Token ausente")
+    user = get_current_user(authorization.split(" ", 1)[1], db)
+    if user.perfil not in [UserProfile.ADMIN_MASTER.value, UserProfile.GESTOR.value]:
+        raise HTTPException(status_code=403, detail="Sem permissão")
+    queue = build_queue(db)
+    return {"mode": MODE, "queue": queue}
+
+
+@app.get("/routing/suggest/{lead_id}")
+def routing_suggest(lead_id: str, authorization: str = None, db: Session = Depends(get_db)):
+    if not authorization or not authorization.lower().startswith("bearer "):
+        raise HTTPException(status_code=401, detail="Token ausente")
+    user = get_current_user(authorization.split(" ", 1)[1], db)
+    lead = db.query(Lead).filter(Lead.id == lead_id).first()
+    if not lead:
+        raise HTTPException(status_code=404, detail="Lead não encontrado")
+    if user.perfil == UserProfile.OPERACIONAL.value and lead.responsavel_id != user.id:
+        raise HTTPException(status_code=403, detail="Sem permissão")
+    suggestion = suggest_assignee(db, lead)
+    return suggestion
+
+
+@app.post("/routing/assign/{lead_id}")
+def routing_assign(lead_id: str, payload: dict, authorization: str = None, db: Session = Depends(get_db)):
+    if not authorization or not authorization.lower().startswith("bearer "):
+        raise HTTPException(status_code=401, detail="Token ausente")
+    user = get_current_user(authorization.split(" ", 1)[1], db)
+    if user.perfil not in [UserProfile.ADMIN_MASTER.value, UserProfile.GESTOR.value]:
+        raise HTTPException(status_code=403, detail="Sem permissão")
+    to_user_id = payload.get("to_user_id")
+    reason = payload.get("reason") or "Redistribuição manual"
+    if not to_user_id:
+        raise HTTPException(status_code=400, detail="to_user_id obrigatório")
+    lead = db.query(Lead).filter(Lead.id == lead_id).first()
+    if not lead:
+        raise HTTPException(status_code=404, detail="Lead não encontrado")
+    lead = assign_lead(db, lead_id, to_user_id, reason, from_user_id=lead.responsavel_id, actor_user_id=user.id)
+    return {"id": lead.id, "nome": lead.nome, "responsavel_id": lead.responsavel_id}
+
+
+@app.get("/routing/metrics")
+def routing_metrics(authorization: str = None, db: Session = Depends(get_db)):
+    if not authorization or not authorization.lower().startswith("bearer "):
+        raise HTTPException(status_code=401, detail="Token ausente")
+    user = get_current_user(authorization.split(" ", 1)[1], db)
+    if user.perfil not in [UserProfile.ADMIN_MASTER.value, UserProfile.GESTOR.value]:
+        raise HTTPException(status_code=403, detail="Sem permissão")
+    leads = db.query(Lead).all()
+    by_user: dict = {}
+    for lead in leads:
+        uid = lead.responsavel_id or "sem_responsavel"
+        item = by_user.setdefault(uid, {"received": 0, "active": 0, "converted": 0, "hot": 0})
+        item["received"] += 1
+        if lead.status == "ativo":
+            item["active"] += 1
+        if lead.temperatura == "Quente":
+            item["hot"] += 1
+        if lead.etapa == "Matriculado":
+            item["converted"] += 1
+    transfer_logs = [
+        {
+            "lead_id": log.lead_id,
+            "user_id": log.user_id,
+            "acao": log.acao,
+            "valor_anterior": log.valor_anterior,
+            "valor_novo": log.valor_novo,
+            "created_at": log.created_at.isoformat() if log.created_at else None,
+        }
+        for log in db.query(AuditLog).filter(AuditLog.acao == "Transferiu lead").order_by(AuditLog.created_at.desc()).limit(200).all()
+    ]
+    return {"by_user": by_user, "transfers": transfer_logs, "mode": MODE}
+
+
+@app.get("/routing/handoff")
+def routing_handoff(authorization: str = None, db: Session = Depends(get_db)):
+    if not authorization or not authorization.lower().startswith("bearer "):
+        raise HTTPException(status_code=401, detail="Token ausente")
+    user = get_current_user(authorization.split(" ", 1)[1], db)
+    if user.perfil not in [UserProfile.ADMIN_MASTER.value, UserProfile.GESTOR.value]:
+        raise HTTPException(status_code=403, detail="Sem permissão")
+    now = datetime.utcnow()
+    attendants = available_attendants(db, now)
+    result = []
+    for attendant in attendants:
+        if attendant["key"] == "ronan":
+            continue
+        leads = db.query(Lead).filter(
+            Lead.responsavel_id == attendant["id"],
+            Lead.status == "ativo",
+        ).all()
+        result.append(
+            {
+                "attendant": attendant,
+                "active": len(leads),
+                "leads": [
+                    {
+                        "id": l.id,
+                        "nome": l.nome,
+                        "temperatura": l.temperatura,
+                        "produto": l.produto,
+                        "etapa": l.etapa,
+                        "proximo_followup": l.proximo_followup.isoformat() if l.proximo_followup else None,
+                        "proximo_tipo": l.proximo_tipo,
+                        "proximo_nota": l.proximo_nota,
+                    }
+                    for l in leads
+                ],
+            }
+        )
+    return {"mode": MODE, "handoff": result}

@@ -223,7 +223,70 @@
         </div>
       </div>
 
-      <div v-if="tab==='funnel'">
+      <section class="panel" v-if="showRouting">
+      <div class="panel-2col">
+        <div>
+          <h2>QUEM ATENDE AGORA?</h2>
+          <div class="sub">Distribuição automática · {{ routingMode }}</div>
+          <div class="table-wrap" style="margin-top:10px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Atendente</th>
+                  <th>Status</th>
+                  <th>Leads ativos</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="att in attendants" :key="att.id">
+                  <td>
+                    <div style="font-weight:600;">{{ att.name }}</div>
+                    <div style="font-size:11px;color:#7d9cbd;">{{ att.key === 'ronan' ? 'Backup / Fora do horário' : 'Atendente' }}</div>
+                  </td>
+                  <td><span class="tag" :class="statusClass(att.status)">{{ att.status }}</span></td>
+                  <td>{{ att.active }}</td>
+                </tr>
+                <tr v-if="!attendants.length">
+                  <td colspan="3" style="color:#7d9cbd;">Sem dados de atendentes</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div>
+          <h2>O QUE PRECISA SER FEITO AGORA</h2>
+          <div class="sub">Fila priorizada por temperatura + SLA</div>
+          <div class="table-wrap" style="margin-top:10px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Prioridade</th>
+                  <th>Lead</th>
+                  <th>Temperatura</th>
+                  <th>SLA</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in queue" :key="item.id">
+                  <td><span class="tag" :class="priorityClass(item)">{{ queueRank(item) }}</span></td>
+                  <td>
+                    <div style="font-weight:600;">{{ item.name }}</div>
+                    <div style="font-size:11px;color:#7d9cbd;">{{ item.produto || item.origem || '—' }}</div>
+                  </td>
+                  <td>{{ temperatureBadge(item.temperature) }}</td>
+                  <td v-html="slaText(item)"></td>
+                </tr>
+                <tr v-if="!queue.length">
+                  <td colspan="4" style="color:#7d9cbd;">Fila vazia no momento</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div v-if="tab==='funnel'">
         <div class="funnel">
           <div class="stage" v-for="stage in stages" :key="stage">
             <div class="name">{{ stage }}</div>
@@ -371,12 +434,19 @@
       const mode = ref('cloud');
       const syncStatus = ref('');
       const errorMsg = ref('');
+      const showRouting = ref(true);
+      const routingMode = ref('simulation');
+      const attendants = ref([]);
+      const queue = ref([]);
 
       function persist(){ writeLeads(leads.value); }
       function setMode(next){ mode.value = next; localStorage.setItem('epq_crm_mode', next); }
       async function safeApi(path, options){
         const url = API_BASE + path;
-        const res = await fetch(url, { ...options, headers: { 'content-type':'application/json', ...(options && options.headers ? options.headers : {}) } });
+        const token = localStorage.getItem('epq_crm_token');
+        const headers = { 'content-type':'application/json', ...(options && options.headers ? options.headers : {}) };
+        if (token) headers['Authorization'] = 'Bearer ' + token;
+        const res = await fetch(url, { ...options, headers });
         if (!res.ok){ const text = await res.text(); throw new Error(text || ('HTTP ' + res.status)); }
         const ct = res.headers.get('content-type') || '';
         return ct.includes('application/json') ? res.json() : res.text();
@@ -567,13 +637,64 @@
 
       async function init(){
         await loadCloud();
+        await loadRouting();
       }
       init();
+
+      async function loadRouting(){
+        try {
+          const [avail, q] = await Promise.all([
+            safeApi('/routing/availability').catch(() => ({ attendants: [] })),
+            safeApi('/routing/queue').catch(() => ({ queue: [] })),
+          ]);
+          routingMode.value = avail.mode || 'simulation';
+          attendants.value = Array.isArray(avail.attendants) ? avail.attendants : [];
+          queue.value = Array.isArray(q.queue) ? q.queue : [];
+        } catch {
+          attendants.value = [];
+          queue.value = [];
+        }
+      }
+      function statusClass(status){
+        const m = (status || '').toLowerCase();
+        if (m.includes('disponível')) return 'tier-1';
+        if (m.includes('atenção')) return 'tier-3';
+        if (m.includes('ocupada')) return 'tier-5';
+        return 'tier-6';
+      }
+      function priorityClass(item){
+        if ((item.sla && item.sla.breached) || (item.temperature === 'Quente' && !item.has_response)) return 'tier-5';
+        if ((item.sla && item.sla.near_breach) || item.temperature === 'Morno') return 'tier-3';
+        if (item.temperature === 'Quente') return 'tier-2';
+        return 'tier-6';
+      }
+      function queueRank(item){
+        if ((item.sla && item.sla.breached) || (item.temperature === 'Quente' && !item.has_response)) return 'CRÍTICO';
+        if ((item.sla && item.sla.near_breach) || item.temperature === 'Quente') return 'ALTA';
+        if (item.temperature === 'Morno') return 'MÉDIA';
+        return 'BAIXA';
+      }
+      function temperatureBadge(temperature){
+        const t = (temperature || 'Frio');
+        const cls = t === 'Quente' ? 'tier-5' : (t === 'Morno' ? 'tier-3' : 'tier-6');
+        return `<span class="tier-badge ${cls}">${t}</span>`;
+      }
+      function slaText(item){
+        const sla = item.sla || {};
+        const wait = sla.wait_minutes;
+        const limit = sla.sla_minutes;
+        if (!wait && wait !== 0) return '—';
+        const left = Math.max(limit - wait, 0);
+        if (sla.breached) return `<span class="tier-badge tier-5">Estourado</span>`;
+        if (sla.near_breach) return `<span class="tier-badge tier-3">Em ${left}min</span>`;
+        return `<span class="tier-badge tier-2">${left}min</span>`;
+      }
 
       return {
         mode, syncStatus, errorMsg,
         search, filterStage, tab, leadModal, createModal, currentLead, newLead, stages, filtered, kpis, agenda, byStage,
         openLead, closeLead, saveLead, openCreate, closeCreate, createLead, logContact, advanceStage, formatDate, formatDateTime, exportXLS, syncNow, switchToOffline,
+        showRouting, routingMode, attendants, queue, statusClass, priorityClass, queueRank, temperatureBadge, slaText,
       };
     }
   }).mount('#app');
