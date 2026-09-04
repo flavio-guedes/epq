@@ -56,25 +56,21 @@
   }
   .brand .mark span{color:var(--amber);}
   .brand .sub{color:var(--ink-faint);font-size:12px;margin-top:3px;}
-
   .sidebar-title{
     color:var(--ink-faint);font-size:11px;font-weight:700;
     text-transform:uppercase;letter-spacing:.08em;padding:0 6px;
   }
-  nav{display:flex;flex-direction:column;gap:4px);}
   nav{display:flex;flex-direction:column;gap:4px;}
-
   .navitem{
     display:flex;align-items:center;gap:10px;padding:10px 12px;
     border-radius:var(--radius-sm);color:var(--ink-dim);
     cursor:pointer;font-size:14px;border-left:3px solid transparent;
-    transition:background .15s ease, color .15s ease;
+    transition:all .15s ease;
   }
   .navitem:hover{color:var(--ink);background:var(--bg-2);}
-  .navitem.active{color:var(--ink);background:var(--bg-2);border-left-color:var(--amber);}
-  .navitem .dot{width:8px;height:8px;border-radius:50%;background:var(--ink-faint);flex-shrink:0;}
+  .navitem.active{color:var(--ink);background:var(--bg-2);border-left:3px solid var(--amber);}
+  .navitem .dot{width:6px;height:6px;border-radius:50%;background:var(--ink-faint);flex-shrink:0;}
   .navitem.active .dot{background:var(--amber);}
-
   .sidebar-foot{
     color:var(--ink-faint);font-size:11.5px;padding:0 6px;
     border-top:1px solid var(--line);padding-top:14px;line-height:1.5;
@@ -111,7 +107,7 @@
   .card{
     background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);
     padding:16px;display:flex;flex-direction:column;gap:12px;
-    transition:border-color .15s ease, transform .05s ease;
+    transition:border-color .15s ease;
   }
   .card:hover{border-color:var(--line-strong);}
 
@@ -134,6 +130,7 @@
     text-transform:uppercase;letter-spacing:.08em;
   }
 
+  .meta{display:flex;flex-direction:column;gap:10px);}
   .meta{display:flex;flex-direction:column;gap:10px;}
 
   .row{display:grid;grid-template-columns:130px 1fr;gap:10px;align-items:start;}
@@ -226,8 +223,11 @@ const creatives = [
     badge:'b-pmerj',
     badgeLabel:'PMERJ',
     headline:'PMERJ Sábado começa em 12/09',
-    art:'Método banca por banca para PMERJ. Aula experimental antes de decidir.',
+    subheadline:'Método banca por banca para PMERJ',
+    artBody:'Aula experimental antes de decidir.',
+    artHierarchy:'Headline > Sub-headline > CTA',
     copy:'Se você já tentou e não passou, o erro geralmente é estudar sem método direcionado para a banca PMERJ. Turma de sábado começa em 12/09. Faça uma aula experimental antes de decidir.',
+    caption:'Se você já tentou e não passou, o erro geralmente é estudar sem método direcionado para a banca PMERJ. Turma de sábado começa em 12/09. Faça uma aula experimental antes de decidir.',
     cta:'Quero fazer uma aula experimental',
     destino:'WhatsApp com saudação para PMERJ Sábado',
     formatos:'Reels / Stories 9:16 e Post quadrado 1:1'
@@ -239,8 +239,11 @@ const creatives = [
     badge:'b-pmerj',
     badgeLabel:'PMERJ',
     headline:'PMERJ Manhã começa em 14/09',
-    art:'Quem já estuda e não avança precisa de método + acompanhamento.',
+    subheadline:'Quem já estuda e não avança precisa de método + acompanhamento',
+    artBody:'',
+    artHierarchy:'Headline > Sub-headline',
     copy:'Estuda por conta e não vê evolução no ritmo da PMERJ? Turma de manhã começa em 14/09, com método direcionado e acompanhamento. Faça uma aula experimental.',
+    caption:'Estuda por conta e não vê evolução no ritmo da PMERJ? Turma de manhã começa em 14/09, com método direcionado e acompanhamento. Faça uma aula experimental.',
     cta:'Quero fazer uma aula experimental',
     destino:'WhatsApp com saudação para PMERJ Manhã',
     formatos:'Reels / Stories 9:16 e Post 1:1'
@@ -252,8 +255,11 @@ const creatives = [
     badge:'b-basica',
     badgeLabel:'Básica',
     headline:'Básica Sábado começa em 12/09',
-    art:'Comece do jeito certo para não perder tempo.',
+    subheadline:'Comece do jeito certo para não perder tempo',
+    artBody:'',
+    artHierarchy:'Headline > Sub-headline',
     copy:'Se você está perdido no edital e não sabe por onde começar, a turma Básica começa em 12/09. Método simples, acompanhamento inicial e aula experimental para entrar com base.',
+    caption:'Se você está perdido no edital e não sabe por onde começar, a turma Básica começa em 12/09. Método simples, acompanhamento inicial e aula experimental para entrar com base.',
     cta:'Quero começar sábado',
     destino:'WhatsApp com saudação para Básica Sábado',
     formatos:'Reels / Stories 9:16 e Post 1:1'
@@ -265,8 +271,11 @@ const creatives = [
     badge:'b-basica',
     badgeLabel:'Básica',
     headline:'Básica Manhã começa em 14/09',
-    art:'Para iniciante não ficar para trás.',
+    subheadline:'Para iniciante não ficar para trás',
+    artBody:'',
+    artHierarchy:'Headline > Sub-headline',
     copy:'Começar do zero gera ansiedade. A turma Básica Manhã começa em 14/09 com método para iniciante e acompanhamento desde a primeira aula. Faça uma aula experimental.',
+    caption:'Começar do zero gera ansiedade. A turma Básica Manhã começa em 14/09 com método para iniciante e acompanhamento desde a primeira aula. Faça uma aula experimental.',
     cta:'Quero começar manhã',
     destino:'WhatsApp com saudação para Básica Manhã',
     formatos:'Reels / Stories 9:16 e Post 1:1'
@@ -278,8 +287,11 @@ const creatives = [
     badge:'b-basica',
     badgeLabel:'Básica',
     headline:'Básica Noite começa em 14/09',
-    art:'Flexibilidade noturna para quem trabalha ou estuda de dia.',
+    subheadline:'Flexibilidade noturna para quem trabalha ou estuda de dia',
+    artBody:'',
+    artHierarchy:'Headline > Sub-headline',
     copy:'Se falta horário à noite, a turma Básica começa em 14/09 no período noturno. Aula experimental para você conhecer antes de decidir.',
+    caption:'Se falta horário à noite, a turma Básica começa em 14/09 no período noturno. Aula experimental para você conhecer antes de decidir.',
     cta:'Quero vaga noite',
     destino:'WhatsApp com saudação para Básica Noite',
     formatos:'Reels / Stories 9:16 e Post 1:1'
@@ -291,8 +303,11 @@ const creatives = [
     badge:'b-gcm',
     badgeLabel:'GCM',
     headline:'GCM Maricá/São Gonçalo Manhã começa em 14/09',
-    art:'Preparação direcionada para GCM local.',
+    subheadline:'Preparação direcionada para GCM local',
+    artBody:'',
+    artHierarchy:'Headline > Sub-headline',
     copy:'A preparação para GCM exige método específico para a banca municipal. Turma de manhã começa em 14/09. Faça uma aula experimental.',
+    caption:'A preparação para GCM exige método específico para a banca municipal. Turma de manhã começa em 14/09. Faça uma aula experimental.',
     cta:'Quero fazer uma aula experimental',
     destino:'WhatsApp com saudação para GCM Manhã',
     formatos:'Reels / Stories 9:16 e Post 1:1'
@@ -304,8 +319,11 @@ const creatives = [
     badge:'b-gcm',
     badgeLabel:'GCM',
     headline:'GCM Maricá/São Gonçalo Noite começa em 14/09',
-    art:'Horário noturno compatível com trabalho.',
+    subheadline:'Horário noturno compatível com trabalho',
+    artBody:'',
+    artHierarchy:'Headline > Sub-headline',
     copy:'Trabalha de dia e precisa estudar para GCM? Turma noturna começa em 14/09, com preparação direcionada. Faça uma aula experimental.',
+    caption:'Trabalha de dia e precisa estudar para GCM? Turma noturna começa em 14/09, com preparação direcionada. Faça uma aula experimental.',
     cta:'Quero fazer uma aula experimental',
     destino:'WhatsApp com saudação para GCM Noite',
     formatos:'Reels / Stories 9:16 e Post 1:1'
@@ -317,8 +335,11 @@ const creatives = [
     badge:'b-gcm',
     badgeLabel:'GCM',
     headline:'GCM Sábado começa em 19/09',
-    art:'Sábado para quem não tem horário na semana.',
+    subheadline:'Sábado para quem não tem horário na semana',
+    artBody:'',
+    artHierarchy:'Headline > Sub-headline',
     copy:'Se falta horário durante a semana, a turma GCM de sábado começa em 19/09. Preparação direcionada e método municipal. Faça uma aula experimental.',
+    caption:'Se falta horário durante a semana, a turma GCM de sábado começa em 19/09. Preparação direcionada e método municipal. Faça uma aula experimental.',
     cta:'Quero fazer uma aula experimental',
     destino:'WhatsApp com saudação para GCM Sábado',
     formatos:'Reels / Stories 9:16 e Post 1:1'
@@ -330,8 +351,11 @@ const creatives = [
     badge:'b-militar',
     badgeLabel:'Militar',
     headline:'Preparação militar começa em 14/09',
-    art:'Método específico para ESA/EAM/EEAR.',
+    subheadline:'Método específico para ESA/EAM/EEAR',
+    artBody:'',
+    artHierarchy:'Headline > Sub-headline',
     copy:'Preparação para Forças Armadas exige método direcionado para ESA/EAM/EEAR. Turma de manhã começa em 14/09. Faça uma aula experimental.',
+    caption:'Preparação para Forças Armadas exige método direcionado para ESA/EAM/EEAR. Turma de manhã começa em 14/09. Faça uma aula experimental.',
     cta:'Quero fazer uma aula experimental',
     destino:'WhatsApp com saudação para Militar Manhã',
     formatos:'Reels / Stories 9:16 e Post 1:1'
@@ -343,8 +367,11 @@ const creatives = [
     badge:'b-militar',
     badgeLabel:'Militar',
     headline:'Militar Noite começa em 14/09',
-    art:'Conciliação trabalho + estudo para ESA/EAM/EEAR.',
+    subheadline:'Conciliação trabalho + estudo para ESA/EAM/EEAR',
+    artBody:'',
+    artHierarchy:'Headline > Sub-headline',
     copy:'Se trabalha e estuda para ESA/EAM/EEAR, a turma noturna começa em 14/09 com método militar. Faça uma aula experimental.',
+    caption:'Se trabalha e estuda para ESA/EAM/EEAR, a turma noturna começa em 14/09 com método militar. Faça uma aula experimental.',
     cta:'Quero fazer uma aula experimental',
     destino:'WhatsApp com saudação para Militar Noite',
     formatos:'Reels / Stories 9:16 e Post 1:1'
@@ -356,8 +383,11 @@ const creatives = [
     badge:'b-aquecimento',
     badgeLabel:'Aquecimento',
     headline:'Preparação para concursos de segurança',
-    art:'Método banca por banca + acompanhamento próximo.',
+    subheadline:'Método banca por banca + acompanhamento próximo',
+    artBody:'',
+    artHierarchy:'Headline > Sub-headline',
     copy:'Estudar sem método direcionado atrasa a aprovação. Veja o que diferencia a preparação para PMERJ, Guarda Municipal, PF e Forças Armadas.',
+    caption:'Estudar sem método direcionado atrasa a aprovação. Veja o que diferencia a preparação para PMERJ, Guarda Municipal, PF e Forças Armadas.',
     cta:'Assista / Salve / Participe',
     destino:'Reels / vídeo de valor ou LP principal',
     formatos:'Reels / Stories 9:16'
@@ -369,8 +399,11 @@ const creatives = [
     badge:'b-remarketing',
     badgeLabel:'Remarketing',
     headline:'Ainda dá tempo de começar',
-    art:'Aula experimental disponível + data real da turma.',
+    subheadline:'Aula experimental disponível + data real da turma',
+    artBody:'',
+    artHierarchy:'Headline > Sub-headline',
     copy:'Você já demonstrou interesse. Veja a data da próxima turma e agende uma aula experimental antes de decidir.',
+    caption:'Você já demonstrou interesse. Veja a data da próxima turma e agende uma aula experimental antes de decidir.',
     cta:'Agende aula experimental / Chame no WhatsApp',
     destino:'WhatsApp com retomada por campanha/turma',
     formatos:'Stories 9:16 e Reels'
@@ -396,7 +429,9 @@ function render(){
     const matchesSearch = !q ||
       c.title.toLowerCase().includes(q) ||
       c.copy.toLowerCase().includes(q) ||
-      c.headline.toLowerCase().includes(q);
+      c.headline.toLowerCase().includes(q) ||
+      c.subheadline.toLowerCase().includes(q) ||
+      c.cta.toLowerCase().includes(q);
     const matchesFilter = useFilter === 'all' || c.segment === useFilter;
     return matchesSearch && matchesFilter;
   });
@@ -412,12 +447,14 @@ function render(){
 
       <div class="meta">
         <div class="row"><div class="k">Headline</div><div class="v highlight">${esc(c.headline)}</div></div>
-        <div class="row"><div class="k">Texto da arte</div><div class="v">${esc(c.art)}</div></div>
+        <div class="row"><div class="k">Sub-headline</div><div class="v">${esc(c.subheadline)}</div></div>
+        ${c.artBody ? `<div class="row"><div class="k">Texto da arte</div><div class="v">${esc(c.artBody)}</div></div>` : ''}
+        <div class="row"><div class="k">Hierarquia</div><div class="v">${esc(c.artHierarchy)}</div></div>
       </div>
 
       <div>
-        <div class="section-label" style="margin-bottom:8px;">Copy do anúncio</div>
-        <div class="copy-block">${esc(c.copy)}</div>
+        <div class="section-label" style="margin-bottom:8px;">Legenda</div>
+        <div class="copy-block">${esc(c.caption)}</div>
       </div>
 
       <div class="cta-row">
