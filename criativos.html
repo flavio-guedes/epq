@@ -6,124 +6,169 @@
 <title>EPQ · Painel de Criativos</title>
 <style>
   :root{
-    --bg-0:#0C1220;
-    --bg-1:#111A2C;
-    --bg-2:#182338;
-    --bg-3:#1F2C45;
-    --line:rgba(210,222,245,0.09);
-    --line-strong:rgba(210,222,245,0.16);
-    --ink:#EAEFF9;
-    --ink-dim:#94A2BE;
-    --ink-faint:#5B6884;
-    --amber:#E8A33D;
-    --amber-dim:rgba(232,163,61,0.14);
-    --blue:#5B8DEF;
-    --blue-dim:rgba(91,141,239,0.14);
-    --green:#4CAF7D;
-    --green-dim:rgba(76,175,125,0.14);
-    --red:#E2604F;
-    --red-dim:rgba(226,96,79,0.14);
-    --grey:#7C8BA8;
-    --radius:10px;
-    --radius-sm:6px;
+    --bg-0:#0B0F19;
+    --bg-1:#111827;
+    --bg-2:#1A2438;
+    --bg-3:#233050;
+    --line:rgba(255,255,255,0.10);
+    --line-strong:rgba(255,255,255,0.18);
+    --ink:#F6F9FF;
+    --ink-dim:#A8B6CF;
+    --ink-faint:#6B7A94;
+    --amber:#F5B041;
+    --amber-dim:rgba(245,176,65,0.14);
+    --blue:#4D9CF6;
+    --blue-dim:rgba(77,156,246,0.14);
+    --green:#3CC68A;
+    --green-dim:rgba(60,198,138,0.14);
+    --red:#F26B6B;
+    --red-dim:rgba(242,107,107,0.14);
+    --grey:#8A99B4;
+    --radius:14px;
+    --radius-sm:10px;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{
     background:var(--bg-0);color:var(--ink);
     font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
-    font-size:14px;line-height:1.5;
+    font-size:15px;line-height:1.55;
     -webkit-font-smoothing:antialiased;
   }
   h1,h2,h3,.display{
     font-family:'Barlow Semi Condensed','Inter',sans-serif;
-    font-weight:600;letter-spacing:0.01em;
+    font-weight:700;letter-spacing:0.01em;
   }
   ::-webkit-scrollbar{width:8px;height:8px;}
-  ::-webkit-scrollbar-thumb{background:var(--bg-3);border-radius:4px;}
+  ::-webkit-scrollbar-thumb{background:var(--bg-3);border-radius:6px;}
 
   .shell{display:flex;min-height:100vh;}
+
   .sidebar{
-    width:240px;flex-shrink:0;background:var(--bg-1);
+    width:260px;flex-shrink:0;background:var(--bg-1);
     border-right:1px solid var(--line);
-    padding:22px 14px;position:sticky;top:0;height:100vh;
+    padding:22px 16px;position:sticky;top:0;height:100vh;
     display:flex;flex-direction:column;gap:18px;
   }
-  .brand{padding:0 8px;}
+  .brand{padding:0 6px;}
   .brand .mark{
-    font-family:'Barlow Semi Condensed';font-weight:700;
-    font-size:20px;letter-spacing:0.02em;
+    font-family:'Barlow Semi Condensed';font-weight:800;
+    font-size:22px;letter-spacing:0.02em;
   }
   .brand .mark span{color:var(--amber);}
-  .brand .sub{color:var(--ink-faint);font-size:11.5px;margin-top:2px;}
-  nav{display:flex;flex-direction:column;gap:2px;flex:1;}
+  .brand .sub{color:var(--ink-faint);font-size:12px;margin-top:3px;}
+
+  .sidebar-title{
+    color:var(--ink-faint);font-size:11px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.08em;padding:0 6px;
+  }
+  nav{display:flex;flex-direction:column;gap:4px);}
+  nav{display:flex;flex-direction:column;gap:4px;}
+
   .navitem{
-    display:flex;align-items:center;gap:10px;padding:9px 10px;
+    display:flex;align-items:center;gap:10px;padding:10px 12px;
     border-radius:var(--radius-sm);color:var(--ink-dim);
-    cursor:pointer;font-size:13.5px;border-left:2px solid transparent;
+    cursor:pointer;font-size:14px;border-left:3px solid transparent;
+    transition:background .15s ease, color .15s ease;
   }
   .navitem:hover{color:var(--ink);background:var(--bg-2);}
-  .navitem.active{color:var(--ink);background:var(--bg-2);border-left:2px solid var(--amber);}
-  .navitem .dot{width:6px;height:6px;border-radius:50%;background:var(--ink-faint);flex-shrink:0;}
+  .navitem.active{color:var(--ink);background:var(--bg-2);border-left-color:var(--amber);}
+  .navitem .dot{width:8px;height:8px;border-radius:50%;background:var(--ink-faint);flex-shrink:0;}
   .navitem.active .dot{background:var(--amber);}
+
   .sidebar-foot{
-    color:var(--ink-faint);font-size:11px;padding:0 8px;
-    border-top:1px solid var(--line);padding-top:14px;
+    color:var(--ink-faint);font-size:11.5px;padding:0 6px;
+    border-top:1px solid var(--line);padding-top:14px;line-height:1.5;
   }
 
   main{flex:1;min-width:0;padding:24px 28px 60px;max-width:1240px;}
-  .pagehead{margin-bottom:18px;}
-  .pagehead h1{font-size:22px;}
-  .pagehead p{color:var(--ink-dim);margin-top:4px;font-size:13px;max-width:760px;}
 
-  .controls{
-    display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:stretch;
-  }
-  .controls input[type=text]{
-    background:var(--bg-2);border:1px solid var(--line-strong);color:var(--ink);
-    padding:10px 12px;border-radius:var(--radius-sm);font-size:14px;
-    flex:1 1 220px;min-width:0;
-  }
-  .controls select{
-    background:var(--bg-2);border:1px solid var(--line-strong);color:var(--ink);
-    padding:10px 10px;border-radius:var(--radius-sm);font-size:14px;
-  }
-  .count-pill{color:var(--ink-faint);font-size:12px;width:100%;margin-top:8px;}
+  .pagehead{margin-bottom:22px;}
+  .pagehead h1{font-size:26px;}
+  .pagehead p{color:var(--ink-dim);margin-top:6px;font-size:14px;max-width:760px;}
 
-  .grid{display:grid;grid-template-columns:repeat(1,1fr);gap:12px;}
-  @media(min-width:860px){ .grid{grid-template-columns:repeat(2,1fr);} }
+  .toolbar{
+    display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;align-items:center;
+  }
+  .search{
+    background:var(--bg-2);border:1px solid var(--line-strong);color:var(--ink);
+    padding:11px 14px;border-radius:var(--radius-sm);font-size:14px;
+    flex:1 1 260px;min-width:0;outline:none;
+  }
+  .search::placeholder{color:var(--ink-faint);}
+  .select{
+    background:var(--bg-2);border:1px solid var(--line-strong);color:var(--ink);
+    padding:11px 12px;border-radius:var(--radius-sm);font-size:14px;
+    min-width:200px;outline:none;
+  }
+  .count-pill{
+    color:var(--ink-faint);font-size:12px;padding:8px 10px;
+    background:var(--bg-2);border:1px solid var(--line);border-radius:999px;
+  }
+
+  .grid{display:grid;grid-template-columns:repeat(1,1fr);gap:14px;}
+  @media(min-width:980px){ .grid{grid-template-columns:repeat(2,1fr);} }
 
   .card{
     background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);
-    padding:14px;
+    padding:16px;display:flex;flex-direction:column;gap:12px;
+    transition:border-color .15s ease, transform .05s ease;
   }
-  .card .top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
-  .card .title{font-size:15px;font-weight:600;}
-  .badge{
-    display:inline-flex;align-items:center;gap:5px;padding:3px 8px;
-    border-radius:100px;font-size:11px;font-weight:600;white-space:nowrap;
-  }
-  .b-pmerj{background:rgba(91,141,239,0.14);color:#5B8DEF;}
-  .b-basica{background:var(--green-dim);color:var(--green);}
-  .b-gcm{background:var(--amber-dim);color:var(--amber);}
-  .b-militar{background:var(--red-dim);color:var(--red);}
-  .b-aquecimento{background:rgba(124,139,168,0.14);color:var(--grey);}
-  .b-remarketing{background:rgba(210,222,245,0.08);color:var(--ink-dim);}
+  .card:hover{border-color:var(--line-strong);}
 
-  .meta{font-size:12px;color:var(--ink-dim);display:flex;flex-direction:column;gap:6px;}
-  .meta .row{display:grid;grid-template-columns:110px 1fr;gap:6px;}
-  .meta .row b{color:var(--ink-faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.03em;}
-  .copy{color:var(--ink);font-size:12.5px;line-height:1.5;}
-  .cta{
-    margin-top:10px;padding:8px 10px;background:var(--bg-2);
-    border:1px solid var(--line-strong);border-radius:var(--radius-sm);
-    font-size:12.5px;color:var(--ink);
+  .card-header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+  .card-title{font-size:17px;font-weight:700;}
+  .badge{
+    display:inline-flex;align-items:center;gap:6px;padding:5px 10px;
+    border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap;
+    letter-spacing:.02em;
   }
-  .cta b{color:var(--amber);}
+  .b-pmerj{background:rgba(77,156,246,0.18);color:#7BB9FF;border:1px solid rgba(77,156,246,0.28);}
+  .b-basica{background:rgba(60,198,138,0.14);color:#6AE6AD;border:1px solid rgba(60,198,138,0.24);}
+  .b-gcm{background:rgba(245,176,65,0.14);color:#FFD07A;border:1px solid rgba(245,176,65,0.24);}
+  .b-militar{background:rgba(242,107,107,0.14);color:#FF9E9E;border:1px solid rgba(242,107,107,0.24);}
+  .b-aquecimento{background:rgba(138,153,180,0.12);color:#C5D0E1;border:1px solid rgba(138,153,180,0.22);}
+  .b-remarketing{background:rgba(255,255,255,0.06);color:#DDE6F3;border:1px solid rgba(255,255,255,0.12);}
+
+  .section-label{
+    font-size:11px;font-weight:700;color:var(--ink-faint);
+    text-transform:uppercase;letter-spacing:.08em;
+  }
+
+  .meta{display:flex;flex-direction:column;gap:10px;}
+
+  .row{display:grid;grid-template-columns:130px 1fr;gap:10px;align-items:start;}
+  .row .k{
+    color:var(--ink-faint);font-weight:700;font-size:11.5px;
+    text-transform:uppercase;letter-spacing:.06em;padding-top:1px;
+  }
+  .row .v{color:var(--ink);font-size:13.5px;line-height:1.55;}
+  .row .v.highlight{color:#FFD07A;font-weight:600;}
+
+  .copy-block{
+    background:var(--bg-2);border:1px solid var(--line);border-radius:var(--radius-sm);
+    padding:12px;color:var(--ink);font-size:13.5px;line-height:1.6;
+  }
+
+  .cta-row{
+    display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+    background:linear-gradient(180deg,rgba(245,176,65,0.10),rgba(245,176,65,0.04));
+    border:1px solid rgba(245,176,65,0.28);border-radius:var(--radius-sm);
+    padding:12px 14px;
+  }
+  .cta-label{font-size:11.5px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.08em;}
+  .cta-value{color:var(--ink);font-weight:700;font-size:14px;}
+
+  .meta-footer{
+    display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+    color:var(--ink-faint);font-size:12px;
+  }
 
   @media(max-width:900px){
     .shell{flex-direction:column;}
     .sidebar{position:static;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--line);padding:14px 14px;gap:12px;}
     main{padding:18px 16px 50px;max-width:100%;}
+    .row{grid-template-columns:1fr;gap:4px;}
+    .row .k{padding-top:0;}
     .card{padding:14px;}
   }
 </style>
@@ -135,6 +180,7 @@
       <div class="mark">EPQ<span>·</span>Criativos</div>
       <div class="sub">Painel de anúncios</div>
     </div>
+    <div class="sidebar-title">Segmentos</div>
     <nav id="nav">
       <div class="navitem active" data-filter="all"><span class="dot"></span>Todos</div>
       <div class="navitem" data-filter="pmerj"><span class="dot"></span>PMERJ</div>
@@ -153,9 +199,9 @@
       <p>Copy exata, direcionamento criativo e regras de uso por campanha.</p>
     </div>
 
-    <div class="controls">
-      <input type="text" id="searchInput" placeholder="Buscar criativo...">
-      <select id="filterSegment">
+    <div class="toolbar">
+      <input type="text" id="searchInput" class="search" placeholder="Buscar por título, copy ou headline...">
+      <select id="filterSegment" class="select">
         <option value="all">Segmento: todos</option>
         <option value="pmerj">PMERJ</option>
         <option value="basica">Básica</option>
@@ -344,7 +390,6 @@ function render(){
   const f = document.getElementById('filterSegment').value;
   const navActive = document.querySelector('.navitem.active');
   const navFilter = navActive ? navActive.dataset.filter : 'all';
-
   const useFilter = f !== 'all' ? f : navFilter;
 
   const filtered = creatives.filter(c=>{
@@ -360,19 +405,36 @@ function render(){
 
   document.getElementById('grid').innerHTML = filtered.map(c=>`
     <div class="card" data-segment="${esc(c.segment)}">
-      <div class="top">
-        <div class="title">${esc(c.title)}</div>
+      <div class="card-header">
+        <div class="card-title">${esc(c.title)}</div>
         <span class="badge ${esc(c.badge)}">${esc(c.badgeLabel)}</span>
       </div>
+
       <div class="meta">
-        <div class="row"><b>Headline</b><div>${esc(c.headline)}</div></div>
-        <div class="row"><b>Texto da arte</b><div>${esc(c.art)}</div></div>
-        <div class="row"><b>Copy</b><div class="copy">${esc(c.copy)}</div></div>
-        <div class="row"><b>CTA</b><div><b>${esc(c.cta)}</b></div></div>
-        <div class="row"><b>Destino</b><div>${esc(c.destino)}</div></div>
-        <div class="row"><b>Formato</b><div>${esc(c.formatos)}</div></div>
+        <div class="row"><div class="k">Headline</div><div class="v highlight">${esc(c.headline)}</div></div>
+        <div class="row"><div class="k">Texto da arte</div><div class="v">${esc(c.art)}</div></div>
       </div>
-      <div class="cta">Direcionamento: manter data real, não prometer aprovação, sem valores no anúncio, CTA para aula experimental.</div>
+
+      <div>
+        <div class="section-label" style="margin-bottom:8px;">Copy do anúncio</div>
+        <div class="copy-block">${esc(c.copy)}</div>
+      </div>
+
+      <div class="cta-row">
+        <div>
+          <div class="cta-label">CTA</div>
+          <div class="cta-value">${esc(c.cta)}</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="cta-label">Formato</div>
+          <div class="cta-value" style="font-weight:600;">${esc(c.formatos)}</div>
+        </div>
+      </div>
+
+      <div class="meta-footer">
+        <div>Destino: <b style="color:var(--ink-dim);font-weight:600;">${esc(c.destino)}</b></div>
+        <div>Sem valores no anúncio</div>
+      </div>
     </div>
   `).join('');
 }
