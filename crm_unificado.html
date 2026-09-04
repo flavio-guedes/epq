@@ -1,0 +1,3384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRM Ação — Foco em Resultados</title>
+<style>
+  /* ── TOKENS ── */
+  :root {
+    --bg:         #0d1117;
+    --surface:    #161b22;
+    --surface2:   #1c2430;
+    --border:     #2a3441;
+    --border2:    #1e2d3d;
+    --text:       #e6edf3;
+    --muted:      #7d8590;
+    --green:      #3fb950;
+    --green-dim:  #1a3a22;
+    --yellow:     #d29922;
+    --yellow-dim: #3a2c10;
+    --red:        #f85149;
+    --red-dim:    #3a1414;
+    --blue:       #58a6ff;
+    --blue-dim:   #0d2a4a;
+    --purple:     #a371f7;
+    --orange:     #f0883e;
+    --tier1:      #3fb950;
+    --tier2:      #58a6ff;
+    --tier3:      #d29922;
+    --tier4:      #f0883e;
+    --tier5:      #f85149;
+    --tier6:      #7d8590;
+    --font: 'Inter', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER BANNER ── */
+  .header-banner {
+    background: linear-gradient(135deg, #0d1117 0%, #0f1e2e 40%, #091624 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 28px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header-banner::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -60px;
+    width: 300px; height: 180px;
+    background: radial-gradient(ellipse, rgba(63,185,80,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-icon {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--green), #2ea043);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .brand-text h1 {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .brand-text p {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 1px;
+  }
+
+  .brand-text p span {
+    color: var(--green);
+    font-weight: 600;
+  }
+
+  .header-tagline {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+    background: rgba(63,185,80,0.07);
+    border: 1px solid rgba(63,185,80,0.15);
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* ── KPI CARDS ── */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 12px 28px 16px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: border-color 0.15s;
+    cursor: default;
+  }
+
+  .kpi-card:hover { border-color: var(--border2); }
+
+  .kpi-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .kpi-icon.total   { background: rgba(88,166,255,0.12); }
+  .kpi-icon.alto    { background: rgba(63,185,80,0.12); }
+  .kpi-icon.nao     { background: rgba(210,153,34,0.12); }
+  .kpi-icon.revisao { background: rgba(163,113,247,0.12); }
+
+  .kpi-num {
+    font-size: 26px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .kpi-num.total   { color: var(--blue); }
+  .kpi-num.alto    { color: var(--green); }
+  .kpi-num.nao     { color: var(--yellow); }
+  .kpi-num.revisao { color: var(--purple); }
+
+  .kpi-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+
+  /* ── TABS ── */
+  .tabs-bar {
+    display: flex;
+    gap: 0;
+    padding: 0 28px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 11px 16px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+
+  .tab-btn:hover { color: var(--text); }
+
+  .tab-btn.active {
+    color: var(--green);
+    border-bottom-color: var(--green);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ── FILTERS / TOOLBAR ── */
+  .toolbar {
+    display: flex;
+    gap: 8px;
+    padding: 12px 28px;
+    flex-wrap: wrap;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+  }
+
+  .toolbar-search {
+    flex: 1;
+    min-width: 200px;
+    max-width: 320px;
+    position: relative;
+  }
+
+  .toolbar-search input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 13px;
+    padding: 7px 12px 7px 32px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .toolbar-search input:focus { border-color: var(--blue); }
+
+  .toolbar-search::before {
+    content: '🔍';
+    position: absolute;
+    left: 10px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    pointer-events: none;
+  }
+
+  .filter-select {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 13px;
+    padding: 7px 10px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .filter-select:focus { border-color: var(--blue); }
+
+  .btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 7px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn:hover { background: var(--surface2); border-color: var(--muted); }
+
+  .btn-green {
+    background: var(--green-dim);
+    border-color: rgba(63,185,80,0.3);
+    color: var(--green);
+  }
+
+  .btn-green:hover { background: rgba(63,185,80,0.2); }
+
+  .toolbar-right { margin-left: auto; display: flex; gap: 6px; }
+
+  .count-label {
+    font-size: 12px;
+    color: var(--muted);
+    padding: 7px 0;
+    white-space: nowrap;
+  }
+
+  /* ── TABLE ── */
+  .table-wrap {
+    overflow-x: auto;
+    padding: 0 28px 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+  }
+
+  thead th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 10px 10px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  thead th:hover { color: var(--text); }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+
+  tbody tr:hover { background: var(--surface); }
+  tbody tr.expanded { background: var(--surface); }
+
+  tbody td {
+    padding: 10px 10px;
+    vertical-align: middle;
+  }
+
+  .contact-name {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .contact-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  /* ── BADGES ── */
+  .tier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 5px;
+    white-space: nowrap;
+  }
+
+  .tier-1 { background: rgba(63,185,80,0.15);  color: var(--tier1); border: 1px solid rgba(63,185,80,0.25); }
+  .tier-2 { background: rgba(88,166,255,0.15); color: var(--tier2); border: 1px solid rgba(88,166,255,0.25); }
+  .tier-3 { background: rgba(210,153,34,0.15); color: var(--tier3); border: 1px solid rgba(210,153,34,0.25); }
+  .tier-4 { background: rgba(240,136,62,0.15); color: var(--tier4); border: 1px solid rgba(240,136,62,0.25); }
+  .tier-5 { background: rgba(248,81,73,0.15);  color: var(--tier5); border: 1px solid rgba(248,81,73,0.25); }
+  .tier-6 { background: rgba(125,133,144,0.12); color: var(--tier6); border: 1px solid rgba(125,133,144,0.2); }
+
+  .score-pill {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+    font-family: var(--mono);
+    padding: 3px 8px;
+    border-radius: 5px;
+    min-width: 36px;
+    text-align: center;
+  }
+
+  .score-high   { background: rgba(63,185,80,0.15); color: var(--green); }
+  .score-mid    { background: rgba(210,153,34,0.15); color: var(--yellow); }
+  .score-low    { background: rgba(248,81,73,0.12); color: var(--red); }
+
+  .prio-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 5px;
+    white-space: nowrap;
+  }
+
+  .prio-alta   { background: var(--green-dim);  color: var(--green);  border: 1px solid rgba(63,185,80,0.25); }
+  .prio-media  { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(210,153,34,0.25); }
+  .prio-baixa  { background: rgba(125,133,144,0.1); color: var(--muted); border: 1px solid var(--border); }
+
+  .status-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-right: 5px;
+    flex-shrink: 0;
+  }
+
+  .status-dot.green  { background: var(--green); box-shadow: 0 0 4px var(--green); }
+  .status-dot.yellow { background: var(--yellow); box-shadow: 0 0 4px var(--yellow); }
+  .status-dot.gray   { background: var(--muted); }
+
+  /* ── ACTION BUTTONS (table inline) ── */
+  .action-btns {
+    display: flex;
+    gap: 4px;
+    flex-wrap: nowrap;
+  }
+
+  .act-btn {
+    width: 28px; height: 28px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    transition: all 0.12s;
+    text-decoration: none;
+    color: var(--text);
+  }
+
+  .act-btn:hover { background: var(--surface2); transform: scale(1.1); }
+  .act-btn.email:hover  { border-color: var(--blue); color: var(--blue); }
+  .act-btn.whats:hover  { border-color: var(--green); color: var(--green); }
+  .act-btn.linkedin:hover { border-color: #0a66c2; color: #0a66c2; }
+
+  /* ── EXPANDED ROW ── */
+  .expand-row td {
+    padding: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .expand-panel {
+    background: var(--surface2);
+    padding: 16px 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  .expand-section h4 {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .expand-detail {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  .expand-detail strong {
+    color: var(--muted);
+    font-weight: 500;
+    display: inline-block;
+    min-width: 100px;
+  }
+
+  .nota-quick {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .nota-quick input {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 12px;
+    padding: 6px 10px;
+    outline: none;
+  }
+
+  .nota-quick input:focus { border-color: var(--blue); }
+
+  .nota-quick button {
+    background: var(--blue-dim);
+    border: 1px solid rgba(88,166,255,0.3);
+    border-radius: 6px;
+    color: var(--blue);
+    font-size: 12px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-family: var(--font);
+  }
+
+  /* ── PAGINATION ── */
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 16px 28px;
+    border-top: 1px solid var(--border);
+  }
+
+  .page-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 12px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+
+  .page-btn:hover:not(:disabled) { border-color: var(--blue); color: var(--blue); }
+  .page-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .page-btn.current { background: var(--blue-dim); border-color: rgba(88,166,255,0.4); color: var(--blue); }
+
+  .page-info {
+    font-size: 12px;
+    color: var(--muted);
+    padding: 0 8px;
+  }
+
+  /* ── REVISÃO TAB ── */
+  .review-list {
+    padding: 16px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .review-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--yellow);
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .review-card.suspect { border-left-color: var(--red); }
+
+  .review-info { flex: 1; min-width: 0; }
+  .review-name { font-weight: 600; font-size: 13px; }
+  .review-sub  { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .review-motivo {
+    font-size: 11px;
+    margin-top: 5px;
+    background: var(--yellow-dim);
+    color: var(--yellow);
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  .review-motivo.red { background: var(--red-dim); color: var(--red); }
+
+  .review-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+  .rev-btn {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid;
+    font-family: var(--font);
+    transition: all 0.12s;
+  }
+
+  .rev-btn.confirm { background: var(--green-dim); border-color: rgba(63,185,80,0.3); color: var(--green); }
+  .rev-btn.discard { background: var(--red-dim); border-color: rgba(248,81,73,0.3); color: var(--red); }
+  .rev-btn.mark    { background: var(--blue-dim); border-color: rgba(88,166,255,0.3); color: var(--blue); }
+
+  /* ── FONTES TAB ── */
+  .fonte-grid {
+    padding: 16px 28px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+
+  .fonte-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    cursor: pointer;
+    transition: border-color 0.15s, transform 0.1s;
+  }
+
+  .fonte-card:hover { border-color: var(--blue); transform: translateY(-1px); }
+  .fonte-card.active-source { border-color: var(--green); }
+
+  .fonte-icon { font-size: 24px; margin-bottom: 10px; }
+  .fonte-name { font-weight: 700; font-size: 14px; }
+  .fonte-count { font-size: 28px; font-weight: 800; color: var(--blue); margin: 6px 0 2px; }
+  .fonte-pct { font-size: 12px; color: var(--muted); }
+
+  .fonte-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+
+  .fonte-bar-fill {
+    height: 100%;
+    background: var(--green);
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+
+  .fonte-detail {
+    padding: 0 28px 20px;
+    display: none;
+  }
+
+  .fonte-detail.visible { display: block; }
+  .fonte-detail h3 { font-size: 14px; margin-bottom: 12px; color: var(--text); }
+
+  /* ── DOMÍNIOS TAB ── */
+  .dom-toolbar {
+    display: flex;
+    gap: 8px;
+    padding: 12px 28px;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dom-toolbar label { font-size: 12px; color: var(--muted); }
+
+  .dom-toolbar input[type="number"] {
+    width: 70px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 13px;
+    padding: 6px 8px;
+    outline: none;
+    font-family: var(--mono);
+  }
+
+  /* ── TIER DISTRIBUTION ── */
+  .tier-dist {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+  }
+
+  .tier-dot {
+    height: 16px;
+    border-radius: 3px;
+    min-width: 4px;
+    transition: width 0.2s;
+  }
+
+  /* ── COPY TOAST ── */
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--surface2);
+    border: 1px solid var(--green);
+    color: var(--green);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 8px;
+    display: none;
+    z-index: 9999;
+    animation: none;
+  }
+
+  #toast.show {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    animation: fadeInOut 2s forwards;
+  }
+
+  @keyframes fadeInOut {
+    0%   { opacity: 0; transform: translateY(10px); }
+    15%  { opacity: 1; transform: translateY(0); }
+    75%  { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+  }
+
+  .empty-state .es-icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-state p { font-size: 14px; }
+
+  /* ── MESSAGES TAB ── */
+  .msg-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin: 12px 28px;
+  }
+
+  .msg-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .msg-group-name {
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .msg-meta {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .msg-template {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 13px;
+    color: var(--text);
+    margin: 10px 0;
+    white-space: pre-wrap;
+  }
+
+  .msg-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .msg-row:last-child { border-bottom: none; }
+  .msg-name { font-weight: 600; font-size: 13px; min-width: 180px; }
+  .msg-email { font-family: var(--mono); font-size: 12px; color: var(--text); word-break: break-all; }
+
+  .msg-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 6px;
+  }
+
+  .copy-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+
+  .copy-btn:hover { border-color: var(--green); color: var(--green); }
+
+  /* ── SEQUÊNCIAS TAB ── */
+  .seq-step {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+
+  .seq-step-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .seq-step-title {
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  .seq-message {
+    font-size: 13px;
+    color: var(--text);
+    white-space: pre-wrap;
+  }
+
+  .seq-steps {
+    margin-top: 8px;
+  }
+
+  /* ── FOLLOW-UPS TAB ── */
+  .fu-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin: 12px 28px;
+  }
+
+  .fu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .fu-title {
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .fu-meta {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .fu-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .fu-row:last-child { border-bottom: none; }
+  .fu-name { font-weight: 600; font-size: 13px; min-width: 160px; }
+  .fu-company { font-size: 12px; color: var(--muted); }
+  .fu-badge { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 5px; white-space: nowrap; }
+
+  .fu-actions { margin-left: auto; display: flex; gap: 6px; }
+
+  .timeline {
+    margin-top: 10px;
+    padding-left: 14px;
+    border-left: 2px solid var(--border);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding: 6px 0;
+    font-size: 12px;
+    color: var(--text);
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -18px;
+    top: 10px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--blue);
+  }
+
+  .timeline-date {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .header-top { gap: 8px; }
+    .expand-panel { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .kpi-row { grid-template-columns: 1fr 1fr; padding: 10px 14px; }
+    .toolbar, .table-wrap, .review-list, .fonte-grid, .fonte-detail, .pagination {
+      padding-left: 14px; padding-right: 14px;
+    }
+    .tabs-bar { padding: 0 14px; overflow-x: auto; }
+    .header-banner { padding: 14px 14px 10px; }
+    .expand-panel { grid-template-columns: 1fr; }
+    .header-tagline { display: none; }
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+  /* ── UTILITY ── */
+  .flex-center { display: flex; align-items: center; }
+  .gap-4 { gap: 4px; }
+  .text-muted { color: var(--muted); }
+  .text-green { color: var(--green); }
+  .text-yellow { color: var(--yellow); }
+  .text-red { color: var(--red); }
+  .nowrap { white-space: nowrap; }
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    padding: 12px 28px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── KANBAN ── */
+  .kanban-wrap {
+    padding: 16px 28px;
+    overflow-x: auto;
+  }
+
+  .kanban-board {
+    display: flex;
+    gap: 12px;
+    min-width: 100%;
+  }
+
+  .kanban-column {
+    flex: 0 0 260px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 180px);
+  }
+
+  .kanban-header {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .kanban-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text);
+  }
+
+  .kanban-count {
+    font-size: 11px;
+    font-weight: 800;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 12px;
+    color: var(--muted);
+  }
+
+  .kanban-body {
+    padding: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .kanban-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    cursor: grab;
+    transition: all 0.12s;
+  }
+
+  .kanban-card:hover {
+    border-color: var(--border2);
+    transform: translateY(-1px);
+  }
+
+  .kanban-card.dragging {
+    opacity: 0.5;
+    cursor: grabbing;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .card-name {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .card-meta {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .card-context {
+    font-size: 12px;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .card-badges {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  .kanban-footer {
+    padding: 10px 12px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 6px;
+  }
+
+  .kanban-footer .btn {
+    flex: 1;
+    font-size: 11px;
+    padding: 5px;
+  }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+
+  .modal-overlay.visible {
+    display: flex;
+  }
+
+  .modal {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    max-width: 720px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: auto;
+    padding: 18px;
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .modal-title {
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .modal-sub {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .detail-item {
+    font-size: 12px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .detail-item strong {
+    color: var(--muted);
+    font-weight: 500;
+    display: inline-block;
+    min-width: 110px;
+  }
+
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  textarea {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 12px;
+    padding: 10px;
+    outline: none;
+    min-height: 80px;
+    resize: vertical;
+  }
+
+  textarea:focus {
+    border-color: var(--blue);
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER BANNER ── -->
+<div class="header-banner" style="position:relative; overflow:hidden;">
+  <img src="./Capa CRM Acao.png" alt="Capa CRM Ação" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; opacity:0.25; pointer-events:none; z-index:0;" />
+  <div class="header-top" style="position:relative; z-index:1;">
+    <div class="brand">
+      <div class="brand-icon">🎯</div>
+      <div class="brand-text">
+        <h1>CRM Ação</h1>
+        <p>Foco em relacionamentos. <span>Resultados em oportunidades.</span></p>
+      </div>
+    </div>
+    <div class="header-tagline">Abra e saiba o que fazer agora.</div>
+  </div>
+</div>
+
+<!-- ── KPI CARDS ── -->
+<div class="kpi-row" id="kpi-row">
+  <!-- preenchido via JS -->
+</div>
+
+<!-- ── TABS ── -->
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="switchTab('top')">⚡ Top Ação</button>
+  <button class="tab-btn" onclick="switchTab('revisao')">🔍 Revisão</button>
+  <button class="tab-btn" onclick="switchTab('fontes')">📊 Por Fonte</button>
+  <button class="tab-btn" onclick="switchTab('dominios')">🌐 Domínios</button>
+  <button class="tab-btn" onclick="switchTab('mensagens')">✉️ Mensagens</button>
+  <button class="tab-btn" onclick="switchTab('sequencias')">🔁 Sequências</button>
+  <button class="tab-btn" onclick="switchTab('followups')">📋 Follow-ups</button>
+  <button class="tab-btn" onclick="switchTab('listas')">📋 Listas</button>
+  <button class="tab-btn" onclick="switchTab('kanban')">🎯 Kanban</button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB: SEQUÊNCIAS
+══════════════════════════════════════════ -->
+<div class="tab-content" id="tab-sequencias">
+  <div class="toolbar">
+    <div class="toolbar-search">
+      <input type="text" id="search-seq" placeholder="Buscar grupo, etapa ou mensagem…" oninput="renderSequencias()">
+    </div>
+    <span class="count-label" id="seq-count">—</span>
+  </div>
+  <div id="sequencias-container"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB: FOLLOW-UPS
+══════════════════════════════════════════ -->
+<div class="tab-content" id="tab-followups">
+  <div class="toolbar">
+    <div class="toolbar-search">
+      <input type="text" id="search-fu" placeholder="Buscar nome, empresa, e-mail ou etapa…" oninput="renderFollowups()">
+    </div>
+    <select class="filter-select" id="fu-tier" onchange="renderFollowups()">
+      <option value="">Todos os Tiers</option>
+      <option value="1">Tier 1</option>
+      <option value="2">Tier 2</option>
+      <option value="3">Tier 3</option>
+      <option value="4">Tier 4</option>
+      <option value="5">Tier 5 / Descarte</option>
+      <option value="6">Tier 6</option>
+    </select>
+    <select class="filter-select" id="fu-status" onchange="renderFollowups()">
+      <option value="">Todos os status</option>
+      <option value="nao_contatado">Não contatado</option>
+      <option value="aguardando_resposta">Aguardando resposta</option>
+      <option value="respondeu">Respondeu</option>
+      <option value="em_conversa">Em conversa</option>
+      <option value="reuniao_agendada">Reunião agendada</option>
+      <option value="proposta_enviada">Proposta enviada</option>
+      <option value="convertido">Convertido</option>
+      <option value="sem_interesse">Sem interesse</option>
+      <option value="arquivado">Arquivado</option>
+    </select>
+    <span class="count-label" id="fu-count">—</span>
+  </div>
+  <div id="followups-kpi" class="kpi-row"></div>
+  <div class="table-wrap">
+    <table id="table-followups">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Empresa</th>
+          <th>Tier</th>
+          <th>Status</th>
+          <th>Etapa</th>
+          <th>Último contato</th>
+          <th>Próximo follow-up</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="tbody-followups"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB: MENSAGENS
+══════════════════════════════════════════ -->
+<div class="tab-content" id="tab-mensagens">
+  <div class="toolbar">
+    <div class="toolbar-search">
+      <input type="text" id="search-msg" placeholder="Buscar grupo, abordagem ou e-mail…" oninput="renderMensagens()">
+    </div>
+    <span class="count-label" id="msg-count">—</span>
+  </div>
+  <div id="mensagens-container"></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     TAB: TOP AÇÃO
+══════════════════════════════════════════ -->
+<div class="tab-content active" id="tab-top">
+  <div class="toolbar">
+    <div class="toolbar-search">
+      <input type="text" id="search-top" placeholder="Buscar nome, e-mail ou empresa…" oninput="renderTop()">
+    </div>
+    <select class="filter-select" id="fil-tier" onchange="renderTop()">
+      <option value="">Todos os Tiers</option>
+      <option value="1">Tier 1</option>
+      <option value="2">Tier 2</option>
+      <option value="3">Tier 3</option>
+      <option value="4">Tier 4</option>
+      <option value="5">Tier 5</option>
+      <option value="6">Tier 6</option>
+    </select>
+    <select class="filter-select" id="fil-prio" onchange="renderTop()">
+      <option value="">Toda prioridade</option>
+      <option value="Alta">Alta</option>
+      <option value="Média">Média</option>
+      <option value="Baixa">Baixa</option>
+    </select>
+    <select class="filter-select" id="fil-fonte" onchange="renderTop()">
+      <option value="">Toda fonte</option>
+    </select>
+    <select class="filter-select" id="fil-status" onchange="renderTop()">
+      <option value="">Todo status</option>
+      <option value="nao">Não contatados</option>
+      <option value="sim">Contatados</option>
+    </select>
+    <div class="toolbar-right">
+      <span class="count-label" id="count-label">—</span>
+      <button class="btn btn-green" onclick="exportCSV()">⬇ CSV</button>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table id="table-top">
+      <thead>
+        <tr>
+          <th onclick="sortTable('nome')">Nome ↕</th>
+          <th onclick="sortTable('empresa')">Empresa ↕</th>
+          <th>Tier</th>
+          <th onclick="sortTable('score_composto')">Score ↕</th>
+          <th>Prioridade</th>
+          <th>Status</th>
+          <th>Ação sugerida</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="tbody-top"></tbody>
+    </table>
+  </div>
+
+  <div class="pagination" id="pagination"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB: REVISÃO
+══════════════════════════════════════════ -->
+<div class="tab-content" id="tab-revisao">
+  <div class="toolbar">
+    <div class="toolbar-search">
+      <input type="text" id="search-rev" placeholder="Buscar…" oninput="renderRevisao()">
+    </div>
+    <span class="count-label" id="rev-count">—</span>
+  </div>
+  <div class="review-list" id="review-list"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB: POR FONTE
+══════════════════════════════════════════ -->
+<div class="tab-content" id="tab-fontes">
+  <div class="fonte-grid" id="fonte-grid"></div>
+  <div class="fonte-detail" id="fonte-detail">
+    <h3 id="fonte-detail-title"></h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th><th>Cargo</th><th>Empresa</th><th>Tier</th><th>Score</th><th>Prioridade</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-fonte"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB: DOMÍNIOS
+══════════════════════════════════════════ -->
+<div class="tab-content" id="tab-dominios">
+  <div class="dom-toolbar">
+    <label>Mín. contatos:</label>
+    <input type="number" id="dom-min" value="1" min="1" oninput="renderDominios()">
+    <div class="toolbar-search" style="max-width:200px">
+      <input type="text" id="dom-search" placeholder="Filtrar domínio…" oninput="renderDominios()">
+    </div>
+    <span class="count-label" id="dom-count">—</span>
+  </div>
+  <div class="table-wrap">
+    <table id="table-dom">
+      <thead>
+        <tr>
+          <th>Domínio</th>
+          <th>Qtd</th>
+          <th>Distribuição por Tier</th>
+          <th>Tier Principal</th>
+        </tr>
+      </thead>
+      <tbody id="tbody-dom"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB: LISTAS
+══════════════════════════════════════════ -->
+<div class="tab-content" id="tab-listas">
+  <div class="toolbar">
+    <div class="toolbar-search">
+      <input type="text" id="search-listas" placeholder="Buscar nome, empresa, cargo ou e-mail..." oninput="renderListas()">
+    </div>
+    <select class="filter-select" id="lis-tier" onchange="renderListas()">
+      <option value="">Tier: Todos</option>
+      <option value="1">Tier 1</option>
+      <option value="2">Tier 2</option>
+      <option value="3">Tier 3</option>
+      <option value="4">Tier 4</option>
+      <option value="5">Tier 5</option>
+      <option value="6">Tier 6</option>
+      <option value="7">Tier 7</option>
+      <option value="8">Tier 8</option>
+    </select>
+    <select class="filter-select" id="lis-subtipo" onchange="renderListas()">
+      <option value="">Subtipo: Todos</option>
+    </select>
+    <select class="filter-select" id="lis-prio" onchange="renderListas()">
+      <option value="">Prioridade: Todas</option>
+      <option value="Alta">Alta</option>
+      <option value="Média">Média</option>
+      <option value="Baixa">Baixa</option>
+    </select>
+    <select class="filter-select" id="lis-status" onchange="renderListas()">
+      <option value="">Status: Todos</option>
+      <option value="Pendente">Pendente</option>
+      <option value="Selecionado">Selecionado</option>
+      <option value="Enviado">Enviado</option>
+      <option value="Retorno OK">Retorno OK</option>
+      <option value="Sem resposta">Sem resposta</option>
+      <option value="Ganho">Ganho</option>
+      <option value="Perdido">Perdido</option>
+    </select>
+    <div class="toolbar-right">
+      <span class="count-label" id="listas-count">—</span>
+      <button class="btn btn-green" onclick="openModalNovoLead()">＋ Novo Lead</button>
+      <button class="btn" onclick="openModalNovaConversa()">💬 Nova Conversa</button>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table id="table-listas">
+      <thead>
+        <tr>
+          <th style="width:40px"></th>
+          <th>Nome</th>
+          <th>Empresa</th>
+          <th>Cargo</th>
+          <th>E-mail</th>
+          <th>Tier</th>
+          <th>Subtipo</th>
+          <th>Prioridade</th>
+          <th>Status</th>
+          <th>Kanban</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="tbody-listas"></tbody>
+    </table>
+  </div>
+  <div class="pagination" id="listas-pagination"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     TAB: KANBAN
+══════════════════════════════════════════ -->
+<div class="tab-content" id="tab-kanban">
+  <div class="toolbar">
+    <div class="toolbar-search">
+      <input type="text" id="search-kanban" placeholder="Buscar nome, empresa ou cargo…" oninput="renderKanban()">
+    </div>
+    <select class="filter-select" id="kan-tier" onchange="renderKanban()">
+      <option value="">Todos os Tiers</option>
+      <option value="2">Tier 2</option>
+      <option value="3">Tier 3</option>
+      <option value="4">Tier 4</option>
+      <option value="5">Tier 5</option>
+      <option value="6">Tier 6</option>
+    </select>
+    <select class="filter-select" id="kan-prio" onchange="renderKanban()">
+      <option value="">Toda prioridade</option>
+      <option value="Alta">Alta</option>
+      <option value="Média">Média</option>
+      <option value="Baixa">Baixa</option>
+    </select>
+    <div class="toolbar-right">
+      <button class="btn btn-green" onclick="openModalNovoLead()">＋ Novo Lead</button>
+      <button class="btn" onclick="openModalNovaConversa()">💬 Nova Conversa</button>
+      <button class="btn" onclick="abrirRadar()">📡 Radar</button>
+      <span class="count-label" id="kanban-count">—</span>
+      <button class="btn" onclick="resetKanban()">Resetar estágios</button>
+    </div>
+  </div>
+  <div class="kanban-wrap">
+    <div class="kanban-board" id="kanban-board"></div>
+  </div>
+</div>
+
+<!-- ── TOAST ── -->
+<div id="toast">✓ <span id="toast-msg"></span></div>
+
+<!-- ══════════════════════════════════════════
+     DADOS DE EXEMPLO
+     Para substituir: edite o array CONTACTS abaixo
+     ou carregue via fetch('./meus_contatos.json')
+══════════════════════════════════════════ -->
+<script>
+// ╔══════════════════════════════════════════════╗
+// ║  DADOS — substitua este array pelo seu JSON  ║
+// ╚══════════════════════════════════════════════╝
+const CONTACTS = [
+  { nome:"Rafael Martins", email:"rafael.martins@techsolutions.com.br", telefone:"(11) 99100-0001", whatsapp:"5511991000001", empresa:"TechSolutions", cargo:"Diretor de TI", fonte:"LinkedIn", tier:1, categoria:"Decisor", score:92, score_composto:95, ultima_interacao:"", data_contato:"", motivo_classificacao:"Alto cargo + empresa B2B de grande porte", tipo_abordagem:"Executivo", acao_sugerida:"Enviar proposta customizada", prioridade:"Alta", linkedin_url:"https://linkedin.com/in/rafael-martins", trecho:"Ativo no LinkedIn, curtiu posts sobre transformação digital", terceiro:"" },
+  { nome:"Juliana Santos", email:"juliana@inovadigital.com.br", telefone:"(11) 98200-0002", whatsapp:"5511982000002", empresa:"InovaDigital", cargo:"Gerente de Marketing", fonte:"LinkedIn", tier:2, categoria:"Influenciador", score:88, score_composto:90, ultima_interacao:"2026-07-10", data_contato:"2026-07-10", motivo_classificacao:"Gerou 3 leads via indicação", tipo_abordagem:"Consultivo", acao_sugerida:"Follow-up pós-reunião", prioridade:"Alta", linkedin_url:"https://linkedin.com/in/juliana-santos", trecho:"Participou de webinar sobre growth hacking", terceiro:"Marcos Brito" },
+  { nome:"Carlos Eduardo", email:"carlos@educastsoft.com.br", telefone:"(11) 97300-0003", whatsapp:"5511973000003", empresa:"EducaSoft", cargo:"CEO", fonte:"Agencias_SP", tier:1, categoria:"Decisor", score:83, score_composto:88, ultima_interacao:"", data_contato:"", motivo_classificacao:"CEO com budget para 2026", tipo_abordagem:"Executivo", acao_sugerida:"Agendar call de diagnóstico", prioridade:"Alta", linkedin_url:"https://linkedin.com/in/carlos-eduardo", trecho:"Empresa em expansão, anunciou abertura de 2 filiais", terceiro:"" },
+  { nome:"Fernanda Lima", email:"fernanda@logitrack.com.br", telefone:"(11) 96400-0004", whatsapp:"5511964000004", empresa:"LogiTrack", cargo:"Head de Operações", fonte:"WhatsApp", tier:2, categoria:"Usuário Chave", score:78, score_composto:82, ultima_interacao:"2026-08-01", data_contato:"2026-08-01", motivo_classificacao:"Avaliou produto há 30 dias, não comprou", tipo_abordagem:"Nurturing", acao_sugerida:"Enviar caso de sucesso similar", prioridade:"Alta", linkedin_url:"", trecho:"Perguntou sobre integração com SAP", terceiro:"" },
+  { nome:"Bruno Almeida", email:"bruno@colegioprogressa.com.br", telefone:"(11) 95500-0005", whatsapp:"5511955000005", empresa:"Colégio Progresso", cargo:"Coordenador", fonte:"Escolas_Jac", tier:3, categoria:"Usuário", score:65, score_composto:67, ultima_interacao:"", data_contato:"", motivo_classificacao:"Interesse em módulo educacional", tipo_abordagem:"Produto", acao_sugerida:"Enviar material educativo", prioridade:"Média", linkedin_url:"", trecho:"Pediu demo do módulo de turmas", terceiro:"" },
+  { nome:"Aline Ferreira", email:"aline.ferreira@nextech.io", telefone:"(11) 94600-0006", whatsapp:"5511946000006", empresa:"NexTech", cargo:"CTO", fonte:"LinkedIn", tier:1, categoria:"Decisor", score:91, score_composto:93, ultima_interacao:"", data_contato:"", motivo_classificacao:"CTO de startup série B, stack compatível", tipo_abordagem:"Técnico", acao_sugerida:"Conectar via LinkedIn e propor POC", prioridade:"Alta", linkedin_url:"https://linkedin.com/in/aline-ferreira-cto", trecho:"Postou sobre dor em integração de APIs", terceiro:"" },
+  { nome:"Ricardo Vasconcelos", email:"rvasconcelos@alpha.com.br", telefone:"(11) 93700-0007", whatsapp:"5511937000007", empresa:"Alpha Consultoria", cargo:"Sócio-Diretor", fonte:"Controle_Leads", tier:2, categoria:"Decisor", score:85, score_composto:87, ultima_interacao:"2026-06-15", data_contato:"2026-06-15", motivo_classificacao:"Solicitou orçamento mas não retornou", tipo_abordagem:"Executivo", acao_sugerida:"Ligar + e-mail de recuperação", prioridade:"Alta", linkedin_url:"https://linkedin.com/in/rvasconcelos", trecho:"Viu proposta, disse que estava avaliando 3 opções", terceiro:"" },
+  { nome:"Mariana Couto", email:"mariana@biosense.com.br", telefone:"(11) 92800-0008", whatsapp:"5511928000008", empresa:"BioSense", cargo:"Gerente Comercial", fonte:"Captacao_Recursos", tier:2, categoria:"Influenciador", score:76, score_composto:79, ultima_interacao:"", data_contato:"", motivo_classificacao:"Empresa recebeu rodada seed em julho", tipo_abordagem:"Comercial", acao_sugerida:"Apresentar ROI do produto", prioridade:"Alta", linkedin_url:"", trecho:"", terceiro:"" },
+  { nome:"Diego Tavares", email:"diego@speedlog.com.br", telefone:"(11) 91900-0009", whatsapp:"5511919000009", empresa:"SpeedLog", cargo:"Analista Sênior", fonte:"WhatsApp", tier:4, categoria:"Operacional", score:52, score_composto:55, ultima_interacao:"2026-08-20", data_contato:"2026-08-20", motivo_classificacao:"Usuário operacional sem poder de compra", tipo_abordagem:"Suporte", acao_sugerida:"Mapear decisor acima dele", prioridade:"Baixa", linkedin_url:"", trecho:"", terceiro:"" },
+  { nome:"Patrícia Nogueira", email:"patricia@edukreativo.com.br", telefone:"(11) 90100-0010", whatsapp:"5511901000010", empresa:"EduKreativo", cargo:"Diretora Pedagógica", fonte:"Escolas_Jac", tier:2, categoria:"Decisor", score:80, score_composto:83, ultima_interacao:"", data_contato:"", motivo_classificacao:"Rede de 5 escolas, expansão confirmada", tipo_abordagem:"Consultivo", acao_sugerida:"Apresentar piloto gratuito 30 dias", prioridade:"Alta", linkedin_url:"https://linkedin.com/in/patricia-nogueira-edu", trecho:"Participou de encontro de diretores em julho", terceiro:"Claudia Ramos" },
+  { nome:"Lucas Fonseca", email:"lucas@fonseca.com.br", telefone:"", whatsapp:"", empresa:"Fonseca Advogados", cargo:"", fonte:"Controle_Leads", tier:5, categoria:"Desconhecida", score:0, score_composto:0, ultima_interacao:"", data_contato:"", motivo_classificacao:"Sem cargo, sem contato, sem histórico", tipo_abordagem:"Descarte", acao_sugerida:"Validar ou descartar", prioridade:"Baixa", linkedin_url:"", trecho:"", terceiro:"" },
+  { nome:"Camila Rodrigues", email:"camila@saudeweb.com.br", telefone:"(11) 88200-0012", whatsapp:"5511882000012", empresa:"SaúdeWeb", cargo:"Product Manager", fonte:"LinkedIn", tier:2, categoria:"Influenciador", score:74, score_composto:77, ultima_interacao:"2026-07-28", data_contato:"2026-07-28", motivo_classificacao:"PM com influência direta no budget de ferramentas", tipo_abordagem:"Produto", acao_sugerida:"Demo da funcionalidade X", prioridade:"Média", linkedin_url:"https://linkedin.com/in/camila-rodrigues-pm", trecho:"Curtiu 4 posts sobre product-led growth", terceiro:"" },
+  { nome:"Thiago Melo", email:"thiago@melo-arquitetura.com.br", telefone:"(11) 87300-0013", whatsapp:"5511873000013", empresa:"Melo Arquitetura", cargo:"Sócio", fonte:"Agencias_SP", tier:3, categoria:"Decisor", score:63, score_composto:65, ultima_interacao:"", data_contato:"", motivo_classificacao:"Pequena empresa com potencial de crescimento", tipo_abordagem:"Consultivo", acao_sugerida:"Enviar estudo de caso setor de arquitetura", prioridade:"Média", linkedin_url:"", trecho:"", terceiro:"" },
+  { nome:"Sandra Lopes", email:"sandra@grupoatlantis.com.br", telefone:"(11) 86400-0014", whatsapp:"5511864000014", empresa:"Grupo Atlantis", cargo:"VP de Vendas", fonte:"Captacao_Recursos", tier:1, categoria:"Decisor", score:89, score_composto:92, ultima_interacao:"", data_contato:"", motivo_classificacao:"VP com meta de crescimento de 40% em 2026", tipo_abordagem:"Executivo", acao_sugerida:"Solicitar 15min via LinkedIn InMail", prioridade:"Alta", linkedin_url:"https://linkedin.com/in/sandra-lopes-vp", trecho:"Empresa anunciou fusão com grupo americano", terceiro:"" },
+  { nome:"Eduardo Costa", email:"eduardo@costasistemas.com", telefone:"(11) 85500-0015", whatsapp:"5511855000015", empresa:"Costa Sistemas", cargo:"CEO", fonte:"Controle_Leads", tier:3, categoria:"Decisor", score:70, score_composto:72, ultima_interacao:"2026-05-10", data_contato:"2026-05-10", motivo_classificacao:"Lead antigo, precisa de reaquecimento", tipo_abordagem:"Nurturing", acao_sugerida:"E-mail de reaquecimento + novidade do produto", prioridade:"Média", linkedin_url:"", trecho:"Disse que voltaria no Q3", terceiro:"" },
+  { nome:"Isabela Nunes", email:"isabela@nunes.edu.br", telefone:"(11) 84600-0016", whatsapp:"5511846000016", empresa:"Colégio Nunes", cargo:"Diretora Geral", fonte:"Escolas_Jac", tier:2, categoria:"Decisor", score:81, score_composto:84, ultima_interacao:"", data_contato:"", motivo_classificacao:"Rede com 8 unidades, budget aprovado", tipo_abordagem:"Executivo", acao_sugerida:"Agendar visita presencial", prioridade:"Alta", linkedin_url:"", trecho:"Participou de feira de educação em agosto", terceiro:"" },
+  { nome:"Felipe Gomes", email:"felipe@gomesgroup.com.br", telefone:"(11) 83700-0017", whatsapp:"5511837000017", empresa:"Gomes Group", cargo:"COO", fonte:"LinkedIn", tier:2, categoria:"Decisor", score:79, score_composto:81, ultima_interacao:"2026-08-10", data_contato:"2026-08-10", motivo_classificacao:"COO com dor mapeada em operações", tipo_abordagem:"Técnico", acao_sugerida:"Enviar whitepaper de eficiência operacional", prioridade:"Alta", linkedin_url:"https://linkedin.com/in/felipe-gomes-coo", trecho:"Comentou em post sobre redução de custos operacionais", terceiro:"" },
+  { nome:"Ana Paula Silva", email:"anapaula@silvatech.com.br", telefone:"", whatsapp:"5511829000018", empresa:"SilvaTech", cargo:"Analista de TI", fonte:"WhatsApp", tier:5, categoria:"Operacional", score:30, score_composto:32, ultima_interacao:"", data_contato:"", motivo_classificacao:"Cargo operacional, sem histórico de compra", tipo_abordagem:"Descarte", acao_sugerida:"Identificar gestor", prioridade:"Baixa", linkedin_url:"", trecho:"", terceiro:"" },
+  { nome:"Roberto Pinheiro", email:"roberto@pinheiro-legal.adv.br", telefone:"(11) 81000-0019", whatsapp:"5511810000019", empresa:"Pinheiro Legal", cargo:"Advogado Sênior", fonte:"Captacao_Recursos", tier:4, categoria:"Usuário", score:48, score_composto:50, ultima_interacao:"", data_contato:"", motivo_classificacao:"Setor jurídico fora do ICP principal", tipo_abordagem:"Produto", acao_sugerida:"Enviar landing page e aguardar", prioridade:"Baixa", linkedin_url:"", trecho:"", terceiro:"" },
+  { nome:"Gabriela Cardoso", email:"gabriela@cardosocomm.com.br", telefone:"(11) 80100-0020", whatsapp:"5511801000020", empresa:"Cardoso Comm", cargo:"Diretora de Conteúdo", fonte:"LinkedIn", tier:3, categoria:"Influenciador", score:68, score_composto:70, ultima_interacao:"2026-07-22", data_contato:"2026-07-22", motivo_classificacao:"Agência de conteúdo com clientes Tier 1", tipo_abordagem:"Parceria", acao_sugerida:"Propor parceria de indicação", prioridade:"Média", linkedin_url:"https://linkedin.com/in/gabriela-cardoso", trecho:"Postou sobre ferramentas que usa com clientes", terceiro:"" }
+];
+
+// ── ESTADO GLOBAL ── 
+let filtered = [];
+let sortField = 'score_composto';
+let sortDir = -1;
+let currentPage = 1;
+const PAGE_SIZE = 50;
+let expandedRow = null;
+let activeSource = null;
+
+// ── INICIALIZAÇÃO ──
+window.onload = () => {
+  populateFonteFilter();
+  renderKPIs();
+  renderTop();
+  renderRevisao();
+  renderFontes();
+  renderDominios();
+  renderMensagens();
+  renderSequencias();
+  renderFollowups();
+  renderKanban();
+};
+
+// ── KPIs ──
+function renderKPIs() {
+  const total = CONTACTS.length;
+  const altoPotencial = CONTACTS.filter(c => c.tier <= 2).length;
+  const naoContatados = CONTACTS.filter(c => !c.data_contato || c.data_contato === '').length;
+  const revisao = CONTACTS.filter(c => needsReview(c)).length;
+
+  document.getElementById('kpi-row').innerHTML = `
+    <div class="kpi-card">
+      <div class="kpi-icon total">👥</div>
+      <div>
+        <div class="kpi-num total">${total.toLocaleString('pt-BR')}</div>
+        <div class="kpi-label">Total Contatos</div>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon alto">⭐</div>
+      <div>
+        <div class="kpi-num alto">${altoPotencial}</div>
+        <div class="kpi-label">Alto Potencial (T1+2)</div>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon nao">🔔</div>
+      <div>
+        <div class="kpi-num nao">${naoContatados}</div>
+        <div class="kpi-label">Não Contatados</div>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon revisao">📋</div>
+      <div>
+        <div class="kpi-num revisao">${revisao}</div>
+        <div class="kpi-label">Revisão Pendente</div>
+      </div>
+    </div>
+  `;
+}
+
+// ── HELPERS ──
+function needsReview(c) {
+  return !c.cargo || c.score === 0 || (c.tier <= 2 && c.score_composto < 30);
+}
+
+function scoreClass(s) {
+  if (s >= 75) return 'score-high';
+  if (s >= 50) return 'score-mid';
+  return 'score-low';
+}
+
+function prioClass(p) {
+  if (p === 'Alta') return 'prio-alta';
+  if (p === 'Média') return 'prio-media';
+  return 'prio-baixa';
+}
+
+function tierClass(t) { return `tier-${t}`; }
+
+function contatadoStatus(c) {
+  if (c.data_contato && c.data_contato !== '') {
+    return `<span class="status-dot green"></span><span style="font-size:11px;color:var(--green)">Contatado</span>`;
+  }
+  return `<span class="status-dot yellow"></span><span style="font-size:11px;color:var(--yellow)">Não contatado</span>`;
+}
+
+function formatDate(d) {
+  if (!d) return '—';
+  const parts = d.split('-');
+  if (parts.length !== 3) return d;
+  return `${parts[2]}/${parts[1]}/${parts[0]}`;
+}
+
+function copyText(text, label) {
+  navigator.clipboard.writeText(text).then(() => toast(`${label} copiado!`));
+}
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  el.className = 'show';
+  setTimeout(() => { el.className = ''; }, 2000);
+}
+
+function populateFonteFilter() {
+  const fontes = [...new Set(CONTACTS.map(c => c.fonte))].sort();
+  const sel = document.getElementById('fil-fonte');
+  fontes.forEach(f => {
+    const o = document.createElement('option');
+    o.value = f; o.textContent = f;
+    sel.appendChild(o);
+  });
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  const tabs = ['top','revisao','fontes','dominios','mensagens','sequencias','followups','listas','kanban'];
+  const idx = tabs.indexOf(tab);
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  document.getElementById(`tab-${tab}`).classList.add('active');
+}
+
+function sortTable(field) {
+  if (sortField === field) sortDir *= -1;
+  else { sortField = field; sortDir = -1; }
+  renderTop();
+}
+
+// ── TAB TOP AÇÃO ──
+function renderTop() {
+  const search = document.getElementById('search-top').value.toLowerCase();
+  const tier   = document.getElementById('fil-tier').value;
+  const prio   = document.getElementById('fil-prio').value;
+  const fonte  = document.getElementById('fil-fonte').value;
+  const status = document.getElementById('fil-status').value;
+
+  filtered = CONTACTS.filter(c => {
+    if (search && !(
+      c.nome.toLowerCase().includes(search) ||
+      c.email.toLowerCase().includes(search) ||
+      c.empresa.toLowerCase().includes(search)
+    )) return false;
+    if (tier  && String(c.tier) !== tier) return false;
+    if (prio  && c.prioridade !== prio)   return false;
+    if (fonte && c.fonte !== fonte)        return false;
+    if (status === 'nao' && c.data_contato) return false;
+    if (status === 'sim' && !c.data_contato) return false;
+    return true;
+  });
+
+  filtered.sort((a, b) => {
+    const av = a[sortField] ?? '';
+    const bv = b[sortField] ?? '';
+    if (typeof av === 'number') return (av - bv) * sortDir;
+    return String(av).localeCompare(String(bv)) * sortDir;
+  });
+
+  const totalFiltered = filtered.length;
+  document.getElementById('count-label').textContent = `${totalFiltered} contato${totalFiltered !== 1 ? 's' : ''}`;
+
+  const totalPages = Math.max(1, Math.ceil(totalFiltered / PAGE_SIZE));
+  if (currentPage > totalPages) currentPage = 1;
+  const pageData = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  const tbody = document.getElementById('tbody-top');
+  if (pageData.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="es-icon">🔎</div><p>Nenhum contato encontrado com esses filtros.</p></div></td></tr>`;
+  } else {
+    tbody.innerHTML = pageData.map((c, i) => buildContactRow(c, i)).join('');
+  }
+
+  renderPagination(totalPages);
+  expandedRow = null;
+}
+
+function buildContactRow(c, i) {
+  const liAct = c.linkedin_url
+    ? `<a class="act-btn linkedin" href="${c.linkedin_url}" target="_blank" title="Abrir LinkedIn" onclick="event.stopPropagation()">in</a>`
+    : `<button class="act-btn linkedin" disabled title="LinkedIn não informado" style="opacity:0.3;cursor:not-allowed">in</button>`;
+
+  const emailAct = c.email
+    ? `<button class="act-btn email" onclick="copyText('${c.email}','E-mail');event.stopPropagation()" title="Copiar e-mail">✉</button>`
+    : `<button class="act-btn email" disabled style="opacity:0.3;cursor:not-allowed" title="E-mail não informado">✉</button>`;
+
+  const waAct = c.whatsapp
+    ? `<a class="act-btn whats" href="https://wa.me/${c.whatsapp}" target="_blank" onclick="event.stopPropagation()" title="Abrir WhatsApp">💬</a>`
+    : `<button class="act-btn whats" disabled style="opacity:0.3;cursor:not-allowed" title="WhatsApp não informado">💬</button>`;
+
+  return `
+    <tr onclick="toggleExpand(this, ${JSON.stringify(c).split('"').join('&quot;')})">
+      <td>
+        <div class="contact-name">${c.nome}</div>
+        <div class="contact-sub">${c.cargo || '<span style="color:var(--red);font-size:10px">⚠ Sem cargo</span>'}</div>
+      </td>
+      <td><span class="nowrap">${c.empresa}</span></td>
+      <td><span class="tier-badge ${tierClass(c.tier)}">T${c.tier}</span></td>
+      <td><span class="score-pill ${scoreClass(c.score_composto)}">${c.score_composto}</span></td>
+      <td><span class="prio-badge ${prioClass(c.prioridade)}">${c.prioridade}</span></td>
+      <td><div class="flex-center gap-4">${contatadoStatus(c)}</div></td>
+      <td style="max-width:180px;font-size:12px;color:var(--text)">${c.acao_sugerida || '—'}</td>
+      <td>
+        <div class="action-btns">
+          ${emailAct}${waAct}${liAct}
+        </div>
+      </td>
+    </tr>`;
+}
+
+function toggleExpand(row, c) {
+  // Se já existe expand, remove
+  const next = row.nextSibling;
+  if (next && next.classList && next.classList.contains('expand-row')) {
+    next.remove();
+    row.classList.remove('expanded');
+    expandedRow = null;
+    return;
+  }
+  // Remove qualquer outro expandido
+  document.querySelectorAll('.expand-row').forEach(r => r.remove());
+  document.querySelectorAll('tbody tr.expanded').forEach(r => r.classList.remove('expanded'));
+
+  row.classList.add('expanded');
+  expandedRow = c.nome;
+
+  const div = document.createElement('tr');
+  div.className = 'expand-row';
+  div.innerHTML = `<td colspan="8">
+    <div class="expand-panel">
+      <div class="expand-section">
+        <h4>Contato</h4>
+        <div class="expand-detail">
+          <div><strong>E-mail</strong> ${c.email || '—'} ${c.email ? `<button class="btn" style="padding:2px 6px;font-size:11px;margin-left:4px" onclick="copyText('${c.email}','E-mail')">copiar</button>` : ''}</div>
+          <div><strong>Telefone</strong> ${c.telefone || '—'} ${c.telefone ? `<button class="btn" style="padding:2px 6px;font-size:11px;margin-left:4px" onclick="copyText('${c.telefone}','Telefone')">copiar</button>` : ''}</div>
+          <div><strong>WhatsApp</strong> ${c.whatsapp ? `<a href="https://wa.me/${c.whatsapp}" target="_blank" style="color:var(--green)">Abrir chat</a>` : '—'}</div>
+          <div><strong>LinkedIn</strong> ${c.linkedin_url ? `<a href="${c.linkedin_url}" target="_blank" style="color:var(--blue)">Abrir perfil</a>` : '—'}</div>
+          <div><strong>Fonte</strong> ${c.fonte}</div>
+          <div><strong>Indicado por</strong> ${c.terceiro || '—'}</div>
+        </div>
+      </div>
+      <div class="expand-section">
+        <h4>Inteligência</h4>
+        <div class="expand-detail">
+          <div><strong>Tier / Score</strong> T${c.tier} · ${c.score_composto} pts</div>
+          <div><strong>Categoria</strong> ${c.categoria}</div>
+          <div><strong>Prioridade</strong> ${c.prioridade}</div>
+          <div><strong>Motivo</strong> ${c.motivo_classificacao || '—'}</div>
+          <div><strong>Abordagem</strong> ${c.tipo_abordagem}</div>
+          ${c.trecho ? `<div><strong>Contexto</strong> <em style="color:var(--muted)">"${c.trecho}"</em></div>` : ''}
+          <div><strong>Último contato</strong> ${formatDate(c.data_contato)}</div>
+        </div>
+      </div>
+      <div class="expand-section">
+        <h4>Próxima ação</h4>
+        <div class="expand-detail" style="margin-bottom:12px">
+          <div style="font-size:14px;font-weight:600;color:var(--green);margin-bottom:8px">→ ${c.acao_sugerida}</div>
+        </div>
+        <h4>Nota rápida</h4>
+        <div class="nota-quick">
+          <input type="text" id="nota-${c.email}" placeholder="Registrar observação…">
+          <button onclick="salvarNota('${c.email}')">Salvar</button>
+        </div>
+        ${getNota(c.email)}
+      </div>
+    </div>
+  </td>`;
+
+  row.parentNode.insertBefore(div, row.nextSibling);
+}
+
+// Notas em memória (localStorage)
+function salvarNota(email) {
+  const val = document.getElementById(`nota-${email}`).value.trim();
+  if (!val) return;
+  const notas = JSON.parse(localStorage.getItem('crm_notas') || '{}');
+  notas[email] = { texto: val, data: new Date().toLocaleDateString('pt-BR') };
+  localStorage.setItem('crm_notas', JSON.stringify(notas));
+  toast('Nota salva!');
+  document.getElementById(`nota-${email}`).value = '';
+  const div = document.getElementById(`nota-saved-${email}`);
+  if (div) div.innerHTML = notaHTML(notas[email]);
+}
+
+function getNota(email) {
+  const notas = JSON.parse(localStorage.getItem('crm_notas') || '{}');
+  if (!notas[email]) return `<div id="nota-saved-${email}"></div>`;
+  return `<div id="nota-saved-${email}">${notaHTML(notas[email])}</div>`;
+}
+
+function notaHTML(n) {
+  return `<div style="margin-top:8px;padding:8px;background:var(--blue-dim);border:1px solid rgba(88,166,255,0.2);border-radius:6px;font-size:12px;color:var(--blue)">📝 ${n.texto} <span style="color:var(--muted);font-size:11px">(${n.data})</span></div>`;
+}
+
+// ── PAGINAÇÃO ──
+function renderPagination(totalPages) {
+  const el = document.getElementById('pagination');
+  if (totalPages <= 1) { el.innerHTML = ''; return; }
+
+  let html = `<button class="page-btn" onclick="goPage(${currentPage - 1})" ${currentPage <= 1 ? 'disabled' : ''}>‹ Anterior</button>`;
+  
+  const start = Math.max(1, currentPage - 2);
+  const end   = Math.min(totalPages, currentPage + 2);
+
+  if (start > 1) html += `<button class="page-btn" onclick="goPage(1)">1</button><span class="page-info">…</span>`;
+  for (let p = start; p <= end; p++) {
+    html += `<button class="page-btn ${p === currentPage ? 'current' : ''}" onclick="goPage(${p})">${p}</button>`;
+  }
+  if (end < totalPages) html += `<span class="page-info">…</span><button class="page-btn" onclick="goPage(${totalPages})">${totalPages}</button>`;
+
+  html += `<button class="page-btn" onclick="goPage(${currentPage + 1})" ${currentPage >= totalPages ? 'disabled' : ''}>Próxima ›</button>`;
+  html += `<span class="page-info">${filtered.length} contatos</span>`;
+
+  el.innerHTML = html;
+}
+
+function goPage(p) {
+  currentPage = p;
+  renderTop();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── MENSAGENS PADRÃO POR GRUPO ──
+const MSG_GROUPS = [
+  {
+    key: 'Executivo',
+    label: 'Executivo',
+    icon: '🧭',
+    template: `Olá, {nome}!\n\nVi que você atua como {cargo} na {empresa}. Quero apresentar uma proposta alinhada ao seu momento de crescimento.\n\nPodemos conversar em 15 minutos?`
+  },
+  {
+    key: 'Técnico',
+    label: 'Técnico',
+    icon: '🔧',
+    template: `Olá, {nome}!\n\nCom base no seu trabalho na {empresa}, acredito que temos uma fit técnica relevante para sua operação.\n\nQuer que eu envie um resumo da solução e possíveis cenários de integração?`
+  },
+  {
+    key: 'Comercial',
+    label: 'Comercial',
+    icon: '📈',
+    template: `Olá, {nome}!\n\nPreparei uma visão rápida de ROI para o momento atual da {empresa}.\n\nSe fizer sentido, posso adiantar uma simulação customizada para você.`
+  },
+  {
+    key: 'Consultivo',
+    label: 'Consultivo',
+    icon: '🧩',
+    template: `Olá, {nome}!\n\nAproveitando sua experiência na {empresa}, queria trocar uma ideia sobre um cenário que pode destravar resultado agora.\n\nVocê tem 10 minutos esta semana?`
+  },
+  {
+    key: 'Produto',
+    label: 'Produto',
+    icon: '🧪',
+    template: `Olá, {nome}!\n\nTemos uma funcionalidade que combina com a direção de produto que você está tocando na {empresa}.\n\nQuer ver um exemplo prático?`
+  },
+  {
+    key: 'Parceria',
+    label: 'Parceria',
+    icon: '🤝',
+    template: `Olá, {nome}!\n\nVejo potencial para uma parceria entre sua atuação na {empresa} e o que estamos construindo.\n\nVamos conversar sobre um modelo simples?`
+  },
+  {
+    key: 'Nurturing',
+    label: 'Nurturing',
+    icon: '🌱',
+    template: `Olá, {nome}!\n\nAproveitando o contexto anterior, quero trazer uma atualização relevante para você.\n\nPosso enviar uma novidade objetiva, sem ruído?`
+  },
+  {
+    key: 'Suporte',
+    label: 'Suporte',
+    icon: '🛟',
+    template: `Olá, {nome}!\n\nVi que pode haver uma demanda operacional aí na {empresa}. Se ajudar, posso abrir um caminho rápido até quem pode resolver.`
+  },
+  {
+    key: 'Descarte',
+    label: 'Descarte',
+    icon: '🧹',
+    template: `Olá, {nome}!\n\nSó para confirmar: no momento não faz sentido seguir por aqui?\n\nSe quiser, posso arquivar e não insistir mais.`
+  }
+];
+
+function renderMensagens() {
+  const search = (document.getElementById('search-msg')?.value || '').toLowerCase();
+  const contacts = CONTACTS.filter(c => c.email);
+
+  const groups = {};
+  contacts.forEach(c => {
+    const key = c.subtipo || c.tipo_abordagem || c.categoria || c.prioridade || 'Outros';
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(c);
+  });
+
+  const orderedKeys = Object.keys(groups).sort((a, b) => {
+    const ia = SUBTIPO_MESSAGES[a] ? 0 : 1;
+    const ib = SUBTIPO_MESSAGES[b] ? 0 : 1;
+    return ia - ib || a.localeCompare(b);
+  });
+
+  let html = '';
+  orderedKeys.forEach(key => {
+    const items = groups[key];
+    const meta = SUBTIPO_MESSAGES[key] || SUBTIPO_MESSAGES.default;
+    const filtered = items.filter(c => {
+      if (!search) return true;
+      return c.nome.toLowerCase().includes(search) ||
+        c.email.toLowerCase().includes(search) ||
+        c.empresa.toLowerCase().includes(search) ||
+        (c.subtipo || '').toLowerCase().includes(search) ||
+        (c.tipo_abordagem || '').toLowerCase().includes(search);
+    });
+
+    if (filtered.length === 0) return;
+
+    html += `<div class="msg-card">
+      <div class="msg-header">
+        <div style="font-size:18px">${meta.icon}</div>
+        <div>
+          <div class="msg-group-name">${meta.label}</div>
+          <div class="msg-meta">${filtered.length} contato${filtered.length !== 1 ? 's' : ''}</div>
+        </div>
+      </div>
+
+      <div class="msg-template">${escapeHtml(meta.template || 'Grupo sem modelo padrão configurado.')}</div>
+
+      <div style="display:flex; gap:8px; margin-bottom:8px;">
+        <button class="copy-btn" onclick="copyGroupMessage('${escapeAttr(key)}')">Copiar mensagem do grupo</button>
+      </div>
+
+      <div>
+        ${filtered.map(c => `<div class="msg-row">
+          <div class="msg-name">${c.nome}</div>
+          <div class="msg-email">${c.email}</div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  });
+
+  const container = document.getElementById('mensagens-container');
+  container.innerHTML = html || `<div class="empty-state"><div class="es-icon">✉️</div><p>Nenhuma mensagem encontrada com esse filtro.</p></div>`;
+  document.getElementById('msg-count').textContent = `${contacts.length} com e-mail`;
+}
+
+function copyGroupMessage(groupKey) {
+  const meta = SUBTIPO_MESSAGES[groupKey] || SUBTIPO_MESSAGES.default;
+  const template = meta.template || '';
+  if (!template) { toast('Grupo sem modelo padrão'); return; }
+
+  const contacts = CONTACTS.filter(c => c.email && (c.subtipo === groupKey || (!c.subtipo && (c.tipo_abordagem === groupKey || c.categoria === groupKey || c.prioridade === groupKey))));
+  if (contacts.length === 0) { toast('Nenhum contato com e-mail nesse grupo'); return; }
+
+  const separator = template.includes('\n') ? '\n\n---\n\n' : ' | ';
+  const messages = contacts.map(c => {
+    return template
+      .replace(/\{nome\}/g, c.nome || '')
+      .replace(/\{cargo\}/g, c.cargo || '')
+      .replace(/\{empresa\}/g, c.empresa || '');
+  }).join(separator);
+
+  navigator.clipboard.writeText(messages).then(() => toast('Mensagem do grupo copiada!'));
+}
+
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function escapeAttr(text) {
+  const s = String(text)
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/"/g, '\\"')
+    .replace(/\n/g, ' ')
+    .replace(/\r/g, ' ')
+    .replace(/\t/g, ' ');
+  return s;
+}
+function exportCSV() {
+  const cols = ['nome','cargo','empresa','tier','score_composto','prioridade','acao_sugerida','email','telefone','whatsapp','fonte','data_contato'];
+  const header = cols.join(';');
+  const rows = filtered.map(c => cols.map(k => `"${(c[k] ?? '').toString().replace(/"/g,'""')}"`).join(';'));
+  const csv = '\uFEFF' + [header, ...rows].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'crm_acao_export.csv'; a.click();
+  URL.revokeObjectURL(url);
+  toast('CSV exportado!');
+}
+
+const SEQUENCES = [
+  {
+    key: 'tier1',
+    label: 'Tier 1',
+    icon: '⭐',
+    steps: [
+      {
+        title: 'Inicial enviada',
+        message: `Olá, tudo bem?\n\nAcompanho o trabalho da ${'${empresa}'} e vejo que vocês podem ter uma oportunidade relevante de crescimento em comunicação e posicionamento.\n\nSe fizer sentido, podemos conversar em 15 minutos?`
+      }
+    ]
+  },
+  {
+    key: 'tier2',
+    label: 'Tier 2',
+    icon: '🤝',
+    steps: [
+      {
+        title: 'Inicial enviada',
+        message: `Olá!\n\nVi que sua atuação pode se beneficiar de uma comunicação mais direta e alinhada ao funil.\n\nSe quiser, envio um exemplo rápido de como isso pode gerar resultado sem aumentar estrutura.`
+      }
+    ]
+  },
+  {
+    key: 'tier3',
+    label: 'Tier 3',
+    icon: '📎',
+    steps: [
+      {
+        title: 'Inicial enviada',
+        message: `Olá!\n\nPreparei uma ideia simples para comunicação e crescimento que pode fazer sentido para seu momento.\n\nQuer ver um exemplo prático?`
+      }
+    ]
+  },
+  {
+    key: 'tier4',
+    label: 'Tier 4',
+    icon: '📊',
+    steps: [
+      {
+        title: 'Inicial enviada',
+        message: `Olá, tudo bem?\n\nPassando para compartilhar uma atualização do meu trabalho: venho estruturando uma metodologia para identificar rapidamente gargalos, oportunidades e prioridades de marketing e comunicação, transformando o diagnóstico em ações práticas.\n\nA ideia é simples: ajudar negócios a encontrar oportunidades de crescimento sem necessariamente aumentar a estrutura ou os custos.\n\n🔗 Conheça a metodologia:\nhttps://flavio-guedes.github.io/portfolio/forecast.html\n\nTambém deixo meu portfólio de serviços e parcerias:\nhttps://flavio-guedes.github.io/portfolio/parceria.html\n\nSe em algum momento surgir um projeto em que esse tipo de apoio faça sentido, será um prazer conversar.\n\nAbraços,\nFlávio Guedes`
+      }
+    ]
+  },
+  {
+    key: 'tier5',
+    label: 'Tier 5 / Descarte',
+    icon: '🧹',
+    emails: [
+      'adrianapolliveira@gmail.com',
+      'alcionerezende.sinergia@gmail.com',
+      'alinegarciacultura@gmail.com',
+      'brunomerolla@gmail.com',
+      'nosdocroche712@gmail.com',
+      'nmarques.danielle@gmail.com',
+      'nutrabrj@gmail.com',
+      'flavia0311@hotmail.com',
+      'orientagabriela@gmail.com',
+      'eucriativo@eucriativo.com',
+      'amazoniacultural.eventos@gmail.com',
+      'contato@salvadoracessivel.com',
+      'jujoy.misiagia@gmail.com',
+      'ledaf.rosa@gmail.com',
+      'contatoacua@gmail.com',
+      'luizd.dnatureza@gmail.com',
+      'mariana.tomesilva@gmail.com',
+      'moniqueserqueira2019@gmail.com',
+      'patricia@artecultura.com.vc',
+      'Odisseia.eventos7@gmail.com',
+      'pamilacristina@gmail.com',
+      'rhdescomplicaoficial@gmail.com',
+      'rafaellima7972@gmail.com',
+      'sancheslydiocultural@gmail.com',
+      'ricardi.bueno@gmail.com',
+      'estrategiasmakarios@gmail.com',
+      'ronaldalissonbr@gmail.com',
+      'fabianogomesfgs@hotmail.com'
+    ],
+    steps: [
+      {
+        title: 'Inicial enviada',
+        message: `**Título: Oportunidade de crescimento — Marketing e Comunicação**\n\nOlá, tudo bem?\n\nSou Flávio Guedes, profissional de Marketing, Comunicação, Design e Gestão de Projetos.\n\nTenho ajudado negócios a identificar **gargalos de comunicação, posicionamento e aquisição** e transformar essas oportunidades em ações práticas — sem necessariamente aumentar a estrutura interna.\n\nMeu trabalho pode apoiar desde uma demanda pontual até projetos mais completos de estratégia, campanhas, presença digital e estruturação de comunicação.\n\n🔗 **Metodologia:** https://flavio-guedes.github.io/portfolio/forecast.html\n🔗 **Serviços e parcerias:** https://flavio-guedes.github.io/portfolio/parceria.html\n\nSe houver algum desafio de crescimento, comunicação ou estruturação no momento, posso fazer uma conversa rápida para identificar se existe uma oportunidade concreta de contribuição.\n\n💬 **WhatsApp:** [seu link]\n\nAbraços,\n**Flávio Guedes**\n\n**Assunto alternativo mais comercial:** *Sua próxima oportunidade de crescimento pode estar na comunicação*`
+      },
+      {
+        title: 'Follow-up leve — 3 dias',
+        message: `Olá!\n\nSó para não sumir: a conversa sobre comunicação e crescimento continua válida.\n\nSe fizer sentido, posso enviar um resumo rápido, sem compromisso.`
+      },
+      {
+        title: 'Follow-up valor — 7 dias',
+        message: `Olá!\n\nPensei em um ponto que pode destravar algo na sua operação sem aumento de equipe: comunicação alinhada ao funil.\n\nSe quiser, envio um exemplo prático.`
+      },
+      {
+        title: 'Encerramento educado — 10 dias',
+        message: `Olá!\n\nSe não for o momento certo, tudo bem.\n\nPosso arquivar este contato por aqui e só volto se houver uma ocasião mais direcionada.`
+      }
+    ]
+  },
+  {
+    key: 'tier6',
+    label: 'Tier 6',
+    icon: '🗂️',
+    steps: [
+      {
+        title: 'Inicial enviada',
+        message: `Olá!\n\nDeixo aqui uma atualização rápida: estou disponível para demandas pontuais de comunicação, conteúdo ou projetos curtos.\n\nSe for útil, podemos conversar sem compromisso.`
+      }
+    ]
+  }
+];
+
+const SUBTIPO_MESSAGES = {
+  default: { label: 'Geral', icon: '📂', template: `Olá, {nome}!\n\nAcompanho o trabalho na {empresa} e quero trazer uma ideia objetiva para seu momento.\n\nSe fizer sentido, podemos conversar rapidamente.` },
+  'Diretoria / Liderança': { label: 'Diretoria / Liderança', icon: '🧭', template: `Olá, {nome}!\n\nVi que sua liderança na {empresa} pode se beneficiar de um posicionamento mais direto e de uma comunicação alinhada ao crescimento.\n\nPosso apresentar uma proposta rápida em 15 minutos?` },
+  'Marketing': { label: 'Marketing', icon: '📈', template: `Olá, {nome}!\n\nPreparei uma visão rápida de comunicação e crescimento para o momento atual da {empresa}.\n\nSe fizer sentido, posso adiantar uma simulação customizada para você.` },
+  'Design / Conteúdo': { label: 'Design / Conteúdo', icon: '🎨', template: `Olá, {nome}!\n\nVejo uma oportunidade de fortalecer a presença da {empresa} com um olhar mais direto de conteúdo e posicionamento.\n\nQuer ver um exemplo prático?` },
+  'Produto': { label: 'Produto', icon: '🧪', template: `Olá, {nome}!\n\nTemos uma abordagem que combina com a direção de produto que você está tocando na {empresa}.\n\nQuer ver um exemplo prático?` },
+  'Operacional': { label: 'Operacional', icon: '🛟', template: `Olá, {nome}!\n\nVi que pode haver uma demanda operacional aí na {empresa}. Se ajudar, posso abrir um caminho rápido até quem pode resolver.` },
+  'RH / Recrutamento': { label: 'RH / Recrutamento', icon: '🤝', template: `Olá, {nome}!\n\nQueria trocar uma ideia sobre um cenário que pode destravar resultado agora em recrutamento e posicionamento.\n\nVocê tem 10 minutos esta semana?` },
+  'Comercial / Vendas': { label: 'Comercial / Vendas', icon: '💼', template: `Olá, {nome}!\n\nPreparei uma ideia simples para comunicação e crescimento que pode fazer sentido para seu momento comercial.\n\nQuer ver um exemplo prático?` },
+  'Educação': { label: 'Educação', icon: '🏫', template: `Olá, {nome}!\n\nAcompanhei o trabalho da {empresa} e vejo uma oportunidade relevante de crescimento em comunicação e posicionamento educacional.\n\nSe fizer sentido, podemos conversar em 15 minutos?` },
+  'Jurídico': { label: 'Jurídico', icon: '⚖️', template: `Olá, {nome}!\n\nIdentifiquei um ponto que pode destravar algo na comunicação da {empresa} sem aumento de estrutura.\n\nQuer ver um exemplo prático?` },
+  'Saúde': { label: 'Saúde', icon: '🩺', template: `Olá, {nome}!\n\nPreparei uma ideia simples para comunicação e crescimento que pode fazer sentido para seu momento na {empresa}.\n\nQuer ver um exemplo prático?` },
+  'Tecnologia': { label: 'Tecnologia', icon: '💻', template: `Olá, {nome}!\n\nCom base no trabalho da {empresa}, acredito que temos uma fit relevante para sua operação.\n\nQuer que eu envie um resumo da solução e possíveis cenários?` }
+};
+function subtipoMeta(subtipo){
+  const key = (subtipo || '').trim();
+  return SUBTIPO_MESSAGES[key] || SUBTIPO_MESSAGES.default;
+}
+
+function renderSequencias() {
+  const search = (document.getElementById('search-seq')?.value || '').toLowerCase();
+  const groups = {};
+  SEQUENCES.forEach(seq => groups[seq.key] = seq);
+
+  const orderedKeys = Object.keys(groups).sort();
+
+  let html = '';
+  orderedKeys.forEach(key => {
+    const seq = groups[key];
+    const filteredSteps = seq.steps.filter((step, idx) => {
+      if (!search) return true;
+      return (
+        (step.title || '').toLowerCase().includes(search) ||
+        (step.message || '').toLowerCase().includes(search) ||
+        seq.label.toLowerCase().includes(search)
+      );
+    });
+
+    if (filteredSteps.length === 0) return;
+
+    const emails = getSequenceEmails(key);
+    const emailsUnique = [...new Set(emails)].filter(Boolean);
+    const emailsCsv = emailsUnique.join(', ');
+    const mailtoHref = emailsUnique.length ? `mailto:?bcc=${encodeURIComponent(emailsUnique.join(','))}` : '#';
+
+    const stepsHtml = filteredSteps.map((step, idx) => `<div class="seq-step">
+      <div class="seq-step-header">
+        <div class="seq-step-title">Etapa ${idx + 1}: ${escapeHtml(step.title)}</div>
+        <button class="copy-btn" onclick="copyText('${escapeAttr(step.message)}','Etapa ${idx + 1}')">Copiar etapa</button>
+      </div>
+      <div class="seq-message">${escapeHtml(step.message)}</div>
+    </div>`).join('');
+
+    html += `<div class="msg-card">
+      <div class="msg-header">
+        <div style="font-size:18px">${seq.icon}</div>
+        <div>
+          <div class="msg-group-name">${seq.label}</div>
+          <div class="msg-meta">${filteredSteps.length} etapa${filteredSteps.length !== 1 ? 's' : ''} · ${emailsUnique.length} e-mail${emailsUnique.length !== 1 ? 's' : ''}</div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:8px; margin-bottom:8px;">
+        <button class="copy-btn" onclick="copyText('${escapeAttr(emailsCsv)}','E-mails')">Copiar lista de e-mails</button>
+        <button class="copy-btn" onclick="window.open('${mailtoHref}','_blank')">Abrir e-mail em cópia oculta</button>
+        <button class="copy-btn" onclick="copySequence('${escapeAttr(key)}')">Copiar sequência completa</button>
+      </div>
+
+      <div class="seq-steps">${stepsHtml}</div>
+    </div>`;
+  });
+
+  const container = document.getElementById('sequencias-container');
+  container.innerHTML = html || `<div class="empty-state"><div class="es-icon">🔁</div><p>Nenhuma sequência encontrada com esse filtro.</p></div>`;
+  document.getElementById('seq-count').textContent = `${SEQUENCES.length} sequência${SEQUENCES.length !== 1 ? 's' : ''}`;
+}
+
+function getSequenceEmails(key) {
+  const seq = SEQUENCES.find(s => s.key === key);
+  if (!seq) return [];
+  if (seq.emails && seq.emails.length) {
+    const seen = new Set();
+    const out = [];
+    seq.emails.forEach(e => {
+      const v = String(e).trim().toLowerCase();
+      if (!v || seen.has(v)) return;
+      seen.add(v);
+      out.push(v);
+    });
+    return out;
+  }
+
+  const seen = new Set();
+  const emails = [];
+  const addIfNew = (email) => {
+    if (!email) return;
+    const e = String(email).trim().toLowerCase();
+    if (!e || seen.has(e)) return;
+    seen.add(e);
+    emails.push(e);
+  };
+  CONTACTS.forEach(c => {
+    const match = seq.key === 'tier1' ? c.tier === 1 :
+      seq.key === 'tier2' ? c.tier === 2 :
+      seq.key === 'tier3' ? c.tier === 3 :
+      seq.key === 'tier4' ? c.tier === 4 :
+      seq.key === 'tier5' ? c.tier === 5 :
+      seq.key === 'tier6' ? c.tier === 6 :
+      c.email;
+    if (match) addIfNew(c.email);
+  });
+  return emails;
+}
+
+function copySequence(groupKey) {
+  const seq = SEQUENCES.find(s => s.key === groupKey);
+  if (!seq || !seq.steps.length) { toast('Sequência não encontrada'); return; }
+
+  const text = seq.steps.map((step, idx) => `Etapa ${idx + 1}: ${step.title}\n\n${step.message}`).join('\n\n===\n\n');
+  navigator.clipboard.writeText(text).then(() => toast('Sequência copiada!'));
+}
+
+// ── FOLLOW-UPS STATE ──
+const FOLLOWUP_STATES_KEY = 'crm_followup_states';
+const FOLLOWUP_TIMELINE_KEY = 'crm_followup_timeline';
+
+function getFollowupStates() {
+  try { return JSON.parse(localStorage.getItem(FOLLOWUP_STATES_KEY) || '{}'); } catch { return {}; }
+}
+function setFollowupStates(states) {
+  localStorage.setItem(FOLLOWUP_STATES_KEY, JSON.stringify(states));
+}
+function getTimeline() {
+  try { return JSON.parse(localStorage.getItem(FOLLOWUP_TIMELINE_KEY) || '{}'); } catch { return {}; }
+}
+function setTimeline(timeline) {
+  localStorage.setItem(FOLLOWUP_TIMELINE_KEY, JSON.stringify(timeline));
+}
+
+function getContactState(email) {
+  const states = getFollowupStates();
+  return states[email] || {
+    status: 'nao_contatado',
+    current_step: '',
+    last_contact_at: '',
+    next_followup_at: '',
+    attempts: 0,
+    replied: false,
+    interest: '',
+    opportunity: '',
+    meeting: '',
+    conversion: '',
+    notes: ''
+  };
+}
+function updateContactState(email, patch) {
+  const states = getFollowupStates();
+  const current = states[email] || getContactState(email);
+  states[email] = { ...current, ...patch };
+  setFollowupStates(states);
+}
+function addTimelineEvent(email, event) {
+  const timeline = getTimeline();
+  const list = timeline[email] || [];
+  list.unshift({
+    id: Date.now() + Math.random().toString(36).slice(2),
+    created_at: new Date().toISOString(),
+    ...event
+  });
+  timeline[email] = list.slice(0, 200);
+  setTimeline(timeline);
+}
+
+function statusBadge(status) {
+  const map = {
+    nao_contatado: '🔘 Não contatado',
+    etapa_1_enviada: '🟢 Etapa 1 enviada',
+    aguardando_resposta: '🟡 Aguardando resposta',
+    followup_1: '🔁 Follow-up 1',
+    followup_2: '🔁 Follow-up 2',
+    followup_3: '🔁 Follow-up 3',
+    respondeu: '💬 Respondeu',
+    em_conversa: '🗣️ Em conversa',
+    reuniao_agendada: '📅 Reunião agendada',
+    proposta_enviada: '📄 Proposta enviada',
+    negociacao: '🤝 Negociação',
+    convertido: '✅ Convertido',
+    sem_interesse: '❌ Sem interesse',
+    arquivado: '🗂️ Arquivado'
+  };
+  return map[status] || status;
+}
+function tierBadge(tier) {
+  return `T${tier}`;
+}
+
+function renderFollowups() {
+  const search = (document.getElementById('search-fu')?.value || '').toLowerCase();
+  const tierFilter = document.getElementById('fu-tier')?.value || '';
+  const statusFilter = document.getElementById('fu-status')?.value || '';
+
+  let items = CONTACTS.filter(c => c.email).map(c => {
+    const state = getContactState(c.email);
+    return { ...c, state };
+  });
+
+  if (tierFilter) items = items.filter(c => String(c.tier) === tierFilter);
+  if (statusFilter) items = items.filter(c => c.state.status === statusFilter);
+  if (search) items = items.filter(c =>
+    c.nome.toLowerCase().includes(search) ||
+    c.empresa.toLowerCase().includes(search) ||
+    c.email.toLowerCase().includes(search) ||
+    (c.state.current_step || '').toLowerCase().includes(search)
+  );
+
+  const today = new Date().toISOString().slice(0,10);
+  const total = items.length;
+  const t1 = items.filter(c => c.tier === 1).length;
+  const t2 = items.filter(c => c.tier === 2).length;
+  const t3 = items.filter(c => c.tier === 3).length;
+  const t4 = items.filter(c => c.tier === 4).length;
+  const t5 = items.filter(c => c.tier === 5).length;
+  const em_sequencia = items.filter(c => ['etapa_1_enviada','aguardando_resposta','followup_1','followup_2','followup_3','em_conversa','reuniao_agendada','proposta_enviada','negociacao'].includes(c.state.status)).length;
+  const aguardando = items.filter(c => c.state.status === 'aguardando_resposta').length;
+  const atrasados = items.filter(c => c.state.next_followup_at && c.state.next_followup_at < today && !['convertido','sem_interesse','arquivado'].includes(c.state.status)).length;
+  const hoje = items.filter(c => c.state.next_followup_at && c.state.next_followup_at === today && !['convertido','sem_interesse','arquivado'].includes(c.state.status)).length;
+  const respostas = items.filter(c => c.state.replied).length;
+  const oportunidades = items.filter(c => c.state.opportunity).length;
+  const reunioes = items.filter(c => c.state.meeting).length;
+  const conversoes = items.filter(c => c.state.conversion).length;
+
+  const kpi = document.getElementById('followups-kpi');
+  kpi.innerHTML = [
+    { label:'Total', value: total, color:'var(--blue)'},
+    { label:'T1', value: t1, color:'var(--green)'},
+    { label:'T2', value: t2, color:'var(--blue)'},
+    { label:'T3', value: t3, color:'var(--yellow)'},
+    { label:'T4', value: t4, color:'var(--orange)'},
+    { label:'T5', value: t5, color:'var(--red)'},
+    { label:'Em sequência', value: em_sequencia, color:'var(--blue)'},
+    { label:'Aguardando resposta', value: aguardando, color:'var(--yellow)'},
+    { label:'Follow-ups hoje', value: hoje, color:'var(--green)'},
+    { label:'Atrasados', value: atrasados, color:'var(--red)'},
+    { label:'Respostas', value: respostas, color:'var(--green)'},
+    { label:'Oportunidades', value: oportunidades, color:'var(--purple)'},
+    { label:'Reuniões', value: reunioes, color:'var(--blue)'},
+    { label:'Conversões', value: conversoes, color:'var(--green)'}
+  ].map(k => `<div class="kpi-card"><div class="kpi-icon total" style="background:${k.color}22;color:${k.color}">📊</div><div><div class="kpi-num total" style="color:${k.color}">${k.value}</div><div class="kpi-label">${k.label}</div></div></div>`).join('');
+
+  const tbody = document.getElementById('tbody-followups');
+  if (!items.length) {
+    tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="es-icon">📋</div><p>Nenhum follow-up encontrado.</p></div></td></tr>`;
+    document.getElementById('fu-count').textContent = '—';
+    return;
+  }
+
+  tbody.innerHTML = items.map(c => {
+    const s = c.state;
+    const next = s.next_followup_at || '—';
+    const last = s.last_contact_at || '—';
+    return `<tr>
+      <td><div class="contact-name">${c.nome}</div><div class="contact-sub">${c.email}</div></td>
+      <td><span class="nowrap">${c.empresa}</span></td>
+      <td><span class="tier-badge ${tierClass(c.tier)}">${tierBadge(c.tier)}</span></td>
+      <td><span class="fu-badge">${statusBadge(s.status)}</span></td>
+      <td>${s.current_step || '—'}</td>
+      <td>${last}</td>
+      <td>${next}</td>
+      <td>
+        <div class="fu-actions">
+          <button class="btn" onclick="openFollowupModal('${c.email}')">Registrar ação</button>
+          <button class="btn" onclick="openContactTimeline('${c.email}')">Timeline</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('fu-count').textContent = `${total} contato${total !== 1 ? 's' : ''}`;
+}
+
+function openFollowupModal(email) {
+  const contact = CONTACTS.find(c => c.email === email);
+  if (!contact) return;
+  const state = getContactState(email);
+  const timeline = getTimeline()[email] || [];
+
+  const existing = document.getElementById('fu-modal');
+  if (existing) existing.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'fu-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9998;display:flex;align-items:center;justify-content:center;padding:16px;';
+  modal.innerHTML = `<div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;max-width:720px;width:100%;max-height:90vh;overflow:auto;padding:18px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;">
+      <div><div style="font-weight:700;font-size:14px;">Registrar ação — ${escapeHtml(contact.nome)}</div><div style="font-size:12px;color:var(--muted);">${escapeHtml(contact.empresa)} · ${escapeHtml(contact.cargo || '')}</div></div>
+      <button class="btn" onclick="document.getElementById('fu-modal').remove()">Fechar</button>
+    </div>
+
+    <div class="timeline">
+      ${timeline.slice(0,8).map(ev => `<div class="timeline-item"><div class="timeline-date">${ev.created_at ? new Date(ev.created_at).toLocaleString('pt-BR') : ''}</div><div>${escapeHtml(ev.type || '')} — ${escapeHtml(ev.step || '')}</div><div style="font-size:11px;color:var(--muted);">${escapeHtml(ev.result || '')}</div></div>`).join('') || '<div class="timeline-item"><div>Sem registros.</div></div>'}
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;">
+      <select id="fu-action" class="filter-select">
+        <option value="">Tipo de ação</option>
+        <option value="Enviar Etapa 1">Enviar Etapa 1</option>
+        <option value="Enviar Follow-up 1">Enviar Follow-up 1</option>
+        <option value="Enviar Follow-up 2">Enviar Follow-up 2</option>
+        <option value="Enviar Follow-up 3">Enviar Follow-up 3</option>
+        <option value="WhatsApp">WhatsApp</option>
+        <option value="LinkedIn">LinkedIn</option>
+        <option value="E-mail">E-mail</option>
+        <option value="Ligação">Ligação</option>
+        <option value="Resposta recebida">Resposta recebida</option>
+        <option value="Reunião">Reunião</option>
+        <option value="Proposta">Proposta</option>
+        <option value="Outro">Outro</option>
+      </select>
+      <select id="fu-result" class="filter-select">
+        <option value="">Resultado</option>
+        <option value="Sem resposta">Sem resposta</option>
+        <option value="Visualizou">Visualizou</option>
+        <option value="Respondeu positivamente">Respondeu positivamente</option>
+        <option value="Respondeu negativamente">Respondeu negativamente</option>
+        <option value="Pediu informações">Pediu informações</option>
+        <option value="Pediu orçamento">Pediu orçamento</option>
+        <option value="Agendou reunião">Agendou reunião</option>
+        <option value="Indicou outra pessoa">Indicou outra pessoa</option>
+        <option value="Não é o momento">Não é o momento</option>
+        <option value="Sem interesse">Sem interesse</option>
+      </select>
+      <input id="fu-next" type="date" class="filter-select" value="${nextDate(state.next_followup_at)}">
+    </div>
+
+    <textarea id="fu-note" placeholder="Observação" class="toolbar-search" style="margin-top:10px;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:7px;color:var(--text);min-height:80px;"></textarea>
+
+    <div style="display:flex;gap:8px;margin-top:10px;">
+      <button class="btn btn-green" onclick="saveFollowupAction('${email}')">Salvar</button>
+      <button class="btn" onclick="document.getElementById('fu-modal').remove()">Cancelar</button>
+    </div>
+  </div>`;
+  document.body.appendChild(modal);
+}
+
+function nextDate(value) {
+  if (!value) return new Date().toISOString().slice(0,10);
+  return value;
+}
+
+function saveFollowupAction(email) {
+  const action = document.getElementById('fu-action')?.value || '';
+  const result = document.getElementById('fu-result')?.value || '';
+  const next = document.getElementById('fu-next')?.value || '';
+  const note = document.getElementById('fu-note')?.value || '';
+  if (!action && !result) { toast('Informe ação ou resultado'); return; }
+
+  const state = getContactState(email);
+  const now = new Date().toISOString().slice(0,10);
+
+  const patch = { last_contact_at: now, notes: note };
+  if (next) patch.next_followup_at = next;
+
+  if (action) {
+    patch.current_step = action;
+    patch.attempts = (state.attempts || 0) + 1;
+  }
+
+  if (result) {
+    patch.last_result = result;
+    if (result === 'Respondeu positivamente') { patch.status = 'respondeu'; patch.replied = true; }
+    else if (result === 'Respondeu negativamente' || result === 'Sem interesse') patch.status = 'sem_interesse';
+    else if (result === 'Agendou reunião') { patch.status = 'reuniao_agendada'; patch.meeting = true; }
+    else if (result === 'Pediu orçamento') { patch.status = 'proposta_enviada'; patch.opportunity = true; }
+    else if (result === 'Indicou outra pessoa') patch.status = 'em_conversa';
+    else if (result === 'Sem resposta' || result === 'Visualizou') patch.status = 'aguardando_resposta';
+  }
+
+  if (action && !result) patch.status = 'aguardando_resposta';
+
+  updateContactState(email, patch);
+  addTimelineEvent(email, { type: action || 'Atualização', step: patch.current_step || '', result, message: '', observation: note, next_action: next ? `Próximo follow-up: ${next}` : '' });
+  toast('Ação registrada');
+  document.getElementById('fu-modal')?.remove();
+  renderFollowups();
+}
+
+function openContactTimeline(email) {
+  const contact = CONTACTS.find(c => c.email === email);
+  if (!contact) return;
+  const timeline = getTimeline()[email] || [];
+
+  const existing = document.getElementById('fu-modal');
+  if (existing) existing.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'fu-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9998;display:flex;align-items:center;justify-content:center;padding:16px;';
+  modal.innerHTML = `<div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;max-width:720px;width:100%;max-height:90vh;overflow:auto;padding:18px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;">
+      <div><div style="font-weight:700;font-size:14px;">Timeline — ${escapeHtml(contact.nome)}</div><div style="font-size:12px;color:var(--muted);">${escapeHtml(contact.empresa)} · ${escapeHtml(contact.cargo || '')}</div></div>
+      <button class="btn" onclick="document.getElementById('fu-modal').remove()">Fechar</button>
+    </div>
+
+    <div class="timeline">
+      ${timeline.map(ev => `<div class="timeline-item"><div class="timeline-date">${ev.created_at ? new Date(ev.created_at).toLocaleString('pt-BR') : ''}</div><div>${escapeHtml(ev.type || '')} — ${escapeHtml(ev.step || '')}</div><div style="font-size:11px;color:var(--muted);">${escapeHtml(ev.result || '')}</div><div style="font-size:11px;color:var(--muted);">${escapeHtml(ev.observation || '')}</div><div style="font-size:11px;color:var(--blue);">${escapeHtml(ev.next_action || '')}</div></div>`).join('') || '<div class="timeline-item"><div>Sem registros.</div></div>'}
+    </div>
+  </div>`;
+  document.body.appendChild(modal);
+}
+
+// ── TAB REVISÃO ──
+function renderRevisao() {
+  const search = (document.getElementById('search-rev')?.value || '').toLowerCase();
+  const revisao = CONTACTS.filter(c => {
+    if (!needsReview(c)) return false;
+    if (search && !(c.nome.toLowerCase().includes(search) || c.empresa.toLowerCase().includes(search))) return false;
+    return true;
+  });
+
+  document.getElementById('rev-count').textContent = `${revisao.length} pendente${revisao.length !== 1 ? 's' : ''}`;
+
+  if (revisao.length === 0) {
+    document.getElementById('review-list').innerHTML = `<div class="empty-state"><div class="es-icon">✅</div><p>Nenhum contato pendente de revisão. Boa!</p></div>`;
+    return;
+  }
+
+  document.getElementById('review-list').innerHTML = revisao.map(c => {
+    const motivos = [];
+    if (!c.cargo) motivos.push({ m: 'Sem cargo cadastrado', red: true });
+    if (c.score === 0) motivos.push({ m: 'Score zero', red: true });
+    if (c.tier <= 2 && c.score_composto < 30) motivos.push({ m: 'Tier alto com score baixo', red: false });
+
+    return `<div class="review-card ${motivos.some(m => m.red) ? 'suspect' : ''}">
+      <div class="review-info">
+        <div class="review-name">${c.nome}</div>
+        <div class="review-sub">${c.cargo || '<em>sem cargo</em>'} · ${c.empresa} · T${c.tier} · Score: ${c.score_composto}</div>
+        ${motivos.map(m => `<span class="review-motivo ${m.red ? 'red' : ''}">${m.m}</span>`).join(' ')}
+      </div>
+      <div class="review-actions">
+        <button class="rev-btn confirm" onclick="reviewAction('${c.email}','confirmar')">✓ Confirmar</button>
+        <button class="rev-btn mark"    onclick="reviewAction('${c.email}','relevante')">⭐ Relevante</button>
+        <button class="rev-btn discard" onclick="reviewAction('${c.email}','descartar')">✕ Descartar</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function reviewAction(email, acao) {
+  const msgs = { confirmar: 'Tier confirmado!', relevante: 'Marcado como relevante!', descartar: 'Contato descartado!' };
+  toast(msgs[acao]);
+  // Em produção: salvar ação no backend. Aqui apenas feedback visual.
+}
+
+// ── TAB FONTES ──
+function renderFontes() {
+  const totals = {};
+  const tiers  = {};
+  CONTACTS.forEach(c => {
+    totals[c.fonte] = (totals[c.fonte] || 0) + 1;
+    if (!tiers[c.fonte]) tiers[c.fonte] = {};
+    tiers[c.fonte][c.tier] = (tiers[c.fonte][c.tier] || 0) + 1;
+  });
+
+  const total = CONTACTS.length;
+  const icons = {
+    LinkedIn: '💼', WhatsApp: '💬', Agencias_SP: '🏢', Escolas_Jac: '🏫',
+    Controle_Leads: '📋', Captacao_Recursos: '💰'
+  };
+
+  const sorted = Object.entries(totals).sort((a,b) => b[1] - a[1]);
+
+  document.getElementById('fonte-grid').innerHTML = sorted.map(([f, q]) => {
+    const pct = ((q / total) * 100).toFixed(1);
+    return `<div class="fonte-card ${activeSource === f ? 'active-source' : ''}" onclick="drillFonte('${f}')">
+      <div class="fonte-icon">${icons[f] || '📁'}</div>
+      <div class="fonte-name">${f.replace(/_/g,' ')}</div>
+      <div class="fonte-count">${q}</div>
+      <div class="fonte-pct">${pct}% do total</div>
+      <div class="fonte-bar"><div class="fonte-bar-fill" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function drillFonte(fonte) {
+  activeSource = activeSource === fonte ? null : fonte;
+  renderFontes();
+
+  const detail = document.getElementById('fonte-detail');
+  if (!activeSource) { detail.className = 'fonte-detail'; return; }
+
+  const contatos = CONTACTS.filter(c => c.fonte === fonte).sort((a,b) => b.score_composto - a.score_composto);
+  document.getElementById('fonte-detail-title').textContent = `${fonte.replace(/_/g,' ')} — ${contatos.length} contatos`;
+
+  document.getElementById('tbody-fonte').innerHTML = contatos.map(c => `
+    <tr>
+      <td><div class="contact-name">${c.nome}</div></td>
+      <td style="font-size:12px">${c.cargo || '—'}</td>
+      <td style="font-size:12px">${c.empresa}</td>
+      <td><span class="tier-badge ${tierClass(c.tier)}">T${c.tier}</span></td>
+      <td><span class="score-pill ${scoreClass(c.score_composto)}">${c.score_composto}</span></td>
+      <td><span class="prio-badge ${prioClass(c.prioridade)}">${c.prioridade}</span></td>
+    </tr>`).join('');
+
+  detail.className = 'fonte-detail visible';
+}
+
+// ── TAB DOMÍNIOS ──
+function renderDominios() {
+  const min = parseInt(document.getElementById('dom-min').value) || 1;
+  const search = (document.getElementById('dom-search')?.value || '').toLowerCase();
+
+  const domMap = {};
+  CONTACTS.forEach(c => {
+    if (!c.email) return;
+    const parts = c.email.split('@');
+    if (parts.length < 2) return;
+    const dom = parts[1].toLowerCase();
+    if (!domMap[dom]) domMap[dom] = { total: 0, tiers: {} };
+    domMap[dom].total++;
+    domMap[dom].tiers[c.tier] = (domMap[dom].tiers[c.tier] || 0) + 1;
+  });
+
+  let doms = Object.entries(domMap).filter(([d, v]) => v.total >= min);
+  if (search) doms = doms.filter(([d]) => d.includes(search));
+  doms.sort((a,b) => b[1].total - a[1].total);
+
+  document.getElementById('dom-count').textContent = `${doms.length} domínio${doms.length !== 1 ? 's' : ''}`;
+
+  if (doms.length === 0) {
+    document.getElementById('tbody-dom').innerHTML = `<tr><td colspan="4"><div class="empty-state"><div class="es-icon">🌐</div><p>Nenhum domínio encontrado.</p></div></td></tr>`;
+    return;
+  }
+
+  const tierColors = { 1:'var(--tier1)',2:'var(--tier2)',3:'var(--tier3)',4:'var(--tier4)',5:'var(--tier5)',6:'var(--tier6)' };
+
+  document.getElementById('tbody-dom').innerHTML = doms.map(([d, v]) => {
+    const principalTier = Object.entries(v.tiers).sort((a,b) => b[1]-a[1])[0][0];
+    const bars = Object.entries(v.tiers).map(([t, q]) => {
+      const w = Math.max(8, Math.round((q / v.total) * 80));
+      return `<div class="tier-dot" style="width:${w}px;background:${tierColors[t]}" title="T${t}: ${q}"></div>`;
+    }).join('');
+
+    return `<tr>
+      <td style="font-family:var(--mono);font-size:12px;color:var(--blue)">${d}</td>
+      <td style="font-size:13px;font-weight:700">${v.total}</td>
+      <td><div class="tier-dist">${bars}</div></td>
+      <td><span class="tier-badge ${tierClass(principalTier)}">T${principalTier}</span></td>
+    </tr>`;
+  }).join('');
+}
+// ── KANBAN ──
+const COLUMNS = [
+  { key: 'novo', label: '01 — Radar / Novo' },
+  { key: 'pesquisa', label: '02 — Pesquisa / Inteligencia' },
+  { key: 'abordagem', label: '03 — Abordagem planejada' },
+  { key: 'primeiro', label: '04 — Primeiro contato' },
+  { key: 'followup', label: '05 — Follow-up' },
+  { key: 'conversa', label: '06 — Em conversa' },
+  { key: 'qualificacao', label: '07 — Qualificacao' },
+  { key: 'diagnostico', label: '08 — Diagnostico / Reuniao' },
+  { key: 'proposta', label: '09 — Proposta / Oportunidade' },
+  { key: 'negociacao', label: '10 — Negociacao' },
+  { key: 'ganho', label: '11 — Ganho / Cliente' },
+  { key: 'nutricao', label: '12 — Nutricao' },
+  { key: 'sem_resposta', label: '13 — Sem resposta' },
+  { key: 'perdido', label: '14 — Perdido / Descartado' }
+];
+
+const TIER_NAMES = {
+  1: 'Tier 1',
+  2: 'Tier 2',
+  3: 'Tier 3',
+  4: 'Tier 4',
+  5: 'Tier 5',
+  6: 'Tier 6',
+  7: 'Tier 7',
+  8: 'Tier 8'
+};
+function tierName(t){ return TIER_NAMES[t] || `T${t}`; }
+
+const KANBAN_KEY = 'crm_kanban_states_v1';
+const TIER_RULES = {
+  1: { fluxo: ['novo','pesquisa','abordagem','primeiro','followup','conversa','qualificacao','diagnostico','proposta','negociacao','ganho'], esforco: 'Alto' },
+  2: { fluxo: ['novo','pesquisa','abordagem','primeiro','followup','conversa','qualificacao','diagnostico','proposta','negociacao','ganho'], esforco: 'Alto' },
+  3: { fluxo: ['novo','pesquisa','abordagem','primeiro','followup','conversa','qualificacao','nutricao'], esforco: 'Medio' },
+  4: { fluxo: ['novo','pesquisa','abordagem','sem_resposta','nutricao'], esforco: 'Baixo' },
+  5: { fluxo: ['novo','perdido','nutricao'], esforco: 'Escala' },
+  6: { fluxo: ['novo','perdido'], esforco: 'Baixo' },
+  7: { fluxo: ['novo','pesquisa','abordagem','sem_resposta'], esforco: 'Baixo' },
+  8: { fluxo: ['novo','perdido'], esforco: 'Baixo' }
+};
+
+function getKanbanStates() {
+  try { return JSON.parse(localStorage.getItem(KANBAN_KEY) || '{}'); }
+  catch { return {}; }
+}
+
+function setKanbanStates(states) {
+  localStorage.setItem(KANBAN_KEY, JSON.stringify(states));
+}
+
+function getContactStage(email) {
+  const states = getKanbanStates();
+  return states[email]?.stage || 'novo';
+}
+
+function setContactStage(email, stage) {
+  const states = getKanbanStates();
+  states[email] = { ...states[email], stage };
+  setKanbanStates(states);
+}
+
+function resetKanban() {
+  if (!confirm('Resetar todos os estágios para Novo?')) return;
+  setKanbanStates({});
+  renderKanban();
+  toast('Estágios resetados');
+}
+
+function recommendedChannel(c) {
+  if (c.whatsapp && c.data_contato) return 'WhatsApp';
+  if (c.linkedin_url) return 'LinkedIn';
+  if (c.email) return 'E-mail';
+  return '—';
+}
+
+function getNextAction(c, stage) {
+  const map = {
+    novo: 'Pesquisar contexto e definir abordagem',
+    pesquisa: 'Finalizar inteligência e escolher canal',
+    abordagem: 'Montar sequência e agendar primeiro envio',
+    primeiro: 'Enviar primeiro contato pelo canal recomendado',
+    followup: 'Executar follow-up com novo argumento',
+    conversa: 'Qualificar necessidade, timing e autoridade',
+    qualificacao: 'Agendar diagnóstico ou reunião',
+    diagnostico: 'Apresentar hipótese de oportunidade',
+    proposta: 'Enviar proposta alinhada ao problema',
+    negociacao: 'Aguardar decisão ou ajustar escopo',
+    ganho: 'Entregar projeto e gerar referência',
+    nutricao: 'Identificar gatilho de reativação',
+    sem_resposta: 'Definir se nutre ou descarta',
+    perdido: 'Arquivar ou reintroduzir apenas com sinal'
+  };
+  return map[stage] || c.acao_sugerida || 'Definir próxima ação';
+}
+
+function getTimeline(email) {
+  try {
+    const all = JSON.parse(localStorage.getItem('crm_kanban_timeline') || '{}');
+    return all[email] || [];
+  } catch { return []; }
+}
+
+function addTimeline(email, ev) {
+  try {
+    const all = JSON.parse(localStorage.getItem('crm_kanban_timeline') || '{}');
+    const list = all[email] || [];
+    list.unshift({ id: Date.now() + Math.random().toString(36).slice(2), created_at: new Date().toISOString(), ...ev });
+    all[email] = list.slice(0, 200);
+    localStorage.setItem('crm_kanban_timeline', JSON.stringify(all));
+  } catch {}
+}
+
+function mapResultToStage(result, current) {
+  if (result === 'Respondeu positivamente') return 'conversa';
+  if (result === 'Agendou reunião') return 'diagnostico';
+  if (result === 'Pediu orçamento') return 'proposta';
+  if (result === 'Respondeu negativamente' || result === 'Sem interesse') return 'perdido';
+  if (result === 'Indicou outra pessoa') return 'conversa';
+  if (result === 'Sem resposta' || result === 'Visualizou') return 'sem_resposta';
+  return current;
+}
+
+function openKanbanModal(contact, stage) {
+  const existing = document.getElementById('modal');
+  if (existing) existing.remove();
+
+  const timeline = getTimeline(contact.email);
+  const nextAction = getNextAction(contact, stage);
+
+  const modal = document.createElement('div');
+  modal.id = 'modal';
+  modal.className = 'modal-overlay visible';
+  modal.innerHTML = `<div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">${contact.nome}</div>
+        <div class="modal-sub">${contact.empresa} · ${contact.cargo || 'Sem cargo'} · T${contact.tier} · ${contact.score_composto} pts</div>
+      </div>
+      <button class="btn" onclick="closeModal()">Fechar</button>
+    </div>
+
+    <div class="section-title">Inteligência</div>
+    <div class="detail-grid">
+      <div class="detail-item"><strong>Cargo</strong> ${contact.cargo || '—'}</div>
+      <div class="detail-item"><strong>Empresa</strong> ${contact.empresa}</div>
+      <div class="detail-item"><strong>Tier</strong> ${tierName(contact.tier)} · ${TIER_RULES[contact.tier]?.esforco || '—'}</div>
+      <div class="detail-item"><strong>Score</strong> ${contact.score_composto}</div>
+      <div class="detail-item"><strong>Categoria</strong> ${contact.categoria}</div>
+      <div class="detail-item"><strong>Prioridade</strong> ${contact.prioridade}</div>
+      <div class="detail-item"><strong>Fonte</strong> ${contact.fonte}</div>
+      <div class="detail-item"><strong>Indicado por</strong> ${contact.terceiro || '—'}</div>
+      <div class="detail-item"><strong>Último contato</strong> ${contact.data_contato ? new Date(contact.data_contato).toLocaleDateString('pt-BR') : '—'}</div>
+      <div class="detail-item"><strong>Canal recomendado</strong> ${recommendedChannel(contact)}</div>
+    </div>
+
+    <div class="section-title">Contexto</div>
+    <div class="detail-item">${contact.trecho ? contact.trecho : 'Baixa evidência de contexto.'}</div>
+    <div class="detail-item" style="margin-top:6px"><strong>Motivo</strong> ${contact.motivo_classificacao}</div>
+
+    <div class="section-title">Estratégia</div>
+    <div class="detail-item"><strong>Ação sugerida</strong> ${contact.acao_sugerida}</div>
+    <div class="detail-item" style="margin-top:6px"><strong>Próxima ação</strong> ${nextAction}</div>
+
+    <div class="section-title">Timeline</div>
+    <div class="timeline">
+      ${timeline.length ? timeline.slice(0,8).map(ev => `<div class="timeline-item"><div class="timeline-date">${ev.created_at ? new Date(ev.created_at).toLocaleString('pt-BR') : ''}</div><div>${ev.type || ''} — ${ev.step || ''}</div><div style="font-size:11px;color:var(--muted)">${ev.result || ''}</div><div style="font-size:11px;color:var(--muted)">${ev.observation || ''}</div></div>`).join('') : '<div class="timeline-item"><div>Sem registros.</div></div>'}
+    </div>
+
+    <div class="section-title">Registrar ação</div>
+    <div class="form-row">
+      <select id="modal-action" class="filter-select">
+        <option value="">Tipo de ação</option>
+        <option value="Primeiro contato">Primeiro contato</option>
+        <option value="Follow-up">Follow-up</option>
+        <option value="Resposta recebida">Resposta recebida</option>
+        <option value="Reunião">Reunião</option>
+        <option value="Proposta">Proposta</option>
+        <option value="Outro">Outro</option>
+      </select>
+      <select id="modal-result" class="filter-select">
+        <option value="">Resultado</option>
+        <option value="Sem resposta">Sem resposta</option>
+        <option value="Visualizou">Visualizou</option>
+        <option value="Respondeu positivamente">Respondeu positivamente</option>
+        <option value="Respondeu negativamente">Respondeu negativamente</option>
+        <option value="Pediu informações">Pediu informações</option>
+        <option value="Pediu orçamento">Pediu orçamento</option>
+        <option value="Agendou reunião">Agendou reunião</option>
+        <option value="Indicou outra pessoa">Indicou outra pessoa</option>
+        <option value="Não é o momento">Não é o momento</option>
+        <option value="Sem interesse">Sem interesse</option>
+      </select>
+    </div>
+    <textarea id="modal-note" placeholder="Observação"></textarea>
+    <div class="form-row" style="margin-top:10px">
+      <button class="btn btn-green" onclick="saveKanbanAction('${contact.email}', '${stage}')">Salvar</button>
+      <button class="btn" onclick="closeModal()">Cancelar</button>
+    </div>
+  </div>`;
+
+  document.body.appendChild(modal);
+}
+
+function closeModal() {
+  const m = document.getElementById('modal');
+  if (m) m.remove();
+}
+
+function saveKanbanAction(email, stage) {
+  const action = document.getElementById('modal-action')?.value || '';
+  const result = document.getElementById('modal-result')?.value || '';
+  const note = document.getElementById('modal-note')?.value || '';
+
+  if (!action && !result && !note) {
+    toast('Informe ação, resultado ou observação');
+    return;
+  }
+
+  addTimeline(email, { type: action || 'Atualização', step: action || '', result, observation: note });
+
+  if (result) {
+    const newStage = mapResultToStage(result, stage);
+    if (newStage && newStage !== stage) {
+      setContactStage(email, newStage);
+    }
+  }
+
+  toast('Ação registrada');
+  closeModal();
+  renderKanban();
+}
+
+function advanceStage(email, current) {
+  const contact = CONTACTS.find(c => c.email === email);
+  if (!contact) return;
+  const rule = TIER_RULES[contact.tier];
+  if (!rule) return;
+  const idx = rule.fluxo.indexOf(current);
+  if (idx < 0 || idx >= rule.fluxo.length - 1) {
+    toast('Já está no último estágio do fluxo');
+    return;
+  }
+  const next = rule.fluxo[idx + 1];
+  setContactStage(email, next);
+  addTimeline(email, { type: 'Avanço', step: `${current} → ${next}`, result: 'Avanço automático' });
+  toast(`Movido para: ${next}`);
+  renderKanban();
+}
+
+function onDrop(ev, stage) {
+  const email = ev.dataTransfer.getData('text/plain');
+  if (!email) return;
+  setContactStage(email, stage);
+  addTimeline(email, { type: 'Movimento', step: stage, result: 'Movido no Kanban' });
+  toast('Movido');
+  renderKanban();
+}
+
+function initDragDrop() {
+  document.querySelectorAll('.kanban-card').forEach(card => {
+    card.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', card.dataset.email);
+      card.classList.add('dragging');
+    });
+    card.addEventListener('dragend', () => card.classList.remove('dragging'));
+  });
+}
+
+function renderKanban() {
+  const search = (document.getElementById('search-kanban')?.value || '').toLowerCase();
+  const tierFilter = document.getElementById('kan-tier')?.value || '';
+  const prioFilter = document.getElementById('kan-prio')?.value || '';
+
+  const board = document.getElementById('kanban-board');
+  if (!board) return;
+
+  board.innerHTML = COLUMNS.map(col => {
+    const items = CONTACTS.filter(c => {
+      const stage = getContactStage(c.email);
+      if (stage !== col.key) return false;
+      if (tierFilter && String(c.tier) !== tierFilter) return false;
+      if (prioFilter && c.prioridade !== prioFilter) return false;
+      if (search && !(c.nome.toLowerCase().includes(search) || c.empresa.toLowerCase().includes(search) || (c.cargo || '').toLowerCase().includes(search))) return false;
+      return true;
+    }).sort((a,b) => (b.score_composto || 0) - (a.score_composto || 0));
+
+    const cards = items.map(c => {
+      const liAct = c.linkedin_url ? `<a class="act-btn linkedin" href="${c.linkedin_url}" target="_blank" title="Abrir LinkedIn" onclick="event.stopPropagation()">in</a>` : `<button class="act-btn linkedin" disabled style="opacity:0.3;cursor:not-allowed" title="LinkedIn não informado">in</button>`;
+      const emailAct = c.email ? `<button class="act-btn email" onclick="copyText('${c.email}','E-mail');event.stopPropagation()" title="Copiar e-mail">✉</button>` : `<button class="act-btn email" disabled style="opacity:0.3;cursor:not-allowed" title="E-mail não informado">✉</button>`;
+      const waAct = c.whatsapp ? `<a class="act-btn whats" href="https://wa.me/${c.whatsapp}" target="_blank" onclick="event.stopPropagation()" title="Abrir WhatsApp">💬</a>` : `<button class="act-btn whats" disabled style="opacity:0.3;cursor:not-allowed" title="WhatsApp não informado">💬</button>`;
+
+      return `<div class="kanban-card" draggable="true" data-email="${c.email}" data-stage="${col.key}" onclick="openKanbanModal(CONTACTS.find(x=>x.email==='${c.email}'), '${col.key}')">
+        <div class="card-header">
+          <div class="card-name">${c.nome}</div>
+          <div class="card-actions">${emailAct}${waAct}${liAct}</div>
+        </div>
+        <div class="card-meta">${c.cargo || 'Sem cargo'} · ${c.empresa}${c.subtipo && c.subtipo !== 'Lead Manual' && c.subtipo !== 'Conversa' ? ' · ' + esc(c.subtipo) : ''}</div>
+        <div class="card-context">${(c.trecho || c.motivo_classificacao || '').slice(0, 120)}</div>
+        <div class="card-footer">
+          <div class="card-badges">
+            <span class="tier-badge tier-${c.tier}">${tierName(c.tier)}</span>
+            <span class="score-pill ${scoreClass(c.score_composto)}">${c.score_composto}</span>
+          </div>
+        </div>
+        <div class="kanban-footer">
+          <button class="btn" onclick="advanceStage('${c.email}', '${col.key}')" title="Avançar estágio">Avançar ▶</button>
+          <button class="btn" onclick="event.stopPropagation();openKanbanModal(CONTACTS.find(x=>x.email==='${c.email}'), '${col.key}')" title="Detalhes">Detalhes</button>
+        </div>
+      </div>`;
+    }).join('');
+
+    return `<div class="kanban-column"
+      ondragover="event.preventDefault()"
+      ondrop="onDrop(event, '${col.key}')"
+      ondragenter="event.preventDefault()"
+    >
+      <div class="kanban-header">
+        <div class="kanban-title">${col.label}</div>
+        <div class="kanban-count">${items.length}</div>
+      </div>
+      <div class="kanban-body">${cards || '<div style="font-size:12px;color:var(--muted);text-align:center;padding:10px">—</div>'}</div>
+    </div>`;
+  }).join('');
+
+  const countEl = document.getElementById('kanban-count');
+  if (countEl) countEl.textContent = `${CONTACTS.length} contatos`;
+
+  initDragDrop();
+}
+</script>
+<!-- ══════════════════════════════════════════
+     MODALS: NOVO LEAD / NOVA CONVERSA
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-novo-lead">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">＋ Cadastrar Novo Lead</div>
+        <div class="modal-sub">Preencha os dados abaixo. O lead será criado e colocado automaticamente na coluna "novo" do Kanban.</div>
+      </div>
+      <button class="btn" onclick="closeModalNovoLead()">Fechar</button>
+    </div>
+    <div class="form-row">
+      <input type="text" id="nl-nome" placeholder="Nome *" style="flex:2">
+      <input type="text" id="nl-empresa" placeholder="Empresa" style="flex:1">
+    </div>
+    <div class="form-row">
+      <input type="text" id="nl-cargo" placeholder="Cargo" style="flex:1">
+      <input type="email" id="nl-email" placeholder="E-mail *" style="flex:1">
+    </div>
+    <div class="form-row">
+      <input type="text" id="nl-whatsapp" placeholder="WhatsApp" style="flex:1">
+      <input type="text" id="nl-linkedin" placeholder="LinkedIn URL" style="flex:1">
+    </div>
+    <div class="form-row">
+      <select id="nl-tier" class="filter-select" style="flex:1">
+        <option value="1">Tier 1</option>
+        <option value="2">Tier 2</option>
+        <option value="3" selected>Tier 3</option>
+        <option value="4">Tier 4</option>
+        <option value="5">Tier 5</option>
+        <option value="6">Tier 6</option>
+        <option value="7">Tier 7</option>
+        <option value="8">Tier 8</option>
+      </select>
+      <input type="text" id="nl-subtipo" placeholder="Subtipo" style="flex:1">
+    </div>
+    <div class="form-row">
+      <select id="nl-prio" class="filter-select" style="flex:1">
+        <option value="Média" selected>Média</option>
+        <option value="Alta">Alta</option>
+        <option value="Baixa">Baixa</option>
+      </select>
+    </div>
+    <div class="form-row" style="margin-top:10px">
+      <textarea id="nl-contexto" placeholder="Contexto / Nota inicial"></textarea>
+    </div>
+    <div class="form-row" style="margin-top:10px">
+      <button class="btn btn-green" onclick="salvarNovoLead()">Salvar e adicionar ao Kanban</button>
+      <button class="btn" onclick="closeModalNovoLead()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-nova-conversa">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">💬 Registrar Contexto de Conversa</div>
+        <div class="modal-sub">Registre uma nova conversa. Um lead mínimo será criado e colocado automaticamente na coluna "conversa" do Kanban.</div>
+      </div>
+      <button class="btn" onclick="closeModalNovaConversa()">Fechar</button>
+    </div>
+    <div class="form-row">
+      <input type="text" id="nc-nome" placeholder="Nome da pessoa *" style="flex:2">
+      <input type="text" id="nc-empresa" placeholder="Empresa" style="flex:1">
+    </div>
+    <div class="form-row" style="margin-top:10px">
+      <textarea id="nc-contexto" placeholder="Contexto da conversa *" style="min-height:120px"></textarea>
+    </div>
+    <div class="form-row" style="margin-top:10px">
+      <select id="nc-canal" class="filter-select" style="flex:1">
+        <option value="WhatsApp">WhatsApp</option>
+        <option value="LinkedIn">LinkedIn</option>
+        <option value="E-mail">E-mail</option>
+        <option value="Outro">Outro</option>
+      </select>
+    </div>
+    <div class="form-row" style="margin-top:10px">
+      <button class="btn btn-green" onclick="salvarNovaConversa()">Salvar e adicionar ao Kanban</button>
+      <button class="btn" onclick="closeModalNovaConversa()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// LISTAS UNIFICADAS
+// ══════════════════════════════════════════
+const LS_LISTAS_STATUS = 'prospeccao_status_v1';
+const LS_LISTAS_SEL = 'prospeccao_sel_v1';
+let listasStatusMap = {};
+try { listasStatusMap = JSON.parse(localStorage.getItem(LS_LISTAS_STATUS) || '{}'); } catch(e) { listasStatusMap = {}; }
+let listasSelected = new Set();
+try { listasSelected = new Set(JSON.parse(localStorage.getItem(LS_LISTAS_SEL) || '[]')); } catch(e) { listasSelected = new Set(); }
+let listasPage = 1;
+const LISTAS_PAGE_SIZE = 40;
+let listasActiveTier = null;
+let listasActiveSubtipo = null;
+
+function getListasStatus(c) { return listasStatusMap[c.email] || c.status || 'Pendente'; }
+function setListasStatus(email, st) { listasStatusMap[email] = st; localStorage.setItem(LS_LISTAS_STATUS, JSON.stringify(listasStatusMap)); }
+function saveListasSel() { localStorage.setItem(LS_LISTAS_SEL, JSON.stringify([...listasSelected])); }
+
+function esc(s){ return (s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+function openModalNovoLead() {
+  const m = document.getElementById('modal-novo-lead');
+  if (!m) return;
+  m.classList.add('visible');
+}
+function closeModalNovoLead() {
+  const m = document.getElementById('modal-novo-lead');
+  if (m) m.classList.remove('visible');
+}
+function openModalNovaConversa() {
+  const m = document.getElementById('modal-nova-conversa');
+  if (!m) return;
+  m.classList.add('visible');
+}
+function closeModalNovaConversa() {
+  const m = document.getElementById('modal-nova-conversa');
+  if (m) m.classList.remove('visible');
+}
+
+/* ── Radar simples por Tier/Subtipo ── */
+function abrirRadar(){
+  const el = document.getElementById('modal-radar');
+  if (!el) return;
+  el.classList.add('visible');
+  renderRadar();
+}
+function fecharRadar(){
+  const el = document.getElementById('modal-radar');
+  if (el) el.classList.remove('visible');
+}
+function renderRadar(){
+  const q = (document.getElementById('radar-search')?.value || '').toLowerCase();
+  const tierF = document.getElementById('radar-tier')?.value || '';
+  const box = document.getElementById('radar-list');
+  if (!box) return;
+
+  let items = CONTACTS.filter(c => {
+    const stage = getContactStage(c.email);
+    if (stage !== 'novo') return false;
+    if (tierF && String(c.tier) !== tierF) return false;
+    if (q){
+      const h = `${c.nome} ${c.empresa} ${c.cargo} ${c.subtipo||''}`.toLowerCase();
+      if (!h.includes(q)) return false;
+    }
+    return true;
+  }).sort((a,b)=> (b.score_composto||0) - (a.score_composto||0));
+
+  if (!items.length){
+    box.innerHTML = '<div class="empty-state"><div class="es-icon">📡</div><p>Nenhum lead no radar com esses filtros.</p></div>';
+    return;
+  }
+
+  box.innerHTML = items.map(c => {
+    const meta = subtipoMeta(c.subtipo);
+    return `<div class="contact" style="margin-bottom:8px">
+      <div class="c-main">
+        <div class="c-top"><span class="c-name">${esc(c.nome)}</span><span class="badge badge-sub">${esc(c.subtipo || '—')}</span></div>
+        <div class="c-empresa">${esc(c.empresa || '—')} ${c.cargo ? ' · '+esc(c.cargo) : ''}</div>
+        <div class="c-email">${esc(c.email || 'sem e-mail')}</div>
+        <div style="margin-top:6px;font-size:12px;color:var(--muted)">${meta.icon} ${meta.label}</div>
+      </div>
+      <div class="c-side">
+        <span class="tier-badge tier-${c.tier}">${tierName(c.tier)}</span>
+        <button class="btn btn-sm" onclick="copyText('${escapeAttr(c.nome)}','Nome')">Copiar nome</button>
+        <button class="btn btn-sm" onclick="copyText('${escapeAttr(c.empresa)}','Empresa')">Copiar empresa</button>
+        <button class="btn btn-green btn-sm" onclick="fecharRadar(); switchTab('kanban'); openKanbanModal(CONTACTS.find(x=>x.email==='${c.email.replace("'","\\'")}'), 'novo')">Abrir no Kanban</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function salvarNovoLead() {
+  const nome = document.getElementById('nl-nome').value.trim();
+  const email = document.getElementById('nl-email').value.trim();
+  if (!nome || !email) { toast('Preencha Nome e E-mail obrigatórios.'); return; }
+
+  const novo = {
+    nome,
+    empresa: document.getElementById('nl-empresa').value.trim(),
+    cargo: document.getElementById('nl-cargo').value.trim(),
+    email,
+    telefone: '',
+    whatsapp: document.getElementById('nl-whatsapp').value.trim(),
+    linkedin_url: document.getElementById('nl-linkedin').value.trim(),
+    fonte: 'Cadastro Manual',
+    tier: parseInt(document.getElementById('nl-tier').value) || 3,
+    categoria: 'Lead',
+    score: 50,
+    score_composto: 50,
+    ultima_interacao: '',
+    data_contato: '',
+    motivo_classificacao: document.getElementById('nl-contexto').value.trim() || 'Cadastro manual',
+    tipo_abordagem: 'Manual',
+    acao_sugerida: 'Contato inicial',
+    prioridade: document.getElementById('nl-prio').value,
+    trecho: document.getElementById('nl-contexto').value.trim(),
+    terceiro: '',
+    listaV2: `0${parseInt(document.getElementById('nl-tier').value)||3} - Lead_Manual`,
+    tierLabel: `0${parseInt(document.getElementById('nl-tier').value)||3} · Lead Manual`,
+    subtipo: document.getElementById('nl-subtipo').value.trim() || 'Lead Manual',
+    status: 'Pendente'
+  };
+
+  CONTACTS.push(novo);
+  setContactStage(email, 'novo');
+  addTimeline(email, { type: 'Cadastro', step: 'Novo Lead', result: 'Criado manualmente', observation: novo.motivo_classificacao });
+  toast('Lead cadastrado e adicionado ao Kanban!');
+  closeModalNovoLead();
+  renderAll();
+}
+
+function salvarNovaConversa() {
+  const nome = document.getElementById('nc-nome').value.trim();
+  const contexto = document.getElementById('nc-contexto').value.trim();
+  if (!nome || !contexto) { toast('Preencha Nome e Contexto obrigatórios.'); return; }
+
+  const id = Date.now();
+  const email = `manual_${id}@local.invalid`;
+  const novo = {
+    nome,
+    empresa: document.getElementById('nc-empresa').value.trim(),
+    cargo: '',
+    email,
+    telefone: '',
+    whatsapp: '',
+    linkedin_url: '',
+    fonte: 'Conversa Manual',
+    tier: 3,
+    categoria: 'Lead',
+    score: 40,
+    score_composto: 40,
+    ultima_interacao: new Date().toISOString().slice(0,10),
+    data_contato: new Date().toISOString().slice(0,10),
+    motivo_classificacao: contexto,
+    tipo_abordagem: 'Conversa',
+    acao_sugerida: 'Dar seguimento à conversa',
+    prioridade: 'Média',
+    trecho: `[${document.getElementById('nc-canal').value}] ${contexto}`,
+    terceiro: '',
+    listaV2: `03 - Conversa_Manual`,
+    tierLabel: `03 · Conversa Manual`,
+    subtipo: 'Conversa',
+    status: 'Em conversa'
+  };
+
+  CONTACTS.push(novo);
+  setContactStage(email, 'conversa');
+  addTimeline(email, { type: 'Conversa', step: 'Contexto registrado', result: 'Criado via Nova Conversa', observation: contexto });
+  toast('Conversa registrada e adicionada ao Kanban!');
+  closeModalNovaConversa();
+  renderAll();
+}
+
+// ── LISTAS RENDER ──
+function renderListas() {
+  const search = (document.getElementById('search-listas')?.value || '').toLowerCase();
+  const tierF = document.getElementById('lis-tier')?.value || '';
+  const subtipoF = document.getElementById('lis-subtipo')?.value || '';
+  const prioF = document.getElementById('lis-prio')?.value || '';
+  const statusF = document.getElementById('lis-status')?.value || '';
+
+  let items = CONTACTS.filter(c => {
+    if (tierF && String(c.tier) !== tierF) return false;
+    if (subtipoF && (c.subtipo || '') !== subtipoF) return false;
+    if (prioF && c.prioridade !== prioF) return false;
+    if (statusF && getListasStatus(c) !== statusF) return false;
+    if (search) {
+      const hay = `${c.nome} ${c.empresa} ${c.cargo} ${c.email}`.toLowerCase();
+      if (!hay.includes(search)) return false;
+    }
+    return true;
+  });
+
+  const total = items.length;
+  document.getElementById('listas-count').textContent = `${total} contato(s)`;
+  const totalPages = Math.max(1, Math.ceil(total / LISTAS_PAGE_SIZE));
+  if (listasPage > totalPages) listasPage = totalPages;
+  const start = (listasPage - 1) * LISTAS_PAGE_SIZE;
+  const pageItems = items.slice(start, start + LISTAS_PAGE_SIZE);
+
+  const tbody = document.getElementById('tbody-listas');
+  if (pageItems.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="11"><div class="empty-state"><div class="es-icon">📋</div><p>Nenhum contato encontrado.</p></div></td></tr>`;
+  } else {
+    tbody.innerHTML = pageItems.map(c => {
+      const st = getListasStatus(c);
+      const isSel = listasSelected.has(c.email);
+      const stage = getContactStage(c.email);
+      const stageLabel = COLUMNS.find(col => col.key === stage)?.label || stage;
+      return `<tr>
+        <td><input type="checkbox" data-email="${c.email}" ${isSel?'checked':''} onchange="toggleListasSel(this)"></td>
+        <td><div class="contact-name">${esc(c.nome)}</div><div class="contact-sub">${esc(c.cargo || '')}</div></td>
+        <td>${esc(c.empresa)}</td>
+        <td>${esc(c.cargo || '—')}</td>
+        <td><span style="font-family:var(--mono);font-size:12px;color:var(--blue)">${esc(c.email)}</span></td>
+        <td><span class="tier-badge tier-${c.tier}">${tierName(c.tier)}</span></td>
+        <td><span class="badge badge-sub">${esc(c.subtipo || '—')}</span></td>
+        <td><span class="prio-badge ${prioClass(c.prioridade)}">${c.prioridade}</span></td>
+        <td><span class="status-dot ${st==='Pendente'?'yellow':st==='Ganho'?'green':st==='Perdido'?'red':'gray'}"></span>${st}</td>
+        <td><span style="font-size:11px;color:var(--muted)">${stageLabel}</span></td>
+        <td>
+          <div class="action-btns">
+            <button class="btn btn-sm" onclick="openKanbanModal(CONTACTS.find(x=>x.email==='${c.email.replace("'","\'")}'), getContactStage('${c.email.replace("'","\'")}'))">📋 Kanban</button>
+            ${stage==='novo' ? `<button class="btn btn-green btn-sm" onclick="setContactStage('${c.email.replace("'","\'")}', 'conversa'); addTimeline('${c.email.replace("'","\'")}', {type:'Avanço',step:'novo → conversa',result:'Adicionado ao Kanban'}); toast('Adicionado ao Kanban'); renderAll();">＋ Kanban</button>` : ''}
+          </div>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  renderListasPagination(totalPages);
+  populateListasSubtipoFilter(items);
+}
+
+function toggleListasSel(cb) {
+  const email = cb.dataset.email;
+  if (cb.checked) listasSelected.add(email); else listasSelected.delete(email);
+  saveListasSel();
+}
+
+function renderListasPagination(totalPages) {
+  const p = document.getElementById('listas-pagination');
+  if (totalPages <= 1) { p.innerHTML = ''; return; }
+  let html = `<button class="btn btn-ghost btn-sm" ${listasPage<=1?'disabled':''} onclick="listasPage--;renderListas()">← Anterior</button>`;
+  html += `<span>${listasPage} / ${totalPages}</span>`;
+  html += `<button class="btn btn-ghost btn-sm" ${listasPage>=totalPages?'disabled':''} onclick="listasPage++;renderListas()">Próxima →</button>`;
+  p.innerHTML = html;
+}
+
+function populateListasSubtipoFilter(items) {
+  const sel = document.getElementById('lis-subtipo');
+  const cur = sel.value;
+  const subs = [...new Set(items.map(c => c.subtipo || '—').filter(Boolean))].sort();
+  sel.innerHTML = '<option value="">Subtipo: Todos</option>' + subs.map(s => `<option value="${esc(s)}" ${s===cur?'selected':''}>${esc(s)}</option>`).join('');
+}
+
+function renderAll() {
+  renderTop(); renderRevisao(); renderFontes(); renderDominios(); renderMensagens(); renderSequencias(); renderFollowups(); renderKanban(); renderListas(); renderKPIs();
+}
+
+// Close modals on overlay click
+['modal-novo-lead','modal-nova-conversa','modal-radar'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('click', e => { if (e.target.id === id) el.classList.remove('visible'); });
+  }
+});
+</script>
+</div>
+
+<div class="modal-overlay" id="modal-radar">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">📡 Radar</div>
+        <div class="modal-sub">Leads na coluna Radar/Novo por Tier e Subtipo</div>
+      </div>
+      <button class="btn" onclick="fecharRadar()">Fechar</button>
+    </div>
+    <div class="toolbar" style="padding:10px 0">
+      <input type="text" id="radar-search" placeholder="Buscar nome, empresa ou subtipo..." oninput="renderRadar()" style="flex:1">
+      <select class="filter-select" id="radar-tier" onchange="renderRadar()">
+        <option value="">Tier: Todos</option>
+        <option value="1">Tier 1</option>
+        <option value="2">Tier 2</option>
+        <option value="3">Tier 3</option>
+        <option value="4">Tier 4</option>
+        <option value="5">Tier 5</option>
+        <option value="6">Tier 6</option>
+        <option value="7">Tier 7</option>
+        <option value="8">Tier 8</option>
+      </select>
+    </div>
+    <div id="radar-list"></div>
+  </div>
+</div>
+
+</body>
+</html>
