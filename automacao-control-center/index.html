@@ -4,131 +4,144 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EPQ · Automation Control Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg-0:#0C1220;
-    --bg-1:#111A2C;
-    --bg-2:#182338;
-    --bg-3:#1F2C45;
-    --line:rgba(210,222,245,0.09);
-    --line-strong:rgba(210,222,245,0.16);
-    --ink:#EAEFF9;
-    --ink-dim:#94A2BE;
-    --ink-faint:#5B6884;
-    --amber:#E8A33D;
-    --amber-dim:rgba(232,163,61,0.14);
-    --blue:#5B8DEF;
-    --blue-dim:rgba(91,141,239,0.14);
-    --green:#4CAF7D;
-    --green-dim:rgba(76,175,125,0.14);
-    --red:#E2604F;
-    --red-dim:rgba(226,96,79,0.14);
-    --grey:#7C8BA8;
-    --grey-dim:rgba(124,139,168,0.14);
-    --radius:10px;
+    --epq-white:#ffffff;
+    --epq-bg:#f4f7fa;
+    --epq-gray-50:#f8fafc;
+    --epq-gray-100:#eef2f5;
+    --epq-gray-200:#e4eaf0;
+    --epq-gray-300:#d8e0e7;
+    --epq-gray-400:#adb9c5;
+    --epq-gray-500:#8a97a5;
+    --epq-gray-600:#687582;
+    --epq-gray-700:#4a5660;
+    --epq-gray-800:#2e3840;
+    --epq-gray-900:#17212b;
+    --epq-blue-50:#f0f7ff;
+    --epq-blue-100:#eaf3ff;
+    --epq-blue-200:#c5dcf5;
+    --epq-blue-300:#9bc5ef;
+    --epq-blue-400:#6aaae4;
+    --epq-blue-500:#3d8bd9;
+    --epq-blue-600:#2572be;
+    --epq-blue-700:#175a96;
+    --epq-blue-800:#0f3f6e;
+    --epq-blue-900:#0b3155;
+    --epq-positive:#2a8a5e;
+    --epq-attention:#b07218;
+    --epq-alert:#9b4a1a;
     --radius-sm:6px;
+    --radius-md:10px;
+    --radius-lg:16px;
+    --radius-xl:24px;
+    --shadow-md:0 4px 16px rgba(15,40,65,.08), 0 2px 6px rgba(15,40,65,.05);
+    --font-display:'Space Grotesk',sans-serif;
+    --font-body:'Inter',sans-serif;
+    --font-mono:'JetBrains Mono',monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--bg-0);color:var(--ink);font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
-  h1,h2,h3,h4,.display{font-family:'Barlow Semi Condensed','Inter',sans-serif;font-weight:600;letter-spacing:0.01em}
+  body{background:var(--epq-bg);color:var(--epq-gray-900);font-family:var(--font-body);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4,.display{font-family:var(--font-display);font-weight:600;letter-spacing:0.01em}
   ::-webkit-scrollbar{width:8px;height:8px}
-  ::-webkit-scrollbar-thumb{background:var(--bg-3);border-radius:4px}
+  ::-webkit-scrollbar-thumb{background:var(--epq-gray-300);border-radius:4px}
   a{color:inherit}
 
   .shell{display:flex;min-height:100vh}
-  .sidebar{width:236px;flex-shrink:0;background:var(--bg-1);border-right:1px solid var(--line);padding:22px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:22px}
-  .brand .mark{font-family:'Barlow Semi Condensed';font-weight:700;font-size:20px;letter-spacing:0.02em}
-  .brand .mark span{color:var(--amber)}
-  .brand .sub{color:var(--ink-faint);font-size:11.5px;margin-top:2px}
+  .sidebar{width:236px;flex-shrink:0;background:var(--epq-white);border-right:1px solid var(--epq-gray-200);padding:14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:14px}
+  .brand .mark{font-family:var(--font-display);font-weight:700;font-size:18px;letter-spacing:0.02em}
+  .brand .mark span{color:var(--epq-blue-600)}
+  .brand .sub{color:var(--epq-gray-500);font-size:11.5px;margin-top:2px}
   nav{display:flex;flex-direction:column;gap:2px;flex:1}
-  .navitem{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--radius-sm);color:var(--ink-dim);cursor:pointer;font-size:13.5px;border-left:2px solid transparent}
-  .navitem:hover{color:var(--ink);background:var(--bg-2)}
-  .navitem.active{color:var(--ink);background:var(--bg-2);border-left:2px solid var(--amber)}
-  .navitem .dot{width:6px;height:6px;border-radius:50%;background:var(--ink-faint);flex-shrink:0}
-  .navitem.active .dot{background:var(--amber)}
-  .sidebar-foot{color:var(--ink-faint);font-size:11px;padding:0 8px;border-top:1px solid var(--line);padding-top:14px}
+  .navitem{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--radius-sm);color:var(--epq-gray-600);cursor:pointer;font-size:13.5px;border-left:2px solid transparent;transition:background .2s, color .2s}
+  .navitem:hover{color:var(--epq-blue-700);background:rgba(61,139,217,.12)}
+  .navitem.active{color:var(--epq-blue-700);background:rgba(61,139,217,.12);border-left:2px solid var(--epq-blue-600)}
+  .navitem .dot{width:6px;height:6px;border-radius:50%;background:var(--epq-gray-400);flex-shrink:0}
+  .navitem.active .dot{background:var(--epq-blue-600)}
+  .sidebar-foot{color:var(--epq-gray-500);font-size:11px;padding:0 8px;border-top:1px solid var(--epq-gray-200);padding-top:14px}
 
-  main{flex:1;min-width:0;padding:24px 28px 60px;max-width:1240px}
+  main{flex:1;min-width:0;padding:14px 18px 40px;max-width:1240px}
   .section{display:none}
   .section.active{display:block;animation:rise .35s ease}
   @keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-  .pagehead{margin-bottom:18px}
-  .pagehead h1{font-size:22px}
-  .pagehead p{color:var(--ink-dim);margin-top:4px;font-size:13px;max-width:760px}
+  .pagehead{margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--epq-gray-200)}
+  .pagehead h1{font-size:18px;color:var(--epq-blue-900)}
+  .pagehead p{color:var(--epq-gray-600);margin-top:4px;font-size:13px;max-width:760px}
 
-  .grid-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px}
+  .grid-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
   @media(max-width:900px){.grid-cards{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:520px){.grid-cards{grid-template-columns:1fr}}
-  .kcard{background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
-  .kcard .num{font-family:'Barlow Semi Condensed';font-size:28px;font-weight:700;line-height:1}
-  .kcard .lbl{color:var(--ink-dim);font-size:11.5px;margin-top:5px}
-  .kcard.accent-amber .num{color:var(--amber)}
-  .kcard.accent-green .num{color:var(--green)}
-  .kcard.accent-red .num{color:var(--red)}
-  .kcard.accent-blue .num{color:var(--blue)}
+  .kcard{background:var(--epq-white);border:1px solid var(--epq-gray-200);border-radius:var(--radius-md);padding:12px}
+  .kcard .num{font-family:var(--font-display);font-size:24px;font-weight:700;line-height:1}
+  .kcard .lbl{color:var(--epq-gray-600);font-size:11.5px;margin-top:4px}
+  .kcard.accent-blue .num{color:var(--epq-blue-700)}
+  .kcard.accent-green .num{color:var(--epq-positive)}
+  .kcard.accent-red .num{color:var(--epq-alert)}
+  .kcard.accent-amber .num{color:var(--epq-attention)}
 
-  .panel{background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:16px}
-  .panel h2{font-size:15px;margin-bottom:3px}
-  .panel .sub{color:var(--ink-dim);font-size:12px;margin-bottom:12px}
+  .panel{background:var(--epq-white);border:1px solid var(--epq-gray-200);border-radius:var(--radius-md);padding:14px;margin-bottom:14px}
+  .panel h2{font-size:14px;margin-bottom:2px;color:var(--epq-blue-900)}
+  .panel .sub{color:var(--epq-gray-600);font-size:12px;margin-bottom:10px}
   .panel-2col{display:grid;grid-template-columns:1.3fr 1fr;gap:14px}
   @media(max-width:900px){.panel-2col{grid-template-columns:1fr}}
 
   .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:100px;font-size:11px;font-weight:600;white-space:nowrap}
-  .b-ok{background:var(--green-dim);color:var(--green)}
-  .b-warn{background:var(--amber-dim);color:var(--amber)}
-  .b-err{background:var(--red-dim);color:var(--red)}
-  .b-off{background:var(--grey-dim);color:var(--grey)}
-  .b-info{background:var(--blue-dim);color:var(--blue)}
+  .b-ok{background:#dcfce7;color:#14532d}
+  .b-warn{background:#fef3c7;color:#7c4a03}
+  .b-err{background:#fee2e2;color:#7f1d1d}
+  .b-off{background:var(--epq-gray-100);color:var(--epq-gray-700)}
+  .b-info{background:var(--epq-blue-50);color:var(--epq-blue-800)}
 
-  .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg-2);cursor:pointer;user-select:none;font-weight:600;font-size:12px;color:var(--ink-dim)}
-  .chip.on{background:var(--blue);color:white;border-color:var(--blue)}
+  .chip{padding:7px 11px;border-radius:999px;border:1px solid var(--epq-gray-200);background:var(--epq-white);cursor:pointer;user-select:none;font-weight:600;font-size:12px;color:var(--epq-gray-700);transition:all .2s}
+  .chip.on{background:var(--epq-blue-600);color:white;border-color:var(--epq-blue-600)}
 
-  .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg-1)}
+  .table-wrap{overflow:auto;border:1px solid var(--epq-gray-200);border-radius:var(--radius-md);background:var(--epq-white)}
   table{width:100%;border-collapse:collapse;font-size:13px}
-  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
-  th{color:var(--ink-faint);font-size:11.5px;text-transform:uppercase;letter-spacing:0.08em;background:var(--bg-2)}
-  tr:hover td{background:rgba(255,255,255,0.02)}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--epq-gray-200)}
+  th{color:var(--epq-gray-600);font-size:11.5px;text-transform:uppercase;letter-spacing:0.08em;background:var(--epq-gray-50)}
+  tr:hover td{background:rgba(61,139,217,.04)}
   tr.open td{border-bottom:0}
 
-  .detail{display:none;background:var(--bg-0);border-bottom:1px solid var(--line);padding:14px 12px}
+  .detail{display:none;background:var(--epq-gray-50);border-bottom:1px solid var(--epq-gray-200);padding:14px 12px}
   .detail.open{display:table-row}
   .detail-inner{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
   @media(max-width:900px){.detail-inner{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:520px){.detail-inner{grid-template-columns:1fr}}
   .kv{display:flex;flex-direction:column;gap:2px}
-  .kv .k{font-size:11px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.08em}
-  .kv .v{font-size:13px;color:var(--ink);font-weight:600}
+  .kv .k{font-size:11px;color:var(--epq-gray-500);text-transform:uppercase;letter-spacing:0.08em}
+  .kv .v{font-size:13px;color:var(--epq-gray-900);font-weight:600}
 
-  .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;font-weight:600;font-size:12px;cursor:pointer;border:0;transition:.15s ease;background:var(--bg-2);color:var(--ink);border:1px solid var(--line)}
-  .btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
-  .btn.primary{background:linear-gradient(180deg,var(--amber),#f3cc7a);color:var(--bg-0);border:0}
-  .btn.danger{background:var(--red);color:white;border:0}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;font-weight:600;font-size:12px;cursor:pointer;border:0;transition:.15s ease;background:var(--epq-gray-100);color:var(--epq-gray-800);border:1px solid var(--epq-gray-200)}
+  .btn:hover{filter:brightness(1.05);transform:translateY(-1px)}
+  .btn.primary{background:linear-gradient(180deg,var(--epq-blue-600),var(--epq-blue-500));color:white;border:0}
+  .btn.danger{background:#ef4444;color:white;border:0}
 
-  .now-block{display:flex;align-items:center;gap:10px;padding:12px;border-radius:var(--radius);background:var(--bg-1);border:1px solid var(--line)}
-  .pulse{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(76,175,125,0.4);animation:pulse-green 2s infinite}
-  @keyframes pulse-green{0%{box-shadow:0 0 0 0 rgba(76,175,125,0.4)}70%{box-shadow:0 0 0 12px rgba(76,175,125,0)}100%{box-shadow:0 0 0 0 rgba(76,175,125,0)}}
+  .now-block{display:flex;align-items:center;gap:10px;padding:12px;border-radius:var(--radius-md);background:var(--epq-white);border:1px solid var(--epq-gray-200)}
+  .pulse{width:10px;height:10px;border-radius:50%;background:var(--epq-positive);box-shadow:0 0 0 0 rgba(42,138,94,0.4);animation:pulse-green 2s infinite}
+  @keyframes pulse-green{0%{box-shadow:0 0 0 0 rgba(42,138,94,0.4)}70%{box-shadow:0 0 0 12px rgba(42,138,94,0)}100%{box-shadow:0 0 0 0 rgba(42,138,94,0)}}
 
   .timeline{display:flex;flex-direction:column;gap:10px}
   .tl-item{display:flex;gap:12px;align-items:flex-start}
-  .tl-time{min-width:72px;text-align:right;font-weight:700;font-size:12px;color:var(--amber);padding-top:2px}
-  .tl-body{flex:1;background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);padding:10px 12px}
-  .tl-body .t{font-weight:700;font-size:13px}
-  .tl-body .d{color:var(--ink-dim);font-size:12px;margin-top:2px}
+  .tl-time{min-width:72px;text-align:right;font-weight:700;font-size:12px;color:var(--epq-blue-700);padding-top:2px;font-family:var(--font-mono)}
+  .tl-body{flex:1;background:var(--epq-white);border:1px solid var(--epq-gray-200);border-radius:var(--radius-md);padding:10px 12px}
+  .tl-body .t{font-weight:700;font-size:13px;color:var(--epq-blue-900)}
+  .tl-body .d{color:var(--epq-gray-600);font-size:12px;margin-top:2px}
 
   .log-table th:first-child,.log-table td:first-child{white-space:nowrap}
 
-  .alert{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:var(--radius);background:var(--bg-1);border:1px solid var(--line);margin-bottom:8px}
+  .alert{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:var(--radius-md);background:var(--epq-white);border:1px solid var(--epq-gray-200);margin-bottom:8px}
   .alert .dot{width:10px;height:10px;border-radius:50%;margin-top:3px;flex-shrink:0}
 
   .qa{display:flex;flex-direction:column;gap:10px}
-  .qcard{background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);padding:12px}
-  .qcard .q{font-weight:700;font-size:13px;margin-bottom:6px}
+  .qcard{background:var(--epq-white);border:1px solid var(--epq-gray-200);border-radius:var(--radius-md);padding:12px}
+  .qcard .q{font-weight:700;font-size:13px;margin-bottom:6px;color:var(--epq-blue-900)}
   .qcard .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px}
-  .qcard .chip-sm{padding:4px 8px;border-radius:999px;background:var(--bg-2);border:1px solid var(--line);font-size:11px;font-weight:700;color:var(--ink-dim)}
+  .qcard .chip-sm{padding:4px 8px;border-radius:999px;background:var(--epq-gray-100);border:1px solid var(--epq-gray-200);font-size:11px;font-weight:700;color:var(--epq-gray-700);font-family:var(--font-mono)}
 
-  .helper{color:var(--ink-faint);font-size:12px;margin-top:6px}
-  .section-title{font-weight:800;font-size:14px;color:var(--ink);margin:18px 0 10px;display:flex;align-items:center;gap:8px}
+  .helper{color:var(--epq-gray-600);font-size:12px;margin-top:6px}
+  .section-title{font-weight:800;font-size:14px;color:var(--epq-blue-900);margin:14px 0 8px;display:flex;align-items:center;gap:8px}
 </style>
 </head>
 <body>
@@ -174,7 +187,7 @@
         <div class="sub">Status operacional consolidado das automações do EPQ.</div>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
           <span class="badge b-ok" id="health-badge">Avaliando</span>
-          <span style="font-size:13px;color:var(--ink-dim)" id="health-text">Calculando...</span>
+          <span style="font-size:13px;color:var(--epq-gray-600)" id="health-text">Calculando...</span>
         </div>
         <div class="helper">Se houver automação ativa sem execução real ou erro em canal, a saúde cai.</div>
       </div>
@@ -196,7 +209,7 @@
         <div class="sub">Nota de 0 a 100 calculada com dados reais.</div>
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
           <div class="kcard" style="flex:0 0 auto;min-width:120px"><div class="num" id="score-num">-</div><div class="lbl">OPERATION HEALTH</div></div>
-          <div style="font-size:13px;color:var(--ink-dim);max-width:640px" id="score-explanation">—</div>
+          <div style="font-size:13px;color:var(--epq-gray-600);max-width:640px" id="score-explanation">—</div>
         </div>
       </div>
     </div>
@@ -302,7 +315,7 @@
         <p>Área objetiva de execução em tempo real das automações EPQ.</p>
       </div>
       <div id="now-block" class="now-block">Nenhuma automação em execução agora.</div>
-      <div class="panel" style="margin-top:16px">
+      <div class="panel" style="margin-top:14px">
         <h2>Perguntas rápidas</h2>
         <div class="sub">Consulta operacional. Sem métricas inventadas.</div>
         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
@@ -313,7 +326,7 @@
           <div class="chip" data-ask="Onde o EPQ está perdendo leads?">Onde estamos perdendo leads?</div>
           <div class="chip" data-ask="Quem precisa agir agora na operação EPQ?">Quem precisa agir agora?</div>
         </div>
-        <div id="ask-result" style="margin-top:12px;font-size:13px;color:var(--ink-dim)">Escolha uma pergunta para ver a resposta baseada nos dados do painel.</div>
+        <div id="ask-result" style="margin-top:12px;font-size:13px;color:var(--epq-gray-600)">Escolha uma pergunta para ver a resposta baseada nos dados do painel.</div>
       </div>
     </div>
 
@@ -385,7 +398,7 @@ function renderKPIs(){
   });
   const al=document.getElementById('attention-list');
   if(attention.length===0) al.innerHTML='Nenhuma pendência crítica no momento.';
-  else al.innerHTML=attention.map(x=>'<div class="alert"><div class="dot" style="background:var(--amber)"></div><div>'+x+'</div></div>').join('');
+  else al.innerHTML=attention.map(x=>'<div class="alert"><div class="dot" style="background:var(--epq-attention)"></div><div>'+x+'</div></div>').join('');
 
   const epqActive=AUTOMATIONS.filter(x=>x.tags.includes('epq') && x.status==='ativa').length;
   document.getElementById('exec-summary').innerHTML='Status: 🟢 SAUDÁVEL<br>'+ AUTOMATIONS.length + ' automações EPQ monitoradas. Erros recentes: ' + errors + '. Se houver erro de canal ou ausência de execução, corrija antes de expandir novas automações.';
@@ -533,7 +546,7 @@ function renderLogs(){
     <td>1</td>
     <td>${r.errors}</td>
   </tr>`).join('');
-  if(!rows.length) tb.innerHTML='<tr><td colspan="7" style="color:var(--ink-faint);padding:12px">SEM DADOS DE EXECUÇÃO</td></tr>';
+  if(!rows.length) tb.innerHTML='<tr><td colspan="7" style="color:var(--epq-gray-600);padding:12px">SEM DADOS DE EXECUÇÃO</td></tr>';
 }
 
 function renderAlerts(){
@@ -544,8 +557,8 @@ function renderAlerts(){
     if(x.status==='ativa' && !x.lastRun && x.executionCount===0) alerts.push({level:'warn',text:'Permissão/execução ausente: ' + x.name});
   });
   const c=document.getElementById('alerts-list');
-  if(!alerts.length){c.innerHTML='<div class="alert"><div class="dot" style="background:var(--green)"></div><div>🟢 Nenhum alerta operacional no momento.</div></div>';return;}
-  c.innerHTML=alerts.map(a=>`<div class="alert"><div class="dot" style="background:var(--${a.level==='error'?'red':'amber'})"></div><div>${a.level==='error'?'🔴':'🟡'} ${esc(a.text)}</div></div>`).join('');
+  if(!alerts.length){c.innerHTML='<div class="alert"><div class="dot" style="background:var(--epq-positive)"></div><div>🟢 Nenhum alerta operacional no momento.</div></div>';return;}
+  c.innerHTML=alerts.map(a=>`<div class="alert"><div class="dot" style="background:${a.level==='error'?'var(--epq-alert)':'var(--epq-attention)'}"></div><div>${a.level==='error'?'🔴':'🟡'} ${esc(a.text)}</div></div>`).join('');
 }
 
 function renderQA(){
