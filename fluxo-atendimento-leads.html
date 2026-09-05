@@ -2,227 +2,526 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EPQ — Fluxo de Atendimento</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPQ // Fluxo de Atendimento</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#0a1f3b;--blue:#1b3a8a;--gold:#d4a843;--bg:#f6f7fb;--card:#ffffff;--text:#0f172a;--muted:#6b7280;--ok:#16a34a;--warn:#d97706;--bad:#dc2626;--hot:#ef4444;--warm:#f97316;--nurture:#eab308;--cold:#94a3b8;--shadow:0 6px 18px rgba(15,23,41,.06)}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;background:var(--bg);color:var(--text);line-height:1.45}
-.wrap{max-width:1160px;margin:0 auto;padding:28px 18px 60px}
-header.brand{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:22px;flex-wrap:wrap}
-.brand-left{display:flex;align-items:center;gap:14px}
-.brand-mark{height:46px;width:46px;background:linear-gradient(135deg,var(--blue),var(--navy));border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:18px;box-shadow:var(--shadow)}
-.brand h1{font-size:22px;margin:0;line-height:1.15}
-.brand p{margin:3px 0 0;color:var(--muted);font-size:13px}
-.brand-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.link-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid #e5e7eb;background:#fff;text-decoration:none;color:#0f172a;font-size:13px;font-weight:600;box-shadow:var(--shadow)}
-.link-btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+:root {
+  --epq-white: #ffffff;
+  --epq-bg: #f4f7fa;
+  --epq-surface: rgba(255,255,255,.62);
+  --epq-surface-strong: rgba(255,255,255,.88);
+  --epq-gray-50: #f8fafc;
+  --epq-gray-100: #eef2f5;
+  --epq-gray-200: #e4eaf0;
+  --epq-gray-300: #d8e0e7;
+  --epq-gray-400: #adb9c5;
+  --epq-gray-500: #8a97a5;
+  --epq-gray-600: #687582;
+  --epq-gray-700: #4a5660;
+  --epq-gray-800: #2e3840;
+  --epq-gray-900: #17212b;
+  --epq-blue-50: #f0f7ff;
+  --epq-blue-100: #eaf3ff;
+  --epq-blue-200: #c5dcf5;
+  --epq-blue-300: #9bc5ef;
+  --epq-blue-400: #6aaae4;
+  --epq-blue-500: #3d8bd9;
+  --epq-blue-600: #2572be;
+  --epq-blue-700: #175a96;
+  --epq-blue-800: #0f3f6e;
+  --epq-blue-900: #0b3155;
+  --epq-positive: #2a8a5e;
+  --epq-attention: #b07218;
+  --epq-alert: #9b4a1a;
+  --epq-op-positive: #7ec8e3;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --shadow-sm: 0 1px 3px rgba(15,40,65,.06), 0 1px 2px rgba(15,40,65,.04);
+  --shadow-md: 0 4px 16px rgba(15,40,65,.08), 0 2px 6px rgba(15,40,65,.05);
+  --shadow-lg: 0 20px 60px rgba(15,40,65,.09), 0 8px 24px rgba(15,40,65,.06);
+  --shadow-glass: 0 20px 60px rgba(15,40,65,.08), inset 0 1px 0 rgba(255,255,255,.75);
+  --glass-border: 1px solid rgba(61,139,217,.15);
+  --glass-bg: rgba(255,255,255,.62);
+  --glass-blur: blur(18px);
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --sidebar-w: 84px;
+  --sidebar-expanded: 240px;
+  --motion-fast: 0.2s;
+  --motion-med: 0.5s;
+  --motion-slow: 0.9s;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
 
-.section{margin-top:24px}
-.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
-.section-title{font-size:16px;font-weight:700;margin:0}
-.card{background:var(--card);border:1px solid #e5e7eb;border-radius:16px;padding:18px;box-shadow:var(--shadow)}
-.grid-2{display:grid;grid-template-columns:1fr;gap:14px}
-@media(min-width:980px){.grid-2{grid-template-columns:1fr 1fr}}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--epq-bg);
+  color: var(--epq-gray-900);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+:focus-visible { outline: 2px solid var(--epq-blue-500); outline-offset: 2px; }
 
-.table-wrap{overflow-x:auto;border:1px solid #e5e7eb;border-radius:16px;background:#fff;box-shadow:var(--shadow)}
-table{width:100%;border-collapse:collapse;min-width:1040px;font-size:13px}
-th,td{padding:12px 14px;text-align:left;border-bottom:1px solid #e5e7eb}
-th{font-weight:600;color:#374151;background:#f9fafb;position:sticky;top:0}
-tr:hover td{background:#f8fafc}
+.sidebar {
+  position: fixed; left: 0; top: 0; height: 100vh; width: var(--sidebar-w);
+  background: var(--epq-gray-900);
+  border-right: 1px solid rgba(61,139,217,.15);
+  z-index: 100; display: flex; flex-direction: column;
+  padding: 24px 0; transition: width var(--motion-med) var(--ease-out);
+  overflow: hidden;
+}
+.sidebar:hover { width: var(--sidebar-expanded); }
+.sidebar-logo {
+  width: 36px; height: 36px; margin: 0 0 28px 23px; flex-shrink: 0;
+  background: var(--epq-blue-700); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 700; font-size: 12px; color: #fff;
+}
+.sidebar-nav { display: flex; flex-direction: column; gap: 3px; padding: 0 12px; overflow-y: auto; }
+.nav-item {
+  display: flex; align-items: center; gap: 12px; padding: 9px 11px;
+  border-radius: var(--radius-sm); cursor: pointer; white-space: nowrap;
+  text-decoration: none; color: var(--epq-gray-500);
+  transition: background var(--motion-fast), color var(--motion-fast);
+}
+.nav-item:hover, .nav-item.active { background: rgba(61,139,217,.12); color: var(--epq-blue-300); }
+.nav-item.active { color: var(--epq-blue-400); }
+.nav-num { font-family: var(--font-mono); font-size: 9px; flex-shrink: 0; width: 16px; }
+.nav-label { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; opacity: 0; transition: opacity var(--motion-fast); }
+.sidebar:hover .nav-label { opacity: 1; }
+.sidebar-status { margin-top: auto; padding: 14px 12px 0; display: flex; align-items: center; gap: 8px; }
+.status-dot-live { width: 6px; height: 6px; background: var(--epq-blue-400); border-radius: 50%; animation: pulse-dot 2s ease-in-out infinite; flex-shrink: 0; }
+@keyframes pulse-dot { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .5; transform: scale(.8); } }
 
-.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
-.badge-hot{background:#fee2e2;color:#991b1b}
-.badge-warm{background:#ffedd5;color:#9a3412}
-.badge-nurture{background:#fef9c3;color:#713f12}
-.badge-cold{background:#e2e8f0;color:#334155}
+.main-content { margin-left: var(--sidebar-w); min-height: 100vh; }
+.command-header {
+  position: relative; min-height: 260px; background: var(--epq-gray-900);
+  overflow: hidden; display: flex; align-items: flex-end; padding-bottom: 44px;
+}
+.atm-gradient {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 60% at 25% 30%, rgba(23,90,150,.24) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 50% at 80% 70%, rgba(11,49,85,.18) 0%, transparent 60%);
+}
+.grid-overlay {
+  position: absolute; inset: 0; pointer-events: none; opacity: .5;
+  background-image: linear-gradient(rgba(61,139,217,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(61,139,217,.07) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 70% 90% at 60% 40%, black 30%, transparent 75%);
+}
+.corner-brackets span { position: absolute; width: 20px; height: 20px; border: 1px solid rgba(61,139,217,.3); }
+.cb-tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+.cb-tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+.header-content { position: relative; z-index: 10; padding: 0 56px; width: 100%; max-width: 900px; }
+.header-eyebrow { font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--epq-blue-300); letter-spacing: .2em; text-transform: uppercase; margin-bottom: 12px; }
+.header-title { font-family: var(--font-display); font-size: clamp(26px, 3.6vw, 40px); font-weight: 700; color: #fff; letter-spacing: -.03em; line-height: 1.05; margin-bottom: 10px; }
+.header-title em { color: var(--epq-blue-400); font-style: normal; }
+.header-subtitle { font-size: 13px; font-weight: 400; color: var(--epq-gray-400); line-height: 1.6; max-width: 520px; margin-bottom: 18px; }
+.header-meta { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.status-badge { display: flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--epq-blue-400); letter-spacing: .12em; text-transform: uppercase; }
+.status-badge-dot { width: 6px; height: 6px; background: var(--epq-blue-400); border-radius: 50%; animation: pulse-dot 2s ease-in-out infinite; }
+.period-badge { font-family: var(--font-mono); font-size: 10px; color: var(--epq-gray-500); letter-spacing: .08em; border-left: 1px solid rgba(255,255,255,.12); padding-left: 20px; }
 
-.lead-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px;box-shadow:var(--shadow)}
-.lead-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
-.lead-title{font-weight:700;font-size:15px}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-button.btn{padding:9px 12px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;font-size:13px;font-weight:600}
-button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.page-body { padding: 48px 56px 100px; max-width: 1180px; }
+.doc-section { margin-bottom: 64px; scroll-margin-top: 24px; }
+.section-divider { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+.divider-label { font-family: var(--font-mono); font-size: 9px; font-weight: 600; color: var(--epq-blue-500); letter-spacing: .2em; text-transform: uppercase; white-space: nowrap; }
+.divider-line { flex: 1; height: 1px; background: var(--epq-gray-200); }
+.section-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; letter-spacing: -.02em; margin: 10px 0 10px; }
+.section-lede { font-size: 13px; color: var(--epq-gray-600); line-height: 1.7; max-width: 680px; margin-bottom: 28px; }
+.sub-title { font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--epq-blue-600); letter-spacing: .16em; text-transform: uppercase; margin: 32px 0 12px; }
+.sub-title:first-of-type { margin-top: 0; }
 
-.empty{color:var(--muted);font-size:13px;padding:8px 0}
+.principle-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--epq-gray-200); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--epq-gray-200); }
+.principle-card { background: var(--epq-white); padding: 20px; }
+.principle-num { font-family: var(--font-mono); font-size: 9px; color: var(--epq-blue-300); font-weight: 600; letter-spacing: .1em; margin-bottom: 8px; }
+.principle-name { font-family: var(--font-display); font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+.principle-desc { font-size: 12px; color: var(--epq-gray-600); line-height: 1.55; }
 
-.timeline{display:flex;flex-direction:column;gap:10px}
-.tl-item{display:flex;gap:10px}
-.tl-dot{width:10px;min-width:10px;height:10px;border-radius:50%;background:#cbd5e1;margin-top:7px}
-.tl-dot.g{background:#16a34a}.tl-dot.y{background:#eab308}.tl-dot.r{background:#ef4444}.tl-dot.b{background:#0f172a}
-.tl-content{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px;flex:1}
-.tl-meta{font-size:11px;color:var(--muted)}
-.tl-text{font-size:13px;margin-top:2px}
+.swatch-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 24px; }
+.swatch {
+  border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--epq-gray-200);
+  cursor: pointer; background: var(--epq-white); transition: transform var(--motion-fast);
+}
+.swatch:hover { transform: translateY(-2px); }
+.swatch-color { height: 48px; }
+.swatch-meta { padding: 8px 10px; }
+.swatch-name { font-family: var(--font-mono); font-size: 9px; color: var(--epq-gray-600); letter-spacing: .04em; }
+.swatch-hex { font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--epq-gray-900); margin-top: 2px; }
+.copy-hint { font-family: var(--font-mono); font-size: 8px; color: var(--epq-blue-500); letter-spacing: .08em; text-transform: uppercase; margin-top: 3px; opacity: 0; transition: opacity var(--motion-fast); }
+.swatch:hover .copy-hint { opacity: 1; }
+.swatch.copied .copy-hint { opacity: 1; color: var(--epq-positive); }
 
-.note{font-size:13px;color:var(--muted);line-height:1.6}
-.highlight{background:#fffbeb;border:1px solid #fde68a;color:#92400e;padding:12px;border-radius:14px;font-size:13px}
-.kpi{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}
-@media(min-width:700px){.kpi{grid-template-columns:repeat(4,1fr)}}
-.kpi .card{text-align:center}
-.kpi .value{font-size:26px;font-weight:800;margin:6px 0;letter-spacing:-.02em}
-.kpi .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
-.kpi .hint{font-size:11px;color:var(--muted);margin-top:4px}
+.semantic-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.semantic-card { border-radius: var(--radius-md); border: 1px solid var(--epq-gray-200); padding: 16px; background: var(--epq-white); }
+.semantic-swatch { width: 100%; height: 32px; border-radius: var(--radius-sm); margin-bottom: 10px; }
+.semantic-name { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 4px; }
+.semantic-use { font-size: 11px; color: var(--epq-gray-600); line-height: 1.5; }
+
+.type-sample { display: flex; align-items: baseline; gap: 24px; padding: 16px 0; border-bottom: 1px solid var(--epq-gray-100); }
+.type-sample:last-child { border-bottom: none; }
+.type-meta { font-family: var(--font-mono); font-size: 9px; color: var(--epq-gray-500); letter-spacing: .06em; width: 200px; flex-shrink: 0; line-height: 1.6; }
+.type-meta b { color: var(--epq-gray-800); display: block; font-size: 10px; }
+
+.spec-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.spec-chip { border: 1px solid var(--epq-gray-200); border-radius: var(--radius-md); padding: 14px; background: var(--epq-white); }
+.spec-chip-val { font-family: var(--font-mono); font-size: 15px; font-weight: 600; color: var(--epq-blue-700); }
+.spec-chip-label { font-family: var(--font-mono); font-size: 9px; color: var(--epq-gray-500); letter-spacing: .06em; margin-top: 3px; }
+.radius-demo { width: 100%; height: 44px; background: var(--epq-blue-100); border: 1px solid var(--epq-blue-200); margin-bottom: 10px; }
+.shadow-demo { width: 100%; height: 56px; background: var(--epq-white); border-radius: var(--radius-md); margin-bottom: 14px; }
+
+.glass-card { background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border: var(--glass-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-glass); padding: 22px; }
+.solid-card { background: var(--epq-white); border: 1px solid var(--epq-gray-200); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); padding: 22px; }
+.comp-demo-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 10px; }
+.comp-label-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.comp-when { font-size: 11px; color: var(--epq-gray-500); line-height: 1.5; margin-top: 10px; }
+
+.kpi-strip-demo { background: var(--epq-white); border: 1px solid var(--epq-gray-200); border-radius: var(--radius-lg); display: flex; overflow-x: auto; }
+.kpi-item { flex: 1; min-width: 110px; padding: 18px; border-right: 1px solid var(--epq-gray-200); display: flex; flex-direction: column; gap: 5px; }
+.kpi-item:last-child { border-right: none; }
+.kpi-label { font-family: var(--font-mono); font-size: 9px; font-weight: 500; color: var(--epq-gray-500); letter-spacing: .13em; text-transform: uppercase; }
+.kpi-value { font-family: var(--font-mono); font-size: 20px; font-weight: 500; color: var(--epq-gray-900); letter-spacing: -.03em; }
+.kpi-value.featured { color: var(--epq-blue-700); }
+.kpi-sub { font-family: var(--font-mono); font-size: 9px; color: var(--epq-gray-400); }
+
+.badge-showcase { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.campaign-status-pill { display: inline-flex; align-items: center; gap: 6px; background: rgba(61,139,217,.08); border: 1px solid rgba(61,139,217,.2); border-radius: 100px; padding: 5px 12px; font-family: var(--font-mono); font-size: 9px; font-weight: 600; color: var(--epq-blue-600); letter-spacing: .12em; text-transform: uppercase; }
+.campaign-status-dot { width: 5px; height: 5px; background: var(--epq-blue-500); border-radius: 50%; animation: pulse-dot 2s ease-in-out infinite; }
+.leader-badge-demo { display: inline-block; background: var(--epq-blue-700); color: #fff; font-family: var(--font-mono); font-size: 8px; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; padding: 4px 11px; border-radius: 100px; }
+.delta-positive { font-family: var(--font-mono); font-size: 9px; color: var(--epq-positive); background: rgba(42,138,94,.08); border-radius: 4px; padding: 3px 7px; letter-spacing: .04em; }
+.delta-negative { font-family: var(--font-mono); font-size: 9px; color: var(--epq-alert); background: rgba(155,74,26,.08); border-radius: 4px; padding: 3px 7px; letter-spacing: .04em; }
+.status-badge-demo { display: inline-flex; align-items: center; gap: 7px; background: var(--epq-gray-900); padding: 7px 14px; border-radius: 100px; font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--epq-blue-400); letter-spacing: .12em; text-transform: uppercase; }
+
+.hierarchy-node { padding: 13px 15px; border-radius: var(--radius-md); border: 1px solid var(--epq-gray-200); background: var(--epq-white); margin-bottom: 8px; }
+.hierarchy-node.campaign-node { background: var(--epq-gray-900); border-color: var(--epq-gray-800); }
+.hierarchy-node.adset-node { background: rgba(61,139,217,.06); border-color: rgba(61,139,217,.2); margin-left: 28px; }
+.hierarchy-node.ad-node { margin-left: 56px; }
+.h-node-label { font-family: var(--font-mono); font-size: 8px; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; margin-bottom: 3px; }
+.h-node-label.dark { color: var(--epq-blue-400); }
+.h-node-label.blue { color: var(--epq-blue-600); }
+.h-node-label.default { color: var(--epq-gray-500); }
+.h-node-name { font-family: var(--font-display); font-size: 13px; font-weight: 500; }
+.h-node-name.dark { color: #fff; }
+.h-node-name.blue { color: var(--epq-blue-700); }
+.h-node-meta { font-family: var(--font-mono); font-size: 9px; color: var(--epq-gray-500); margin-top: 4px; }
+.h-node-meta.dark { color: var(--epq-gray-600); }
+
+.funnel-stage { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+.funnel-bar-wrap { flex: 1; height: 28px; display: flex; align-items: center; }
+.funnel-bar { height: 100%; border-radius: var(--radius-sm); background: rgba(61,139,217,.12); border: 1px solid rgba(61,139,217,.2); display: flex; align-items: center; padding: 0 12px; }
+.funnel-bar-label { font-family: var(--font-mono); font-size: 9px; font-weight: 500; color: var(--epq-blue-700); letter-spacing: .08em; text-transform: uppercase; }
+.funnel-val { min-width: 56px; text-align: right; font-family: var(--font-mono); font-size: 15px; font-weight: 500; color: var(--epq-gray-900); }
+
+.diag-item { display: flex; align-items: flex-start; gap: 14px; padding: 12px; border-radius: var(--radius-md); }
+.diag-icon { width: 28px; height: 28px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: var(--font-mono); font-size: 10px; font-weight: 600; }
+.diag-icon.positive { background: rgba(61,139,217,.1); color: var(--epq-blue-600); border: 1px solid rgba(61,139,217,.2); }
+.diag-icon.attention { background: rgba(230,160,60,.08); color: var(--epq-attention); border: 1px solid rgba(230,160,60,.25); }
+.diag-icon.gap { background: rgba(100,110,120,.08); color: var(--epq-gray-500); border: 1px solid rgba(100,110,120,.2); }
+.diag-tag { font-family: var(--font-mono); font-size: 8px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 3px; }
+.diag-tag.positive { color: var(--epq-blue-600); } .diag-tag.attention { color: var(--epq-attention); } .diag-tag.gap { color: var(--epq-gray-500); }
+.diag-text { font-size: 13px; color: var(--epq-gray-800); line-height: 1.5; }
+
+.btn-showcase { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.btn { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; border-radius: var(--radius-sm); padding: 11px 20px; cursor: pointer; border: 1px solid transparent; transition: all var(--motion-fast); }
+.btn-primary { background: var(--epq-blue-700); color: #fff; }
+.btn-primary:hover { background: var(--epq-blue-800); }
+.btn-secondary { background: transparent; border-color: var(--epq-gray-300); color: var(--epq-gray-800); }
+.btn-secondary:hover { border-color: var(--epq-blue-400); color: var(--epq-blue-700); }
+.btn-ghost { background: transparent; color: var(--epq-blue-600); padding-left: 4px; padding-right: 4px; }
+.btn-ghost:hover { color: var(--epq-blue-800); }
+.btn-dark { background: var(--epq-gray-900); color: var(--epq-blue-300); }
+.btn-dark:hover { color: var(--epq-blue-200); }
+
+.input-showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 520px; }
+.field-label { font-family: var(--font-mono); font-size: 9px; font-weight: 600; color: var(--epq-gray-500); letter-spacing: .12em; text-transform: uppercase; display: block; margin-bottom: 7px; }
+.field-input { width: 100%; font-family: var(--font-body); font-size: 13px; color: var(--epq-gray-900); background: var(--epq-white); border: 1px solid var(--epq-gray-300); border-radius: var(--radius-sm); padding: 10px 12px; }
+.field-input:focus { border-color: var(--epq-blue-500); outline: none; box-shadow: 0 0 0 3px rgba(61,139,217,.12); }
+
+.page-footer { padding: 28px 56px; border-top: 1px solid var(--epq-gray-200); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+.footer-brand, .footer-timestamp { font-family: var(--font-mono); font-size: 9px; color: var(--epq-gray-400); letter-spacing: .12em; text-transform: uppercase; }
+
+@media (max-width: 900px) {
+  .principle-grid, .comp-demo-row, .semantic-row, .spec-grid { grid-template-columns: 1fr 1fr; }
+  .page-body { padding: 36px 24px 80px; }
+  .header-content { padding: 0 24px; }
+}
+@media (max-width: 640px) {
+  .sidebar { display: none; }
+  .main-content { margin-left: 0; }
+  .principle-grid, .comp-demo-row, .semantic-row, .spec-grid, .input-showcase { grid-template-columns: 1fr; }
+  .header-title { font-size: 26px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
 </style>
 </head>
 <body>
-<div class="wrap" id="app">
-  <header class="brand">
-    <div class="brand-left">
-      <div class="brand-mark">EPQ</div>
-      <div>
-        <h1>Fluxo de Atendimento — Operação Comercial EPQ</h1>
-        <p>Distribuição, triagem, SLA, handoff e painel operacional</p>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">EQ</div>
+  <div class="sidebar-nav">
+    <a class="nav-item active" href="#visao-geral"><span class="nav-num">00</span><span class="nav-label">Visão geral</span></a>
+    <a class="nav-item" href="#regras"><span class="nav-num">01</span><span class="nav-label">Regras</span></a>
+    <a class="nav-item" href="#distribuicao"><span class="nav-num">02</span><span class="nav-label">Distribuição</span></a>
+    <a class="nav-item" href="#triagem"><span class="nav-num">03</span><span class="nav-label">Triagem</span></a>
+    <a class="nav-item" href="#sla"><span class="nav-num">04</span><span class="nav-label">SLA</span></a>
+    <a class="nav-item" href="#handoff"><span class="nav-num">05</span><span class="nav-label">Handoff</span></a>
+    <a class="nav-item" href="#painel"><span class="nav-num">06</span><span class="nav-label">Painel</span></a>
+    <a class="nav-item" href="#metricas"><span class="nav-num">07</span><span class="nav-label">Métricas</span></a>
+    <a class="nav-item" href="#implementacao"><span class="nav-num">08</span><span class="nav-label">Implementação</span></a>
+  </div>
+  <div class="sidebar-status"><div class="status-dot-live"></div><span class="nav-label" style="opacity:1;color:var(--epq-gray-500)">v1.0</span></div>
+</nav>
+
+<div class="main-content">
+
+  <header class="command-header">
+    <div class="atm-gradient"></div>
+    <div class="grid-overlay"></div>
+    <div class="corner-brackets"><span class="cb-tl"></span><span class="cb-tr"></span></div>
+    <div class="header-content">
+      <div class="header-eyebrow">EPQ // Comercial</div>
+      <h1 class="header-title">Fluxo de <em>Atendimento</em></h1>
+      <p class="header-subtitle">Distribuição, triagem, SLA e handoff em um fluxo contínuo.</p>
+      <div class="header-meta">
+        <div class="status-badge"><div class="status-badge-dot"></div>Em observação</div>
+        <div class="period-badge">04.09.2026</div>
       </div>
-    </div>
-    <div class="brand-actions">
-      <a class="link-btn" href="/epq/" target="_blank" rel="noreferrer">Voltar para o EPQ</a>
-      <a class="link-btn primary" href="/epq/analise_atendimento/" target="_blank" rel="noreferrer">Abrir análise de atendimento</a>
     </div>
   </header>
 
-  <div class="section">
-    <div class="section-head"><div class="section-title">KPIs operacionais</div></div>
-    <div class="kpi">
-      <div class="card"><div class="label">Regra principal</div><div class="value" style="font-size:16px;margin-top:10px">Velocidade + contexto + conversão</div><div class="hint">Sem distribuição por ordem de chegada</div></div>
-      <div class="card"><div class="label">Modo atual</div><div class="value" style="font-size:16px;margin-top:10px">Observação / simulação</div><div class="hint">Sem alterar fluxo atual</div></div>
-      <div class="card"><div class="label">Objetivo</div><div class="value" style="font-size:16px;margin-top:10px">Quem deve atender agora</div><div class="hint">Por quê + próxima ação</div></div>
-      <div class="card"><div class="label">SLA quente</div><div class="value" style="font-size:16px;margin-top:10px">Até 5 min</div><div class="hint">Com escalonamento automático</div></div>
-    </div>
-  </div>
+  <div class="page-body">
 
-  <div class="section">
-    <div class="section-head"><div class="section-title">Regras de distribuição</div></div>
-    <div class="grid-2">
-      <div class="card">
-        <div style="font-weight:700;margin-bottom:8px">Segunda a sexta</div>
-        <div class="note">
+    <section class="doc-section" id="visao-geral">
+      <div class="section-divider"><span class="divider-label">00 // Visão Geral</span><div class="divider-line"></div></div>
+      <h2 class="section-title">Distribuir para converter mais rápido</h2>
+      <p class="section-lede">O objetivo não é distribuir igualmente. É distribuir para quem consegue atender com mais velocidade, contexto e chance de conversão naquele momento.</p>
+      <div class="principle-grid">
+        <div class="principle-card">
+          <div class="principle-num">01</div>
+          <div class="principle-name">Velocidade primeiro</div>
+          <div class="principle-desc">Quente com SLA perto de estourar sempre tem prioridade sobre frio.</div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">02</div>
+          <div class="principle-name">Round Robin inteligente</div>
+          <div class="principle-desc">Entre Andressa e Clara, alterna por carga e capacidade, não só por chegada.</div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">03</div>
+          <div class="principle-name">Continuidade</div>
+          <div class="principle-desc">Lead que já começou com uma atendente continua com ela, evitando perda de contexto.</div>
+        </div>
+        <div class="principle-card">
+          <div class="principle-num">04</div>
+          <div class="principle-name">Ronan como camada</div>
+          <div class="principle-desc">Backup fora do horário e escalonamento para quentes, complexos e estratégicos.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="regras">
+      <div class="section-divider"><span class="divider-label">01 // Regras</span><div class="divider-line"></div></div>
+      <h2 class="section-title">Regras de distribuição</h2>
+      <p class="section-lede">A definição de janela evita desvios silenciosos e deixa o atendimento previsível.</p>
+      <div class="sub-title">Segunda a sexta</div>
+      <div class="solid-card">
+        <div class="principle-desc" style="font-size:13px;color:var(--epq-gray-800);line-height:1.7">
           <div>09:00–15:00: Andressa + Clara</div>
           <div>15:00–17:00: somente Andressa</div>
           <div>Após 17:00: Ronan</div>
         </div>
       </div>
-      <div class="card">
-        <div style="font-weight:700;margin-bottom:8px">Terça e quinta</div>
-        <div class="note">
+      <div class="sub-title">Terça e quinta</div>
+      <div class="solid-card">
+        <div class="principle-desc" style="font-size:13px;color:var(--epq-gray-800);line-height:1.7">
           <div>09:00–14:00: somente Andressa</div>
           <div>14:00–15:00: Andressa + Clara</div>
           <div>15:00–17:00: somente Andressa</div>
           <div>Após 17:00: Ronan</div>
         </div>
       </div>
-      <div class="card">
-        <div style="font-weight:700;margin-bottom:8px">Sábado</div>
-        <div class="note">
+      <div class="sub-title">Sábado</div>
+      <div class="solid-card">
+        <div class="principle-desc" style="font-size:13px;color:var(--epq-gray-800);line-height:1.7">
           <div>09:00–13:00: Andressa</div>
           <div>Após 13:00: Ronan</div>
         </div>
       </div>
-      <div class="card">
-        <div style="font-weight:700;margin-bottom:8px">Fora do horário</div>
-        <div class="note">
-          <div>Sempre Ronan</div>
-          <div>Classificação por temperatura: quente, morno, frio</div>
+    </section>
+
+    <section class="doc-section" id="distribuicao">
+      <div class="section-divider"><span class="divider-label">02 // Distribuição</span><div class="divider-line"></div></div>
+      <h2 class="section-title">Capacidade antes de quantidade</h2>
+      <p class="section-lede">A alocação leva em conta carga atual, temperatura, etapa do funil e necessidade de Ronan.</p>
+      <div class="spec-grid">
+        <div class="spec-chip"><div class="spec-chip-val">0–5</div><div class="spec-chip-label">Leads ativos: normal</div></div>
+        <div class="spec-chip"><div class="spec-chip-val">6–10</div><div class="spec-chip-label">Leads ativos: atenção</div></div>
+        <div class="spec-chip"><div class="spec-chip-val">11+</div><div class="spec-chip-label">Evitar nova distribuição, salvo quente extremo</div></div>
+        <div class="spec-chip"><div class="spec-chip-val">Ronan</div><div class="spec-chip-label">Quente, alto valor, objeção difícil, fora do horário</div></div>
+      </div>
+      <div class="sub-title">Árvore de decisão operacional</div>
+      <div class="glass-card">
+        <div class="hierarchy-node campaign-node"><div class="h-node-label dark">Fora do horário</div><div class="h-node-name dark">Ronan assume</div><div class="h-node-meta dark">Sem dependência de atendente</div></div>
+        <div class="hierarchy-node adset-node"><div class="h-node-label blue">Dentro do horário</div><div class="h-node-name blue">Verificar disponibilidade e carga</div><div class="h-node-meta">Continuidade primeiro</div></div>
+        <div class="hierarchy-node ad-node"><div class="h-node-label default">Decisão final</div><div class="h-node-name" style="color:var(--epq-gray-900)">Atendente com melhor velocidade + contexto</div><div class="h-node-meta">Não é Round Robin puro</div></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="triagem">
+      <div class="section-divider"><span class="divider-label">03 // Triagem</span><div class="divider-line"></div></div>
+      <h2 class="section-title">Classificação antes da fila</h2>
+      <p class="section-lede">Todo lead deve ser classificado antes de entrar na fila simples.</p>
+      <div class="solid-card">
+        <div class="principle-desc" style="font-size:13px;color:var(--epq-gray-800);line-height:1.7">
+          <div>1. horário atual</div>
+          <div>2. dia da semana</div>
+          <div>3. atendentes disponíveis</div>
+          <div>4. carga atual de leads ativos</div>
+          <div>5. temperatura</div>
+          <div>6. tempo desde a entrada</div>
+          <div>7. etapa do funil</div>
+          <div>8. complexidade</div>
+          <div>9. necessidade de intervenção do Ronan</div>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <div class="section">
-    <div class="section-head"><div class="section-title">Triagem e prioridade</div></div>
-    <div class="card">
-      <div class="note">
-        <div>Todo novo lead deve ser classificado considerando: horário atual, dia da semana, atendentes disponíveis, carga atual, temperatura, tempo desde a entrada, etapa do funil, complexidade e necessidade de Ronan.</div>
-        <div style="margin-top:10px">Ordem de atendimento:</div>
-        <div>1. 🔥 quente aguardando resposta</div>
-        <div>2. 🔥 quente em negociação</div>
-        <div>3. 🟠 morno aguardando follow-up</div>
-        <div>4. 🟡 frio</div>
-        <div>5. follow-up programado</div>
+    <section class="doc-section" id="sla">
+      <div class="section-divider"><span class="divider-label">04 // SLA</span><div class="divider-line"></div></div>
+      <h2 class="section-title">Limites e alertas</h2>
+      <p class="section-lede">O SLA serve para proteger conversão, não só medir desempenho.</p>
+      <div class="spec-grid">
+        <div class="spec-chip"><div class="spec-chip-val">5 min</div><div class="spec-chip-label">Quente</div></div>
+        <div class="spec-chip"><div class="spec-chip-val">15 min</div><div class="spec-chip-label">Morno</div></div>
+        <div class="spec-chip"><div class="spec-chip-val">30 min</div><div class="spec-chip-label">Frio</div></div>
+        <div class="spec-chip"><div class="spec-chip-val">Ronan</div><div class="spec-chip-label">Se não houver atendente disponível</div></div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <div class="section">
-    <div class="section-head"><div class="section-title">SLA e limites de carga</div></div>
-    <div class="grid-2">
-      <div class="card">
-        <div style="font-weight:700;margin-bottom:8px">Tempo de primeira resposta</div>
-        <div class="note">
-          <div>🔥 Quente: até 5 minutos</div>
-          <div>🟠 Morno: até 15 minutos</div>
-          <div>🟡 Frio: até 30 minutos</div>
+    <section class="doc-section" id="handoff">
+      <div class="section-divider"><span class="divider-label">05 // Handoff</span><div class="divider-line"></div></div>
+      <h2 class="section-title">Transferência seletiva</h2>
+      <p class="section-lede">Não transferir toda a carteira. O handoff deve ser cirúrgico.</p>
+      <div class="comp-demo-row">
+        <div><div class="solid-card"><div style="font-family:var(--font-mono);font-size:9px;color:var(--epq-blue-600);letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px;">Pré-handoff</div><div class="principle-desc" style="font-size:12.5px;color:var(--epq-gray-700);line-height:1.6">Gerado 15 minutos antes do fim do turno com nome, telefone, temperatura, interesse, última mensagem, objeção, oferta feita, próxima ação, follow-up recomendado e status.</div></div><div class="comp-when">Usar em: troca de turno com leads ativos</div></div>
+        <div><div class="glass-card"><div style="font-family:var(--font-mono);font-size:9px;color:var(--epq-blue-600);letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px;">Ronan</div><div class="principle-desc" style="font-size:12.5px;color:var(--epq-gray-700);line-height:1.6">Assume quentes, alto valor, negociação travada, objeção difícil, reclamação, parceiro, pedido para falar com o dono e alta intenção de matrícula.</div></div><div class="comp-when">Usar em: escalonamento comercial</div></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="painel">
+      <div class="section-divider"><span class="divider-label">06 // Painel</span><div class="divider-line"></div></div>
+      <h2 class="section-title">Operação enxuta</h2>
+      <p class="section-lede">Um painel simples evita ruído e mantém o foco na ação.</p>
+      <div class="sub-title">Quem atende agora</div>
+      <div class="kpi-strip-demo">
+        <div class="kpi-item"><div class="kpi-label">Andressa</div><div class="kpi-value featured">09:00–17:00</div><div class="kpi-sub">Status: online / ocupada</div></div>
+        <div class="kpi-item"><div class="kpi-label">Clara</div><div class="kpi-value">09:00–15:00</div><div class="kpi-sub">Status: online / ocupada</div></div>
+        <div class="kpi-item"><div class="kpi-label">Ronan</div><div class="kpi-value">Backup</div><div class="kpi-sub">Fora do horário / escalonado</div></div>
+        <div class="kpi-item"><div class="kpi-label">Ação agora</div><div class="kpi-value" style="color:var(--epq-alert)">SLA crítico</div><div class="kpi-sub">Resposta rápida</div></div>
+      </div>
+      <div class="sub-title">O que precisa ser feito agora</div>
+      <div class="solid-card">
+        <div class="principle-desc" style="font-size:13px;color:var(--epq-gray-800);line-height:1.7">
+          <div>- leads quentes aguardando resposta</div>
+          <div>- leads mornos aguardando follow-up</div>
+          <div>- leads próximos de estourar SLA</div>
+          <div>- leads que precisam de handoff</div>
+          <div>- leads aguardando Ronan</div>
         </div>
       </div>
-      <div class="card">
-        <div style="font-weight:700;margin-bottom:8px">Carga por atendente</div>
-        <div class="note">
-          <div>🟢 0–5: normal</div>
-          <div>🟡 6–10: atenção</div>
-          <div>🔴 11+: evitar novas distribuições, salvo lead extremamente quente</div>
+    </section>
+
+    <section class="doc-section" id="metricas">
+      <div class="section-divider"><span class="divider-label">07 // Métricas</span><div class="divider-line"></div></div>
+      <h2 class="section-title">Medir para ajustar</h2>
+      <p class="section-lede">Essas métricas são o que permitem evoluir a operação sem achismo.</p>
+      <div class="semantic-row">
+        <div class="semantic-card"><div class="semantic-swatch" style="background:var(--epq-blue-500)"></div><div class="semantic-name" style="color:var(--epq-blue-600)">Conversão</div><div class="semantic-use">Taxa por atendente, por origem e por horário.</div></div>
+        <div class="semantic-card"><div class="semantic-swatch" style="background:var(--epq-attention)"></div><div class="semantic-name" style="color:var(--epq-attention)">Tempo</div><div class="semantic-use">Primeira resposta, SLA cumprido e tempo médio por temperatura.</div></div>
+        <div class="semantic-card"><div class="semantic-swatch" style="background:var(--epq-alert)"></div><div class="semantic-name" style="color:var(--epq-alert)">Carga</div><div class="semantic-use">Leads ativos por atendente, leads sem resposta e transferidos.</div></div>
+        <div class="semantic-card"><div class="semantic-swatch" style="background:var(--epq-positive)"></div><div class="semantic-name" style="color:var(--epq-positive)">Escala</div><div class="semantic-use">Leads escalados ao Ronan, motivo da escalação e resultado.</div></div>
+      </div>
+    </section>
+
+    <section class="doc-section" id="implementacao">
+      <div class="section-divider"><span class="divider-label">08 // Implementação</span><div class="divider-line"></div></div>
+      <h2 class="section-title">Sem pular etapas</h2>
+      <p class="section-lede">Primeiro observação/simulação, depois automação.</p>
+      <div class="solid-card">
+        <div class="principle-desc" style="font-size:13px;color:var(--epq-gray-800);line-height:1.7">
+          <div>1. Mapear estrutura atual do CRM.</div>
+          <div>2. Identificar como os leads entram.</div>
+          <div>3. Identificar como o responsável é registrado.</div>
+          <div>4. Identificar status existentes.</div>
+          <div>5. Identificar como temperatura é calculada.</div>
+          <div>6. Implementar lógica de distribuição em modo observação.</div>
+          <div>7. Criar painel de disponibilidade.</div>
+          <div>8. Criar fila de ação.</div>
+          <div>9. Criar handoff automático.</div>
+          <div>10. Criar alertas de SLA.</div>
+          <div>11. Medir resultados e ajustar.</div>
         </div>
       </div>
-    </div>
+    </section>
+
   </div>
 
-  <div class="section">
-    <div class="section-head"><div class="section-title">Handoff e escalonamento</div></div>
-    <div class="grid-2">
-      <div class="card">
-        <div style="font-weight:700;margin-bottom:8px">Pré-handoff</div>
-        <div class="note">
-          <div>Gerado 15 minutos antes do fim do expediente.</div>
-          <div style="margin-top:8px">Conteúdo:</div>
-          <div>- nome</div>
-          <div>- telefone</div>
-          <div>- temperatura</div>
-          <div>- produto/interesse</div>
-          <div>- última mensagem</div>
-          <div>- objeção principal</div>
-          <div>- o que já foi oferecido</div>
-          <div>- próxima ação</div>
-          <div>- horário recomendado para follow-up</div>
-          <div>- status da negociação</div>
-        </div>
-      </div>
-      <div class="card">
-        <div style="font-weight:700;margin-bottom:8px">Ronan como camada de escalonamento</div>
-        <div class="note">
-          <div>Ronan assume leads muito quentes, alto potencial, negociações travadas, objeções difíceis, reclamações, solicitações fora do padrão, parceiros, alta intenção de matrícula e quando há pedido para falar com o dono.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-head"><div class="section-title">Painel operacional</div></div>
-    <div class="card">
-      <div class="note">
-        <div><strong>Quem atende agora</strong></div>
-        <div style="margin-top:6px">Andressa — horário, status, leads ativos, leads aguardando</div>
-        <div>Clara — horário, status, leads ativos, leads aguardando</div>
-        <div>Ronan — status, leads escalados</div>
-        <div style="margin-top:10px"><strong>O que precisa ser feito agora</strong></div>
-        <div style="margin-top:6px">- leads quentes aguardando resposta</div>
-        <div>- leads mornos aguardando follow-up</div>
-        <div>- leads próximos de estourar SLA</div>
-        <div>- leads que precisam de handoff</div>
-        <div>- leads aguardando Ronan</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-head"><div class="section-title">Métricas</div></div>
-    <div class="card">
-      <div class="note">
-        <div>Monitorar diariamente: leads recebidos, leads respondidos, tempo médio de primeira resposta, SLA cumprido, leads por atendente, leads ativos, leads sem resposta, leads transferidos, leads escalados para Ronan, matrículas por atendente, taxa de conversão por atendente, conversão por horário, conversão por origem, motivos de perda.</div>
-      </div>
-    </div>
-  </div>
+  <footer class="page-footer">
+    <div class="footer-brand">EPQ // Fluxo de Atendimento</div>
+    <div class="footer-timestamp">v1.0 · 04.09.2026</div>
+  </footer>
 </div>
+
+<script>
+const grays = [50,100,200,300,400,500,600,700,800,900].map(n => ({name:'gray-'+n, varName:'--epq-gray-'+n}));
+const blues = [50,100,200,300,400,500,600,700,800,900].map(n => ({name:'blue-'+n, varName:'--epq-blue-'+n}));
+
+function renderSwatches(containerId, list) {
+  const el = document.getElementById(containerId);
+  const cssVars = getComputedStyle(document.documentElement);
+  list.forEach(item => {
+    const hex = cssVars.getPropertyValue(item.varName).trim();
+    const card = document.createElement('div');
+    card.className = 'swatch';
+    card.innerHTML = `<div class="swatch-color" style="background:${hex}"></div>
+      <div class="swatch-meta">
+        <div class="swatch-name">${item.name}</div>
+        <div class="swatch-hex">${hex}</div>
+        <div class="copy-hint">Copiado ✓</div>
+      </div>`;
+    card.addEventListener('click', () => {
+      navigator.clipboard.writeText(hex).catch(()=>{});
+      card.classList.add('copied');
+      setTimeout(() => card.classList.remove('copied'), 1200);
+    });
+    el.appendChild(card);
+  });
+}
+renderSwatches('swatch-gray', grays);
+renderSwatches('swatch-blue', blues);
+
+const navItems = document.querySelectorAll('.nav-item');
+const sections = document.querySelectorAll('.doc-section');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navItems.forEach(item => item.classList.toggle('active', item.getAttribute('href') === '#' + entry.target.id));
+    }
+  });
+}, { threshold: 0.3, rootMargin: '-10% 0px -70% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
 </body>
 </html>
