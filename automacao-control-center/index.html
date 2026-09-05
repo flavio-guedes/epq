@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPQ · Automation Control Center</title>
+<style>
+  :root{
+    --bg-0:#0C1220;
+    --bg-1:#111A2C;
+    --bg-2:#182338;
+    --bg-3:#1F2C45;
+    --line:rgba(210,222,245,0.09);
+    --line-strong:rgba(210,222,245,0.16);
+    --ink:#EAEFF9;
+    --ink-dim:#94A2BE;
+    --ink-faint:#5B6884;
+    --amber:#E8A33D;
+    --amber-dim:rgba(232,163,61,0.14);
+    --blue:#5B8DEF;
+    --blue-dim:rgba(91,141,239,0.14);
+    --green:#4CAF7D;
+    --green-dim:rgba(76,175,125,0.14);
+    --red:#E2604F;
+    --red-dim:rgba(226,96,79,0.14);
+    --grey:#7C8BA8;
+    --grey-dim:rgba(124,139,168,0.14);
+    --radius:10px;
+    --radius-sm:6px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg-0);color:var(--ink);font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4,.display{font-family:'Barlow Semi Condensed','Inter',sans-serif;font-weight:600;letter-spacing:0.01em}
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-thumb{background:var(--bg-3);border-radius:4px}
+  a{color:inherit}
+
+  .shell{display:flex;min-height:100vh}
+  .sidebar{width:236px;flex-shrink:0;background:var(--bg-1);border-right:1px solid var(--line);padding:22px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:22px}
+  .brand .mark{font-family:'Barlow Semi Condensed';font-weight:700;font-size:20px;letter-spacing:0.02em}
+  .brand .mark span{color:var(--amber)}
+  .brand .sub{color:var(--ink-faint);font-size:11.5px;margin-top:2px}
+  nav{display:flex;flex-direction:column;gap:2px;flex:1}
+  .navitem{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:var(--radius-sm);color:var(--ink-dim);cursor:pointer;font-size:13.5px;border-left:2px solid transparent}
+  .navitem:hover{color:var(--ink);background:var(--bg-2)}
+  .navitem.active{color:var(--ink);background:var(--bg-2);border-left:2px solid var(--amber)}
+  .navitem .dot{width:6px;height:6px;border-radius:50%;background:var(--ink-faint);flex-shrink:0}
+  .navitem.active .dot{background:var(--amber)}
+  .sidebar-foot{color:var(--ink-faint);font-size:11px;padding:0 8px;border-top:1px solid var(--line);padding-top:14px}
+
+  main{flex:1;min-width:0;padding:24px 28px 60px;max-width:1240px}
+  .section{display:none}
+  .section.active{display:block;animation:rise .35s ease}
+  @keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  .pagehead{margin-bottom:18px}
+  .pagehead h1{font-size:22px}
+  .pagehead p{color:var(--ink-dim);margin-top:4px;font-size:13px;max-width:760px}
+
+  .grid-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px}
+  @media(max-width:900px){.grid-cards{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.grid-cards{grid-template-columns:1fr}}
+  .kcard{background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+  .kcard .num{font-family:'Barlow Semi Condensed';font-size:28px;font-weight:700;line-height:1}
+  .kcard .lbl{color:var(--ink-dim);font-size:11.5px;margin-top:5px}
+  .kcard.accent-amber .num{color:var(--amber)}
+  .kcard.accent-green .num{color:var(--green)}
+  .kcard.accent-red .num{color:var(--red)}
+  .kcard.accent-blue .num{color:var(--blue)}
+
+  .panel{background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:16px}
+  .panel h2{font-size:15px;margin-bottom:3px}
+  .panel .sub{color:var(--ink-dim);font-size:12px;margin-bottom:12px}
+  .panel-2col{display:grid;grid-template-columns:1.3fr 1fr;gap:14px}
+  @media(max-width:900px){.panel-2col{grid-template-columns:1fr}}
+
+  .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:100px;font-size:11px;font-weight:600;white-space:nowrap}
+  .b-ok{background:var(--green-dim);color:var(--green)}
+  .b-warn{background:var(--amber-dim);color:var(--amber)}
+  .b-err{background:var(--red-dim);color:var(--red)}
+  .b-off{background:var(--grey-dim);color:var(--grey)}
+  .b-info{background:var(--blue-dim);color:var(--blue)}
+
+  .chip{padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg-2);cursor:pointer;user-select:none;font-weight:600;font-size:12px;color:var(--ink-dim)}
+  .chip.on{background:var(--blue);color:white;border-color:var(--blue)}
+
+  .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg-1)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+  th{color:var(--ink-faint);font-size:11.5px;text-transform:uppercase;letter-spacing:0.08em;background:var(--bg-2)}
+  tr:hover td{background:rgba(255,255,255,0.02)}
+  tr.open td{border-bottom:0}
+
+  .detail{display:none;background:var(--bg-0);border-bottom:1px solid var(--line);padding:14px 12px}
+  .detail.open{display:table-row}
+  .detail-inner{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media(max-width:900px){.detail-inner{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.detail-inner{grid-template-columns:1fr}}
+  .kv{display:flex;flex-direction:column;gap:2px}
+  .kv .k{font-size:11px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.08em}
+  .kv .v{font-size:13px;color:var(--ink);font-weight:600}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;font-weight:600;font-size:12px;cursor:pointer;border:0;transition:.15s ease;background:var(--bg-2);color:var(--ink);border:1px solid var(--line)}
+  .btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .btn.primary{background:linear-gradient(180deg,var(--amber),#f3cc7a);color:var(--bg-0);border:0}
+  .btn.danger{background:var(--red);color:white;border:0}
+
+  .now-block{display:flex;align-items:center;gap:10px;padding:12px;border-radius:var(--radius);background:var(--bg-1);border:1px solid var(--line)}
+  .pulse{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(76,175,125,0.4);animation:pulse-green 2s infinite}
+  @keyframes pulse-green{0%{box-shadow:0 0 0 0 rgba(76,175,125,0.4)}70%{box-shadow:0 0 0 12px rgba(76,175,125,0)}100%{box-shadow:0 0 0 0 rgba(76,175,125,0)}}
+
+  .timeline{display:flex;flex-direction:column;gap:10px}
+  .tl-item{display:flex;gap:12px;align-items:flex-start}
+  .tl-time{min-width:72px;text-align:right;font-weight:700;font-size:12px;color:var(--amber);padding-top:2px}
+  .tl-body{flex:1;background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);padding:10px 12px}
+  .tl-body .t{font-weight:700;font-size:13px}
+  .tl-body .d{color:var(--ink-dim);font-size:12px;margin-top:2px}
+
+  .log-table th:first-child,.log-table td:first-child{white-space:nowrap}
+
+  .alert{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:var(--radius);background:var(--bg-1);border:1px solid var(--line);margin-bottom:8px}
+  .alert .dot{width:10px;height:10px;border-radius:50%;margin-top:3px;flex-shrink:0}
+
+  .qa{display:flex;flex-direction:column;gap:10px}
+  .qcard{background:var(--bg-1);border:1px solid var(--line);border-radius:var(--radius);padding:12px}
+  .qcard .q{font-weight:700;font-size:13px;margin-bottom:6px}
+  .qcard .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px}
+  .qcard .chip-sm{padding:4px 8px;border-radius:999px;background:var(--bg-2);border:1px solid var(--line);font-size:11px;font-weight:700;color:var(--ink-dim)}
+
+  .helper{color:var(--ink-faint);font-size:12px;margin-top:6px}
+  .section-title{font-weight:800;font-size:14px;color:var(--ink);margin:18px 0 10px;display:flex;align-items:center;gap:8px}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="mark">EPQ <span>ACC</span></div>
+      <div class="sub">Automation Control Center</div>
+    </div>
+    <nav>
+      <div class="navitem active" data-target="sec-dashboard">Painel</div>
+      <div class="navitem" data-target="sec-list">Automações</div>
+      <div class="navitem" data-target="sec-timeline">Timeline</div>
+      <div class="navitem" data-target="sec-logs">Logs</div>
+      <div class="navitem" data-target="sec-alerts">Alertas</div>
+      <div class="navitem" data-target="sec-qa">Diagnóstico</div>
+      <div class="navitem" data-target="sec-now">Agora</div>
+      <div class="navitem" data-target="sec-next">Próximas</div>
+    </nav>
+    <div class="sidebar-foot">Fonte: estado real das automações do EPQ.</div>
+  </aside>
+
+  <main>
+    <div class="section active" id="sec-dashboard">
+      <div class="pagehead">
+        <h1>EPQ · Automation Control Center</h1>
+        <p>Visão geral das automações do EPQ, com foco em atendimento e comunicação. Nada além do que for configurado para a operação EPQ.</p>
+      </div>
+
+      <div class="grid-cards">
+        <div class="kcard"><div class="num" id="kpi-total">-</div><div class="lbl">Total</div></div>
+        <div class="kcard"><div class="num" id="kpi-active">-</div><div class="lbl">Ativas</div></div>
+        <div class="kcard"><div class="num" id="kpi-paused">-</div><div class="lbl">Pausadas</div></div>
+        <div class="kcard accent-red"><div class="num" id="kpi-errors">-</div><div class="lbl">Com erro</div></div>
+        <div class="kcard"><div class="num" id="kpi-today">-</div><div class="lbl">Executadas hoje</div></div>
+        <div class="kcard"><div class="num" id="kpi-next24">-</div><div class="lbl">Próximas 24h</div></div>
+        <div class="kcard accent-blue"><div class="num" id="kpi-sent">-</div><div class="lbl">Mensagens enviadas</div></div>
+        <div class="kcard accent-amber"><div class="num" id="kpi-pending">-</div><div class="lbl">Pendências</div></div>
+      </div>
+
+      <div class="panel">
+        <h2>AUTOMATION HEALTH</h2>
+        <div class="sub">Status operacional consolidado das automações do EPQ.</div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <span class="badge b-ok" id="health-badge">Avaliando</span>
+          <span style="font-size:13px;color:var(--ink-dim)" id="health-text">Calculando...</span>
+        </div>
+        <div class="helper">Se houver automação ativa sem execução real ou erro em canal, a saúde cai.</div>
+      </div>
+
+      <div class="panel">
+        <h2>PRECISA DA SUA ATENÇÃO</h2>
+        <div class="sub">Somente situações que exigem intervenção.</div>
+        <div id="attention-list">Nenhuma pendência crítica no momento.</div>
+      </div>
+
+      <div class="panel">
+        <h2>RESUMO EXECUTIVO AUTOMÁTICO</h2>
+        <div class="sub">🧭 Estado da operação com base apenas nas automações EPQ.</div>
+        <div id="exec-summary">Sem dados suficientes.</div>
+      </div>
+
+      <div class="panel">
+        <h2>SCORE OPERACIONAL</h2>
+        <div class="sub">Nota de 0 a 100 calculada com dados reais.</div>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <div class="kcard" style="flex:0 0 auto;min-width:120px"><div class="num" id="score-num">-</div><div class="lbl">OPERATION HEALTH</div></div>
+          <div style="font-size:13px;color:var(--ink-dim);max-width:640px" id="score-explanation">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="sec-list">
+      <div class="pagehead">
+        <h1>Automações do EPQ</h1>
+        <p>Cada linha representa uma automação realmente configurada para a operação EPQ.</p>
+      </div>
+      <div class="panel">
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px" id="filter-bar">
+          <div class="chip on" data-filter="all">Todas</div>
+          <div class="chip" data-filter="ativa">Ativas</div>
+          <div class="chip" data-filter="pausada">Pausadas</div>
+          <div class="chip" data-filter="erro">Com erro</div>
+          <div class="chip" data-filter="sem-integracao">Sem integração</div>
+          <div class="chip" data-filter="executadas-hoje">Executadas hoje</div>
+          <div class="chip" data-filter="proximas-24h">Próximas 24h</div>
+        </div>
+        <div class="table-wrap">
+          <table class="log-table">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Automação</th>
+                <th>Objetivo</th>
+                <th>Público</th>
+                <th>Frequência</th>
+                <th>Última execução</th>
+                <th>Próxima execução</th>
+                <th>Canal</th>
+              </tr>
+            </thead>
+            <tbody id="automation-tbody"></tbody>
+          </table>
+        </div>
+        <div class="helper">Clique na linha para expandir detalhes.</div>
+      </div>
+    </div>
+
+    <div class="section" id="sec-timeline">
+      <div class="pagehead">
+        <h1>Timeline de automações EPQ</h1>
+        <p>Linha do tempo baseada nas agendas das automações do EPQ.</p>
+      </div>
+      <div class="panel">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+          <div class="chip on" data-range="today">Hoje</div>
+          <div class="chip" data-range="tomorrow">Amanhã</div>
+          <div class="chip" data-range="7d">Próximos 7 dias</div>
+        </div>
+        <div class="timeline" id="timeline-list"></div>
+        <div class="helper">Somente horários e automações realmente agendadas.</div>
+      </div>
+    </div>
+
+    <div class="section" id="sec-logs">
+      <div class="pagehead">
+        <h1>Log de execuções</h1>
+        <p>Histórico das automações EPQ. Sempre que não houver dado, exibir <strong>SEM DADOS DE EXECUÇÃO</strong>.</p>
+      </div>
+      <div class="panel">
+        <div class="table-wrap">
+          <table class="log-table">
+            <thead>
+              <tr>
+                <th>Data/Hora</th>
+                <th>Automação</th>
+                <th>Evento</th>
+                <th>Resultado</th>
+                <th>Destinatários</th>
+                <th>Mensagens</th>
+                <th>Erros</th>
+              </tr>
+            </thead>
+            <tbody id="log-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="sec-alerts">
+      <div class="pagehead">
+        <h1>Alertas EPQ</h1>
+        <p>Sinais operacionais sem ruído. Nenhum alerta inventado.</p>
+      </div>
+      <div id="alerts-list"></div>
+    </div>
+
+    <div class="section" id="sec-qa">
+      <div class="pagehead">
+        <h1>🧠 COMO ESTÁ A OPERAÇÃO?</h1>
+        <p>Diagnóstico operacional contínuo das automações do EPQ. Quando faltar dado: “Não tenho evidência suficiente para responder.”</p>
+      </div>
+      <div class="panel">
+        <div class="qa" id="qa-list"></div>
+      </div>
+    </div>
+
+    <div class="section" id="sec-now">
+      <div class="pagehead">
+        <h1>O que está rodando agora?</h1>
+        <p>Área objetiva de execução em tempo real das automações EPQ.</p>
+      </div>
+      <div id="now-block" class="now-block">Nenhuma automação em execução agora.</div>
+      <div class="panel" style="margin-top:16px">
+        <h2>Perguntas rápidas</h2>
+        <div class="sub">Consulta operacional. Sem métricas inventadas.</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+          <div class="chip" data-ask="Como está a operação EPQ hoje?">Como está a operação hoje?</div>
+          <div class="chip" data-ask="O que está atrasado no EPQ?">O que está atrasado?</div>
+          <div class="chip" data-ask="Quais automações EPQ falharam?">Quais automações falharam?</div>
+          <div class="chip" data-ask="O que está funcionando bem no EPQ?">O que está funcionando bem?</div>
+          <div class="chip" data-ask="Onde o EPQ está perdendo leads?">Onde estamos perdendo leads?</div>
+          <div class="chip" data-ask="Quem precisa agir agora na operação EPQ?">Quem precisa agir agora?</div>
+        </div>
+        <div id="ask-result" style="margin-top:12px;font-size:13px;color:var(--ink-dim)">Escolha uma pergunta para ver a resposta baseada nos dados do painel.</div>
+      </div>
+    </div>
+
+    <div class="section" id="sec-next">
+      <div class="pagehead">
+        <h1>Próximas automações</h1>
+        <p>Agenda do EPQ ordenada cronologicamente.</p>
+      </div>
+      <div class="panel">
+        <div class="timeline" id="next-timeline"></div>
+        <div class="helper">Mostrar apenas quando existirem dados reais.</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const AUTOMATIONS = [
+  {
+    id:'fa194a8fb6a2', name:'EPQ · BRIEFING DIÁRIO DE ATENDIMENTO', status:'ativa', objective:'Gerar briefing diário de atendimento para a equipe EPQ, seguindo o Playbook.', audience:'Equipe de atendimento EPQ', channel:'WhatsApp', channelTarget:'Grupo EPQ atendimento', frequency:'Diária', schedule:'0 9 * * *', timezone:'America/Sao_Paulo', window:'09:00–10:00', lastRun:null, nextRun:'2026-09-05T09:00:00-03:00', lastResult:null, errorCount:0, executionCount:0, integrationStatus:'conectada', owner:'EPQ', createdAt:'2026-09-04', updatedAt:'2026-09-04', logs:[], tags:['epq','atendimento'], area:'Atendimento'
+  }
+];
+
+function esc(s){return String(s==null?'—':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function badgeFor(s){
+  if(s==='ativa') return '<span class="badge b-ok">🟢 ATIVA</span>';
+  if(s==='pausada') return '<span class="badge b-off">⚪ PAUSADA</span>';
+  if(s==='erro') return '<span class="badge b-err">🔴 ERRO</span>';
+  if(s==='conectada') return '<span class="badge b-ok">🟢 Conectada</span>';
+  if(s==='parcial') return '<span class="badge b-warn">🟡 Parcial</span>';
+  return '<span class="badge b-info">' + esc(s) + '</span>';
+}
+function inNext24(iso){if(!iso) return false; const d=new Date(iso); const now=new Date(); const diff=d-now; return diff>0 && diff<=24*60*60*1000}
+function today(){const n=new Date(); return n.toISOString().slice(0,10)}
+function fmt(iso){if(!iso) return 'SEM DADOS'; const d=new Date(iso); const pad=n=>String(n).padStart(2,'0'); return pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear()+' '+pad(d.getHours())+':'+pad(d.getMinutes())}
+
+function renderKPIs(){
+  const total=AUTOMATIONS.length;
+  const active=AUTOMATIONS.filter(x=>x.status==='ativa').length;
+  const paused=AUTOMATIONS.filter(x=>x.status==='pausada').length;
+  const errors=AUTOMATIONS.filter(x=>x.lastResult==='error').length;
+  const executedToday=AUTOMATIONS.filter(x=>x.lastRun && x.lastRun.startsWith(today())).length;
+  const next24=AUTOMATIONS.filter(x=>inNext24(x.nextRun)).length;
+  const sent=AUTOMATIONS.reduce((a,b)=>a+(b.executionCount||0),0);
+  const pending=AUTOMATIONS.filter(x=>x.status==='ativa' && !x.lastRun).length;
+
+  document.getElementById('kpi-total').textContent=total;
+  document.getElementById('kpi-active').textContent=active;
+  document.getElementById('kpi-paused').textContent=paused;
+  document.getElementById('kpi-errors').textContent=errors;
+  document.getElementById('kpi-today').textContent=executedToday;
+  document.getElementById('kpi-next24').textContent=next24;
+  document.getElementById('kpi-sent').textContent=sent;
+  document.getElementById('kpi-pending').textContent=pending;
+
+  const bad = errors + pending + AUTOMATIONS.filter(x=>x.status==='ativa' && x.integrationStatus!=='conectada').length;
+  let health='Operação normal', cls='b-ok';
+  if(bad>=3){health='Problema'; cls='b-err'}
+  else if(bad>=1){health='Atenção'; cls='b-warn'}
+  else if(active===0 && total>0){health='Sem execução real'; cls='b-off'}
+  const hb=document.getElementById('health-badge'); hb.className='badge ' + cls; hb.textContent=health;
+  document.getElementById('health-text').textContent='Baseado em ' + total + ' automação(ões) do EPQ. Status reflete execução e integração, não só configuração.';
+
+  const attention=[];
+  AUTOMATIONS.forEach(x=>{
+    if(x.lastResult==='error') attention.push('🔴 Automação com erro: ' + x.name);
+    if(x.status==='ativa' && !x.lastRun && x.executionCount===0) attention.push('🟡 Automação ativa sem execução real: ' + x.name);
+    if(x.status==='ativa' && x.integrationStatus!=='conectada') attention.push('🟡 Sem integração conectada: ' + x.name);
+  });
+  const al=document.getElementById('attention-list');
+  if(attention.length===0) al.innerHTML='Nenhuma pendência crítica no momento.';
+  else al.innerHTML=attention.map(x=>'<div class="alert"><div class="dot" style="background:var(--amber)"></div><div>'+x+'</div></div>').join('');
+
+  const epqActive=AUTOMATIONS.filter(x=>x.tags.includes('epq') && x.status==='ativa').length;
+  document.getElementById('exec-summary').innerHTML='Status: 🟢 SAUDÁVEL<br>'+ AUTOMATIONS.length + ' automações EPQ monitoradas. Erros recentes: ' + errors + '. Se houver erro de canal ou ausência de execução, corrija antes de expandir novas automações.';
+
+  let score=0;
+  const total2=AUTOMATIONS.length||1;
+  const activeRatio=AUTOMATIONS.filter(x=>x.status==='ativa').length/total2;
+  const okRatio=AUTOMATIONS.filter(x=>x.lastResult==='ok').length/total2;
+  const integratedRatio=AUTOMATIONS.filter(x=>x.integrationStatus==='conectada').length/total2;
+  score+=Math.round(activeRatio*30);
+  score+=Math.round(okRatio*35);
+  score+=Math.round(integratedRatio*20);
+  score+=Math.round(Math.min(15, (AUTOMATIONS.reduce((a,b)=>a+(b.executionCount||0),0)>0?15:0)));
+  score=Math.max(0, Math.min(100, score));
+  document.getElementById('score-num').textContent=score+'/100';
+  document.getElementById('score-explanation').textContent='Cálculo: ativas ('+AUTOMATIONS.filter(x=>x.status==='ativa').length+'/'+total2+'), sucesso nas últimas execuções ('+AUTOMATIONS.filter(x=>x.lastResult==='ok').length+'/'+total2+'), integração conectada ('+AUTOMATIONS.filter(x=>x.integrationStatus==='conectada').length+'/'+total2+'), execuções registradas. Não usar score fictício.';
+}
+
+function renderList(filter='all'){
+  const tb=document.getElementById('automation-tbody');
+  const list=AUTOMATIONS.filter(x=>{
+    if(filter==='all') return true;
+    if(filter==='ativa') return x.status==='ativa';
+    if(filter==='pausada') return x.status==='pausada';
+    if(filter==='erro') return x.lastResult==='error';
+    if(filter==='sem-integracao') return x.integrationStatus!=='conectada';
+    if(filter==='executadas-hoje') return x.lastRun && x.lastRun.startsWith(today());
+    if(filter==='proximas-24h') return inNext24(x.nextRun);
+    return true;
+  });
+  tb.innerHTML=list.map(x=>{
+    const statusBadge=badgeFor(x.status);
+    const channelBadge=badgeFor(x.integrationStatus);
+    return `<tr style="cursor:pointer" onclick="toggleDetail(this,'${x.id}')">
+      <td>${statusBadge}</td>
+      <td><strong>${esc(x.name)}</strong><div class="helper">${esc(x.id)}</div></td>
+      <td>${esc(x.objective)}</td>
+      <td>${esc(x.audience)}</td>
+      <td>${esc(x.frequency)}<div class="helper">${esc(x.window||x.schedule)}</div></td>
+      <td>${fmt(x.lastRun)}</td>
+      <td>${fmt(x.nextRun)}</td>
+      <td>${channelBadge}<div class="helper">${esc(x.channel)} · ${esc(x.channelTarget)}</div></td>
+    </tr>
+    <tr class="detail" id="detail-${x.id}">
+      <td colspan="8">
+        <div class="detail-inner">
+          <div class="kv"><div class="k">ID</div><div class="v">${esc(x.id)}</div></div>
+          <div class="kv"><div class="k">Status</div><div class="v">${statusBadge}</div></div>
+          <div class="kv"><div class="k">Criada em</div><div class="v">${esc(x.createdAt)}</div></div>
+          <div class="kv"><div class="k">Criador/owner</div><div class="v">${esc(x.owner)}</div></div>
+          <div class="kv"><div class="k">Gatilho/agenda</div><div class="v">${esc(x.schedule)}</div></div>
+          <div class="kv"><div class="k">Fuso horário</div><div class="v">${esc(x.timezone)}</div></div>
+          <div class="kv"><div class="k">Canal</div><div class="v">${esc(x.channel)}</div></div>
+          <div class="kv"><div class="k">Destinatários</div><div class="v">${esc(x.channelTarget)}</div></div>
+          <div class="kv"><div class="k">Mensagem/template</div><div class="v">Definido no prompt/cron</div></div>
+          <div class="kv"><div class="k">Fonte dos dados</div><div class="v">Painel/estado EPQ</div></div>
+          <div class="kv"><div class="k">Última execução</div><div class="v">${fmt(x.lastRun)}</div></div>
+          <div class="kv"><div class="k">Próxima execução</div><div class="v">${fmt(x.nextRun)}</div></div>
+          <div class="kv"><div class="k">Resultado</div><div class="v">${esc(x.lastResult||'—')}</div></div>
+          <div class="kv"><div class="k">Nº mensagens</div><div class="v">${x.executionCount}</div></div>
+          <div class="kv"><div class="k">Erros</div><div class="v">${x.errorCount}</div></div>
+          <div class="kv"><div class="k">Dependências</div><div class="v">WhatsApp/Local</div></div>
+          <div class="kv"><div class="k">Permissões</div><div class="v">Conforme provedor</div></div>
+          <div class="kv"><div class="k">Última alteração</div><div class="v">${esc(x.updatedAt)}</div></div>
+          <div class="kv"><div class="k">Integração</div><div class="v">${channelBadge}</div></div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">
+          <button class="btn">▶ EXECUTAR AGORA</button>
+          <button class="btn">⏸ PAUSAR</button>
+          <button class="btn primary">▶ ATIVAR</button>
+          <button class="btn">📋 DUPLICAR</button>
+          <button class="btn">🧪 TESTAR</button>
+          <button class="btn danger">🗑 DESATIVAR</button>
+        </div>
+        <div class="helper">Ações destrutivas exigem confirmação fora deste painel.</div>
+      </td>
+    </tr>`}).join('');
+}
+
+function toggleDetail(row,id){
+  const det=document.getElementById('detail-'+id);
+  const isOpen=det.classList.contains('open');
+  document.querySelectorAll('.detail.open').forEach(x=>x.classList.remove('open'));
+  if(!isOpen) det.classList.add('open');
+}
+
+function renderTimeline(range='today'){
+  const container=document.getElementById('timeline-list');
+  let items=AUTOMATIONS.filter(x=>x.nextRun);
+  if(range==='today') items=items.filter(x=>x.nextRun && x.nextRun.startsWith(today()));
+  if(range==='tomorrow'){
+    const d=new Date(); d.setDate(d.getDate()+1); const ds=d.toISOString().slice(0,10);
+    items=items.filter(x=>x.nextRun && x.nextRun.startsWith(ds));
+  }
+  items.sort((a,b)=>new Date(a.nextRun)-new Date(b.nextRun));
+  if(items.length===0){container.innerHTML='<div class="helper">Sem automações agendadas para este período.</div>';return;}
+  container.innerHTML=items.map(x=>{
+    const d=new Date(x.nextRun);
+    const time=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+    return `<div class="tl-item">
+      <div class="tl-time">${time}</div>
+      <div class="tl-body">
+        <div class="t">${esc(x.name)}</div>
+        <div class="d">${esc(x.frequency)} · ${esc(x.channel)} · ${esc(x.audience)}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderNext(){
+  const items=AUTOMATIONS.filter(x=>x.nextRun).sort((a,b)=>new Date(a.nextRun)-new Date(b.nextRun));
+  const container=document.getElementById('next-timeline');
+  if(!items.length){container.innerHTML='<div class="helper">Sem próximas automações.</div>';return;}
+  container.innerHTML=items.slice(0,8).map(x=>{
+    const d=new Date(x.nextRun);
+    const ds=String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');
+    const time=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+    return `<div class="tl-item">
+      <div class="tl-time">${ds}<br>${time}</div>
+      <div class="tl-body">
+        <div class="t">${esc(x.name)}</div>
+        <div class="d">${esc(x.status)} · ${esc(x.channel)} · ${esc(x.audience)}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderLogs(){
+  const rows=[];
+  AUTOMATIONS.forEach(x=>{
+    if(x.logs && x.logs.length){
+      x.logs.forEach(l=>rows.push({...l, name:x.name}));
+    } else if(x.lastRun){
+      rows.push({time:x.lastRun, name:x.name, event:'EXECUTADO', result:x.lastResult||'—', errors:x.errorCount||0});
+    }
+  });
+  rows.sort((a,b)=>String(b.time).localeCompare(String(a.time)));
+  const tb=document.getElementById('log-tbody');
+  tb.innerHTML=rows.map(r=>`<tr>
+    <td>${fmt(r.time)}</td>
+    <td>${esc(r.name)}</td>
+    <td>${esc(r.event)}</td>
+    <td><span class="badge ${r.result==='ok'?'b-ok':r.result==='erro'?'b-err':'b-info'}">${esc(r.result)}</span></td>
+    <td>${esc(r.name.includes('EPQ')?'Equipe EPQ':'—')}</td>
+    <td>1</td>
+    <td>${r.errors}</td>
+  </tr>`).join('');
+  if(!rows.length) tb.innerHTML='<tr><td colspan="7" style="color:var(--ink-faint);padding:12px">SEM DADOS DE EXECUÇÃO</td></tr>';
+}
+
+function renderAlerts(){
+  const alerts=[];
+  AUTOMATIONS.forEach(x=>{
+    if(x.lastResult==='error') alerts.push({level:'error',text:'Automação falhou: ' + x.name});
+    if(x.status==='ativa' && x.integrationStatus!=='conectada') alerts.push({level:'warn',text:'Próxima execução sem canal configurado: ' + x.name});
+    if(x.status==='ativa' && !x.lastRun && x.executionCount===0) alerts.push({level:'warn',text:'Permissão/execução ausente: ' + x.name});
+  });
+  const c=document.getElementById('alerts-list');
+  if(!alerts.length){c.innerHTML='<div class="alert"><div class="dot" style="background:var(--green)"></div><div>🟢 Nenhum alerta operacional no momento.</div></div>';return;}
+  c.innerHTML=alerts.map(a=>`<div class="alert"><div class="dot" style="background:var(--${a.level==='error'?'red':'amber'})"></div><div>${a.level==='error'?'🔴':'🟡'} ${esc(a.text)}</div></div>`).join('');
+}
+
+function renderQA(){
+  const list=[
+    {q:'Quantas automações do EPQ estão realmente ativas?', evidence:AUTOMATIONS.filter(x=>x.status==='ativa').length+' de '+AUTOMATIONS.length+' automações.', diagnosis:'Indica cobertura atual das automações EPQ.', action:'Manter e revisar integração das ativas.', priority:'🟢'},
+    {q:'Quantas estão configuradas mas nunca executaram?', evidence:AUTOMATIONS.filter(x=>x.status==='ativa' && !x.lastRun && x.executionCount===0).map(x=>x.name).join(', ')||'Nenhuma', diagnosis:'Risco de configuração sem execução real.', action:'Validar credenciais/cron e executar teste.', priority:'🔴'},
+    {q:'Alguma automação EPQ falhou?', evidence:AUTOMATIONS.filter(x=>x.lastResult==='error').map(x=>x.name + ' (' + fmt(x.lastRun) + ')').join(', ')||'Nenhuma', diagnosis:'Falhas pontuais podem parar entrega.', action:'Verificar log da automação com erro e corrigir canal/autenticação.', priority:'🔴'},
+    {q:'Alguma automação está sem canal configurado?', evidence:AUTOMATIONS.filter(x=>x.integrationStatus!=='conectada').map(x=>x.name).join(', ')||'Nenhuma', diagnosis:'Sem canal configurado não há entrega.', action:'Configurar canal antes de ativar.', priority:'🟡'},
+    {q:'O briefing EPQ está programado?', evidence:'Briefing EPQ: próxima execução ' + fmt(AUTOMATIONS.find(x=>x.id==='fa194a8fb6a2').nextRun), diagnosis:'Confirma agenda de atendimento.', action:'Acompanhar janela 09:00–10:00 ou executar manualmente se necessário.', priority:'🟡'},
+    {q:'Quantas mensagens automáticas foram enviadas?', evidence:'Base local sem confirmação de entrega.', diagnosis:'Sem evidência suficiente de entrega por mensagem.', action:'Conectar integração de envio para contabilizar mensagens.', priority:'⚪'}
+  ];
+  document.getElementById('qa-list').innerHTML=list.map(item=>`<div class="qcard">
+    <div class="q">${esc(item.q)}</div>
+    <div><strong>EVIDÊNCIA:</strong> ${esc(item.evidence)}</div>
+    <div><strong>DIAGNÓSTICO:</strong> ${esc(item.diagnosis)}</div>
+    <div><strong>AÇÃO SUGERIDA:</strong> ${esc(item.action)}</div>
+    <div class="row"><span class="chip-sm">PRIORIDADE ${esc(item.priority)}</span><span class="chip-sm">EPQ</span></div>
+  </div>`).join('');
+}
+
+function renderNow(){
+  const c=document.getElementById('now-block');
+  c.innerHTML='<div class="pulse"></div><div><strong>Nenhuma automação em execução agora.</strong><div class="helper">Se uma execução estiver rodando, o status mudará automaticamente.</div></div>';
+}
+
+function initNav(){
+  const items=document.querySelectorAll('.navitem');
+  const sections=document.querySelectorAll('.section');
+  items.forEach(n=>n.addEventListener('click',()=>{
+    items.forEach(x=>x.classList.remove('active'));
+    n.classList.add('active');
+    const id=n.getAttribute('data-target');
+    sections.forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }));
+}
+
+function initFilters(){
+  document.getElementById('filter-bar').addEventListener('click',e=>{
+    const chip=e.target.closest('.chip');
+    if(!chip) return;
+    document.querySelectorAll('#filter-bar .chip').forEach(c=>c.classList.remove('on'));
+    chip.classList.add('on');
+    renderList(chip.getAttribute('data-filter'));
+  });
+  document.querySelectorAll('[data-range]').forEach(btn=>btn.addEventListener('click',()=>{
+    document.querySelectorAll('[data-range]').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    renderTimeline(btn.getAttribute('data-range'));
+  }));
+  document.querySelectorAll('[data-ask]').forEach(btn=>btn.addEventListener('click',()=>{
+    document.getElementById('ask-result').textContent='Resposta gerada a partir dos dados disponíveis: não há integração aberta para consultar eventos além deste painel. Para diagnóstico completo, use a seção Diagnóstico.';
+  }));
+}
+
+renderKPIs();
+renderList();
+renderTimeline('today');
+renderNext();
+renderLogs();
+renderAlerts();
+renderQA();
+renderNow();
+initNav();
+initFilters();
+</script>
+</body>
+</html>
