@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EPQ · Concurso Radar</title>
+<style>
+  :root {
+    --bg: #0b0f19;
+    --panel: #111827;
+    --panel-2: #0f172a;
+    --border: #1f2937;
+    --text: #e5e7eb;
+    --muted: #9ca3af;
+    --accent: #38bdf8;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --success: #22c55e;
+    --info: #3b82f6;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+  a { color: var(--accent); }
+  .container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+  header { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  header h1 { margin: 0; font-size: clamp(1.2rem, 2vw, 1.6rem); letter-spacing: 0.2px; }
+  header p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-top: 20px; }
+  .kpi { background: var(--panel); border: 1px solid var(--border); padding: 14px; border-radius: 12px; }
+  .kpi .label { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .kpi .value { font-size: 1.5rem; font-weight: 700; margin-top: 6px; }
+  .grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 24px; }
+  @media (min-width: 980px) { .grid.two { grid-template-columns: 1fr 1fr; } }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
+  .card h2 { margin: 0 0 10px; font-size: 1.05rem; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 999px; background: #0b1220; border: 1px solid var(--border); font-size: 0.85rem; }
+  .badge .dot { width: 8px; height: 8px; border-radius: 50%; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #1f2937; vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; }
+  .pipeline { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pipe-step { padding: 8px 10px; border-radius: 10px; background: #0b1220; border: 1px solid #1f2937; font-size: 0.82rem; color: var(--muted); }
+  .pipe-step.active { border-color: #334155; color: var(--text); background: #0b1220aa; }
+  .alert { display: flex; align-items: flex-start; gap: 10px; padding: 10px; border-radius: 10px; background: #0b1220; border: 1px solid #1f2937; }
+  .alert .meta { color: var(--muted); font-size: 0.8rem; }
+  .action-item { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; padding: 12px; border-radius: 12px; background: #0b1220; border: 1px solid #1f2937; }
+  .action-item .title { font-weight: 700; }
+  .action-item .meta { color: var(--muted); font-size: 0.85rem; }
+  .score { font-weight: 800; }
+  .btn { padding: 8px 12px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: #e5e7eb; cursor: pointer; }
+  .btn:hover { border-color: #475569; }
+  .muted { color: var(--muted); }
+  .small { font-size: 0.85rem; }
+  details { border: 1px solid #1f2937; border-radius: 12px; padding: 10px; background: #0b1220; }
+  summary { cursor: pointer; font-weight: 700; }
+  .modal-backdrop { position: fixed; inset: 0; background: #000000aa; display: none; align-items: center; justify-content: center; padding: 16px; }
+  .modal-backdrop.open { display: flex; }
+  .modal { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; max-width: 860px; width: 100%; max-height: 90vh; overflow: auto; padding: 18px; }
+  .modal header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .legend { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+  .legend span { font-size: 0.8rem; color: var(--muted); }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 999px; background: #0b1220; border: 1px solid #1f2937; font-size: 0.8rem; }
+  .tag.red { border-color: #7f1d1d; color: #fecaca; }
+  .tag.orange { border-color: #7c2d12; color: #fed7aa; }
+  .tag.yellow { border-color: #713f12; color: #fde68a; }
+  .tag.gray { border-color: #334155; color: #cbd5e1; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>EPQ · Concurso Radar</h1>
+    <p>Inteligência de mercado para decidir quais turmas abrir.</p>
+  </header>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="grid two" style="margin-top:24px;">
+    <div class="card">
+      <h2>⚡ Ação Agora</h2>
+      <div id="actionNow"></div>
+    </div>
+    <div class="card">
+      <h2>🚨 Alertas</h2>
+      <div id="alerts"></div>
+    </div>
+  </div>
+
+  <div class="grid two" style="margin-top:16px;">
+    <div class="card">
+      <h2>📊 Pipeline de Concursos</h2>
+      <div class="pipeline" id="pipeline"></div>
+      <div style="margin-top:12px;" id="pipelineList"></div>
+    </div>
+    <div class="card">
+      <h2>🏆 Ranking Diário</h2>
+      <div id="ranking"></div>
+    </div>
+  </div>
+
+  <div class="grid two" style="margin-top:16px;">
+    <div class="card">
+      <h2>🧠 Motor de Turmas</h2>
+      <div id="motor"></div>
+    </div>
+    <div class="card">
+      <h2>📋 Matriz de Oportunidade</h2>
+      <div id="matrix"></div>
+    </div>
+  </div>
+
+  <div class="grid" style="margin-top:16px;">
+    <div class="card">
+      <h2>🕒 Histórico</h2>
+      <div id="history"></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span>Confiabilidade: <strong>Confirmado</strong> > <strong>Indício</strong> > <strong>Previsão</strong> > <strong>Rumor</strong></span>
+    <span>•</span>
+    <span>Nunca tratar informação não oficial como confirmação definitiva.</span>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" role="dialog" aria-modal="true">
+    <header>
+      <div>
+        <div class="muted small" id="modalSub"></div>
+        <h1 id="modalTitle" style="margin:6px 0;"></h1>
+      </div>
+      <button class="btn" id="modalClose">Fechar</button>
+    </header>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script src="radar-data.js"></script>
+<script src="radar-scoring.js"></script>
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const band=score=>SCORE_BANDS.find(b=>score>=b.min && score<=b.max)||SCORE_BANDS[SCORE_BANDS.length-1];
+  const decision=item=>{
+    if(item.aceleração && item.score>=80) return DECISIONS[1];
+    if(item.status==='ABERTO') return DECISIONS[0];
+    if(item.status==='IMINENTE' && item.score>=75) return DECISIONS[1];
+    if(item.status==='IMINENTE') return DECISIONS[2];
+    if(item.status==='EM ESTUDO' && item.score>=55) return DECISIONS[2];
+    if(item.status==='EM ESTUDO') return DECISIONS[3];
+    return DECISIONS[4];
+  };
+  const fmtDate=s=>String(s).replace(/^(\d{4})-(\d{2})-(\d{2})$/, '$3/$2/$1');
+
+  function renderKpis(){
+    const abertos = concursos.filter(c=>c.status==='ABERTO').length;
+    const iminentes = concursos.filter(c=>c.status==='IMINENTE').length;
+    const prioritarios = concursos.filter(c=>c.score>=80).length;
+    const recomendados = concursos.filter(c=>['ABRIR','PRE'].includes(decision(c).id)).length;
+    const acelerando = concursos.filter(c=>c.aceleração).length;
+    const captar = concursos.filter(c=>decision(c).id==='CAPTAR').length;
+    const el=$('kpis');
+    el.innerHTML=`
+      <div class="kpi"><div class="label">🔴 Abertos</div><div class="value">${abertos}</div></div>
+      <div class="kpi"><div class="label">🟠 Iminentes</div><div class="value">${iminentes}</div></div>
+      <div class="kpi"><div class="label">🔥 Prioritários</div><div class="value">${prioritarios}</div></div>
+      <div class="kpi"><div class="label">🚀 Recomendados</div><div class="value">${recomendados}</div></div>
+      <div class="kpi"><div class="label">📈 Em aceleração</div><div class="value">${acelerando}</div></div>
+      <div class="kpi"><div class="label">🧲 Captar leads</div><div class="value">${captar}</div></div>
+    `;
+  }
+
+  function renderActionNow(){
+    const items = [...concursos].sort((a,b)=>b.score-a.score).slice(0,5);
+    const el=$('actionNow');
+    el.innerHTML = items.map(c=>{
+      const d = decision(c);
+      const cor = band(c.score).color;
+      return `<div class="action-item">
+        <div>
+          <div class="title">${c.nome}</div>
+          <div class="meta">${c.orgão} • ${c.status} • ${c.etapaAtual}</div>
+        </div>
+        <div style="text-align:right;min-width:120px;">
+          <div class="score" style="color:${cor}">${c.score}</div>
+          <div class="meta">${d.label}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderAlerts(){
+    const el=$('alerts');
+    if(!alertas.length){ el.innerHTML='<div class="muted small">Sem alertas.</div>'; return; }
+    el.innerHTML = alertas.slice().reverse().map(a=>`<div class="alert">
+      <div>
+        <div style="font-weight:700;">${a.tipo}</div>
+        <div class="meta">${a.concurso} • ${fmtDate(a.data)} • <span class="tag ${a.prioridade==='alta'?'red':'yellow'}">${a.prioridade}</span></div>
+        <div class="small">${a.mensagem}</div>
+      </div>
+    </div>`).join('');
+  }
+
+  function renderPipeline(){
+    const el=$('pipeline');
+    el.innerHTML = STATUS_FLOW.map(s=>`<div class="pipe-step">${s}</div>`).join('');
+    const list=$('pipelineList');
+    const grouped = STATUS_FLOW.map(s=>({ etapa:s, itens:concursos.filter(c=>c.etapaAtual===s) })).filter(g=>g.itens.length);
+    list.innerHTML = grouped.map(g=>`<div style="margin-top:10px;">
+      <div class="small muted">${g.etapa}</div>
+      <div class="row" style="margin-top:6px;">${g.itens.map(c=>`<button class="btn small" data-id="${c.id}">${c.nome}</button>`).join('')}</div>
+    </div>`).join('');
+    list.querySelectorAll('button[data-id]').forEach(b=>b.addEventListener('click',()=>openConcurso(b.dataset.id)));
+  }
+
+  function renderRanking(){
+    const el=$('ranking');
+    const sorted = [...concursos].sort((a,b)=>b.score-a.score);
+    el.innerHTML = `<table>
+      <thead><tr><th>#</th><th>Concurso</th><th>Status</th><th>Score</th><th>Ação</th></tr></thead>
+      <tbody>${sorted.map((c,i)=>{
+        const d=decision(c);
+        const cor=band(c.score).color;
+        return `<tr style="cursor:pointer;" data-id="${c.id}">
+          <td>${i+1}</td>
+          <td>${c.nome}<div class="small muted">${c.orgão}</div></td>
+          <td><span class="tag ${c.status==='ABERTO'?'red':c.status==='IMINENTE'?'orange':'yellow'}">${c.status}</span></td>
+          <td><span class="score" style="color:${cor}">${c.score}</span></td>
+          <td><span class="tag ${d.id==='ABRIR'?'red':d.id==='PRE'?'orange':d.id==='CAPTAR'?'yellow':'gray'}">${d.label}</span></td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>`;
+    el.querySelectorAll('tr[data-id]').forEach(tr=>tr.addEventListener('click',()=>openConcurso(tr.dataset.id)));
+  }
+
+  function renderMotor(){
+    const el=$('motor');
+    const items = concursos.filter(c=>c.score>=70).sort((a,b)=>b.score-a.score).slice(0,5);
+    el.innerHTML = items.map(c=>{
+      const d=decision(c);
+      return `<div class="alert">
+        <div>
+          <div style="font-weight:700;">${c.nome}</div>
+          <div class="small">Score ${c.score} • ${d.label} • ${c.aceleração?'🚀 Acelerando':''}</div>
+          <div class="small muted">${c.aceleraçãoRazao||''}</div>
+        </div>
+      </div>`;
+    }).join('') || '<div class="muted small">Sem recomendações no momento.</div>';
+  }
+
+  function renderMatrix(){
+    const el=$('matrix');
+    const cols = ['Concurso','Urgência','Demanda','Aderência EPQ','Potencial','Ação'];
+    const rows = [...concursos].sort((a,b)=>b.score-a.score).slice(0,8);
+    el.innerHTML = `<div style="overflow:auto;"><table>
+      <thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead>
+      <tbody>${rows.map(c=>{
+        const urg = c.status==='ABERTO'?'Alta':c.status==='IMINENTE'?'Alta':'Média';
+        const dem = c.publicoPotencial==='Alto'||c.publicoPotencial==='Muito alto'?'Alta':'Média';
+        const pot = c.potencialTicket==='Alto'?'Alto':'Médio';
+        const d=decision(c);
+        return `<tr style="cursor:pointer;" data-id="${c.id}">
+          <td>${c.nome}</td>
+          <td>${urg}</td>
+          <td>${dem}</td>
+          <td>${c.aderenciaEPQ}</td>
+          <td>${pot}</td>
+          <td><span class="tag ${d.id==='ABRIR'?'red':d.id==='PRE'?'orange':d.id==='CAPTAR'?'yellow':'gray'}">${d.label}</span></td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table></div>`;
+    el.querySelectorAll('tr[data-id]').forEach(tr=>tr.addEventListener('click',()=>openConcurso(tr.dataset.id)));
+  }
+
+  function renderHistory(){
+    const el=$('history');
+    const rows = historico.slice().sort((a,b)=>b.data.localeCompare(a.data));
+    el.innerHTML = `<table>
+      <thead><tr><th>Data</th><th>Concurso</th><th>Evento</th><th>Fonte</th><th>Confiança</th></tr></thead>
+      <tbody>${rows.map(h=>`<tr>
+        <td class="small">${fmtDate(h.data)}</td>
+        <td>${h.id}</td>
+        <td>${h.evento}</td>
+        <td><span class="tag gray">${h.fonte}</span></td>
+        <td><span class="tag ${h.confianca==='Confirmado'?'red':'orange'}">${h.confianca}</span></td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+  }
+
+  function openConcurso(id){
+    const c = concursos.find(x=>x.id===id);
+    if(!c) return;
+    const d = decision(c);
+    const b = band(c.score);
+    $('modalSub').textContent = `${c.status} • ${c.etapaAtual} • Score ${c.score}`;
+    $('modalTitle').textContent = c.nome;
+    $('modalBody').innerHTML = `
+      <div class="grid two">
+        <div class="card">
+          <h2>Identificação</h2>
+          <div><strong>Órgão:</strong> ${c.orgão}</div>
+          <div><strong>Cargo:</strong> ${c.cargo}</div>
+          <div><strong>Estado:</strong> ${c.estado}</div>
+          <div><strong>Área:</strong> ${c.area}</div>
+          <div><strong>Banca:</strong> ${c.banca}</div>
+        </div>
+        <div class="card">
+          <h2>Status</h2>
+          <div><strong>Etapa atual:</strong> ${c.etapaAtual}</div>
+          <div><strong>Última movimentação:</strong> ${c.ultimaMovimentacao}</div>
+          <div><strong>Próxima etapa:</strong> ${c.proximaEtapa}</div>
+          <div><strong>Previsão edital:</strong> ${c.previsaoEdital}</div>
+          <div><strong>Previsão prova:</strong> ${c.previsaoProva}</div>
+          <div><strong>Janela comercial:</strong> ${c.janelaComercialEstimada||'—'}</div>
+        </div>
+        <div class="card">
+          <h2>Mercado</h2>
+          <div><strong>Vagas estimadas:</strong> ${c.vagasEstimadas}</div>
+          <div><strong>Remuneração:</strong> ${c.remuneracaoEstimada}</div>
+          <div><strong>Escolaridade:</strong> ${c.escolaridade}</div>
+          <div><strong>Público potencial:</strong> ${c.publicoPotencial}</div>
+          <div><strong>Histórico de demanda:</strong> ${c.historicoDemanda}</div>
+        </div>
+        <div class="card">
+          <h2>Inteligência EPQ</h2>
+          <div><strong>Score:</strong> <span class="score" style="color:${b.color}">${c.score}</span></div>
+          <div><strong>Tendência:</strong> ${c.tendencia}</div>
+          <div><strong>Aderência:</strong> ${c.aderenciaEPQ}/100</div>
+          <div><strong>Potencial comercial:</strong> ${c.potencialTicket}</div>
+          <div><strong>Concorrência:</strong> ${c.concorrenciaCursos}</div>
+          <div><strong>Disciplinas:</strong> ${c.disciplinas.join(', ')}</div>
+          <div><strong>Material:</strong> ${c.existeMaterial?'Sim':'Não'}</div>
+          <div><strong>Turma atual:</strong> ${c.existeTurma?'Sim':'Não'}</div>
+          <div><strong>Aceleração:</strong> ${c.aceleração?'Sim — '+c.aceleraçãoRazao:'Não'}</div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:12px;">
+        <h2>Recomendação</h2>
+        <div><span class="tag ${d.id==='ABRIR'?'red':d.id==='PRE'?'orange':d.id==='CAPTAR'?'yellow':'gray'}">${d.label}</span></div>
+        <div class="small muted" style="margin-top:8px;">
+          ${c.status==='ABERTO'?'Inscrições abertas ou processo em andamento: preparar lançamento rápido e captação direta.':''}
+          ${c.status==='IMINENTE'?'Edital próximo e sinais concretos: iniciar pré-lançamento e captar lista de espera.':''}
+          ${c.status==='EM ESTUDO'?'Há movimentação, mas sem segurança para abrir turma agora: monitorar e captar leads qualificados.':''}
+          ${c.status==='DISTANTE'?'Ainda sem janela curta: manter em radar e baixo investimento.':''}
+          ${c.status==='ENCERRADO'?'Oportunidade comercial encerrada: manter histórico e reaproveitar material.':''}
+        </div>
+      </div>
+    `;
+    $('modalBackdrop').classList.add('open');
+  }
+
+  $('modalClose').addEventListener('click',()=>$('modalBackdrop').classList.remove('open'));
+  $('modalBackdrop').addEventListener('click',e=>{ if(e.target===$('modalBackdrop')) $('modalBackdrop').classList.remove('open'); });
+
+  renderKpis();
+  renderActionNow();
+  renderAlerts();
+  renderPipeline();
+  renderRanking();
+  renderMotor();
+  renderMatrix();
+  renderHistory();
+})();
+</script>
+</body>
+</html>
