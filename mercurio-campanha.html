@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MERCÚRIO — Campanha WhatsApp</title>
+<style>
+  :root {
+    --bg:#07090B; --bg2:#10151A; --bg3:#161C23; --border:rgba(255,255,255,0.07);
+    --teal:#00E5A0; --teal-dim:rgba(0,229,160,0.10); --red:#FF4560; --red-dim:rgba(255,69,96,0.10);
+    --amber:#F5A623; --amber-dim:rgba(245,166,35,0.10); --blue:#4A9EFF; --blue-dim:rgba(74,158,255,0.12);
+    --muted:rgba(255,255,255,0.33); --text:rgba(255,255,255,0.88); --text-dim:rgba(255,255,255,0.5);
+    --mono:'JetBrains Mono', monospace; --sans:Inter, system-ui, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:radial-gradient(1200px 600px at 15% -10%, rgba(0,229,160,0.08), transparent 60%), var(--bg);color:var(--text);font-family:var(--sans);padding:24px 18px 80px}
+  .wrap{max-width:1100px;margin:0 auto}
+  header{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+  .logo{width:28px;height:28px;border:1px solid var(--teal);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--teal);font-family:var(--mono);font-size:12px;font-weight:700;box-shadow:0 0 16px rgba(0,229,160,0.25)}
+  h1{font-family:var(--mono);font-size:18px;font-weight:700;letter-spacing:0.08em}
+  .sub{color:var(--text-dim);font-size:12px;margin-top:2px}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+  @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+  .card{background:linear-gradient(180deg,var(--bg2),var(--bg3));border:1px solid var(--border);border-radius:12px;padding:14px 16px;position:relative;overflow:hidden}
+  .lbl{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:0.1em;margin-bottom:6px}
+  .val{font-family:var(--mono);font-size:26px;font-weight:700;color:var(--text);line-height:1}
+  .val.teal{color:var(--teal)} .val.red{color:var(--red)} .val.amber{color:var(--amber)} .val.blue{color:var(--blue)}
+  .section{background:linear-gradient(180deg,var(--bg2),var(--bg3));border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+  .sec-title{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:0.12em;color:var(--text-dim);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+  .line{flex:1;height:1px;background:linear-gradient(90deg,var(--border), transparent)}
+  table{width:100%;border-collapse:collapse;margin-top:8px}
+  th{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--muted);letter-spacing:0.08em;text-align:left;padding:10px 10px;border-bottom:1px solid var(--border)}
+  td{font-size:12px;color:var(--text-dim);padding:10px 10px;border-bottom:1px solid var(--border)}
+  tr:last-child td{border-bottom:none}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;font-weight:700;padding:4px 8px;border-radius:8px;border:1px solid;white-space:nowrap}
+  .badge-dot{width:6px;height:6px;border-radius:50%}
+  .badge.pendente{border-color:rgba(255,255,255,0.15);color:var(--text-dim);background:rgba(255,255,255,0.04)}
+  .badge.enviado{border-color:rgba(74,158,255,0.35);color:var(--blue);background:rgba(74,158,255,0.08)}
+  .badge.respondeu{border-color:rgba(245,166,35,0.35);color:var(--amber);background:rgba(245,166,35,0.08)}
+  .badge.falha{border-color:rgba(255,69,96,0.35);color:var(--red);background:rgba(255,69,96,0.08)}
+  .badge.ok{border-color:rgba(0,229,160,0.35);color:var(--teal);background:rgba(0,229,160,0.08)}
+  .badge.pendente .badge-dot{background:var(--text-dim)}
+  .badge.enviado .badge-dot{background:var(--blue)}
+  .badge.respondeu .badge-dot{background:var(--amber)}
+  .badge.falha .badge-dot{background:var(--red)}
+  .badge.ok .badge-dot{background:var(--teal)}
+  .log{font-family:var(--mono);font-size:11px;color:var(--text-dim);line-height:1.6}
+  .log-item{padding:4px 0;border-bottom:1px solid transparent;border-image:linear-gradient(90deg, var(--border), transparent 75%) 1}
+  .log-item:last-child{border-bottom:none}
+  .time{color:var(--muted);margin-right:8px}
+  .footer{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px;color:var(--muted);font-family:var(--mono);font-size:11px}
+  .btn{font-family:var(--mono);font-size:11px;font-weight:700;padding:7px 12px;border-radius:8px;border:1px solid var(--border);color:var(--text-dim);background:transparent;cursor:pointer}
+  .btn:hover{border-color:rgba(255,255,255,0.25);color:var(--text)}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">M</div>
+      <div>
+        <h1>MERCÚRIO — Campanha WhatsApp</h1>
+        <div class="sub">Monitoramento por etapa · Lotes 1 e 2</div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <div class="card"><div class="lbl">Lote 1</div><div class="val teal">5</div><div class="sub2">outreach</div></div>
+      <div class="card"><div class="lbl">Lote 2</div><div class="val blue">5</div><div class="sub2">followup_d3</div></div>
+      <div class="card"><div class="lbl">Enviados</div><div class="val" id="enviados">0</div><div class="sub2">disparos realizados</div></div>
+      <div class="card"><div class="lbl">Respostas</div><div class="val amber" id="respostas">0</div><div class="sub2">INTERESSADO / REUNIAO / OBJECAO</div></div>
+    </div>
+
+    <div class="section">
+      <div class="sec-title"><span>Lote 1 — outreach</span><span class="line"></span></div>
+      <table>
+        <thead>
+          <tr><th>#</th><th>Nome</th><th>Telefone</th><th>Tier</th><th>Status</th><th>Resposta</th><th>Horário</th></tr>
+        </thead>
+        <tbody id="lote1"></tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="sec-title"><span>Lote 2 — followup_d3</span><span class="line"></span></div>
+      <table>
+        <thead>
+          <tr><th>#</th><th>Nome</th><th>Telefone</th><th>Tier</th><th>Status</th><th>Resposta</th><th>Horário</th></tr>
+        </thead>
+        <tbody id="lote2"></tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="sec-title"><span>Próximas ações</span><span class="line"></span></div>
+      <div class="log">
+        <div class="log-item"><span class="time">09:00–10:00</span>Disparar Lote 1</div>
+        <div class="log-item"><span class="time">10:30–11:30</span>Disparar Lote 2</div>
+        <div class="log-item"><span class="time">D+3</span>Follow-up automático</div>
+        <div class="log-item"><span class="time">09:00–18:00</span>Monitorar respostas</div>
+        <div class="log-item"><span class="time">19:00</span>Avaliar taxa de resposta e sugerir ajuste</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>Atualização manual/assistida</span>
+      <span>Base: sequência de disparo fornecida</span>
+    </div>
+  </div>
+
+<script>
+  const L1 = [
+    {id:1,nome:'Ana Luiza Amaral Baldacini',tel:'+119****4562',tier:'TIER 1A',status:'Pendente',resposta:'—',horario:'—'},
+    {id:2,nome:'Ana C. Leme',tel:'+119****2800',tier:'TIER 1B',status:'Pendente',resposta:'—',horario:'—'},
+    {id:3,nome:'Pedro Brum',tel:'+459****2546',tier:'TIER 1B',status:'Pendente',resposta:'—',horario:'—'},
+    {id:4,nome:'Raphaella Schultz',tel:'+279****4510',tier:'TIER 1B',status:'Pendente',resposta:'—',horario:'—'},
+    {id:5,nome:'Thiago Miranda',tel:'+559****7310',tier:'TIER 1B',status:'Pendente',resposta:'—',horario:'—'},
+  ];
+  const L2 = [
+    {id:6,nome:'Alex Avena',tel:'+219****2274',tier:'TIER 1C',status:'Pendente',resposta:'—',horario:'—'},
+    {id:7,nome:'Bruno Pereira',tel:'+219****2539',tier:'TIER 1C',status:'Pendente',resposta:'—',horario:'—'},
+    {id:8,nome:'Bruno Pereira',tel:'+219****7539',tier:'TIER 1C',status:'Pendente',resposta:'—',horario:'—'},
+    {id:9,nome:'Bárbara Fiuza',tel:'+119****6214',tier:'TIER 1C',status:'Pendente',resposta:'—',horario:'—'},
+    {id:10,nome:'Carolina Vicente',tel:'+419****4997',tier:'TIER 1C',status:'Pendente',resposta:'—',horario:'—'},
+  ];
+
+  const statusBadge = (s) => {
+    const map = {
+      'Pendente':'pendente','Enviado':'enviado','Enviada':'enviado',
+      'Respondeu':'respondeu','INTERESSADO':'respondeu','REUNIAO':'respondeu',
+      'OBJECAO':'respondeu','SEM RESPOSTA':'falha','Falha':'falha','OK':'ok'
+    };
+    const cls = map[s] || 'pendente';
+    return `<span class="badge ${cls}"><span class="badge-dot"></span>${s}</span>`;
+  };
+
+  function render(){
+    document.getElementById('lote1').innerHTML = L1.map(x=>`<tr>
+      <td>${x.id}</td><td>${x.nome}</td><td>${x.tel}</td><td>${x.tier}</td>
+      <td>${statusBadge(x.status)}</td><td>${x.resposta}</td><td>${x.horario}</td>
+    </tr>`).join('');
+
+    document.getElementById('lote2').innerHTML = L2.map(x=>`<tr>
+      <td>${x.id}</td><td>${x.nome}</td><td>${x.tel}</td><td>${x.tier}</td>
+      <td>${statusBadge(x.status)}</td><td>${x.resposta}</td><td>${x.horario}</td>
+    </tr>`).join('');
+
+    const env = [...L1,...L2].filter(x=>x.status==='Enviado' || x.status==='Enviada').length;
+    const resp = [...L1,...L2].filter(x=>['INTERESSADO','REUNIAO','OBJECAO','Respondeu'].includes(x.status)).length;
+    document.getElementById('enviados').textContent = env;
+    document.getElementById('respostas').textContent = resp;
+  }
+  render();
+
+  window.__campanha = {L1, L2, render};
+</script>
+</body>
+</html>
