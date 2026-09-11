@@ -298,6 +298,11 @@ tr:last-child td{border-bottom:none;}
         <div class="funnel" id="funnelWrap"></div>
         <p class="evidence">Conversão de "recebeu oferta de preço" → "aula experimental agendada": 2 de 9 (22%). Nenhum dado suficiente sobre conversão de aula experimental → matrícula paga nesta amostra.</p>
       </div>
+        <div class="chart-canvas-wrap">
+          <h3 style="color:var(--ink-dim);font-size:11px;text-transform:uppercase;letter-spacing:.04em;margin:0 0 8px;">Evolução de leads — últimos 3 dias</h3>
+          <canvas id="chartEvolucao" height="160" style="width:100%;height:160px;"></canvas>
+        </div>
+      </div>
       <div class="panel">
         <h2>Linha do tempo — os dois casos que avançaram</h2>
         <p class="sub">O que aconteceu de diferente nesses dois atendimentos</p>
@@ -637,8 +642,34 @@ const leads = [
   action:"Atendimento humano dedicado, citando o histórico e a objeção do TAF diretamente. Informar sobre a turma de GCM assim que houver edital, sem tentar redirecionar para PMERJ novamente.",
   reason:"Objeção real e específica, tratada com insistência excessiva no primeiro contato e depois com perda total de contexto no retorno — risco alto de perder um lead que voltou sozinho por interesse genuíno."
 }
-];
 
+// Novos leads do WhatsApp (09-11/09)
+{id:64, name:"Gustavo", phone:"+55 21 96429-4767", origin:"WhatsApp · Entrada 09/09", confirm:"CONFIRMADO", status:"novo", score:50, priority:"alta", objection:"Estágio: perguntou turno/horário", last:"2026-09-09 9:15:46 AM", desire:"Pmerj", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"},{c:"y",t:"← Sem follow-up registrado após 'Olá! Posso ter mais informações sobre is'"}], action:"Follow-up com horário fechado de aula — lead de Pmerj perguntou sobre turno. Oferecer: 'te aguardo amanhã às 19h'.", reason:"Lead de Pmerj já mostrou interesse em saber turno — alta intenção, só precisa de CTA fechado."},
+{id:65, name:"Olá! Posso ter mais informaçõe", phone:"+55 21 96526-1628", origin:"WhatsApp · Entrada 09/09", confirm:"CONFIRMADO", status:"novo", score:35, priority:"media", objection:"Estágio: só disse olá", last:"2026-09-09 9:08:45 AM", desire:"Gcm", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"}], action:"Follow-up imediato — lead chegou declarando interesse em Gcm. Reaproximar: 'Olá! Aqui é [nome] do EPQ. Vi que tem interesse em Gcm — posso te ajudar com qual dúvida?'", reason:"Lead entrou com interesse em Gcm mas conversa parou no início — risco de perda sem retorno rápido."},
+{id:66, name:"Olá! Posso ter mais informaçõe", phone:"+55 21 96532-9476", origin:"WhatsApp · Entrada 09/09", confirm:"CONFIRMADO", status:"novo", score:35, priority:"media", objection:"Estágio: só disse olá", last:"2026-09-09 11:17:12 AM", desire:"Pmerj", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"}], action:"Follow-up imediato — lead chegou declarando interesse em Pmerj. Reaproximar: 'Olá! Aqui é [nome] do EPQ. Vi que tem interesse em Pmerj — posso te ajudar com qual dúvida?'", reason:"Lead entrou com interesse em Pmerj mas conversa parou no início — risco de perda sem retorno rápido."},
+{id:67, name:"Walber Nunes", phone:"+55 21 96768-8448", origin:"WhatsApp · Entrada 09/09", confirm:"CONFIRMADO", status:"novo", score:50, priority:"alta", objection:"Estágio: perguntou turno/horário", last:"2026-09-09 9:08:57 AM", desire:"Pmerj", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"},{c:"y",t:"← Sem follow-up registrado após 'Olá! Posso ter mais informações sobre is'"}], action:"Follow-up com horário fechado de aula — lead de Pmerj perguntou sobre turno. Oferecer: 'te aguardo amanhã às 19h'.", reason:"Lead de Pmerj já mostrou interesse em saber turno — alta intenção, só precisa de CTA fechado."},
+{id:68, name:"Brenda", phone:"+55 21 96997-7512", origin:"WhatsApp · Entrada 09/09", confirm:"CONFIRMADO", status:"novo", score:55, priority:"alta", objection:"Estágio: perguntou valor", last:"2026-09-09 10:35:42 AM", desire:"Gcm", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"},{c:"y",t:"← Sem follow-up registrado após 'Olá! Posso ter mais informações sobre is'"}], action:"Follow-up com valores + CTA de aula — lead de Gcm perguntou preço. Enviar tabela completa e oferecer aula experimental com horário fechado.", reason:"Lead de Gcm chegou ao estágio de compra — sem follow-up com CTA, risco de perda."},
+{id:69, name:"Olá! Posso ter mais informaçõe", phone:"+55 21 97030-9106", origin:"WhatsApp · Entrada 09/09", confirm:"CONFIRMADO", status:"novo", score:35, priority:"media", objection:"Estágio: só disse olá", last:"2026-09-09 9:27:17 AM", desire:"Pmerj", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"}], action:"Follow-up imediato — lead chegou declarando interesse em Pmerj. Reaproximar: 'Olá! Aqui é [nome] do EPQ. Vi que tem interesse em Pmerj — posso te ajudar com qual dúvida?'", reason:"Lead entrou com interesse em Pmerj mas conversa parou no início — risco de perda sem retorno rápido."},
+{id:70, name:"Guilherme", phone:"+55 21 97431-6907", origin:"WhatsApp · Entrada 09/09", confirm:"CONFIRMADO", status:"novo", score:55, priority:"alta", objection:"Estágio: perguntou valor", last:"2026-09-09 9:23:38 AM", desire:"Gcm", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"},{c:"y",t:"← Sem follow-up registrado após 'Olá! Posso ter mais informações sobre is'"}], action:"Follow-up com valores + CTA de aula — lead de Gcm perguntou preço. Enviar tabela completa e oferecer aula experimental com horário fechado.", reason:"Lead de Gcm chegou ao estágio de compra — sem follow-up com CTA, risco de perda."},
+{id:71, name:"Olá! Posso ter mais informaçõe", phone:"+55 21 97735-4965", origin:"WhatsApp · Entrada 09/09", confirm:"CONFIRMADO", status:"novo", score:35, priority:"media", objection:"Estágio: só disse olá", last:"2026-09-09 11:10:44 AM", desire:"Gcm", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"}], action:"Follow-up imediato — lead chegou declarando interesse em Gcm. Reaproximar: 'Olá! Aqui é [nome] do EPQ. Vi que tem interesse em Gcm — posso te ajudar com qual dúvida?'", reason:"Lead entrou com interesse em Gcm mas conversa parou no início — risco de perda sem retorno rápido."},
+{id:72, name:"Oi, bom dia! vi o anúncio da P", phone:"+55 21 98055-5629", origin:"WhatsApp · Entrada 09/09", confirm:"CONFIRMADO", status:"novo", score:55, priority:"alta", objection:"Estágio: perguntou valor", last:"2026-09-09 11:27:18 AM", desire:"Prf", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Oi, bom dia! vi o anúncio da PRF para Agente Administrativo.'"},{c:"y",t:"← Sem follow-up registrado após 'Oi, bom dia! vi o anúncio da PRF para Ag'"}], action:"Follow-up com valores + CTA de aula — lead de Prf perguntou preço. Enviar tabela completa e oferecer aula experimental com horário fechado.", reason:"Lead de Prf chegou ao estágio de compra — sem follow-up com CTA, risco de perda."},
+{id:73, name:"Sim", phone:"+55 21 98294-6742", origin:"WhatsApp · Entrada 09/09", confirm:"CONFIRMADO", status:"novo", score:35, priority:"media", objection:"Estágio: concurso informado", last:"2026-09-09 9:30:55 AM", desire:"Pmerj", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"},{c:"y",t:"← Sem follow-up registrado após 'Olá! Posso ter mais informações sobre is'"}], action:"Follow-up — lead informou Pmerj. Perguntar turno preferido e oferecer aula experimental com horário fechado.", reason:"Lead declarou Pmerj mas conversa parou — oportunidade de qualificar com pergunta de turno e CTA de aula."},
+{id:74, name:"Olá! Posso ter mais informaçõe", phone:"+55 21 98297-4969", origin:"WhatsApp · Entrada 09/09", confirm:"CONFIRMADO", status:"novo", score:35, priority:"media", objection:"Estágio: concurso informado", last:"2026-09-09 10:28:18 AM", desire:"Pmerj", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"},{c:"y",t:"← Sem follow-up registrado após 'Olá! Posso ter mais informações sobre is'"}], action:"Follow-up — lead informou Pmerj. Perguntar turno preferido e oferecer aula experimental com horário fechado.", reason:"Lead declarou Pmerj mas conversa parou — oportunidade de qualificar com pergunta de turno e CTA de aula."},
+{id:75, name:"Olá! Posso ter mais informaçõe", phone:"+55 21 98377-7968", origin:"WhatsApp · Entrada 09/09", confirm:"CONFIRMADO", status:"novo", score:35, priority:"media", objection:"Estágio: só disse olá", last:"2026-09-09 1:50:05 PM", desire:"Pmerj", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"}], action:"Follow-up imediato — lead chegou declarando interesse em Pmerj. Reaproximar: 'Olá! Aqui é [nome] do EPQ. Vi que tem interesse em Pmerj — posso te ajudar com qual dúvida?'", reason:"Lead entrou com interesse em Pmerj mas conversa parou no início — risco de perda sem retorno rápido."},
+{id:76, name:"Olá! Posso ter mais informaçõe", phone:"+55 21 98563-3062", origin:"WhatsApp · Entrada 09/09", confirm:"CONFIRMADO", status:"novo", score:50, priority:"alta", objection:"Estágio: perguntou turno/horário", last:"2026-09-09 7:21:00 AM", desire:"Pmerj", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"},{c:"y",t:"← Sem follow-up registrado após 'Olá! Posso ter mais informações sobre is'"}], action:"Follow-up com horário fechado de aula — lead de Pmerj perguntou sobre turno. Oferecer: 'te aguardo amanhã às 19h'.", reason:"Lead de Pmerj já mostrou interesse em saber turno — alta intenção, só precisa de CTA fechado."},
+{id:77, name:"Olá! Posso ter mais informaçõe", phone:"+55 21 98699-7500", origin:"WhatsApp · Entrada 09/09", confirm:"CONFIRMADO", status:"novo", score:35, priority:"media", objection:"Estágio: só disse olá", last:"2026-09-09 9:04:56 AM", desire:"Pmerj", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"}], action:"Follow-up imediato — lead chegou declarando interesse em Pmerj. Reaproximar: 'Olá! Aqui é [nome] do EPQ. Vi que tem interesse em Pmerj — posso te ajudar com qual dúvida?'", reason:"Lead entrou com interesse em Pmerj mas conversa parou no início — risco de perda sem retorno rápido."},
+{id:78, name:"Olá! Posso ter mais informaçõe", phone:"+55 21 99042-1362", origin:"WhatsApp · Entrada 09/09", confirm:"CONFIRMADO", status:"novo", score:20, priority:"baixa", objection:"Estágio: só disse olá", last:"2026-09-09 9:06:57 AM", desire:"Concurso não informado", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"}], action:"Follow-up simples — lead entrou mas não respondeu. Perguntar diretamente: 'Olá! Aqui é [nome] do EPQ. Qual concurso você tem interesse? Posso te ajudar?'", reason:"Conversa estagnada no início — sem resposta do lead após tentativa de atendimento."},
+{id:79, name:"Douglas", phone:"+55 21 99043-9709 (1)", origin:"WhatsApp · Entrada 09/09", confirm:"CONFIRMADO", status:"novo", score:50, priority:"alta", objection:"Estágio: perguntou turno/horário", last:"2026-09-10 9:55:34 AM", desire:"Gcm", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"},{c:"y",t:"← Sem follow-up registrado após 'Olá! Posso ter mais informações sobre is'"}], action:"Follow-up com horário fechado de aula — lead de Gcm perguntou sobre turno. Oferecer: 'te aguardo amanhã às 19h'.", reason:"Lead de Gcm já mostrou interesse em saber turno — alta intenção, só precisa de CTA fechado."},
+{id:80, name:"Olá! Posso ter mais informaçõe", phone:"+55 21 99068-6720", origin:"WhatsApp · Entrada 09/09", confirm:"CONFIRMADO", status:"novo", score:35, priority:"media", objection:"Estágio: só disse olá", last:"2026-09-09 9:06:48 AM", desire:"Pmerj", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"}], action:"Follow-up imediato — lead chegou declarando interesse em Pmerj. Reaproximar: 'Olá! Aqui é [nome] do EPQ. Vi que tem interesse em Pmerj — posso te ajudar com qual dúvida?'", reason:"Lead entrou com interesse em Pmerj mas conversa parou no início — risco de perda sem retorno rápido."},
+{id:81, name:"Marcelo", phone:"+55 21 99228-3360 (1)", origin:"WhatsApp · Entrada 09/09", confirm:"CONFIRMADO", status:"novo", score:35, priority:"media", objection:"Estágio: concurso informado", last:"2026-09-09 10:09:09 AM", desire:"Gcm", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"},{c:"y",t:"← Sem follow-up registrado após 'Olá! Posso ter mais informações sobre is'"}], action:"Follow-up — lead informou Gcm. Perguntar turno preferido e oferecer aula experimental com horário fechado.", reason:"Lead declarou Gcm mas conversa parou — oportunidade de qualificar com pergunta de turno e CTA de aula."},
+{id:82, name:"Olá! Posso ter mais informaçõe", phone:"+55 21 99605-1964", origin:"WhatsApp · Entrada 09/09", confirm:"CONFIRMADO", status:"novo", score:35, priority:"media", objection:"Estágio: só disse olá", last:"2026-09-09 9:08:31 AM", desire:"Gcm", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"}], action:"Follow-up imediato — lead chegou declarando interesse em Gcm. Reaproximar: 'Olá! Aqui é [nome] do EPQ. Vi que tem interesse em Gcm — posso te ajudar com qual dúvida?'", reason:"Lead entrou com interesse em Gcm mas conversa parou no início — risco de perda sem retorno rápido."},
+{id:83, name:"Olá! Posso ter mais informaçõe", phone:"+55 21 99812-7074", origin:"WhatsApp · Entrada 09/09", confirm:"CONFIRMADO", status:"novo", score:50, priority:"alta", objection:"Estágio: perguntou turno/horário", last:"2026-09-09 10:16:37 AM", desire:"Gcm", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"},{c:"y",t:"← Sem follow-up registrado após 'Olá! Posso ter mais informações sobre is'"}], action:"Follow-up com horário fechado de aula — lead de Gcm perguntou sobre turno. Oferecer: 'te aguardo amanhã às 19h'.", reason:"Lead de Gcm já mostrou interesse em saber turno — alta intenção, só precisa de CTA fechado."},
+{id:84, name:"Oii boa tarde", phone:"+55 21 99838-0012", origin:"WhatsApp · Entrada 10/09", confirm:"CONFIRMADO", status:"novo", score:25, priority:"baixa", objection:"Estágio: pouca interação", last:"2026-09-10 2:57:19 PM", desire:"Concurso não informado", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Oii boa tarde'"},{c:"y",t:"← Sem follow-up registrado após 'Oii boa tarde'"}], action:"Follow-up com pergunta objetiva — lead mostrou leve interesse mas não avançou. Perguntar concurso e turno de forma direta.", reason:"Interação mínima — ainda classificável com segunda tentativa direta."},
+{id:85, name:"Ramon", phone:"+55 21 96660-4178", origin:"WhatsApp · Entrada 11/09", confirm:"CONFIRMADO", status:"novo", score:55, priority:"alta", objection:"Estágio: perguntou valor", last:"2026-09-11 9:27:19 AM", desire:"Gcm", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Bom dia'"},{c:"y",t:"← Sem follow-up registrado após 'Bom dia'"}], action:"Follow-up com valores + CTA de aula — lead de Gcm perguntou preço. Enviar tabela completa e oferecer aula experimental com horário fechado.", reason:"Lead de Gcm chegou ao estágio de compra — sem follow-up com CTA, risco de perda."},
+{id:86, name:"Olá! Posso ter mais informaçõe", phone:"+55 21 98254-5234", origin:"WhatsApp · Entrada 11/09", confirm:"CONFIRMADO", status:"novo", score:35, priority:"media", objection:"Estágio: concurso informado", last:"2026-09-11 9:47:27 AM", desire:"Pmerj", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"},{c:"y",t:"← Sem follow-up registrado após 'Olá! Posso ter mais informações sobre is'"}], action:"Follow-up — lead informou Pmerj. Perguntar turno preferido e oferecer aula experimental com horário fechado.", reason:"Lead declarou Pmerj mas conversa parou — oportunidade de qualificar com pergunta de turno e CTA de aula."},
+{id:87, name:"Raquel", phone:"+55 21 98762-5333", origin:"WhatsApp · Entrada 11/09", confirm:"CONFIRMADO", status:"novo", score:35, priority:"media", objection:"Estágio: concurso informado", last:"2026-09-11 9:26:51 AM", desire:"Pmerj", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"},{c:"y",t:"← Sem follow-up registrado após 'Olá! Posso ter mais informações sobre is'"}], action:"Follow-up — lead informou Pmerj. Perguntar turno preferido e oferecer aula experimental com horário fechado.", reason:"Lead declarou Pmerj mas conversa parou — oportunidade de qualificar com pergunta de turno e CTA de aula."},
+{id:88, name:"Olá! Posso ter mais informaçõe", phone:"+55 21 98839-3147", origin:"WhatsApp · Entrada 11/09", confirm:"CONFIRMADO", status:"novo", score:35, priority:"media", objection:"Estágio: só disse olá", last:"2026-09-11 9:48:26 AM", desire:"Gcm", timeline:[{c:"g",t:"Entrou pelo anúncio — 'Olá! Posso ter mais informações sobre isso?'"}], action:"Follow-up imediato — lead chegou declarando interesse em Gcm. Reaproximar: 'Olá! Aqui é [nome] do EPQ. Vi que tem interesse em Gcm — posso te ajudar com qual dúvida?'", reason:"Lead entrou com interesse em Gcm mas conversa parou no início — risco de perda sem retorno rápido."},
+];
 /* Objeções matriz */
 const objData = [
  {name:"Preço", type:"Declarada", freq:8, resp:"Tabela de valores padrão (parcelamento + material + camisa)", ok:"Parcial — resposta correta, mas sem reforço de valor, garantia ou urgência", opp:"Adicionar prova social e vagas limitadas junto à tabela de preço"},
@@ -672,9 +703,25 @@ const actions = [
  {t:"Criar sequência de follow-up automática (D+1 / D+3 / D+7)", d:"Para todo lead que recebe preço e não responde em 24h.", tag:"Média"},
  {t:"Padronizar CTA de aula experimental com horário fechado", d:"Trocar pergunta aberta por convite direto ('te aguardo amanhã às 19h').", tag:"Média"},
  {t:"Reforçar a oferta com prova social e urgência de vaga", d:"Testar uma linha adicional na mensagem de preço (ex: 'restam X vagas nesta turma').", tag:"Média"},
+ {t:"Follow-up com valores para Brenda (96997-7512) — Gcm perguntou preço", d:"Lead de Gcm chegou ao estágio de compra — enviar tabela completa e oferecer aula experimental com horário fechado.", tag:"Alta"},
+ {t:"Follow-up com valores para Guilherme (97431-6907) — Gcm perguntou preço", d:"Lead de Gcm chegou ao estágio de compra — enviar tabela completa e oferecer aula experimental com horário fechado.", tag:"Alta"},
+ {t:"Follow-up com valores para 'Oi, bom dia!' (98055-5629) — Prf perguntou preço", d:"Lead de Prf chegou ao estágio de compra — enviar tabela completa e oferecer aula experimental com horário fechado.", tag:"Alta"},
+ {t:"Follow-up com horário fechado para Walber Nunes (96768-8448) — Pmerj perguntou turno", d:"Lead de Pmerj já mostrou interesse em saber turno — oferecer: 'te aguardo amanhã às 19h'.", tag:"Alta"},
+ {t:"Follow-up com horário fechado para Douglas (99043-9709) — Gcm perguntou turno", d:"Lead de Gcm já mostrou interesse em saber turno — oferecer: 'te aguardo amanhã às 19h'.", tag:"Alta"},
+ {t:"Follow-up com horário fechado para 'Olá! Posso ter mais informações' (99812-7074) — Gcm", d:"Lead de Gcm já mostrou interesse em saber turno — oferecer: 'te aguardo amanhã às 19h'.", tag:"Alta"},
+ {t:"Follow-up com horário fechado para Gustavo (96429-4767) — Pmerj perguntou turno", d:"Lead de Pmerj já mostrou interesse em saber turno — oferecer: 'te aguardo amanhã às 19h'.", tag:"Alta"},
+ {t:"Follow-up com valores para Ramon (96660-4178) — Gcm perguntou preço", d:"Lead de Gcm chegou ao estágio de compra — enviar tabela completa e oferecer aula experimental com horário fechado.", tag:"Alta"},
+ {t:"Follow-up — perguntar turno para 'Sim' (98294-6742) — Pmerj informado", d:"Lead declarou Pmerj mas conversa parou — perguntar turno preferido e oferecer aula experimental com horário fechado.", tag:"Média"},
+ {t:"Follow-up — perguntar turno para 'Olá! Posso ter mais informações' (98297-4969) — Pmerj", d:"Lead declarou Pmerj mas conversa parou — perguntar turno preferido e oferecer aula experimental com horário fechado.", tag:"Média"},
+ {t:"Follow-up — perguntar turno para Marcelo (99228-3360) — Gcm informado", d:"Lead declarou Gcm mas conversa parou — perguntar turno preferido e oferecer aula experimental com horário fechado.", tag:"Média"},
+ {t:"Follow-up imediato para 'Olá! Posso ter mais informações' (97030-9106) — Pmerj", d:"Lead entrou com interesse em Pmerj mas conversa parou no início — reaproximar com pergunta objetiva.", tag:"Média"},
+ {t:"Follow-up imediato para 'Olá! Posso ter mais informações' (98563-3062) — Pmerj", d:"Lead entrou com interesse em Pmerj mas conversa parou no início — reaproximar com pergunta objetiva.", tag:"Média"},
+ {t:"Follow-up simples para 'Oii boa tarde' (99838-0012) — interação mínima", d:"Lead mostrou leve interesse mas não avançou — perguntar concurso e turno de forma direta.", tag:"Baixa"},
+ {t:"Follow-up imediato para 'Olá! Posso ter mais informações' (99605-1964) — Gcm", d:"Lead entrou com interesse em Gcm mas conversa parou no início — reaproximar com pergunta objetiva.", tag:"Média"}
+
 ];
 
-/* ============ RENDER ============ */
+/* statusMeta — mapeia cada status do lead para label + classe CSS do badge */
 const statusMeta = {
   matricula:{label:"Matrícula/aula agendada",cls:"b-matricula"},
   negociacao:{label:"Negociação",cls:"b-negociacao"},
@@ -734,6 +781,35 @@ function renderFunnel(){
       <div class="fbar-track"><div class="fbar-fill" style="width:${(s.v/max*100).toFixed(0)}%"></div></div>
       <div class="fval">${s.v}</div>
     </div>`).join('');
+}
+
+
+// Chart de evolução 09-11/09
+function renderEvolucao(){
+  if(!document.getElementById('chartEvolucao')) return;
+  new Chart(document.getElementById('chartEvolucao'), {
+    type:'bar',
+    data:{
+      labels:['09/09','10/09','11/09'],
+      datasets:[
+        {label:'Alta', data:[8,0,1], backgroundColor:'#E2604F', borderRadius:3},
+        {label:'Média', data:[11,0,3], backgroundColor:'#E8A33D', borderRadius:3},
+        {label:'Baixa', data:[1,1,0], backgroundColor:'#5B6884', borderRadius:3}
+      ]
+    },
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      plugins:{
+        legend:{position:'top', labels:{color:'#94A2BE', boxWidth:10, font:{size:11}, padding:12}},
+        title:{display:true, text:'Leads por dia e prioridade', color:'#94A2BE', font:{size:12}, paddingBottom:8}
+      },
+      scales:{
+        x:{ticks:{color:'#94A2BE'}, grid:{display:false}},
+        y:{beginAtZero:true, ticks:{color:'#94A2BE',stepSize:2}, grid:{color:'rgba(210,222,245,0.06)'}}
+      }
+    }
+  });
 }
 
 // Objections table
@@ -895,6 +971,7 @@ wireNav();
 populateFilters();
 renderCharts();
 renderFunnel();
+  renderEvolucao();
 renderObjTable();
 renderLeadsTable();
 renderRoute();
