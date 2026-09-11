@@ -13,6 +13,7 @@ from openpyxl import Workbook
 from database import SessionLocal, Base, engine
 from models import User, Lead, Interaction, AuditLog, UserProfile, LeadStatus, InteractionType
 from auth import hash_password, verify_password
+from routing import available_attendants, suggest_assignee, assign_lead, build_queue, MODE
 
 Base.metadata.create_all(bind=engine)
 app = Flask(__name__)
@@ -193,10 +194,33 @@ def create_lead():
             created_at=datetime.utcnow(),
             updated_at=datetime.utcnow(),
         )
+        if not lead.responsavel_id or MODE == 'auto':
+            try:
+                suggestion = suggest_assignee(db, lead)
+                lead.responsavel_id = suggestion['assignee_id']
+                lead.updated_by = requester.id
+                lead.updated_at = datetime.utcnow()
+                db.add(AuditLog(
+                    user_id=requester.id,
+                    lead_id=lead.id,
+                    acao="Distribuiu lead",
+                    campo="responsavel_id",
+                    valor_anterior=data.get('responsavel_id'),
+                    valor_novo=suggestion['assignee_id'],
+                ))
+                db.add(Interaction(
+                    lead_id=lead.id,
+                    user_id=suggestion['assignee_id'],
+                    tipo=InteractionType.NOTA.value if hasattr(InteractionType, "NOTA") else "Nota",
+                    descricao=f"Distribuição automática: {suggestion['reason']}.",
+                ))
+            except Exception as routing_error:
+                db.rollback()
+                return jsonify({'detail': f'Falha na distribuição automática: {routing_error}'}), 422
         db.add(lead)
         db.commit()
         db.refresh(lead)
-        log_audit(db, requester.id, 'Criou lead', lead_id=lead.id, campo='nome', valor_novo=lead.nome)
+        log_audit(db, requester.id, "Criou lead", lead_id=lead.id, campo="nome", valor_novo=lead.nome)
         return jsonify({
             'id': lead.id,
             'nome': lead.nome,
@@ -494,6 +518,158 @@ def kpis():
 @app.route('/health', methods=['GET'])
 def health():
     return jsonify({'status': 'ok'})
+
+
+@app.route('/routing/availability', methods=['GET'])
+def routing_availability():
+    db = next(get_db())
+    try:
+        requester = require_auth(db)
+        if not requester:
+            return jsonify({'detail': 'Token ausente'}), 401
+        if requester.perfil not in [UserProfile.ADMIN_MASTER.value, UserProfile.GESTOR.value]:
+            return jsonify({'detail': 'Sem permissão'}), 403
+        attendants = available_attendants(db)
+        return jsonify({'mode': MODE, 'attendants': attendants})
+    finally:
+        db.close()
+
+
+@app.route('/routing/queue', methods=['GET'])
+def routing_queue():
+    db = next(get_db())
+    try:
+        requester = require_auth(db)
+        if not requester:
+            return jsonify({'detail': 'Token ausente'}), 401
+        if requester.perfil not in [UserProfile.ADMIN_MASTER.value, UserProfile.GESTOR.value]:
+            return jsonify({'detail': 'Sem permissão'}), 403
+        queue = build_queue(db)
+        return jsonify({'mode': MODE, 'queue': queue})
+    finally:
+        db.close()
+
+
+@app.route('/routing/suggest/<lead_id>', methods=['GET'])
+def routing_suggest(lead_id):
+    db = next(get_db())
+    try:
+        requester = require_auth(db)
+        if not requester:
+            return jsonify({'detail': 'Token ausente'}), 401
+        lead = db.query(Lead).filter(Lead.id == lead_id).first()
+        if not lead:
+            return jsonify({'detail': 'Lead não encontrado'}), 404
+        if requester.perfil == UserProfile.OPERACIONAL.value and lead.responsavel_id != requester.id:
+            return jsonify({'detail': 'Sem permissão'}), 403
+        suggestion = suggest_assignee(db, lead)
+        return jsonify(suggestion)
+    finally:
+        db.close()
+
+
+@app.route('/routing/assign/<lead_id>', methods=['POST'])
+def routing_assign(lead_id):
+    db = next(get_db())
+    try:
+        requester = require_auth(db)
+        if not requester:
+            return jsonify({'detail': 'Token ausente'}), 401
+        if requester.perfil not in [UserProfile.ADMIN_MASTER.value, UserProfile.GESTOR.value]:
+            return jsonify({'detail': 'Sem permissão'}), 403
+        data = request.get_json(force=True) or {}
+        to_user_id = data.get('to_user_id')
+        reason = data.get('reason') or 'Redistribuição manual'
+        if not to_user_id:
+            return jsonify({'detail': 'to_user_id obrigatório'}), 400
+        lead = assign_lead(db, lead_id, to_user_id, reason, from_user_id=lead.responsavel_id, actor_user_id=requester.id)
+        return jsonify({
+            'id': lead.id,
+            'nome': lead.nome,
+            'responsavel_id': lead.responsavel_id,
+        })
+    finally:
+        db.close()
+
+
+@app.route('/routing/metrics', methods=['GET'])
+def routing_metrics():
+    db = next(get_db())
+    try:
+        requester = require_auth(db)
+        if not requester:
+            return jsonify({'detail': 'Token ausente'}), 401
+        if requester.perfil not in [UserProfile.ADMIN_MASTER.value, UserProfile.GESTOR.value]:
+            return jsonify({'detail': 'Sem permissão'}), 403
+        leads = db.query(Lead).all()
+        interactions = db.query(Interaction).all()
+        by_user: Dict[str, Dict[str, int]] = {}
+        for lead in leads:
+            uid = lead.responsavel_id or 'sem_responsavel'
+            item = by_user.setdefault(uid, {'received': 0, 'active': 0, 'converted': 0, 'hot': 0})
+            item['received'] += 1
+            if lead.status == 'ativo':
+                item['active'] += 1
+            if lead.temperatura == 'Quente':
+                item['hot'] += 1
+            if lead.etapa == 'Matriculado':
+                item['converted'] += 1
+        transfer_logs = [
+            {
+                'lead_id': log.lead_id,
+                'user_id': log.user_id,
+                'acao': log.acao,
+                'valor_anterior': log.valor_anterior,
+                'valor_novo': log.valor_novo,
+                'created_at': log.created_at.isoformat() if log.created_at else None,
+            }
+            for log in db.query(AuditLog).filter(AuditLog.acao == 'Transferiu lead').order_by(AuditLog.created_at.desc()).limit(200).all()
+        ]
+        return jsonify({'by_user': by_user, 'transfers': transfer_logs, 'mode': MODE})
+    finally:
+        db.close()
+
+
+@app.route('/routing/handoff', methods=['GET'])
+def routing_handoff():
+    db = next(get_db())
+    try:
+        requester = require_auth(db)
+        if not requester:
+            return jsonify({'detail': 'Token ausente'}), 401
+        if requester.perfil not in [UserProfile.ADMIN_MASTER.value, UserProfile.GESTOR.value]:
+            return jsonify({'detail': 'Sem permissão'}), 403
+        now = datetime.utcnow()
+        attendants = available_attendants(db, now)
+        result = []
+        for attendant in attendants:
+            if attendant['key'] == 'ronan':
+                continue
+            user = _load_user(db, attendant['id'])
+            leads = db.query(Lead).filter(
+                Lead.responsavel_id == attendant['id'],
+                Lead.status == 'ativo',
+            ).all()
+            result.append({
+                'attendant': attendant,
+                'active': len(leads),
+                'leads': [
+                    {
+                        'id': l.id,
+                        'nome': l.nome,
+                        'temperatura': l.temperatura,
+                        'produto': l.produto,
+                        'etapa': l.etapa,
+                        'proximo_followup': l.proximo_followup.isoformat() if l.proximo_followup else None,
+                        'proximo_tipo': l.proximo_tipo,
+                        'proximo_nota': l.proximo_nota,
+                    }
+                    for l in leads
+                ],
+            })
+        return jsonify({'mode': MODE, 'handoff': result})
+    finally:
+        db.close()
 
 if __name__ == '__main__':
   try:

@@ -1,0 +1,49 @@
+{
+  "cycle": "1",
+  "timestamp": "2026-09-06 23:17:17",
+  "mcp": {
+    "available_skills": 37,
+    "skills_sample": [
+      "apple",
+      "research",
+      "local-whatsapp-automation-panel",
+      "design",
+      "career",
+      "social-media",
+      "devops",
+      "gemini-creative-image",
+      "sales",
+      "magnific_ai",
+      "software-development",
+      "web"
+    ]
+  },
+  "rag": {
+    "technique": "session_search FTS5 over SQLite",
+    "metadata_fields": [
+      "session_id",
+      "title",
+      "when",
+      "source",
+      "snippet"
+    ],
+    "status": "available for retrieval"
+  },
+  "finetuning": {
+    "dataset_example": {
+      "instruction": "Resuma o status da campanha MERCÚRIO em linguagem simples, sem jargões.",
+      "input": "Fluxo validado, painel online, WhatsApp pendente de conexão.",
+      "output": "Tudo está validado e pronto. Só falta conectar o WhatsApp para começar."
+    },
+    "assessment": "Prompting/RAG suficientes; fine-tuning não necessário agora"
+  },
+  "integration": {
+    "plan": "MCP skill lookup + RAG session recall + prompt template para status rápido",
+    "prototype": "whatsapp-automation-status.html como output consolidado"
+  },
+  "next_loop": [
+    "Criar 3 exemplos de tools MCP para EPQ",
+    "Indexar sessions relevantes e testar hybrid search",
+    "Criar mini dataset de avaliação de respostas"
+  ]
+}

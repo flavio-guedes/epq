@@ -1,0 +1,186 @@
+{
+  "gerado_em": "2026-09-03T13:15:03.702553",
+  "total_conversas": 12,
+  "total_leads": 12,
+  "por_estagio": {
+    "EM ATENDIMENTO": 3,
+    "NOVO": 3,
+    "OBJEÇÃO": 1,
+    "OFERTA": 5
+  },
+  "por_origem": {
+    "INSTAGRAM": 11,
+    "DESCONHECIDO": 1
+  },
+  "por_temperatura": {
+    "Quente": 10,
+    "Morno": 1,
+    "Frio": 1
+  },
+  "por_curso": {
+    "PRF/PMERJ": 1,
+    "GCM": 2,
+    "PMERJ": 8,
+    "DESCONHECIDO": 1
+  },
+  "sla": {
+    "primeira_resposta_epq_minutos": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      13.0,
+      0.0
+    ],
+    "respondidos_ate_10min": 5,
+    "respondidos_apos_30min": 0,
+    "total_com_resposta": 6,
+    "media_minutos": 2.2,
+    "pior_minutos": 13.0
+  },
+  "scores": [
+    55,
+    65,
+    65,
+    65,
+    65,
+    75,
+    75,
+    90,
+    75,
+    65,
+    45,
+    85
+  ],
+  "recovery": [
+    {
+      "nome": "+55 21 97750-2998",
+      "estagio": "EM ATENDIMENTO",
+      "ultima_interacao": "2026-09-03T08:41:00",
+      "temperatura": "Quente",
+      "acao": "REABRIR CONVERSA",
+      "mensagem": "+55 21 97750-2998, seguimos com a disponibilidade? Quer avançar para turma e valores?"
+    },
+    {
+      "nome": "+55 21 97960-7938",
+      "estagio": "OBJEÇÃO",
+      "ultima_interacao": "2026-09-02T18:49:00",
+      "temperatura": "Quente",
+      "acao": "TRATAR OBJEÇÃO",
+      "mensagem": ""
+    },
+    {
+      "nome": "+55 22 98866-7870",
+      "estagio": "EM ATENDIMENTO",
+      "ultima_interacao": "2026-09-02T19:40:00",
+      "temperatura": "Quente",
+      "acao": "REABRIR CONVERSA",
+      "mensagem": "+55 22 98866-7870, seguimos com a disponibilidade? Quer avançar para turma e valores?"
+    },
+    {
+      "nome": "Claudia Monteiro",
+      "estagio": "OFERTA",
+      "ultima_interacao": "2026-09-03T11:11:00",
+      "temperatura": "Quente",
+      "acao": "AGENDAR AULA",
+      "mensagem": "Claudia Monteiro, montamos uma turma conforme sua disponibilidade: Sábado. Vamos agendar a aula experimental?"
+    },
+    {
+      "nome": "Dom burgue Artesanal",
+      "estagio": "OFERTA",
+      "ultima_interacao": "2026-09-03T11:05:00",
+      "temperatura": "Quente",
+      "acao": "AGENDAR AULA",
+      "mensagem": "Dom burgue Artesanal, montamos uma turma conforme sua disponibilidade: Sábado. Vamos agendar a aula experimental?"
+    },
+    {
+      "nome": "Matheus",
+      "estagio": "OFERTA",
+      "ultima_interacao": "2026-09-02T12:05:00",
+      "temperatura": "Quente",
+      "acao": "AGENDAR AULA",
+      "mensagem": "Matheus, montamos uma turma conforme sua disponibilidade: Sábado. Vamos agendar a aula experimental?"
+    },
+    {
+      "nome": "Mylena",
+      "estagio": "EM ATENDIMENTO",
+      "ultima_interacao": "2026-09-02T09:46:00",
+      "temperatura": "Quente",
+      "acao": "REABRIR CONVERSA",
+      "mensagem": "Mylena, seguimos com a disponibilidade? Quer avançar para turma e valores?"
+    },
+    {
+      "nome": "Sabrina",
+      "estagio": "OFERTA",
+      "ultima_interacao": "2026-09-02T10:50:00",
+      "temperatura": "Quente",
+      "acao": "AGENDAR AULA",
+      "mensagem": "Sabrina, montamos uma turma conforme sua disponibilidade: Sábado. Vamos agendar a aula experimental?"
+    }
+  ],
+  "what_to_do_now": {
+    "urgente": [
+      {
+        "nome": "+55 21 97750-2998",
+        "acao": "REABRIR CONVERSA",
+        "obs": "Preparatório PRF/PMERJ: turma integrada com foco em edital unificado. Turno manhã/noite/sábado conforme disponibilidade. Aula experimental disponível."
+      },
+      {
+        "nome": "+55 21 97949-7338",
+        "acao": "RESPONDER AGORA",
+        "obs": "Preparatório GCM (conteúdo policial compartilhado + disciplina específica GCM). Turno a confirmar com a unidade. Aula experimental disponível."
+      },
+      {
+        "nome": "+55 22 98866-7870",
+        "acao": "REABRIR CONVERSA",
+        "obs": "Turma PMERJ Noite: 2ª a 6ª, 19h às 22h. Investimento: 5x R$300,00 (Pix) / 5x R$330,00 (cartão) + taxa material R$50,00 + camisa R$75,00. Duração: 5 meses."
+      },
+      {
+        "nome": "Mylena",
+        "acao": "REABRIR CONVERSA",
+        "obs": "Turma PMERJ Manhã: 2ª a 6ª, 9h às 12h. Investimento: 5x R$300,00 (Pix) / 5x R$330,00 (cartão) + taxa material R$50,00 + camisa R$75,00. Duração: 5 meses."
+      }
+    ],
+    "recuperar": [
+      {
+        "nome": "+55 21 97960-7938",
+        "acao": "TRATAR OBJEÇÃO",
+        "obs": "Preparatório GCM (conteúdo policial compartilhado + disciplina específica GCM). Turno a confirmar com a unidade. Aula experimental disponível."
+      }
+    ],
+    "follow_up": [
+      {
+        "nome": "+55 21 98675-6890",
+        "acao": "RESPONDER AGORA / NUTRIR",
+        "obs": "Turma PMERJ Sábado: início 19/09, 9h às 16h30. Investimento: 5x R$300,00 (Pix) / 5x R$330,00 (cartão) + taxa material R$50,00 + camisa R$75,00. Duração: 5 meses."
+      },
+      {
+        "nome": "Natan",
+        "acao": "RESPONDER AGORA / NUTRIR",
+        "obs": "Oferta: turma policial básica EPQ — turno e valores a confirmar com a coordenação."
+      }
+    ],
+    "avancar": [
+      {
+        "nome": "Douglas",
+        "acao": "CONFIRMAR PRESENÇA",
+        "obs": "Turma PMERJ Manhã: 2ª a 6ª, 9h às 12h. Investimento: 5x R$300,00 (Pix) / 5x R$330,00 (cartão) + taxa material R$50,00 + camisa R$75,00. Duração: 5 meses."
+      }
+    ]
+  },
+  "ofertas_sugeridas": {
+    "+55 21 97750-2998": "Preparatório PRF/PMERJ: turma integrada com foco em edital unificado. Turno manhã/noite/sábado conforme disponibilidade. Aula experimental disponível.",
+    "+55 21 97949-7338": "Preparatório GCM (conteúdo policial compartilhado + disciplina específica GCM). Turno a confirmar com a unidade. Aula experimental disponível.",
+    "+55 21 97960-7938": "Preparatório GCM (conteúdo policial compartilhado + disciplina específica GCM). Turno a confirmar com a unidade. Aula experimental disponível.",
+    "+55 21 98675-6890": "Turma PMERJ Sábado: início 19/09, 9h às 16h30. Investimento: 5x R$300,00 (Pix) / 5x R$330,00 (cartão) + taxa material R$50,00 + camisa R$75,00. Duração: 5 meses.",
+    "+55 22 98866-7870": "Turma PMERJ Noite: 2ª a 6ª, 19h às 22h. Investimento: 5x R$300,00 (Pix) / 5x R$330,00 (cartão) + taxa material R$50,00 + camisa R$75,00. Duração: 5 meses.",
+    "Claudia Monteiro": "Turma PMERJ Sábado: início 19/09, 9h às 16h30. Investimento: 5x R$300,00 (Pix) / 5x R$330,00 (cartão) + taxa material R$50,00 + camisa R$75,00. Duração: 5 meses.",
+    "Dom burgue Artesanal": "Turma PMERJ Sábado: início 19/09, 9h às 16h30. Investimento: 5x R$300,00 (Pix) / 5x R$330,00 (cartão) + taxa material R$50,00 + camisa R$75,00. Duração: 5 meses.",
+    "Douglas": "Turma PMERJ Manhã: 2ª a 6ª, 9h às 12h. Investimento: 5x R$300,00 (Pix) / 5x R$330,00 (cartão) + taxa material R$50,00 + camisa R$75,00. Duração: 5 meses.",
+    "Matheus": "Turma PMERJ Sábado: início 19/09, 9h às 16h30. Investimento: 5x R$300,00 (Pix) / 5x R$330,00 (cartão) + taxa material R$50,00 + camisa R$75,00. Duração: 5 meses.",
+    "Mylena": "Turma PMERJ Manhã: 2ª a 6ª, 9h às 12h. Investimento: 5x R$300,00 (Pix) / 5x R$330,00 (cartão) + taxa material R$50,00 + camisa R$75,00. Duração: 5 meses.",
+    "Natan": "Oferta: turma policial básica EPQ — turno e valores a confirmar com a coordenação.",
+    "Sabrina": "Turma PMERJ Sábado: início 19/09, 9h às 16h30. Investimento: 5x R$300,00 (Pix) / 5x R$330,00 (cartão) + taxa material R$50,00 + camisa R$75,00. Duração: 5 meses."
+  },
+  "score_medio": 68.8
+}

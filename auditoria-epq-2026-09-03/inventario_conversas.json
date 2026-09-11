@@ -1,0 +1,68 @@
+{
+  "total_arquivos": 12,
+  "total_dirs": 1,
+  "tamanho_kb": 20.4,
+  "backup_crm": "/Users/mac/epq-repo/auditoria-epq-2026-09-03/CRM.html",
+  "arquivos": [
+    {
+      "file": "02 - Leads/Conversa do WhatsApp com +55 21 97750-2998.txt",
+      "size_kb": 1.1,
+      "modified": "2026-09-03T11:35:48"
+    },
+    {
+      "file": "02 - Leads/Conversa do WhatsApp com +55 21 97949-7338.txt",
+      "size_kb": 0.8,
+      "modified": "2026-09-03T11:29:48"
+    },
+    {
+      "file": "02 - Leads/Conversa do WhatsApp com +55 21 97960-7938.txt",
+      "size_kb": 2.9,
+      "modified": "2026-09-02T19:36:52"
+    },
+    {
+      "file": "02 - Leads/Conversa do WhatsApp com +55 21 98675-6890.txt",
+      "size_kb": 0.9,
+      "modified": "2026-09-03T11:33:04"
+    },
+    {
+      "file": "02 - Leads/Conversa do WhatsApp com +55 22 98866-7870.txt",
+      "size_kb": 0.8,
+      "modified": "2026-09-02T19:41:04"
+    },
+    {
+      "file": "02 - Leads/Conversa do WhatsApp com Claudia PMERJ.txt",
+      "size_kb": 3.5,
+      "modified": "2026-09-03T11:32:10"
+    },
+    {
+      "file": "02 - Leads/Conversa do WhatsApp com Dom burgue Artesanal.txt",
+      "size_kb": 2.3,
+      "modified": "2026-09-03T11:32:38"
+    },
+    {
+      "file": "02 - Leads/Conversa do WhatsApp com Douglas PMERJ.txt",
+      "size_kb": 3.0,
+      "modified": "2026-09-02T19:38:08"
+    },
+    {
+      "file": "02 - Leads/Conversa do WhatsApp com Matheus PMERJ.txt",
+      "size_kb": 1.9,
+      "modified": "2026-09-02T19:38:28"
+    },
+    {
+      "file": "02 - Leads/Conversa do WhatsApp com Mylena PMERJ.txt",
+      "size_kb": 0.8,
+      "modified": "2026-09-02T19:40:10"
+    },
+    {
+      "file": "02 - Leads/Conversa do WhatsApp com Natan PMERJ.txt",
+      "size_kb": 0.4,
+      "modified": "2026-09-02T19:37:38"
+    },
+    {
+      "file": "02 - Leads/Conversa do WhatsApp com Sabrina PMERJ.txt",
+      "size_kb": 2.0,
+      "modified": "2026-09-02T19:39:12"
+    }
+  ]
+}

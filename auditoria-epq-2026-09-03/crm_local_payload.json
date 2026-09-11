@@ -1,0 +1,338 @@
+[
+  {
+    "id": "20260903130056_Conversa do WhatsApp com +55 21 97750-2998",
+    "name": "+55 21 97750-2998",
+    "phone": "+55 21 9775-02998",
+    "email": "",
+    "whatsapp": "+55 21 9775-02998",
+    "course": "PRF/PMERJ",
+    "source": "INSTAGRAM",
+    "createdAt": "2026-09-02T17:19:00",
+    "lastContact": "2026-09-03T08:41:00",
+    "nextFollowUp": "2026-09-03",
+    "nextTime": "09:00",
+    "nextType": "WhatsApp",
+    "nextNote": "Importado da auditoria EPQ em 03/09/2026. Score=55. Proxima ação=REABRIR CONVERSA",
+    "temperature": "Quente",
+    "stage": "EM ATENDIMENTO",
+    "status": "novo",
+    "ownerId": "local",
+    "ownerName": "local",
+    "history": [
+      {
+        "id": "20260903130056_Conversa do WhatsApp com +55 21 97750-2998_h1",
+        "date": "2026-09-02T17:19:00",
+        "type": "Importação",
+        "note": "Lead importado da auditoria de conversas WhatsApp. Arquivo=Conversa do WhatsApp com +55 21 97750-2998.txt"
+      }
+    ]
+  },
+  {
+    "id": "20260903130056_Conversa do WhatsApp com +55 21 97949-7338",
+    "name": "+55 21 97949-7338",
+    "phone": "+55 21 9794-97338",
+    "email": "",
+    "whatsapp": "+55 21 9794-97338",
+    "course": "GCM",
+    "source": "INSTAGRAM",
+    "createdAt": "2026-09-03T11:17:00",
+    "lastContact": "2026-09-03T11:26:00",
+    "nextFollowUp": "2026-09-03",
+    "nextTime": "09:00",
+    "nextType": "WhatsApp",
+    "nextNote": "Importado da auditoria EPQ em 03/09/2026. Score=65. Proxima ação=RESPONDER AGORA",
+    "temperature": "Quente",
+    "stage": "NOVO",
+    "status": "novo",
+    "ownerId": "local",
+    "ownerName": "local",
+    "history": [
+      {
+        "id": "20260903130056_Conversa do WhatsApp com +55 21 97949-7338_h1",
+        "date": "2026-09-03T11:17:00",
+        "type": "Importação",
+        "note": "Lead importado da auditoria de conversas WhatsApp. Arquivo=Conversa do WhatsApp com +55 21 97949-7338.txt"
+      }
+    ]
+  },
+  {
+    "id": "20260903130056_Conversa do WhatsApp com +55 21 97960-7938",
+    "name": "+55 21 97960-7938",
+    "phone": "+55 21 9796-07938",
+    "email": "",
+    "whatsapp": "+55 21 9796-07938",
+    "course": "GCM",
+    "source": "DESCONHECIDO",
+    "createdAt": "2026-08-03T08:15:00",
+    "lastContact": "2026-09-02T18:49:00",
+    "nextFollowUp": "2026-09-02",
+    "nextTime": "09:00",
+    "nextType": "WhatsApp",
+    "nextNote": "Importado da auditoria EPQ em 03/09/2026. Score=65. Proxima ação=TRATAR OBJEÇÃO",
+    "temperature": "Quente",
+    "stage": "OBJEÇÃO",
+    "status": "novo",
+    "ownerId": "local",
+    "ownerName": "local",
+    "history": [
+      {
+        "id": "20260903130056_Conversa do WhatsApp com +55 21 97960-7938_h1",
+        "date": "2026-08-03T08:15:00",
+        "type": "Importação",
+        "note": "Lead importado da auditoria de conversas WhatsApp. Arquivo=Conversa do WhatsApp com +55 21 97960-7938.txt"
+      }
+    ]
+  },
+  {
+    "id": "20260903130056_Conversa do WhatsApp com +55 21 98675-6890",
+    "name": "+55 21 98675-6890",
+    "phone": "+55 21 9867-56890",
+    "email": "",
+    "whatsapp": "+55 21 9867-56890",
+    "course": "PMERJ",
+    "source": "INSTAGRAM",
+    "createdAt": "2026-09-03T09:32:00",
+    "lastContact": "2026-09-03T10:10:00",
+    "nextFollowUp": "2026-09-03",
+    "nextTime": "09:00",
+    "nextType": "WhatsApp",
+    "nextNote": "Importado da auditoria EPQ em 03/09/2026. Score=65. Proxima ação=RESPONDER AGORA",
+    "temperature": "Morno",
+    "stage": "NOVO",
+    "status": "novo",
+    "ownerId": "local",
+    "ownerName": "local",
+    "history": [
+      {
+        "id": "20260903130056_Conversa do WhatsApp com +55 21 98675-6890_h1",
+        "date": "2026-09-03T09:32:00",
+        "type": "Importação",
+        "note": "Lead importado da auditoria de conversas WhatsApp. Arquivo=Conversa do WhatsApp com +55 21 98675-6890.txt"
+      }
+    ]
+  },
+  {
+    "id": "20260903130056_Conversa do WhatsApp com +55 22 98866-7870",
+    "name": "+55 22 98866-7870",
+    "phone": "+55 22 9886-67870",
+    "email": "",
+    "whatsapp": "+55 22 9886-67870",
+    "course": "PMERJ",
+    "source": "INSTAGRAM",
+    "createdAt": "2026-09-01T22:39:00",
+    "lastContact": "2026-09-02T19:40:00",
+    "nextFollowUp": "2026-09-02",
+    "nextTime": "09:00",
+    "nextType": "WhatsApp",
+    "nextNote": "Importado da auditoria EPQ em 03/09/2026. Score=65. Proxima ação=REABRIR CONVERSA",
+    "temperature": "Quente",
+    "stage": "EM ATENDIMENTO",
+    "status": "novo",
+    "ownerId": "local",
+    "ownerName": "local",
+    "history": [
+      {
+        "id": "20260903130056_Conversa do WhatsApp com +55 22 98866-7870_h1",
+        "date": "2026-09-01T22:39:00",
+        "type": "Importação",
+        "note": "Lead importado da auditoria de conversas WhatsApp. Arquivo=Conversa do WhatsApp com +55 22 98866-7870.txt"
+      }
+    ]
+  },
+  {
+    "id": "20260903130056_Conversa do WhatsApp com Claudia PMERJ",
+    "name": "Claudia Monteiro",
+    "phone": "",
+    "email": "",
+    "whatsapp": "",
+    "course": "PMERJ",
+    "source": "INSTAGRAM",
+    "createdAt": "2026-09-03T09:39:00",
+    "lastContact": "2026-09-03T11:11:00",
+    "nextFollowUp": "2026-09-03",
+    "nextTime": "09:00",
+    "nextType": "WhatsApp",
+    "nextNote": "Importado da auditoria EPQ em 03/09/2026. Score=75. Proxima ação=REABRIR CONVERSA",
+    "temperature": "Quente",
+    "stage": "OFERTA",
+    "status": "atualizar",
+    "ownerId": "local",
+    "ownerName": "local",
+    "history": [
+      {
+        "id": "20260903130056_Conversa do WhatsApp com Claudia PMERJ_h1",
+        "date": "2026-09-03T09:39:00",
+        "type": "Importação",
+        "note": "Lead importado da auditoria de conversas WhatsApp. Arquivo=Conversa do WhatsApp com Claudia PMERJ.txt"
+      }
+    ]
+  },
+  {
+    "id": "20260903130056_Conversa do WhatsApp com Dom burgue Artesanal",
+    "name": "Dom burgue Artesanal",
+    "phone": "",
+    "email": "",
+    "whatsapp": "",
+    "course": "PMERJ",
+    "source": "INSTAGRAM",
+    "createdAt": "2026-09-02T22:11:00",
+    "lastContact": "2026-09-03T11:05:00",
+    "nextFollowUp": "2026-09-03",
+    "nextTime": "09:00",
+    "nextType": "WhatsApp",
+    "nextNote": "Importado da auditoria EPQ em 03/09/2026. Score=75. Proxima ação=REABRIR CONVERSA",
+    "temperature": "Quente",
+    "stage": "OFERTA",
+    "status": "revisão_necessária",
+    "ownerId": "local",
+    "ownerName": "local",
+    "history": [
+      {
+        "id": "20260903130056_Conversa do WhatsApp com Dom burgue Artesanal_h1",
+        "date": "2026-09-02T22:11:00",
+        "type": "Importação",
+        "note": "Lead importado da auditoria de conversas WhatsApp. Arquivo=Conversa do WhatsApp com Dom burgue Artesanal.txt"
+      }
+    ]
+  },
+  {
+    "id": "20260903130056_Conversa do WhatsApp com Douglas PMERJ",
+    "name": "Douglas",
+    "phone": "",
+    "email": "",
+    "whatsapp": "",
+    "course": "PMERJ",
+    "source": "INSTAGRAM",
+    "createdAt": "2026-08-24T21:06:00",
+    "lastContact": "2026-09-02T13:10:00",
+    "nextFollowUp": "2026-09-02",
+    "nextTime": "09:00",
+    "nextType": "WhatsApp",
+    "nextNote": "Importado da auditoria EPQ em 03/09/2026. Score=90. Proxima ação=CONFIRMAR PRESENÇA",
+    "temperature": "Quente",
+    "stage": "OFERTA",
+    "status": "atualizar",
+    "ownerId": "local",
+    "ownerName": "local",
+    "history": [
+      {
+        "id": "20260903130056_Conversa do WhatsApp com Douglas PMERJ_h1",
+        "date": "2026-08-24T21:06:00",
+        "type": "Importação",
+        "note": "Lead importado da auditoria de conversas WhatsApp. Arquivo=Conversa do WhatsApp com Douglas PMERJ.txt"
+      }
+    ]
+  },
+  {
+    "id": "20260903130056_Conversa do WhatsApp com Matheus PMERJ",
+    "name": "Matheus",
+    "phone": "",
+    "email": "",
+    "whatsapp": "",
+    "course": "PMERJ",
+    "source": "INSTAGRAM",
+    "createdAt": "2026-09-02T11:32:00",
+    "lastContact": "2026-09-02T12:05:00",
+    "nextFollowUp": "2026-09-02",
+    "nextTime": "09:00",
+    "nextType": "WhatsApp",
+    "nextNote": "Importado da auditoria EPQ em 03/09/2026. Score=75. Proxima ação=REABRIR CONVERSA",
+    "temperature": "Quente",
+    "stage": "OFERTA",
+    "status": "atualizar",
+    "ownerId": "local",
+    "ownerName": "local",
+    "history": [
+      {
+        "id": "20260903130056_Conversa do WhatsApp com Matheus PMERJ_h1",
+        "date": "2026-09-02T11:32:00",
+        "type": "Importação",
+        "note": "Lead importado da auditoria de conversas WhatsApp. Arquivo=Conversa do WhatsApp com Matheus PMERJ.txt"
+      }
+    ]
+  },
+  {
+    "id": "20260903130056_Conversa do WhatsApp com Mylena PMERJ",
+    "name": "Mylena",
+    "phone": "",
+    "email": "",
+    "whatsapp": "",
+    "course": "PMERJ",
+    "source": "INSTAGRAM",
+    "createdAt": "2026-09-02T09:06:00",
+    "lastContact": "2026-09-02T09:46:00",
+    "nextFollowUp": "2026-09-02",
+    "nextTime": "09:00",
+    "nextType": "WhatsApp",
+    "nextNote": "Importado da auditoria EPQ em 03/09/2026. Score=65. Proxima ação=REABRIR CONVERSA",
+    "temperature": "Quente",
+    "stage": "EM ATENDIMENTO",
+    "status": "atualizar",
+    "ownerId": "local",
+    "ownerName": "local",
+    "history": [
+      {
+        "id": "20260903130056_Conversa do WhatsApp com Mylena PMERJ_h1",
+        "date": "2026-09-02T09:06:00",
+        "type": "Importação",
+        "note": "Lead importado da auditoria de conversas WhatsApp. Arquivo=Conversa do WhatsApp com Mylena PMERJ.txt"
+      }
+    ]
+  },
+  {
+    "id": "20260903130056_Conversa do WhatsApp com Natan PMERJ",
+    "name": "Natan",
+    "phone": "",
+    "email": "",
+    "whatsapp": "",
+    "course": "DESCONHECIDO",
+    "source": "INSTAGRAM",
+    "createdAt": "2026-09-02T14:41:00",
+    "lastContact": "2026-09-02T14:41:00",
+    "nextFollowUp": "2026-09-02",
+    "nextTime": "09:00",
+    "nextType": "WhatsApp",
+    "nextNote": "Importado da auditoria EPQ em 03/09/2026. Score=45. Proxima ação=RESPONDER AGORA",
+    "temperature": "Frio",
+    "stage": "NOVO",
+    "status": "atualizar",
+    "ownerId": "local",
+    "ownerName": "local",
+    "history": [
+      {
+        "id": "20260903130056_Conversa do WhatsApp com Natan PMERJ_h1",
+        "date": "2026-09-02T14:41:00",
+        "type": "Importação",
+        "note": "Lead importado da auditoria de conversas WhatsApp. Arquivo=Conversa do WhatsApp com Natan PMERJ.txt"
+      }
+    ]
+  },
+  {
+    "id": "20260903130056_Conversa do WhatsApp com Sabrina PMERJ",
+    "name": "Sabrina",
+    "phone": "",
+    "email": "",
+    "whatsapp": "",
+    "course": "PMERJ",
+    "source": "INSTAGRAM",
+    "createdAt": "2026-09-02T09:20:00",
+    "lastContact": "2026-09-02T10:50:00",
+    "nextFollowUp": "2026-09-02",
+    "nextTime": "09:00",
+    "nextType": "WhatsApp",
+    "nextNote": "Importado da auditoria EPQ em 03/09/2026. Score=85. Proxima ação=REABRIR CONVERSA",
+    "temperature": "Quente",
+    "stage": "OFERTA",
+    "status": "atualizar",
+    "ownerId": "local",
+    "ownerName": "local",
+    "history": [
+      {
+        "id": "20260903130056_Conversa do WhatsApp com Sabrina PMERJ_h1",
+        "date": "2026-09-02T09:20:00",
+        "type": "Importação",
+        "note": "Lead importado da auditoria de conversas WhatsApp. Arquivo=Conversa do WhatsApp com Sabrina PMERJ.txt"
+      }
+    ]
+  }
+]

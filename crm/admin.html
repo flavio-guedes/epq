@@ -229,6 +229,73 @@
       </div>
     </div>
 
+    <section class="panel" v-if="isAdmin">
+      <div class="panel-2col">
+        <div>
+          <h2>QUEM ATENDE AGORA?</h2>
+          <div class="sub">Distribuição automática · {{ routingMode }}</div>
+          <div class="table-wrap" style="margin-top:10px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Atendente</th>
+                  <th>Status</th>
+                  <th>Leads ativos</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="att in attendants" :key="att.id">
+                  <td>
+                    <div style="font-weight:600;">{{ att.name }}</div>
+                    <div style="font-size:11px;color:#7d9cbd;">{{ att.key === 'ronan' ? 'Backup / Fora do horário' : 'Atendente' }}</div>
+                  </td>
+                  <td>
+                    <span class="tag" :class="statusClass(att.status)">{{ att.status }}</span>
+                  </td>
+                  <td>{{ att.active }}</td>
+                </tr>
+                <tr v-if="!attendants.length">
+                  <td colspan="3" style="color:#7d9cbd;">Sem dados de atendentes</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div>
+          <h2>O QUE PRECISA SER FEITO AGORA</h2>
+          <div class="sub">Fila priorizada por temperatura + SLA</div>
+          <div class="table-wrap" style="margin-top:10px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Prioridade</th>
+                  <th>Lead</th>
+                  <th>Temperatura</th>
+                  <th>SLA</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in queue" :key="item.id">
+                  <td>
+                    <span class="tag" :class="priorityClass(item)">{{ queueRank(item) }}</span>
+                  </td>
+                  <td>
+                    <div style="font-weight:600;">{{ item.name }}</div>
+                    <div style="font-size:11px;color:#7d9cbd;">{{ item.produto || item.origem || '—' }}</div>
+                  </td>
+                  <td>{{ temperatureBadge(item.temperature) }}</td>
+                  <td>{{ slaText(item) }}</td>
+                </tr>
+                <tr v-if="!queue.length">
+                  <td colspan="4" style="color:#7d9cbd;">Fila vazia no momento</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <div v-if="tab==='users' && isAdmin">
       <div class="table-wrap">
         <table>
@@ -502,6 +569,56 @@
           try { users.value = await api('/users'); } catch { users.value = []; }
           try { audit.value = await api('/audit'); } catch { audit.value = []; }
         }
+        await loadRouting();
+      }
+      async function loadRouting(){
+        try {
+          const [avail, q] = await Promise.all([
+            api('/routing/availability').catch(() => ({ attendants: [] })),
+            api('/routing/queue').catch(() => ({ queue: [] })),
+          ]);
+          routingMode.value = avail.mode || 'simulation';
+          attendants.value = Array.isArray(avail.attendants) ? avail.attendants : [];
+          queue.value = Array.isArray(q.queue) ? q.queue : [];
+        } catch {
+          attendants.value = [];
+          queue.value = [];
+        }
+      }
+      function statusClass(status){
+        const m = (status || '').toLowerCase();
+        if (m.includes('disponível')) return 'b-matricula';
+        if (m.includes('atenção')) return 'b-negociacao';
+        if (m.includes('ocupada')) return 'b-objecao';
+        return 'b-semresposta';
+      }
+      function priorityClass(item){
+        if ((item.sla && item.sla.breached) || (item.temperature === 'Quente' && !item.has_response)) return 'b-objecao';
+        if ((item.sla && item.sla.near_breach) || item.temperature === 'Morno') return 'b-negociacao';
+        if (item.temperature === 'Frio') return 'b-semresposta';
+        return 'b-novo';
+      }
+      function queueRank(item){
+        if ((item.sla && item.sla.breached) || (item.temperature === 'Quente' && !item.has_response)) return 'CRÍTICO';
+        if ((item.sla && item.sla.near_breach) || item.temperature === 'Quente') return 'ALTA';
+        if (item.temperature === 'Morno') return 'MÉDIA';
+        return 'BAIXA';
+      }
+      function temperatureBadge(temperature){
+        const t = (temperature || 'Frio');
+        if (t === 'Quente') return '<span class="tag b-objecao">Quente</span>';
+        if (t === 'Morno') return '<span class="tag b-negociacao">Morno</span>';
+        return '<span class="tag b-novo">Frio</span>';
+      }
+      function slaText(item){
+        const sla = item.sla || {};
+        const wait = sla.wait_minutes;
+        const limit = sla.sla_minutes;
+        if (!wait && wait !== 0) return '—';
+        const left = Math.max(limit - wait, 0);
+        if (sla.breached) return '<span class="tag b-objecao">Estourado</span>';
+        if (sla.near_breach) return '<span class="tag b-negociacao">Em ' + left + 'min</span>';
+        return '<span class="tag b-matricula">' + left + 'min</span>';
       }
 
       async function init(){
