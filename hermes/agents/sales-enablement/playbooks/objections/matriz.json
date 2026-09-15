@@ -1,0 +1,92 @@
+{
+  "objections": [
+    {
+      "id": "esta_caro",
+      "pattern": ["caro", "custando", "investimento alto", "orçamento curto", "vereador"],
+      "type": "preço",
+      "interpretation": "lead está comparando custo versus retorno percebido",
+      "response": "Entendo. O ponto é: estou olhando o custo do problema atual, não só o preço do serviço.",
+      "next_question": "Hoje, quanto tempo por semana essa demanda tira de você ou do time?",
+      "next_step": "apresentar comparação simples de custo versus ganho"
+    },
+    {
+      "id": "vou_pensar",
+      "pattern": ["vou pensar", "deixar para depois", "depois eu vejo", "avaliar"],
+      "type": "temor",
+      "interpretation": "lead não tem clareza suficiente para decidir",
+      "response": "Claro. Para a decisão ficar mais fácil, qual seria a única informação que ainda falta?",
+      "next_question": "Se uma única coisa pudesse decidir, qual seria ela?",
+      "next_step": "responder essa única informação e voltar em 48h"
+    },
+    {
+      "id": "agora_nao",
+      "pattern": ["agora não", "não é prioridade", "não agora", "depois"],
+      "type": "timing",
+      "interpretation": "lead está em outro momento, mas pode evoluir",
+      "response": "Tranquilo. Posso voltar no momento mais certo sem insistência.",
+      "next_question": "Em qual mês esse tema tende a voltar com mais força?",
+      "next_step": "agendar follow-up leve para data informada"
+    },
+    {
+      "id": "ja_temos_alguem",
+      "pattern": ["já temos", "fornecedor atual", "parceiro atual", "agência atual"],
+      "type": "concorrência",
+      "interpretation": "lead tem solução atual, mas pode ter gap",
+      "response": "Faz sentido ter fornecedor. Em geral o que mudamos é o custo oculto: retrabalho, prazo e coordenação.",
+      "next_question": "Hoje, qual parte desse processo ainda consome mais energia?",
+      "next_step": "oferecer comparação pontual de valor, sem ataque ao fornecedor"
+    },
+    {
+      "id": "falar_com_socio",
+      "pattern": ["sócio", "sócia", "comitê", "diretor", "board", "comite"],
+      "type": "autoridade",
+      "interpretation": "lead não é decisor único ou precisa validação",
+      "response": "Perfeito. Se ajudar, posso deixar um resumo curto que facilite a conversa.",
+      "next_question": "Qual argumento costuma pesar mais para eles: prazo, custo ou risco?",
+      "next_step": "enviar briefing objetivo para o decisor"
+    },
+    {
+      "id": "manda_proposta",
+      "pattern": ["proposta", "orçamento", "enviar valor", "me manda"],
+      "type": "pedido formal",
+      "interpretation": "lead quer formalizar, mas ainda pode ter objeção oculta",
+      "response": "Posso enviar uma proposta direcionada. Para ela ser útil, quero confirmar 2 pontos rápidos.",
+      "next_question": "Qual resultado precisa aparecer nos primeiros 30 dias?",
+      "next_step": "criar proposta enxuta com objetivo e próximo passo"
+    },
+    {
+      "id": "sem_orcamento",
+      "pattern": ["sem orçamento", "orçamento zerado", "corte", "não tem verba"],
+      "type": "restrição financeira",
+      "interpretation": "lead está em restrição, mas ainda pode priorizar",
+      "response": "Entendo. Em casos assim, costuma ajudar separar o que é essencial do que pode esperar.",
+      "next_question": "Se tivesse verba só para uma entrega inicial, qual seria?",
+      "next_step": "oferecer escopo mínimo viável"
+    },
+    {
+      "id": "sem_tempo",
+      "pattern": ["sem tempo", "muito ocupado", "correria", "no meio do sprint"],
+      "type": "capacidade",
+      "interpretation": "lead está sobrecarregado, mas pode valorizar economia de tempo",
+      "response": "Justamente por isso a ideia é reduzir trabalho, não aumentar.",
+      "next_question": "Qual reunião ou tarefa você poderia eliminar se o problema fosse resolvido?",
+      "next_step": "propor início leve com resultado rápido"
+    },
+    {
+      "id": "usa_outra_solucao",
+      "pattern": ["já usamos", "usamos outra", "ferramenta atual", "sistema atual"],
+      "type": "concorrência/mudança",
+      "interpretation": "lead tem solução atual e pode ver troca como risco",
+      "response": "Faz sentido. Em geral a troca só acontece quando o custo de manter a solução atual fica visível.",
+      "next_question": "Hoje, qual é o maior custo oculto dessa solução atual?",
+      "next_step": "mostrar um comparativo simples sem desqualificar o atual"
+    }
+  ],
+  "response_rules": [
+    "Não pressionar.",
+    "Não generalizar.",
+    "Usar tom consultivo.",
+    "Sempre buscar a próxima pergunta destravante.",
+    "Registrar a objeção no CRM."
+  ]
+}

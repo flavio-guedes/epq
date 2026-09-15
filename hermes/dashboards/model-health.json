@@ -1,0 +1,39 @@
+{
+  "generated_at": "2026-09-04T22:58:45.757424",
+  "summary": {
+    "primary": "nous / stepfun/step-3.7-flash:free",
+    "fallback": "anthropic / claude-haiku-3.5-4k",
+    "cooldown": "2026-09-04T23:13:45.697884",
+    "rate_429_last_hour": 2397,
+    "last_error": "Error code: 429 - The requested model is temporarily at capacity upstream.",
+    "pending_retries": 3
+  },
+  "rows": [
+    {
+      "status": "FAILED",
+      "provider": "anthropic",
+      "model": "claude-haiku-3.5-4k",
+      "error": "Error code: 429 - The requested model is temporarily at capacity upstream.",
+      "error_type": "UPSTREAM_CAPACITY",
+      "retry_count": 4,
+      "cooldown_until": "2026-09-04T23:13:45.697884",
+      "fallback_used": true,
+      "context_tokens": 71076,
+      "task_id": "TASK-429-AUDIT"
+    }
+  ],
+  "raw_sample": [
+    {
+      "status": "FAILED",
+      "provider": "anthropic",
+      "model": "claude-haiku-3.5-4k",
+      "error": "Error code: 429 - The requested model is temporarily at capacity upstream.",
+      "error_type": "UPSTREAM_CAPACITY",
+      "retry_count": 4,
+      "cooldown_until": "2026-09-04T23:13:45.697884",
+      "fallback_used": true,
+      "context_tokens": 71076,
+      "task_id": "TASK-429-AUDIT"
+    }
+  ]
+}

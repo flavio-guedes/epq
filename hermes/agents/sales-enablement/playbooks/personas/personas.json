@@ -1,0 +1,45 @@
+{
+  "personas": [
+    {
+      "id": "decisor",
+      "name": "Decisor",
+      "objectives": ["resultado de negócio", "redução de risco", "aumento de performance"],
+      "fears": ["perder dinheiro", "ficar para trás", "decisão errada"],
+      "arguments": ["custo oculto atual", "tempo perdido", "comparação simples"],
+      "preferred_proof": ["resultado financeiro", "cases curtos", "evidência de execução"],
+      "message_tone": "direto, estratégico, sem slides"
+    },
+    {
+      "id": "influenciador",
+      "name": "Influenciador",
+      "objectives": ["reduzir trabalho", "aumentar reconhecimento interno", "facilitar execução"],
+      "fears": ["sobrecarregar o time", "mudança forçada", "falhar no meio do caminho"],
+      "arguments": ["facilidade de adoção", "apoio próximo", "resultado rápido"],
+      "preferred_proof": ["exemplos práticos", "passo a passo", "apoio contínuo"],
+      "message_tone": "consultivo, com exemplos práticos"
+    },
+    {
+      "id": "comprador",
+      "name": "Comprador",
+      "objectives": ["escolher a melhor opção", "justificar compra", "resolver um problema"],
+      "fears": ["escolher errado", "preço alto", "suporte fraco"],
+      "arguments": ["comparação clara", "custo-benefício", "garantia mínua"],
+      "preferred_proof": ["tabela comparativa", "FAQ", "cases com números"],
+      "message_tone": "claro, objetivo, comparativo"
+    },
+    {
+      "id": "gestor-marketing",
+      "name": "Gestor de Marketing",
+      "objectives": ["aumentar conversão", "fortalecer marca", "ganhar escala"],
+      "fears": ["não atingir meta", "conteúdo sem efeito", "perder reputação"],
+      "arguments": ["conversão", "marca consistente", "entregas previsíveis"],
+      "preferred_proof": ["cases", "resultados", "exemplos visuais"],
+      "message_tone": "baseado em casos e resultados"
+    }
+  ],
+  "usage_rules": [
+    "Use a persona mais provável quando o lead tiver cargo compatível.",
+    "Combine decisor + influenciador quando o contato for gerência com time executando.",
+    "Se o contato for marketing/comunicação, priorize gestor de marketing."
+  ]
+}

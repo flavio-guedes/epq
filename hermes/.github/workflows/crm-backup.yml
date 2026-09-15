@@ -1,0 +1,25 @@
+name: CRM Backup
+on:
+  repository_dispatch:
+    types: [crm-backup]
+  workflow_dispatch:
+    inputs:
+      crm_json:
+        description: 'CRM history JSON'
+        required: false
+        type: string
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir -p automacoes
+          cat > automacoes/crm-backup.json <<'INNEREOF'
+          ${{ github.event.client_payload.crm_json || '' }}
+          INNEREOF
+          git config user.name "hermes-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add automacoes/crm-backup.json
+          git commit -m "chore(crm): backup do histórico" || echo "no changes"
+          git push

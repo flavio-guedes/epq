@@ -1,0 +1,132 @@
+{
+  "1": {
+    "nome": "Adailton Santos",
+    "empresa": "Adailton Santos Produções",
+    "cargo": "Diretor, Criador e Produtor de Conteúdo",
+    "linkedin": "https://www.linkedin.com/in/adailtoncds",
+    "fonte": "LinkedIn",
+    "stage": "pendente",
+    "sales_score": 62,
+    "deal_health": "🔴 CRITICAL",
+    "next_action": "propor reunião ou enviar case relevante",
+    "next_action_channel": "linkedin",
+    "next_action_due": "2026-09-06T05:39:24.800605+00:00",
+    "tags": [
+      "TIER 1",
+      "🧩 Produto"
+    ],
+    "updated_at": "2026-09-06T05:39:24.801021+00:00",
+    "id": "1"
+  },
+  "2": {
+    "nome": "Adriana Sofia Garza",
+    "empresa": "HireLATAM",
+    "cargo": "Head of Recruiting and Client Experience",
+    "linkedin": "https://www.linkedin.com/in/adrianaxsofia",
+    "fonte": "LinkedIn",
+    "stage": "pendente",
+    "sales_score": 62,
+    "deal_health": "🔴 CRITICAL",
+    "next_action": "propor reunião ou enviar case relevante",
+    "next_action_channel": "linkedin",
+    "next_action_due": "2026-09-06T05:39:24.801596+00:00",
+    "tags": [
+      "TIER 1",
+      "🧩 Produto"
+    ],
+    "updated_at": "2026-09-06T05:39:24.801658+00:00",
+    "id": "2"
+  },
+  "3": {
+    "nome": "Adônis Sousa",
+    "empresa": "GOIA + PANA Studios",
+    "cargo": "Diretor de arte",
+    "linkedin": "https://www.linkedin.com/in/adonis-sousa",
+    "fonte": "LinkedIn",
+    "stage": "pendente",
+    "sales_score": 62,
+    "deal_health": "🔴 CRITICAL",
+    "next_action": "propor reunião ou enviar case relevante",
+    "next_action_channel": "linkedin",
+    "next_action_due": "2026-09-06T05:39:24.803460+00:00",
+    "tags": [
+      "TIER 1",
+      "✍️ Design Head"
+    ],
+    "updated_at": "2026-09-06T05:39:24.803537+00:00",
+    "id": "3"
+  },
+  "4": {
+    "nome": "Alex Andrade",
+    "empresa": "SapientNitro",
+    "cargo": "Diretor de arte sênior",
+    "linkedin": "https://www.linkedin.com/in/alex-andrade-21a6831a9",
+    "fonte": "LinkedIn",
+    "stage": "pendente",
+    "sales_score": 62,
+    "deal_health": "🔴 CRITICAL",
+    "next_action": "propor reunião ou enviar case relevante",
+    "next_action_channel": "linkedin",
+    "next_action_due": "2026-09-06T05:39:24.805443+00:00",
+    "tags": [
+      "TIER 1",
+      "✍️ Design Head"
+    ],
+    "updated_at": "2026-09-06T05:39:24.805511+00:00",
+    "id": "4"
+  },
+  "5": {
+    "nome": "Alex Cantinero",
+    "empresa": "Objetiva Studio",
+    "cargo": "Diretor de arte",
+    "linkedin": "https://www.linkedin.com/in/alex-cantinero-580b8158",
+    "fonte": "LinkedIn",
+    "stage": "pendente",
+    "sales_score": 62,
+    "deal_health": "🔴 CRITICAL",
+    "next_action": "propor reunião ou enviar case relevante",
+    "next_action_channel": "linkedin",
+    "next_action_due": "2026-09-06T05:39:24.806012+00:00",
+    "tags": [
+      "TIER 1",
+      "✍️ Design Head"
+    ],
+    "updated_at": "2026-09-06T05:39:24.806067+00:00",
+    "id": "5"
+  },
+  "flavio@crm.com": {
+    "nome": "Flávio CRM",
+    "empresa": "Empresa CRM",
+    "cargo": "CEO",
+    "email": "flavio@crm.com",
+    "stage": "new",
+    "sales_score": 80,
+    "next_action": "enviar primeira abordagem",
+    "next_action_channel": "linkedin",
+    "next_action_due": "2026-09-06T05:42:43.798722+00:00",
+    "updated_at": "2026-09-06T05:42:43.799128+00:00",
+    "id": "flavio@crm.com",
+    "interactions": [
+      {
+        "type": "message",
+        "text": "Olá",
+        "timestamp": "2026-09-06T05:41:29.758987+00:00"
+      },
+      {
+        "type": "message",
+        "text": "Olá",
+        "timestamp": "2026-09-06T05:41:51.231351+00:00"
+      },
+      {
+        "type": "message",
+        "text": "Olá",
+        "timestamp": "2026-09-06T05:42:17.638312+00:00"
+      },
+      {
+        "type": "message",
+        "text": "Olá",
+        "timestamp": "2026-09-06T05:42:29.732083+00:00"
+      }
+    ]
+  }
+}

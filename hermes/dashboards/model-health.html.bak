@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Hermes Model Health</title>
+<style>
+  body { background:#0b0d12; color:#e6e8ef; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; margin:0; }
+  .container { max-width:1200px; margin:0 auto; padding:24px; }
+  h1 { font-size:18px; margin-bottom:16px; }
+  .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+  .card { background:#13161d; border:1px solid #1f232d; border-radius:10px; padding:16px; }
+  .label { font-size:12px; color:#9ca3af; text-transform:uppercase; letter-spacing:1px; }
+  .value { font-size:24px; margin-top:6px; }
+  .ok { color:#7ee787; } .warn { color:#f5c542; } .err { color:#ff8a8a; }
+  table { width:100%; border-collapse:collapse; margin-top:14px; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid #1f232d; font-size:13px; }
+  th { color:#9ca3af; font-weight:600; }
+  .actions { margin-top:16px; display:flex; gap:10px; }
+  button { background:#1f232d; color:#e6e8ef; border:1px solid #2c323f; padding:8px 12px; border-radius:8px; cursor:pointer; }
+  button:hover { background:#2c323f; }
+  #log { background:#0b0d12; border:1px solid #1f232d; border-radius:10px; padding:12px; margin-top:12px; white-space:pre-wrap; font-size:12px; max-height:240px; overflow:auto; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Hermes — Model Health</h1>
+    <div class="grid">
+      <div class="card"><div class="label">PRIMARY</div><div class="value" id="primary">nous / stepfun/step-3.7-flash:free</div></div>
+      <div class="card"><div class="label">FALLBACK</div><div class="value" id="fallback">anthropic / claude-haiku-3.5-4k</div></div>
+      <div class="card"><div class="label">COOLDOWN</div><div class="value" id="cooldown">—</div></div>
+      <div class="card"><div class="label">429 RATE</div><div class="value" id="rate">0/h</div></div>
+      <div class="card"><div class="label">LAST ERROR</div><div class="value" id="lastError">—</div></div>
+      <div class="card"><div class="label">PENDING RETRIES</div><div class="value" id="pending">0</div></div>
+    </div>
+
+    <div class="actions">
+      <button onclick="refresh()">Refresh</button>
+      <button onclick="window.open('hermes-protocol/429-handling.md','_blank')">Protocolo 429</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Timestamp</th><th>Provider</th><th>Model</th><th>Error</th><th>Retries</th><th>Cooldown until</th><th>Fallback used</th><th>Context tokens</th><th>Task ID</th></tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+
+    <div id="log">Aguardando parser...</div>
+  </div>
+
+<script>
+  async function refresh(){
+    const res = await fetch('model-health.json');
+    const data = await res.json();
+    document.getElementById('primary').textContent = data.summary.primary;
+    document.getElementById('fallback').textContent = data.summary.fallback;
+    document.getElementById('cooldown').textContent = data.summary.cooldown || '—';
+    const rate = document.getElementById('rate');
+    rate.textContent = data.summary.rate_429_last_hour + '/h';
+    rate.className = 'value ' + (data.summary.rate_429_last_hour > 0 ? 'warn' : 'ok');
+    const le = document.getElementById('lastError');
+    le.textContent = data.summary.last_error || '—';
+    le.className = 'value ' + (data.summary.last_error ? 'err' : 'ok');
+    document.getElementById('pending').textContent = String(data.summary.pending_retries ?? 0);
+    const tbody = document.getElementById('rows');
+    tbody.innerHTML = '';
+    for (const row of data.rows.slice(-50)) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${row.timestamp}</td><td>${row.provider}</td><td>${row.model}</td><td>${row.error||''}</td><td>${row.retry_count??0}</td><td>${row.cooldown_until||''}</td><td>${row.fallback_used? 'sim':'não'}</td><td>${row.context_tokens??''}</td><td>${row.task_id||''}</td>`;
+      tbody.appendChild(tr);
+    }
+    document.getElementById('log').textContent = JSON.stringify(data.raw_sample, null, 2);
+  }
+  refresh();
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HERMES — Dashboard</title>
+<style>
+  :root{--bg:#0b0d10;--panel:#111418;--panel-2:#161a20;--line:#1f242d;--text:#e6e9ee;--muted:#7d8797;--accent:#7c9cff;--ok:#4ade80;--wip:#facc15;--warn:#fb923c;--red:#f87171}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:1100px;margin:0 auto;padding:28px 22px}
+  header{margin-bottom:24px}
+  h1{margin:0;font-size:22px;letter-spacing:.4px}
+  .sub{margin-top:6px;color:var(--muted);font-size:14px}
+  .section{margin-top:26px}
+  .section-title{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px}
+  table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  th,td{padding:10px 12px;text-align:left;font-size:13px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-weight:600;background:linear-gradient(180deg,#1a2230,#131922)}
+  tr:last-child td{border-bottom:none}
+  .status{width:10px;height:10px;border-radius:50%;display:inline-block}
+  .s-active{background:var(--ok)}.s-wip{background:var(--wip)}.s-arch{background:#94a3b8}.s-warn{background:var(--warn)}.s-down{background:var(--red)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;flex-wrap:wrap}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px;min-height:120px}
+  .card a{text-decoration:none;color:inherit}
+  .name{font-size:15px;font-weight:600}
+  .desc{color:var(--muted);font-size:13px;flex:1}
+  .meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px}
+  .open{font-size:12px;color:var(--accent);text-decoration:none;border:1px solid #22324a;padding:6px 10px;border-radius:8px}
+  footer{margin-top:34px;color:var(--muted);font-size:12px}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>HERMES — Dashboard</h1>
+      <div class="sub">Equipe, status e navegação do ecossistema.</div>
+    </header>
+
+    <div class="section">
+      <div class="section-title">Equipe</div>
+      <table>
+        <thead>
+          <tr><th>Agente</th><th>Status</th><th>Tarefa atual</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Atlas</td><td><span class="status s-active"></span> Disponível</td><td>—</td></tr>
+          <tr><td>Hermes</td><td><span class="status s-active"></span> Disponível</td><td>—</td></tr>
+          <tr><td>Oracle</td><td><span class="status s-active"></span> Disponível</td><td>—</td></tr>
+          <tr><td>Nexus</td><td><span class="status s-active"></span> Disponível</td><td>—</td></tr>
+          <tr><td>Forge</td><td><span class="status s-active"></span> Disponível</td><td>—</td></tr>
+          <tr><td>Vector</td><td><span class="status s-active"></span> Disponível</td><td>—</td></tr>
+          <tr><td>Aegis</td><td><span class="status s-active"></span> Disponível</td><td>—</td></tr>
+          <tr><td>Sentinel</td><td><span class="status s-active"></span> Disponível</td><td>—</td></tr>
+          <tr><td>Vanguard</td><td><span class="status s-active"></span> Disponível</td><td>—</td></tr>
+          <tr><td>Strategos</td><td><span class="status s-active"></span> Disponível</td><td>—</td></tr>
+          <tr><td>Muse</td><td><span class="status s-active"></span> Disponível</td><td>—</td></tr>
+          <tr><td>Pulse</td><td><span class="status s-active"></span> Disponível</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Dashboards e projetos</div>
+      <div class="grid">
+        <div class="card"><a class="name" href="https://flavio-guedes.github.io/epq/leads.html" target="_blank" rel="noopener">EPQ · Leads</a><div class="desc">Funil e captação.</div><div class="meta"><a class="open" href="https://flavio-guedes.github.io/epq/leads.html" target="_blank" rel="noopener">Abrir →</a></div></div>
+        <div class="card"><a class="name" href="https://flavio-guedes.github.io/pipeline-job-hunter/" target="_blank" rel="noopener">Job Hunter</a><div class="desc">Pipeline de vagas.</div><div class="meta"><a class="open" href="https://flavio-guedes.github.io/pipeline-job-hunter/" target="_blank" rel="noopener">Abrir →</a></div></div>
+        <div class="card"><a class="name" href="https://flavio-guedes.github.io/painel-semanal/" target="_blank" rel="noopener">Painel Semanal</a><div class="desc">Operação da semana.</div><div class="meta"><a class="open" href="https://flavio-guedes.github.io/painel-semanal/" target="_blank" rel="noopener">Abrir →</a></div></div>
+        <div class="card"><a class="name" href="https://flavio-guedes.github.io/radar-comunidades/" target="_blank" rel="noopener">Radar Comunidades</a><div class="desc">Grupos e canais.</div><div class="meta"><a class="open" href="https://flavio-guedes.github.io/radar-comunidades/" target="_blank" rel="noopener">Abrir →</a></div></div>
+        <div class="card"><a class="name" href="https://github.com/flavio-guedes/hermes" target="_blank" rel="noopener">HERMES</a><div class="desc">Repo oficial.</div><div class="meta"><a class="open" href="https://github.com/flavio-guedes/hermes" target="_blank" rel="noopener">Abrir →</a></div></div>
+      </div>
+    </div>
+
+    <footer>HERMES — Um sistema. Uma equipe. Um repositório.</footer>
+  </div>
+</body>
+</html>

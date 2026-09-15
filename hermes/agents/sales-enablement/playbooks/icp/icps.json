@@ -1,0 +1,48 @@
+{
+  "icps": [
+    {
+      "id": "icp-produto-ux",
+      "name": "Produto/UX/GTM",
+      "segment": "agências, startups, estúdios digitais",
+      "ideal_profile": ["CEO", "Head of Product", "Head of Growth", "VP Produto", "Diretor de UX", "Founder"],
+      "dores": ["processo colado no dono", "time sem priorização", "mudança sem direção", "GTM sem método"],
+      "needs": ["produtizar operação", "criar rituais", "clareza de roadmap"],
+      "triggers": ["saída de PM", "contratação nova", "mudança de modelo", "expansão", "nova conta"],
+      "objections": ["já temos processo", "não temos orçamento", "agora não é prioridade"],
+      "arguments": ["reduzir custo oculto de coordenação", "aumentar previsibilidade", "tirar o gargalo do líder"],
+      "primary_channel": "linkedin",
+      "portfolio_url": "https://flavio-guedes.github.io/portfolio/produto.html"
+    },
+    {
+      "id": "icp-design-criativo",
+      "name": "Design/Criativo/Marca",
+      "segment": "estúdios, agências, marcas próprias",
+      "ideal_profile": ["Diretor de arte", "Head of Design", "Creative Director", "CEO", "Sócio"],
+      "dores": ["entregas sem consistência", "revisões infinitas", "marca sem sistema", "time criativo sem direção"],
+      "needs": ["design system enxuto", "processo criativo", "governança visual", "qualidade sem heroísmo"],
+      "triggers": ["rebrand", "nova linha", "expansão de time", "entregas atrasadas"],
+      "objections": ["já temos fornecedor", "design é custo", "precisamos de agência grande"],
+      "arguments": ["reduzir retrabalho", "aumentar consistência", "entregar mais rápido sem perder qualidade"],
+      "primary_channel": "linkedin",
+      "portfolio_url": "https://flavio-guedes.github.io/portfolio/designhead.html"
+    },
+    {
+      "id": "icp-parceria-growth",
+      "name": "Parceria/Growth/IA agêntica",
+      "segment": "empresas em crescimento, agências, ecossistemas",
+      "ideal_profile": ["CEO", "Head of Growth", "Sócio", "Diretor comercial", "Gerente de growth"],
+      "dores": ["escala sem qualidade", "conteúdo sem conversão", "parceria mal estruturada"],
+      "needs": ["modelo de parceria", "crescimento previsível", "automação comercial leve"],
+      "triggers": ["novo produto", "expansão geográfica", "busca por parceiros", "aumento de meta"],
+      "objections": ["ainda não é o momento", "não temos parceiros", "não entendi o modelo"],
+      "arguments": ["modelo simples", "ganho compartilhado", "baixo risco inicial"],
+      "primary_channel": "whatsapp",
+      "portfolio_url": "https://flavio-guedes.github.io/portfolio/parceria.html"
+    }
+  ],
+  "usage_rules": [
+    "Use a persona mais provável quando o lead tiver cargo compatível.",
+    "Combine decisor + influenciador quando o contato for gerência com time executando.",
+    "Se o contato for marketing/comunicação, priorize gestor de marketing."
+  ]
+}

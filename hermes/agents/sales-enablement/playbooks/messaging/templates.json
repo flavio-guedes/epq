@@ -1,0 +1,88 @@
+{
+  "templates": [
+    {
+      "id": "first_touch_linkedin",
+      "type": "first_approach",
+      "channel": "linkedin",
+      "tone": "direto",
+      "template": "Oi {nome}, tudo bem?\n\nVi que você é {cargo} na {empresa} — trabalho com {angle_descricao}, e vejo uma relação direta com o que você lidera por lá.\n\nFaço {diferencial_curto}. O que faz a diferença é {principio}, não ferramenta nem ampliar equipe.\n\nAqui tem um recorte do que faço:\n👉 {portfolio_url}\n\nVale uma troca rápida?"
+    },
+    {
+      "id": "first_touch_whatsapp",
+      "type": "first_approach",
+      "channel": "whatsapp",
+      "tone": "direto",
+      "template": "Oi {nome}, tudo bem?\n\nVi que você está à frente de {empresa} e achei que valia a pena uma troca direta.\n\nTrabalho com {angle_descricao}, com foco em {diferencial_curto}. Se fizer sentido, posso enviar um recorte rápido do que pode funcionar para o seu momento."
+    },
+    {
+      "id": "follow_up_3_dias",
+      "type": "follow_up",
+      "channel": "linkedin",
+      "tone": "leve",
+      "template": "{nome}, sem pressão — sei como é a correria de quem também executa.\n\nDeixo um ponto: {argumento_relevante}.\n\nSe isso ressoa com algo que você está vendo na {empresa}, fico à disposição para um papo de 15 minutos.\n📎 {portfolio_url}"
+    },
+    {
+      "id": "follow_up_7_dias",
+      "type": "follow_up",
+      "channel": "linkedin",
+      "tone": "direto",
+      "template": "{nome}, direto: estou aberto a projetos e colaborações em {angle_descricao}, e o perfil da {empresa} faz sentido pra mim.\n\nSe houver algo em aberto — ou um contato que eu deveria conhecer — fico à disposição.\n👉 {portfolio_url}"
+    },
+    {
+      "id": "follow_up_12_dias",
+      "type": "follow_up",
+      "channel": "linkedin",
+      "tone": "fechamento_suave",
+      "template": "Último toque, {nome} — não quero ser inconveniente.\n\nFico à disposição se surgir algo. Sucesso com a {empresa}!\n📎 {portfolio_url} · {email} · {telefone}"
+    },
+    {
+      "id": "meeting_invite",
+      "type": "invite_meeting",
+      "channel": "whatsapp",
+      "tone": "objetivo",
+      "template": "{nome}, pelo que você comentou, dá para avançar rápido em uma conversa de 20 minutos.\n\nSugiro 2 opções:\n1) {opcao1}\n2) {opcao2}\n\nQual funciona melhor?"
+    },
+    {
+      "id": "meeting_follow_up",
+      "type": "post_meeting",
+      "channel": "whatsapp",
+      "tone": "consultivo",
+      "template": "{nome}, resumo rápido da conversa:\n- necessidade: {necessidade}\n- próximo passo: {proximo_passo}\n- data sugerida: {data_sugerida}\n\nSe estiver tudo certo, já posso preparar o material para você validar."
+    },
+    {
+      "id": "proposal_send",
+      "type": "proposal",
+      "channel": "email",
+      "tone": "formal",
+      "template": "Olá {nome},\n\nSegue proposta enxuta para {empresa}, com foco em {objetivo_principal}.\n\nEstrutura:\n- problema atual esperado\n- solução proposta\n- resultado primeiro mês\n- investimento\n- próximo passo\n\nSe quiser, já podemos alinhar uma call de 15 minutos para eu explicar diretamente."
+    },
+    {
+      "id": "objection_preco",
+      "type": "response_objection",
+      "channel": "whatsapp",
+      "tone": "consultivo",
+      "template": "Entendo o cuidado com investimento.\n\nNormalmente o que muda a decisão é enxergar o custo do problema atual, não só o preço da solução.\n\nHoje, quanto tempo por semana essa demanda tira de você ou do time?"
+    },
+    {
+      "id": "objection_timing",
+      "type": "response_objection",
+      "channel": "whatsapp",
+      "tone": "leve",
+      "template": "Tranquilo. Em qual mês esse tema tende a voltar com mais força?\n\nPosso deixar um material leve para você revisar quando for mais oportuno."
+    },
+    {
+      "id": "reactivation",
+      "type": "reactivation",
+      "channel": "linkedin",
+      "tone": "leve",
+      "template": "{nome}, passou um tempo, mas continuei lembrando do que você comentou sobre {tema_anteriror}.\n\nSe estiver em outro momento, posso trazer um ponto atualizado."
+    }
+  ],
+  "personalization_rules": [
+    "Use sempre o nome do lead.",
+    "Mencione empresa ou contexto quando disponível.",
+    "Evite templates genéricos se houver pelo menos um dado relevante.",
+    "Prefira canal usado no último contato.",
+    "Mantenha CTA curto e claro."
+  ]
+}

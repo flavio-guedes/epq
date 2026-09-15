@@ -1,0 +1,169 @@
+{
+  "gerado_em": "2026-09-15T00:30:00-03:00",
+  "canal": "whatsapp (Baileys via hermes send)",
+  "janela_envio": "08:00–20:00 BRT (fora da janela requer --force)",
+  "itens": [
+    {
+      "id": 1,
+      "nome": "Flávio Luiz dos Santos",
+      "jid": "5521999719474@s.whatsapp.net",
+      "prioridade": "P0",
+      "intencao": "quente",
+      "responsavel": "Andressa",
+      "mensagem": "Flávio, sobre o aulão de sábado: entendo perfeitamente a questão do seu filho no ESPCEX. A gente consegue fazer sua aula experimental de outro jeito — online ou em outra data. Quer que eu já agende?"
+    },
+    {
+      "id": 2,
+      "nome": "Ramon Cerqueira",
+      "jid": "5521966604178@s.whatsapp.net",
+      "prioridade": "P0",
+      "intencao": "quente",
+      "responsavel": "Andressa",
+      "mensagem": "Ramon, conseguiu resolver aquela situação do trabalho? Se já estiver tudo certo, posso te orientar sobre o próximo passo da matrícula."
+    },
+    {
+      "id": 5,
+      "nome": "Lead PRF (sem nome)",
+      "jid": "5521980555629@s.whatsapp.net",
+      "prioridade": "P0",
+      "intencao": "morno",
+      "responsavel": "Clara",
+      "mensagem": "Voltando pras suas perguntas, direto:\n• Inscrição: ainda não abriu — o edital oficial não foi publicado, mas assim que sair a gente te orienta.\n• Requisitos e valores do preparatório: vou confirmar com a equipe e te retorno hoje, pra não te passar nada errado.\nQuer que eu já separe uma aula experimental de PRF em paralelo?"
+    },
+    {
+      "id": 6,
+      "nome": "Andressa (sem nome) - PMERJ",
+      "jid": "5521982946742@s.whatsapp.net",
+      "prioridade": "P0",
+      "intencao": "morno",
+      "responsavel": "Andressa",
+      "mensagem": "Retomando: você tinha demonstrado interesse no PMERJ. Pra te encaixar na turma certa — noite ou sábado funcionaria pra você?"
+    },
+    {
+      "id": 12,
+      "nome": "Raquel PMERJ",
+      "jid": "5521987625333@s.whatsapp.net",
+      "prioridade": "P0",
+      "intencao": "quente",
+      "responsavel": "Andressa",
+      "mensagem": "Retomando aqui — seu interesse era PMERJ, certo? A turma noturna sai por 5x de R$300 no Pix ou R$330 no cartão (material R$50 e camisa R$75 à parte). Você prefere noite ou sábado? Se quiser, já te alinho uma aula experimental de PMERJ."
+    },
+    {
+      "id": 16,
+      "nome": "Walber Nunes",
+      "jid": "5521967688448@s.whatsapp.net",
+      "prioridade": "P0",
+      "intencao": "morno",
+      "responsavel": "Andressa",
+      "mensagem": "Walber, a unidade principal é em Nilópolis mesmo. Se você mora mais longe, me diz seu bairro que eu avalio a melhor opção de turma pra você."
+    },
+    {
+      "id": 20,
+      "nome": "Gustavo",
+      "jid": "5521964294767@s.whatsapp.net",
+      "prioridade": "P0",
+      "intencao": "frio",
+      "responsavel": "Ronan",
+      "mensagem": "Retomando de onde a gente parou: você buscava informações do PMERJ. Se for fechar turma, prefere noite ou sábado? Se quiser, te explico como funciona a aula experimental."
+    },
+    {
+      "id": 42,
+      "nome": "Lead de Mesquita - 97960-7938",
+      "jid": "5521979607938@s.whatsapp.net",
+      "prioridade": "P0",
+      "intencao": "quente",
+      "responsavel": "Clara",
+      "mensagem": "Voltando à sua pergunta: sim, a turma de GCM de São Gonçalo está abrindo — a previsão é iniciar dia 19/09. Como você já tinha deixado o interesse salvo, quer que eu já te reserve uma aula experimental na turma presencial?"
+    },
+    {
+      "id": 3,
+      "nome": "Brenda",
+      "jid": "5521969977512@s.whatsapp.net",
+      "prioridade": "P1",
+      "intencao": "morno",
+      "responsavel": "Andressa",
+      "mensagem": "Brenda, você chegou a avaliar a turma de INSS que te passei? Se quiser, te oriento sobre a aula experimental — é um bom jeito de testar antes de decidir."
+    },
+    {
+      "id": 4,
+      "nome": "Guilherme",
+      "jid": "5521974316907@s.whatsapp.net",
+      "prioridade": "P1",
+      "intencao": "morno",
+      "responsavel": "Andressa",
+      "mensagem": "Guilherme, a turma de GCM Maricá acabou de abrir. Você recebeu a tabela do combo — prefere manhã, noite ou sábado? Se quiser, te reservo uma aula experimental."
+    },
+    {
+      "id": 7,
+      "nome": "Douglas",
+      "jid": "5521990439709@s.whatsapp.net",
+      "prioridade": "P1",
+      "intencao": "morno",
+      "responsavel": "Andressa",
+      "mensagem": "Douglas, você perguntou se o concurso de GCM Maricá é real — é, sim, e inclusive a primeira turma já está abrindo. Pra você ver na prática como é a preparação, quer fazer uma aula experimental?"
+    },
+    {
+      "id": 8,
+      "nome": "Marcelo",
+      "jid": "5521992283360@s.whatsapp.net",
+      "prioridade": "P1",
+      "intencao": "morno",
+      "responsavel": "Clara",
+      "mensagem": "Marcelo, as turmas de GCM Queimados são de manhã, noite e sábado. Qual encaixa melhor na sua rotina?"
+    },
+    {
+      "id": 9,
+      "nome": "Andressa (sem nome) - GCM noturno",
+      "jid": "5521998127074@s.whatsapp.net",
+      "prioridade": "P1",
+      "intencao": "morno",
+      "responsavel": "Andressa",
+      "mensagem": "A turma de GCM Maricá abriu essa semana, noturno das 19h às 22h. Consegue decidir o horário? Se preferir, agendo uma visita na unidade pra você conhecer de perto."
+    },
+    {
+      "id": 10,
+      "nome": "Elen PMERJ",
+      "jid": "5521990439709@s.whatsapp.net",
+      "prioridade": "P1",
+      "intencao": "morno",
+      "responsavel": "Andressa",
+      "mensagem": "Elen, você mencionou que está de repouso — sem pressa. Quando estiver melhor, a turma de PMERJ segue aberta. Quer que eu deixe uma aula experimental reservada pra próxima semana?"
+    },
+    {
+      "id": 17,
+      "nome": "Lead noturno (sem nome)",
+      "jid": "5521985633062@s.whatsapp.net",
+      "prioridade": "P1",
+      "intencao": "morno",
+      "responsavel": "Clara",
+      "mensagem": "Você tinha chamado sobre PMERJ. A turma que você procura é pra noite ou sábado?"
+    },
+    {
+      "id": 18,
+      "nome": "Andressa (sem nome) - PMERJ 1",
+      "jid": "5521982545234@s.whatsapp.net",
+      "prioridade": "P1",
+      "intencao": "frio",
+      "responsavel": "Andressa",
+      "mensagem": "Retomando aqui: você chegou a definir qual concurso quer? Se for PMERJ, te passo a turma certa. Quer uma aula experimental pra testar?"
+    },
+    {
+      "id": 19,
+      "nome": "Andressa (sem nome) - GCM",
+      "jid": "5521988393147@s.whatsapp.net",
+      "prioridade": "P1",
+      "intencao": "frio",
+      "responsavel": "Andressa",
+      "mensagem": "Retomando: a turma de GCM Maricá acabou de abrir. Você chegou a definir o concurso que quer seguir? Se quiser, te explico como funciona a aula experimental."
+    },
+    {
+      "id": 38,
+      "nome": "Flavio GCM",
+      "jid": "5521974927884@s.whatsapp.net",
+      "prioridade": "P1",
+      "intencao": "frio",
+      "responsavel": "Clara",
+      "mensagem": "Flávio, a turma de GCM Maricá abriu (14/09) e São Gonçalo inicia dia 19/09. Qual delas você quer conhecer? Se quiser, te separo uma aula experimental."
+    }
+  ]
+}

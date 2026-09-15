@@ -1,0 +1,79 @@
+{
+  "timestamp": "15/09/2026 11:15",
+  "comunidades": [
+    {
+      "nome": "Grupo WhatsApp EPQ — Atendimento",
+      "tipo": "Grupo fechado",
+      "url": "WhatsApp: 120363414277406966@g.us",
+      "status": "A INSPECTAR",
+      "observacoes": "Canal de comunicação oficial EPQ. Precisa verificar se está ativo e quem está presente."
+    },
+    {
+      "nome": "Fóruns de Concílios / História Eclesiástica",
+      "tipo": "Fóruns públicos (Reddit, Telegram)",
+      "url": "IEVI, r/barTEOLOGIA, padresdaigreja (Telegram)",
+      "status": "OBSERVING",
+      "observacoes": "Comunidades mapeadas pelo Hunter v1/v2. Observar antes de divulgar."
+    },
+    {
+      "nome": "Grupos de estudo PMERJ / GCM Maricá / SES / Guarda Municipal",
+      "tipo": "WhatsApp/Telegram",
+      "url": "N/A — coletar de conversas existentes",
+      "status": "A MAPEAR",
+      "observacoes": "Leads dos arquivos WhatsApp do Drive. Múltiplos grupos de preparação para concursos militares estaduais."
+    },
+    {
+      "nome": "LinkedIn — profissionais de Marketing/Gestão/Carreira",
+      "tipo": "Rede profissional",
+      "url": "N/A — consultar exportações CSV/leads",
+      "status": "A ANALISAR",
+      "observacoes": "Leads do CRM e exportações do Drive. Focar em gestores, líderes, empresários, formados ou em formação."
+    }
+  ],
+  "leads_quentes": [
+    {
+      "nome": "Lucas Mendes",
+      "motivo": "Pediu orçamento jul/2026 — sem retorno",
+      "temperatura": "QUENTE",
+      "acao": "Reativar com oferta atualizada + depoimento"
+    },
+    {
+      "nome": "Carlos Eduardo",
+      "motivo": "Pediu orçamento 2025 — migrou de curso",
+      "temperatura": "QUENTE",
+      "acao": "Reativar com US Posh vs Lucas Gesta"
+    },
+    {
+      "nome": "Marina Rocha",
+      "motivo": "Aluna 2023-24, ex-aluna aprovada",
+      "temperatura": "MORNO",
+      "acao": "Abordar com novidade do curso"
+    },
+    {
+      "nome": "Juliana Martins",
+      "motivo": "Ex-aluna aprovada, pediu material",
+      "temperatura": "MORNO",
+      "acao": "Envolver com material + aviso sobre Lucas Gesta"
+    }
+  ],
+  "estrategias": [
+    {
+      "foco": "Comunidades de concílios/história",
+      "abordagem": "Observar discussões ativas; contribuir com valor (não divulgar); ao detectar intenção, oferecer aula aberta ou material gratuito como ponte"
+    },
+    {
+      "foco": "Grupos de preparação para concursos",
+      "abordagem": "Identificar leaders dos grupos; oferecer conteúdo relevante sobre planejamento de estudo (EPQ já tem materiais); apresentar Lucas Gesta como especialista em gestão de carreira"
+    },
+    {
+      "foco": "Leads quentes do histórico EPQ",
+      "abordagem": "Reativar com mensagem personalizada (Playbook v5); usar depoimentos do Drive como prova social; apresentar curso como solução para crescimento profissional"
+    },
+    {
+      "foco": "LinkedIn/CRM — profissionais de carreira",
+      "abordagem": "Usar copies do Drive (Playbook Atendimento); focar em gestores, líderes, empresários; oferecer diagnóstico gratuito como porta de entrada"
+    }
+  ],
+  "next_action": "Disparar reativação para leads quentes via WhatsApp",
+  "tempo_restante_min": 345
+}

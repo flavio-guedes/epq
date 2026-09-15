@@ -1,0 +1,786 @@
+[
+  {
+    "caminho": "/Users/mac/HermesWorkspace/CRM_Acao_completo.html",
+    "nome_sugerido": "CRM Ação — Foco em Resultados",
+    "categoria": "crm",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "CRM Ação — Foco em Resultados"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/Checkup.html",
+    "nome_sugerido": "EPQ · Checkup",
+    "categoria": "relatório",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Checkup"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/auditoria.html",
+    "nome_sugerido": "EPQ · Auditoria",
+    "categoria": "relatório",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Auditoria"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/aulao_inscricao.html",
+    "nome_sugerido": "Aulão EPQ · Direito Penal + Administrativo",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "Aulão EPQ · Direito Penal + Administrativo"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/aulaoinscricao.html",
+    "nome_sugerido": "EPQ · Aulão — Carreiras Policiais",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Aulão — Carreiras Policiais"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/bolsao-epq.html",
+    "nome_sugerido": "EPQ · Bolsão Captura",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Bolsão Captura"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/bolsao.html",
+    "nome_sugerido": "EPQ · Bolsão",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Bolsão"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/brazilfoodhub-home.html",
+    "nome_sugerido": "FoodHub — Mesa Nacional de Oportunidades",
+    "categoria": "projeto/prospecção",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "FoodHub — Mesa Nacional de Oportunidades"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/command_center_full.html",
+    "nome_sugerido": "Prospecção · Command Center",
+    "categoria": "dashboard",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "Prospecção · Command Center"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/criativos.html",
+    "nome_sugerido": "EPQ · Painel de Criativos",
+    "categoria": "dashboard",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "EPQ · Painel de Criativos"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/crm_unificado.html",
+    "nome_sugerido": "CRM Ação — Foco em Resultados",
+    "categoria": "crm",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "CRM Ação — Foco em Resultados"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/cronograma.html",
+    "nome_sugerido": "EPQ · Cronograma",
+    "categoria": "projeto/operações",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "EPQ · Cronograma"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/ddg_raw.html",
+    "nome_sugerido": "DuckDuckGo HTML: Private Search Without JavaScript",
+    "categoria": "ferramenta/agente",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "DuckDuckGo HTML: Private Search Without JavaScript"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/fluxocomercial.html",
+    "nome_sugerido": "EPQ · Fluxo Comercial",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Fluxo Comercial"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/forecast.html",
+    "nome_sugerido": "Painel Didático — Forecast &amp; Growth · Franquia Balneário",
+    "categoria": "dashboard",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "Painel Didático — Forecast &amp; Growth · Franquia Balneário"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/index.html",
+    "nome_sugerido": "Hermesworkspace — Index",
+    "categoria": "outro",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "Redirecionando..."
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/leads.html",
+    "nome_sugerido": "EPQ · Inteligência Comercial",
+    "categoria": "crm",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Inteligência Comercial"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/painel-conteudo.html",
+    "nome_sugerido": "EPQ · Painel de Conteúdo",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Painel de Conteúdo"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/plano-bolsao-epq.html",
+    "nome_sugerido": "EPQ · Plano do Bolsão",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Plano do Bolsão"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/plano-conteudo-trafego.html",
+    "nome_sugerido": "EPQ · Plano de Conteúdo & Tráfego",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Plano de Conteúdo & Tráfego"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/planoads.html",
+    "nome_sugerido": "EPQ · Plano de Ads",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Plano de Ads"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/planodivulgacao-aulao.html",
+    "nome_sugerido": "EPQ · Aulão — Carreiras Policiais",
+    "categoria": "projeto",
+    "url_pages_conhecida": "https://flavio-guedes.github.io/epq/logo-oficial.png",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Aulão — Carreiras Policiais"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/playbookatendimento.html",
+    "nome_sugerido": "🐴 EPQ · Playbook de Atendimento",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "🐴 EPQ · Playbook de Atendimento"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/playbookmkt.html",
+    "nome_sugerido": "EPQ · Playbook de Marketing",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Playbook de Marketing"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/publico.html",
+    "nome_sugerido": "EPQ · Público",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Público"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/relatorio-ads-ago.html",
+    "nome_sugerido": "EPQ · Relatório de Ads",
+    "categoria": "relatório",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Relatório de Ads"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/sync_report.html",
+    "nome_sugerido": "Sync Report",
+    "categoria": "relatório",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "Sync Report"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/tarefas.html",
+    "nome_sugerido": "EPQ · Tarefas",
+    "categoria": "projeto/operações",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "EPQ · Tarefas"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/timeline.html",
+    "nome_sugerido": "EPQ · Timeline",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Timeline"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/CRM_Acao_web/index.html",
+    "nome_sugerido": "CRM Ação — Foco em Resultados",
+    "categoria": "crm",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "CRM Ação — Foco em Resultados"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/ai-hub-temp/hq.html",
+    "nome_sugerido": "HERMES HQ",
+    "categoria": "ferramenta/agente",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "HERMES HQ"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/ai-hub-temp/index.html",
+    "nome_sugerido": "AI HUB — AI AGENT COMMAND CENTER",
+    "categoria": "ferramenta/agente",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "AI HUB — AI AGENT COMMAND CENTER"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/ai-hub/hq.html",
+    "nome_sugerido": "HERMES HQ",
+    "categoria": "ferramenta/agente",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "HERMES HQ"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/ai-hub/index.html",
+    "nome_sugerido": "AI HUB — AI AGENT COMMAND CENTER",
+    "categoria": "ferramenta/agente",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "AI HUB — AI AGENT COMMAND CENTER"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/analise_atendimento/index.html",
+    "nome_sugerido": "EPQ — Análise de Atendimento e Funil",
+    "categoria": "relatório",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "EPQ — Análise de Atendimento e Funil"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/cerebro/epq-coleta-pedagogica.html",
+    "nome_sugerido": "EPQ · Coleta Pedagógica",
+    "categoria": "ferramenta/agente",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Coleta Pedagógica"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/cerebro/index.html",
+    "nome_sugerido": "Cerebro — Hermes Ecosystem Radar",
+    "categoria": "ferramenta/agente",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "Cerebro — Hermes Ecosystem Radar"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/cerebro/mapeamento-pedagogico.html",
+    "nome_sugerido": "EPQ · Mapeamento Pedagógico",
+    "categoria": "ferramenta/agente",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Mapeamento Pedagógico"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/command-center/index.html",
+    "nome_sugerido": "Job Hunter Command Center — Hermes",
+    "categoria": "ferramenta/agente",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "Job Hunter Command Center — Hermes"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/crm/crm.html",
+    "nome_sugerido": "EPQ · CRM",
+    "categoria": "crm",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · CRM"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/crm/admin.html",
+    "nome_sugerido": "EPQ · Administração",
+    "categoria": "crm",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Administração"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/crm/change-password.html",
+    "nome_sugerido": "EPQ · Alterar senha",
+    "categoria": "crm",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Alterar senha"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/crm/login.html",
+    "nome_sugerido": "EPQ · Acesso Restrito",
+    "categoria": "crm",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Acesso Restrito"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/epq-temp/Checkup.html",
+    "nome_sugerido": "EPQ — Check-up do Método de Estudo",
+    "categoria": "relatório",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "EPQ — Check-up do Método de Estudo"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/epq-temp/auditoria.html",
+    "nome_sugerido": "Auditoria de Ativos Meta — EPQ",
+    "categoria": "relatório",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "Auditoria de Ativos Meta — EPQ"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/epq-temp/fluxocomercial.html",
+    "nome_sugerido": "EPQ | COMMAND CENTER",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "EPQ | COMMAND CENTER"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/epq-temp/plano-conteudo-trafego.html",
+    "nome_sugerido": "EPQ · Plano Estratégico de Conteúdo + Tráfego",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "EPQ · Plano Estratégico de Conteúdo + Tráfego"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/epq-temp/planoads.html",
+    "nome_sugerido": "EPQ — Cronograma de Ads (R$200/semana)",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "EPQ — Cronograma de Ads (R$200/semana)"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/epq-temp/planodivulgacao-aulao.html",
+    "nome_sugerido": "EPQ · Aulão — Carreiras Policiais",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "EPQ · Aulão — Carreiras Policiais"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/epq-temp/playbookatendimento.html",
+    "nome_sugerido": "EPQ · Playbook de Atendimento v6",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "EPQ · Playbook de Atendimento v6"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/epq-temp/playbookmkt.html",
+    "nome_sugerido": "EPQ · Playbook de Marketing & Conteúdo",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "EPQ · Playbook de Marketing & Conteúdo"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/epq-temp/publico.html",
+    "nome_sugerido": "EPQ — Análise Estratégica ICP + Auditoria de Conteúdo",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "EPQ — Análise Estratégica ICP + Auditoria de Conteúdo"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/founder-radar/index.html",
+    "nome_sugerido": "Founder & Opportunity Radar",
+    "categoria": "dashboard",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "Founder & Opportunity Radar"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/github-map/index.html",
+    "nome_sugerido": "HERMES ECOSYSTEM — GitHub Map",
+    "categoria": "ferramenta/agente",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "HERMES ECOSYSTEM — GitHub Map"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/hermes-guide/index.html",
+    "nome_sugerido": "Hermes Guide",
+    "categoria": "ferramenta/agente",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "Hermes Guide"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/painel-estrutura/index.html",
+    "nome_sugerido": "Drive EPQ · Painel de Estrutura",
+    "categoria": "dashboard",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "Drive EPQ · Painel de Estrutura"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/painel-semanal/ads_plan_enxuto.html",
+    "nome_sugerido": "EPQ — Plano de Ads Enxuto",
+    "categoria": "dashboard",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ — Plano de Ads Enxuto"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/painel-semanal/pipeline_hermes.html",
+    "nome_sugerido": "Pipeline Hermes",
+    "categoria": "projeto/operações",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "Pipeline Hermes"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/painel-semanal/plano-ads-completo.html",
+    "nome_sugerido": "EPQ — Plano de Ads Completo",
+    "categoria": "dashboard",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ — Plano de Ads Completo"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/painel-semanal/plano-ads-enxuto.html",
+    "nome_sugerido": "EPQ — Plano de Ads Enxuto",
+    "categoria": "dashboard",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ — Plano de Ads Enxuto"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/painel-tarefas/briefing-hoje-2026-08-26.html",
+    "nome_sugerido": "EPQ — Briefings da coluna Hoje",
+    "categoria": "dashboard",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ — Briefings da coluna Hoje"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/painel-tarefas/index.html",
+    "nome_sugerido": "EPQ Central de Tarefas",
+    "categoria": "dashboard",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ Central de Tarefas"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/painel-tarefas/tarefas.html",
+    "nome_sugerido": "EPQ Central de Tarefas",
+    "categoria": "dashboard",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ Central de Tarefas"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/pipeline-job-hunter/index.html",
+    "nome_sugerido": "EPQ · Vagas & Currículos",
+    "categoria": "ferramenta/agente",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "EPQ · Vagas & Currículos"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/propostas/auditoria_foodhub.html",
+    "nome_sugerido": "Auditoria FoodHub — Marketing & Growth Intelligence",
+    "categoria": "relatório",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "Auditoria FoodHub — Marketing & Growth Intelligence"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/propostas/foodhub.html",
+    "nome_sugerido": "Brazil FoodHub — Auditoria de Marketing & Crescimento",
+    "categoria": "projeto/prospecção",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "Brazil FoodHub — Auditoria de Marketing & Crescimento"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/prospeccao/aborda_compliance_foodhub.html",
+    "nome_sugerido": "Aba — Roteiro Primeira Conversa FoodHub",
+    "categoria": "projeto/prospecção",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "Aba — Roteiro Primeira Conversa FoodHub"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/prospeccao/command_center.html",
+    "nome_sugerido": "Prospecção · Command Center",
+    "categoria": "dashboard",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "Prospecção · Command Center"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/prospeccao/crm_unificado.html",
+    "nome_sugerido": "CRM Ação — Foco em Resultados",
+    "categoria": "crm",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "CRM Ação — Foco em Resultados"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/prospeccao/fluxo_b2b.html",
+    "nome_sugerido": "Fluxo B2B — Founder/Head + Design/Produto",
+    "categoria": "projeto/prospecção",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "Fluxo B2B — Founder/Head + Design/Produto"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/prospeccao/hunter_central.html",
+    "nome_sugerido": "Central Prospecção",
+    "categoria": "projeto/prospecção",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "Central Prospecção"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/prospeccao/hunter_vagas.html",
+    "nome_sugerido": "Hunter de Vagas — Pipeline Hermes",
+    "categoria": "projeto/operações",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "Hunter de Vagas — Pipeline Hermes"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/prospeccao/index.html",
+    "nome_sugerido": "Prospecção",
+    "categoria": "projeto/prospecção",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "Prospecção"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/prospeccao/kanban_disparos.html",
+    "nome_sugerido": "Prospecção · Kanban de Disparos",
+    "categoria": "projeto/operações",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "Prospecção · Kanban de Disparos"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/prospeccao/questionario_compliance_foodhub.html",
+    "nome_sugerido": "Questionário Compliance — FoodHub",
+    "categoria": "projeto/prospecção",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "Questionário Compliance — FoodHub"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/prospeccao/rotina-vagas_plus.html",
+    "nome_sugerido": "Career OS — Flávio Guedes",
+    "categoria": "projeto/prospecção",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "Career OS — Flávio Guedes"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/radar-comunidades/index.html",
+    "nome_sugerido": "Radar de Comunidades — EPQ",
+    "categoria": "dashboard",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "Radar de Comunidades — EPQ"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/upwork-black/dashboard.html",
+    "nome_sugerido": "Freela Black Project Radar",
+    "categoria": "projeto",
+    "url_pages_conhecida": "https://flavio-guedes.github.io/portfolio/parceria.html",
+    "candidato_card_github_map": true,
+    "titulo_html": "Freela Black Project Radar"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/web-editor/index.html",
+    "nome_sugerido": "Editor Ultra Prático",
+    "categoria": "ferramenta/agente",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "Editor Ultra Prático"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/cerebro/radar-de-vagas/index.html",
+    "nome_sugerido": "Radar de Vagas",
+    "categoria": "dashboard",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "Radar de Vagas"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/design-intelligence/dashboards/index.html",
+    "nome_sugerido": "Design Intelligence Dashboard",
+    "categoria": "dashboard",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "Design Intelligence Dashboard"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/docs/freela-black-project/FREELA-BLACK-PROJECT.html",
+    "nome_sugerido": "Freela Black Project",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "Freela Black Project"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/epq-temp/painel-estrutura/index.html",
+    "nome_sugerido": "Drive EPQ · Painel de Estrutura",
+    "categoria": "dashboard",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "Drive EPQ · Painel de Estrutura"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/hermes-guide/dist/index.html",
+    "nome_sugerido": "Hermes Guide",
+    "categoria": "ferramenta/agente",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "Hermes Guide"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/prospeccao/dashboard/alertas-vagas.html",
+    "nome_sugerido": "Alertas de Vagas — Job Intelligence OS",
+    "categoria": "dashboard",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "Alertas de Vagas — Job Intelligence OS"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/prospeccao/dashboard/index.html",
+    "nome_sugerido": "HERMES — AI Job Intelligence",
+    "categoria": "dashboard",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "HERMES — AI Job Intelligence"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/prospeccao/dashboard/job-radar.html",
+    "nome_sugerido": "Job Radar — Career OS",
+    "categoria": "dashboard",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "Job Radar — Career OS"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/prospeccao/linkedin/linkedin_jobs_dashboard.html",
+    "nome_sugerido": "LinkedIn Job Hunter — Flavio Guedes",
+    "categoria": "dashboard",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "LinkedIn Job Hunter — Flavio Guedes"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/prospeccao/lps/juridico.html",
+    "nome_sugerido": "Consultoria Jurídica Estratégica · Análise Estratégica",
+    "categoria": "projeto",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "Consultoria Jurídica Estratégica · Análise Estratégica"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/prospeccao/lps/template-base.html",
+    "nome_sugerido": "{{TITLE}}",
+    "categoria": "ferramenta/agente",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "{{TITLE}}"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/cerebro/outputs/cerebro/index.html",
+    "nome_sugerido": "Hermes — Cérebro",
+    "categoria": "ferramenta/agente",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": true,
+    "titulo_html": "Hermes — Cérebro"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/cerebro/outputs/hermes-design-dna/index.html",
+    "nome_sugerido": "Hermes — Design DNA Prototype",
+    "categoria": "ferramenta/agente",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "Hermes — Design DNA Prototype"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/design-intelligence/projects/portfolio-redator/index.html",
+    "nome_sugerido": "Portfolio — Redator & Copywriter",
+    "categoria": "documento/design",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "Portfolio — Redator & Copywriter"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/hermes-guide/src/popup/index.html",
+    "nome_sugerido": "Hermes Guide",
+    "categoria": "ferramenta/agente",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "Hermes Guide"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/prospeccao/dashboard/repertoire/index.html",
+    "nome_sugerido": "HERMES — Painel de Treino de Repertório",
+    "categoria": "ferramenta/agente",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "HERMES — Painel de Treino de Repertório"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/hermes-guide/node_modules/crx/coverage/crx.js.html",
+    "nome_sugerido": "Code coverage report for crx.js",
+    "categoria": "infraestrutura",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "Code coverage report for crx.js"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/hermes-guide/node_modules/crx/coverage/index.html",
+    "nome_sugerido": "Code coverage report for All files",
+    "categoria": "infraestrutura",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "Code coverage report for All files"
+  },
+  {
+    "caminho": "/Users/mac/HermesWorkspace/hermes-guide/node_modules/crx/coverage/resolver.js.html",
+    "nome_sugerido": "Code coverage report for resolver.js",
+    "categoria": "infraestrutura",
+    "url_pages_conhecida": "",
+    "candidato_card_github_map": false,
+    "titulo_html": "Code coverage report for resolver.js"
+  }
+]

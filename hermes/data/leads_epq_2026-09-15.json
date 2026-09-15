@@ -1,0 +1,1085 @@
+{
+  "gerado_em": "2026-09-15T00:30:00-03:00",
+  "fonte": "Google Sheets — aba Leads (1wD4Xi5HGq680i27WdFm1Ym4aNiTHnShJYTYrQe8g5hs)",
+  "responsaveis": null,
+  "contagem": {
+    "total": 42,
+    "por_prioridade": {
+      "P0": 9,
+      "P1": 13,
+      "P2": 19,
+      "P3": 1
+    },
+    "por_intencao": {
+      "quente": 4,
+      "morno": 14,
+      "frio": 24
+    },
+    "por_responsavel": {
+      "Andressa": 14,
+      "Clara": 13,
+      "Ronan": 15
+    },
+    "sem_telefone": 6,
+    "com_mensagem_pronta": 42
+  },
+  "notas_contexto": [
+    "Aulão de 12/09 já realizado — nenhuma nova mensagem deve convidar para ele.",
+    "GCM Maricá: primeira turma abriu em 14/09. GCM São Gonçalo: previsão de início 19/09.",
+    "Valores documentados no CRM: combo GCM R$1.945,50 à vista (~R$332/mês) ou 5x R$389,50 Pix; GCM Maricá R$300/mês Pix / R$330 cartão; PMERJ noturno semanal 5x R$300 Pix / R$330 cartão + material R$50 + camisa R$75.",
+    "Acesso de gravação à planilha (API) está BLOQUEADO: token OAuth revogado/expirado — exigirá reautorização (1 clique no navegador).",
+    "Regras da operação: responder pergunta objetiva antes de vender; não repetir o que o lead já informou."
+  ],
+  "leads": [
+    {
+      "id": 1,
+      "data_entrada": "2026-09-10",
+      "nome": "Flávio Luiz dos Santos",
+      "whatsapp_raw": "(21) 99971-9474",
+      "e164": "5521999719474",
+      "jid": "5521999719474@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "GCM Maricá combo",
+      "etapa": "Qualificado",
+      "responsavel": "Andressa",
+      "ultima_interacao": "2026-09-10",
+      "observacao": "Lead quente GCM combo. Pediu horário e valor. Recebeu tabela combo R$1.945,50 à vista / 5x R$389,50 Pix. Confirmou nome completo para aulão 12/09. Objeção: não pode ir ao aulão presencial porque precisa levar filho ao concurso ESPCEX na Tijuca no mesmo dia. Team ofereceu aula experimental online ou outro dia. Tom de objeção real mas negociável.",
+      "analise": {
+        "prioridade": "P0",
+        "intencao": "quente",
+        "concurso": "GCM Maricá combo",
+        "motivo_parada": "Objeção real (filho no ESPCEX no dia do aulão) — negociável; precisa de alternativa à aula presencial."
+      },
+      "mensagem_pronta": "Flávio, sobre o aulão de sábado: entendo perfeitamente a questão do seu filho no ESPCEX. A gente consegue fazer sua aula experimental de outro jeito — online ou em outra data. Quer que eu já agende?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 2,
+      "data_entrada": "2026-09-11",
+      "nome": "Ramon Cerqueira",
+      "whatsapp_raw": "(21) 96660-4178",
+      "e164": "5521966604178",
+      "jid": "5521966604178@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "GCM Maricá",
+      "etapa": "Negociação",
+      "responsavel": "Andressa",
+      "ultima_interacao": "2026-09-11",
+      "observacao": "Lead quente GCM Maricá. Recebeu oferta turma noite (19h-22h, 2a-6a, 5 meses) + convite aula experimental. Valor: R$300/mês Pix ou R$330 cartão. Lead: 'vou resolver uma situação referente ao trabalho' e 'o valor tem que ser pago assim que faz a matrícula?'. Confirmou 'GCM de Maricá, que vai abrir agora'. Pediu prazo: 'Resolvendo já entro em contato'. LEAD QUENTE - esperando resolução do trabalho para fechar.",
+      "analise": {
+        "prioridade": "P0",
+        "intencao": "quente",
+        "concurso": "GCM Maricá",
+        "motivo_parada": "Aguardando resolução de situação no trabalho antes de fechar; pediu prazo e retornar espontaneamente."
+      },
+      "mensagem_pronta": "Ramon, conseguiu resolver aquela situação do trabalho? Se já estiver tudo certo, posso te orientar sobre o próximo passo da matrícula.",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 3,
+      "data_entrada": "2026-09-09",
+      "nome": "Brenda",
+      "whatsapp_raw": "(21) 96997-7512",
+      "e164": "5521969977512",
+      "jid": "5521969977512@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "INSS",
+      "etapa": "Proposta Enviada",
+      "responsavel": "Andressa",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Perguntou localização da unidade e valor da turma INSS. Recebeu endereço + tabela completa de valores. Parou após receber os valores - sem confirmar visita ou aula experimental. Único lead de concurso não policial/militar.",
+      "analise": {
+        "prioridade": "P1",
+        "intencao": "morno",
+        "concurso": "INSS",
+        "motivo_parada": "Recebeu valores e parou — possível objeção de preço não declarada; reengajar com aula experimental."
+      },
+      "mensagem_pronta": "Brenda, você chegou a avaliar a turma de INSS que te passei? Se quiser, te oriento sobre a aula experimental — é um bom jeito de testar antes de decidir.",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 4,
+      "data_entrada": "2026-09-09",
+      "nome": "Guilherme",
+      "whatsapp_raw": "(21) 97431-6907",
+      "e164": "5521974316907",
+      "jid": "5521974316907@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "GCM Maricá / São Gonçalo",
+      "etapa": "Proposta Enviada",
+      "responsavel": "Andressa",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Perguntou dias e preços do combo GCM. Recebeu tabela completa (R$1.945,50 à vista ≈ R$332/mês ou 5x R$389,50 Pix). Parou sem confirmar presença no aulão de 12/09.",
+      "analise": {
+        "prioridade": "P1",
+        "intencao": "morno",
+        "concurso": "GCM Maricá / São Gonçalo",
+        "motivo_parada": "Recebeu tabela combo e parou — não confirmou aulão; reengajar com tour da turma aberta."
+      },
+      "mensagem_pronta": "Guilherme, a turma de GCM Maricá acabou de abrir. Você recebeu a tabela do combo — prefere manhã, noite ou sábado? Se quiser, te reservo uma aula experimental.",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 5,
+      "data_entrada": "2026-09-09",
+      "nome": "Lead PRF (sem nome)",
+      "whatsapp_raw": "(21) 98055-5629",
+      "e164": "5521980555629",
+      "jid": "5521980555629@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "PRF Agente Administrativo",
+      "etapa": "Proposta Enviada",
+      "responsavel": "Clara",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Perguntou inscrição, requisitos, edital e valores do concurso PRF. Recebeu mensagem genérica de boas-vindas - SEM responder às 4 perguntas reais. Conversa parou aqui. URGENTE: responder às 4 perguntas concretas (inscrição, requisitos, edital vigente, valores) + oferecer aula experimental.",
+      "analise": {
+        "prioridade": "P0",
+        "intencao": "morno",
+        "concurso": "PRF Agente Administrativo",
+        "motivo_parada": "Perguntas concretas (inscrição, requisitos, edital, valores) nunca respondidas — atendimento falhou."
+      },
+      "mensagem_pronta": "Voltando pras suas perguntas, direto:\n• Inscrição: ainda não abriu — o edital oficial não foi publicado, mas assim que sair a gente te orienta.\n• Requisitos e valores do preparatório: vou confirmar com a equipe e te retorno hoje, pra não te passar nada errado.\nQuer que eu já separe uma aula experimental de PRF em paralelo?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 6,
+      "data_entrada": "2026-09-09",
+      "nome": "Andressa (sem nome) - PMERJ",
+      "whatsapp_raw": "(21) 98294-6742",
+      "e164": "5521982946742",
+      "jid": "5521982946742@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "PMERJ (digitado PMERG)",
+      "etapa": "Contato Feito",
+      "responsavel": "Andressa",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Equipe respondeu com erro de digitação 'PMERG' em vez de 'PMERJ'. Lead disse 'Sim' mas sem informar nome. Parou - parece que nem percebeu a conversa estava ativa. Retomar com nome correto PMERJ, sem erro de digitação. Perguntar turno preferido.",
+      "analise": {
+        "prioridade": "P0",
+        "intencao": "morno",
+        "concurso": "PMERJ",
+        "motivo_parada": "Erro de digitação 'PMERG' + lead não percebeu conversa ativa; retomar com PMERJ e perguntar turno."
+      },
+      "mensagem_pronta": "Retomando: você tinha demonstrado interesse no PMERJ. Pra te encaixar na turma certa — noite ou sábado funcionaria pra você?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 7,
+      "data_entrada": "2026-09-09",
+      "nome": "Douglas",
+      "whatsapp_raw": "(21) 99043-9709 (1)",
+      "e164": "5521990439709",
+      "jid": "5521990439709@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "GCM Maricá",
+      "etapa": "Proposta Enviada",
+      "responsavel": "Andressa",
+      "ultima_interacao": "2026-09-10",
+      "observacao": "Perguntou 'Esse concurso é real mesmo?'. Equipe confirmou. Continuou em 10/09 sem resposta do lead. Dúvida de legitimidade do concurso.",
+      "analise": {
+        "prioridade": "P1",
+        "intencao": "morno",
+        "concurso": "GCM Maricá",
+        "motivo_parada": "Dúvida de legitimidade do concurso; precisa de reforço de credibilidade + prova prática."
+      },
+      "mensagem_pronta": "Douglas, você perguntou se o concurso de GCM Maricá é real — é, sim, e inclusive a primeira turma já está abrindo. Pra você ver na prática como é a preparação, quer fazer uma aula experimental?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 8,
+      "data_entrada": "2026-09-09",
+      "nome": "Marcelo",
+      "whatsapp_raw": "(21) 99228-3360 (1)",
+      "e164": "5521992283360",
+      "jid": "5521992283360@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "GCM Queimados",
+      "etapa": "Proposta Enviada",
+      "responsavel": "Clara",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Perguntou preparatório GCM Queimados. Recebeu detalhes das turmas de manhã, noite e sábado. Parou sem confirmar qual turno prefere.",
+      "analise": {
+        "prioridade": "P1",
+        "intencao": "morno",
+        "concurso": "GCM Queimados",
+        "motivo_parada": "Recebeu turmas e parou sem escolher turno; fechar a escolha de turno."
+      },
+      "mensagem_pronta": "Marcelo, as turmas de GCM Queimados são de manhã, noite e sábado. Qual encaixa melhor na sua rotina?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 9,
+      "data_entrada": "2026-09-09",
+      "nome": "Andressa (sem nome) - GCM noturno",
+      "whatsapp_raw": "(21) 99812-7074",
+      "e164": "5521998127074",
+      "jid": "5521998127074@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "GCM Maricá noturno",
+      "etapa": "Proposta Enviada",
+      "responsavel": "Andressa",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Confirmou GCM noturno. Recebeu detalhes da turma combo (19h-22h, 2a-6a, 5 meses) + convite para aulão de 12/09. Parou sem confirmar presença no aulão.",
+      "analise": {
+        "prioridade": "P1",
+        "intencao": "morno",
+        "concurso": "GCM Maricá noturno",
+        "motivo_parada": "Confirmou GCM noturno mas não confirmou aulão; aulão passou — usar turma aberta como gatilho."
+      },
+      "mensagem_pronta": "A turma de GCM Maricá abriu essa semana, noturno das 19h às 22h. Consegue decidir o horário? Se preferir, agendo uma visita na unidade pra você conhecer de perto.",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 10,
+      "data_entrada": "2026-09-10",
+      "nome": "Elen PMERJ",
+      "whatsapp_raw": "(21) 99043-9709 (2)",
+      "e164": "5521990439709",
+      "jid": "5521990439709@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "PMERJ noturno semanal",
+      "etapa": "Proposta Enviada",
+      "responsavel": "Andressa",
+      "ultima_interacao": "2026-09-10",
+      "observacao": "Perguntou informações sobre PMERJ noturno semanal. Recebeu valores (5x R$300 Pix / R$330 cartão + material R$50 + camisa R$75). Oferecido aulão de 12/09. Lead disse 'Entendi' e afirmou ser de Nilópolis. Parou após receber valores. Lead em período de repouso médico.",
+      "analise": {
+        "prioridade": "P1",
+        "intencao": "morno",
+        "concurso": "PMERJ noturno semanal",
+        "motivo_parada": "Recebeu valores, disse 'Entendi'; repouso médico — sem pressa, reservar aula na próxima semana."
+      },
+      "mensagem_pronta": "Elen, você mencionou que está de repouso — sem pressa. Quando estiver melhor, a turma de PMERJ segue aberta. Quer que eu deixe uma aula experimental reservada pra próxima semana?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 11,
+      "data_entrada": "2026-09-10",
+      "nome": "Mateus PMERJ",
+      "whatsapp_raw": "n/a",
+      "e164": null,
+      "jid": null,
+      "origem": "Meta Ads",
+      "turma": "PMERJ / PC / PRF / PF / Secretarias",
+      "etapa": "Contato Feito",
+      "responsavel": "Clara",
+      "ultima_interacao": "2026-09-10",
+      "observacao": "Pediu informações de vários concursos militares. Recebeu oferta GCM + convite para aulão de 12/09. Lead não confirmou. Enviou imagem do aulão e convidou para garantir vaga.",
+      "analise": {
+        "prioridade": "P1",
+        "intencao": "morno",
+        "concurso": "PMERJ / PC / PRF / PF / Secretarias",
+        "motivo_parada": "Sem telefone; prioridade difusa (vários concursos); definir o concurso-alvo."
+      },
+      "mensagem_pronta": "Das opções que você trouxe (PMERJ, PC, PRF, PF), qual é a prioridade pra você agora? Focando nela, te passo a turma e a aula experimental certa.",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "sem_numero"
+      }
+    },
+    {
+      "id": 12,
+      "data_entrada": "2026-09-11",
+      "nome": "Raquel PMERJ",
+      "whatsapp_raw": "(21) 98762-5333",
+      "e164": "5521987625333",
+      "jid": "5521987625333@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "PMERJ",
+      "etapa": "Proposta Enviada",
+      "responsavel": "Andressa",
+      "ultima_interacao": "2026-09-11",
+      "observacao": "Perguntou informações. Equipe identificou interesse em PMERJ e ofereceu GCM Maricá e São Gonçalo. A conversa parou aqui - sem oferta de valores ou aula experimental para PMERJ, apenas oferta GCM. Raquel nunca foi atendida com a oferta real do concurso que ela quer (PMERJ). URGENTE: oferecer valores e aula experimental da turma PMERJ (não GCM).",
+      "analise": {
+        "prioridade": "P0",
+        "intencao": "quente",
+        "concurso": "PMERJ",
+        "motivo_parada": "Equipe desviou conversa para GCM; nunca recebeu oferta real de PMERJ — corrigir rota."
+      },
+      "mensagem_pronta": "Retomando aqui — seu interesse era PMERJ, certo? A turma noturna sai por 5x de R$300 no Pix ou R$330 no cartão (material R$50 e camisa R$75 à parte). Você prefere noite ou sábado? Se quiser, já te alinho uma aula experimental de PMERJ.",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 13,
+      "data_entrada": "2026-09-09",
+      "nome": "Bergdias GCM - Gutemberg",
+      "whatsapp_raw": "n/a",
+      "e164": null,
+      "jid": null,
+      "origem": "Meta Ads",
+      "turma": "GCM Maricá",
+      "etapa": "Proposta Enviada",
+      "responsavel": "Andressa",
+      "ultima_interacao": "2026-09-12",
+      "observacao": "Em 12/09 às 9:18 enviou nome e concurso. Equipe listou turmas (manhã/noite/sábado) e ofereceu aula experimental. Ainda aguardando disponibilidade. Turno GCM Maricá definido.",
+      "analise": {
+        "prioridade": "P1",
+        "intencao": "morno",
+        "concurso": "GCM Maricá",
+        "motivo_parada": "Sem telefone; aguardando disponibilidade da aula experimental."
+      },
+      "mensagem_pronta": "Gutemberg, você chegou a fechar o horário da aula experimental de GCM Maricá? Se me confirmar o turno, já te garanto a vaga.",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "sem_numero"
+      }
+    },
+    {
+      "id": 14,
+      "data_entrada": "2026-09-12",
+      "nome": "Karen Ribeiro GCM",
+      "whatsapp_raw": "n/a",
+      "e164": null,
+      "jid": null,
+      "origem": "Meta Ads",
+      "turma": "GCM Maricá",
+      "etapa": "Proposta Enviada",
+      "responsavel": "Clara",
+      "ultima_interacao": "2026-09-12",
+      "observacao": "Em 12/09 às 9:14 enviou nome 'Karen', turno 'Noite' e frequência 'Semanal'. Equipe perguntou disponibilidade de horário. Ainda sem resposta sobre horário concreto. Turno noite, semanal.",
+      "analise": {
+        "prioridade": "P1",
+        "intencao": "morno",
+        "concurso": "GCM Maricá",
+        "motivo_parada": "Sem telefone; aguardando horário concreto (noite definido, horário não)."
+      },
+      "mensagem_pronta": "Karen, vou confirmar a turma pra você: turno noite, certo? Qual horário funciona melhor, 19h? Assim já te garanto a vaga.",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "sem_numero"
+      }
+    },
+    {
+      "id": 15,
+      "data_entrada": "2026-09-12",
+      "nome": "Andreia Moreira CNU",
+      "whatsapp_raw": "n/a",
+      "e164": null,
+      "jid": null,
+      "origem": "Meta Ads",
+      "turma": "CNU Queimados Assistente Administrativo",
+      "etapa": "Contato Feito",
+      "responsavel": "Andressa",
+      "ultima_interacao": "2026-09-14",
+      "observacao": "Perguntou em 12/09 às 12:33 sobre 'turma pro concurso de Queimados Assistente Administrativo'. Equipe só respondeu no dia 14/09 às 8:58 (~44h depois) com mensagem genérica sobre viabilidade. Ponto de atenção: resposta tardia + genérica, sem data estimada de abertura.",
+      "analise": {
+        "prioridade": "P0",
+        "intencao": "morno",
+        "concurso": "CNU Queimados Assistente Administrativo",
+        "motivo_parada": "Sem telefone; resposta tardia + genérica da equipe; sem data de abertura."
+      },
+      "mensagem_pronta": "Andreia, sobre Queimados — Assistente Administrativo: a gente ainda está validando a data de abertura do edital. Assim que confirmar, te aviso em primeiro lugar. Enquanto isso, quer uma aula experimental pra já começar a preparação?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "sem_numero"
+      }
+    },
+    {
+      "id": 16,
+      "data_entrada": "2026-09-09",
+      "nome": "Walber Nunes",
+      "whatsapp_raw": "(21) 96768-8448",
+      "e164": "5521967688448",
+      "jid": "5521967688448@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "PMERJ",
+      "etapa": "Contato Feito",
+      "responsavel": "Andressa",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Perguntou 'Só tem em Nilópolis?' - pergunta direta que decide se ele continua ou desiste. Equipe NÃO respondeu essa pergunta. Conversa parou aqui.",
+      "analise": {
+        "prioridade": "P0",
+        "intencao": "morno",
+        "concurso": "PMERJ",
+        "motivo_parada": "Pergunta direta (unidade Nilópolis) sem resposta — decidir continuidade."
+      },
+      "mensagem_pronta": "Walber, a unidade principal é em Nilópolis mesmo. Se você mora mais longe, me diz seu bairro que eu avalio a melhor opção de turma pra você.",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 17,
+      "data_entrada": "2026-09-09",
+      "nome": "Lead noturno (sem nome)",
+      "whatsapp_raw": "(21) 98563-3062",
+      "e164": "5521985633062",
+      "jid": "5521985633062@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "PMERJ",
+      "etapa": "Contato Feito",
+      "responsavel": "Clara",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Perguntou 'boa noite' e 'pmerj'. Equipe ofereceu turno. Lead não respondeu sobre qual turno prefere. Conversa parou.",
+      "analise": {
+        "prioridade": "P1",
+        "intencao": "morno",
+        "concurso": "PMERJ",
+        "motivo_parada": "Equipe perguntou turno e lead não respondeu; retomar turno."
+      },
+      "mensagem_pronta": "Você tinha chamado sobre PMERJ. A turma que você procura é pra noite ou sábado?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 18,
+      "data_entrada": "2026-09-11",
+      "nome": "Andressa (sem nome) - PMERJ 1",
+      "whatsapp_raw": "(21) 98254-5234",
+      "e164": "5521982545234",
+      "jid": "5521982545234@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "PMERJ",
+      "etapa": "Contato Feito",
+      "responsavel": "Andressa",
+      "ultima_interacao": "2026-09-11",
+      "observacao": "Equipe pediu nome. Sem resposta do lead.",
+      "analise": {
+        "prioridade": "P1",
+        "intencao": "frio",
+        "concurso": "PMERJ",
+        "motivo_parada": "Equipe pediu nome; sem resposta."
+      },
+      "mensagem_pronta": "Retomando aqui: você chegou a definir qual concurso quer? Se for PMERJ, te passo a turma certa. Quer uma aula experimental pra testar?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 19,
+      "data_entrada": "2026-09-11",
+      "nome": "Andressa (sem nome) - GCM",
+      "whatsapp_raw": "(21) 98839-3147",
+      "e164": "5521988393147",
+      "jid": "5521988393147@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "GCM Maricá / São Gonçalo",
+      "etapa": "Contato Feito",
+      "responsavel": "Andressa",
+      "ultima_interacao": "2026-09-11",
+      "observacao": "Equipe pediu nome e área. Sem resposta.",
+      "analise": {
+        "prioridade": "P1",
+        "intencao": "frio",
+        "concurso": "GCM Maricá / São Gonçalo",
+        "motivo_parada": "Equipe pediu nome/área; sem resposta."
+      },
+      "mensagem_pronta": "Retomando: a turma de GCM Maricá acabou de abrir. Você chegou a definir o concurso que quer seguir? Se quiser, te explico como funciona a aula experimental.",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 20,
+      "data_entrada": "2026-09-09",
+      "nome": "Gustavo",
+      "whatsapp_raw": "(21) 96429-4767",
+      "e164": "5521964294767",
+      "jid": "5521964294767@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "PMERJ",
+      "etapa": "Novo Lead",
+      "responsavel": "Ronan",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Perguntou informações sobre o concurso. Equipe respondeu com erro de digitação 'PMERG' em vez de PMERJ. Sem follow-up do lead.",
+      "analise": {
+        "prioridade": "P0",
+        "intencao": "frio",
+        "concurso": "PMERJ",
+        "motivo_parada": "Erro de digitação 'PMERG'; sem follow-up posterior."
+      },
+      "mensagem_pronta": "Retomando de onde a gente parou: você buscava informações do PMERJ. Se for fechar turma, prefere noite ou sábado? Se quiser, te explico como funciona a aula experimental.",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 21,
+      "data_entrada": "2026-09-09",
+      "nome": "Andressa (sem nome) - GCM 1628",
+      "whatsapp_raw": "(21) 96526-1628",
+      "e164": "5521965261628",
+      "jid": "5521965261628@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "GCM Maricá",
+      "etapa": "Novo Lead",
+      "responsavel": "Ronan",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Clicou no anúncio GCM Maricá. Equipe apresentou e pediu nome. Sem resposta do lead.",
+      "analise": {
+        "prioridade": "P2",
+        "intencao": "frio",
+        "concurso": "GCM Maricá",
+        "motivo_parada": "Só clique + pedido de nome; sem resposta."
+      },
+      "mensagem_pronta": "Você chamou sobre GCM Maricá. A turma acabou de abrir — prefere manhã, noite ou sábado? Quer uma aula experimental?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 22,
+      "data_entrada": "2026-09-09",
+      "nome": "Andressa (sem nome) - PMERJ 9476",
+      "whatsapp_raw": "(21) 96532-9476",
+      "e164": "5521965329476",
+      "jid": "5521965329476@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "PMERJ",
+      "etapa": "Novo Lead",
+      "responsavel": "Ronan",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Clicou no anúncio PMERJ. Equipe pediu nome e concurso. Sem resposta.",
+      "analise": {
+        "prioridade": "P2",
+        "intencao": "frio",
+        "concurso": "PMERJ",
+        "motivo_parada": "Clique PMERJ; sem resposta."
+      },
+      "mensagem_pronta": "Você tinha chamado sobre PMERJ. A turma que você procura é pra noite ou sábado?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 23,
+      "data_entrada": "2026-09-09",
+      "nome": "Andressa (sem nome) - PMERJ 4076",
+      "whatsapp_raw": "(21) 97025-4076",
+      "e164": "5521970254076",
+      "jid": "5521970254076@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "PMERJ",
+      "etapa": "Novo Lead",
+      "responsavel": "Ronan",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Equipe pediu nome. Sem resposta do lead.",
+      "analise": {
+        "prioridade": "P2",
+        "intencao": "frio",
+        "concurso": "PMERJ",
+        "motivo_parada": "Pedido de nome; sem resposta."
+      },
+      "mensagem_pronta": "Retomando: você chegou a definir o concurso que quer? Se me disser, te passo a turma certa.",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 24,
+      "data_entrada": "2026-09-09",
+      "nome": "Andressa (sem nome) - PMERJ 9106",
+      "whatsapp_raw": "(21) 97030-9106",
+      "e164": "5521970309106",
+      "jid": "5521970309106@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "PMERJ",
+      "etapa": "Novo Lead",
+      "responsavel": "Ronan",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Clicou no anúncio. Equipe pediu nome. Sem resposta.",
+      "analise": {
+        "prioridade": "P2",
+        "intencao": "frio",
+        "concurso": "PMERJ",
+        "motivo_parada": "Clique PMERJ; sem resposta."
+      },
+      "mensagem_pronta": "Você tinha chamado sobre PMERJ. Se quiser, te passo as próximas opções de turma e uma aula experimental.",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 25,
+      "data_entrada": "2026-09-09",
+      "nome": "Andressa (sem nome) - GCM 4965",
+      "whatsapp_raw": "(21) 97735-4965",
+      "e164": "5521977354965",
+      "jid": "5521977354965@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "GCM Maricá",
+      "etapa": "Novo Lead",
+      "responsavel": "Ronan",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Equipe pediu nome. Sem resposta.",
+      "analise": {
+        "prioridade": "P2",
+        "intencao": "frio",
+        "concurso": "GCM Maricá",
+        "motivo_parada": "Pedido de nome; sem resposta."
+      },
+      "mensagem_pronta": "Você chamou sobre GCM Maricá. A turma acabou de abrir — prefere manhã, noite ou sábado? Quer uma aula experimental?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 26,
+      "data_entrada": "2026-09-09",
+      "nome": "Andressa (sem nome) - PMERJ 4969",
+      "whatsapp_raw": "(21) 98297-4969",
+      "e164": "5521982974969",
+      "jid": "5521982974969@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "PMERJ",
+      "etapa": "Novo Lead",
+      "responsavel": "Ronan",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Mandou mensagem às 23h54. Equipe só respondeu às 10h28 do dia seguinte (~10h30 de espera). Pediu nome. Sem resposta. Atraso de ~10h30 em retomar.",
+      "analise": {
+        "prioridade": "P2",
+        "intencao": "frio",
+        "concurso": "PMERJ",
+        "motivo_parada": "Resposta da equipe ~10h30 após lead; sem resposta seguinte."
+      },
+      "mensagem_pronta": "Você tinha chamado sobre PMERJ. A turma que você procura é pra noite ou sábado?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 27,
+      "data_entrada": "2026-09-09",
+      "nome": "Andressa (sem nome) - PMERJ 7968",
+      "whatsapp_raw": "(21) 98377-7968",
+      "e164": "5521983777968",
+      "jid": "5521983777968@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "PMERJ",
+      "etapa": "Novo Lead",
+      "responsavel": "Ronan",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Equipe pediu nome. Sem resposta.",
+      "analise": {
+        "prioridade": "P2",
+        "intencao": "frio",
+        "concurso": "PMERJ",
+        "motivo_parada": "Pedido de nome; sem resposta."
+      },
+      "mensagem_pronta": "Retomando: você chegou a definir o concurso que quer? Se me disser, te passo a turma certa.",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 28,
+      "data_entrada": "2026-09-09",
+      "nome": "Andressa (sem nome) - PMERJ 7500",
+      "whatsapp_raw": "(21) 98699-7500",
+      "e164": "5521986997500",
+      "jid": "5521986997500@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "PMERJ",
+      "etapa": "Novo Lead",
+      "responsavel": "Clara",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Equipe pediu nome. Sem resposta.",
+      "analise": {
+        "prioridade": "P2",
+        "intencao": "frio",
+        "concurso": "PMERJ",
+        "motivo_parada": "Pedido de nome; sem resposta."
+      },
+      "mensagem_pronta": "Retomando: você chegou a definir qual concurso quer? Se for PMERJ, te passo a turma certa. Quer uma aula experimental pra testar?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 29,
+      "data_entrada": "2026-09-09",
+      "nome": "Andressa (sem nome) - sem info",
+      "whatsapp_raw": "(21) 99042-1362",
+      "e164": "5521990421362",
+      "jid": "5521990421362@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "Não informado",
+      "etapa": "Novo Lead",
+      "responsavel": "Ronan",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Equipe pediu nome e concurso. Sem resposta.",
+      "analise": {
+        "prioridade": "P2",
+        "intencao": "frio",
+        "concurso": "Não informado",
+        "motivo_parada": "Pedido de nome/concurso; sem resposta."
+      },
+      "mensagem_pronta": "Retomando por aqui: você chegou a definir qual concurso quer (PMERJ ou GCM)? Se me disser, te passo a turma certa.",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 30,
+      "data_entrada": "2026-09-09",
+      "nome": "Andressa (sem nome) - GCM 1964",
+      "whatsapp_raw": "(21) 99605-1964",
+      "e164": "5521996051964",
+      "jid": "5521996051964@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "GCM Maricá",
+      "etapa": "Novo Lead",
+      "responsavel": "Clara",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Equipe pediu nome. Sem resposta.",
+      "analise": {
+        "prioridade": "P2",
+        "intencao": "frio",
+        "concurso": "GCM Maricá",
+        "motivo_parada": "Pedido de nome; sem resposta."
+      },
+      "mensagem_pronta": "Você chamou sobre GCM Maricá. A turma acabou de abrir — prefere manhã, noite ou sábado? Quer uma aula experimental?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 31,
+      "data_entrada": "2026-09-09",
+      "nome": "Andressa (sem nome) - sem info 0254",
+      "whatsapp_raw": "(21) 99711-0254",
+      "e164": "5521997110254",
+      "jid": "5521997110254@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "Não informado",
+      "etapa": "Novo Lead",
+      "responsavel": "Ronan",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Equipe pediu nome. Sem resposta.",
+      "analise": {
+        "prioridade": "P2",
+        "intencao": "frio",
+        "concurso": "Não informado",
+        "motivo_parada": "Pedido de nome/concurso; sem resposta."
+      },
+      "mensagem_pronta": "Retomando por aqui: você chegou a definir qual concurso quer (PMERJ ou GCM)? Se me disser, te passo a turma certa.",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 32,
+      "data_entrada": "2026-09-09",
+      "nome": "Andressa (sem nome) - GCM 1224",
+      "whatsapp_raw": "(21) 98802-1224",
+      "e164": "5521988021224",
+      "jid": "5521988021224@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "GCM Maricá",
+      "etapa": "Novo Lead",
+      "responsavel": "Clara",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Só clicou no anúncio. Sem resposta.",
+      "analise": {
+        "prioridade": "P2",
+        "intencao": "frio",
+        "concurso": "GCM Maricá",
+        "motivo_parada": "Só clique; sem resposta."
+      },
+      "mensagem_pronta": "Você chamou sobre GCM Maricá. A turma acabou de abrir — prefere manhã, noite ou sábado? Quer uma aula experimental?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 33,
+      "data_entrada": "2026-09-09",
+      "nome": "Andressa (sem nome) - PMERJ 6720",
+      "whatsapp_raw": "(21) 99068-6720",
+      "e164": "5521990686720",
+      "jid": "5521990686720@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "PMERJ",
+      "etapa": "Novo Lead",
+      "responsavel": "Ronan",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Respondeu às 22h19. Equipe só respondeu às 9h06 do dia seguinte (~11h de espera). Pediu nome. Sem resposta. Atraso de ~11h em retomar.",
+      "analise": {
+        "prioridade": "P2",
+        "intencao": "frio",
+        "concurso": "PMERJ",
+        "motivo_parada": "Resposta da equipe ~11h após lead; sem resposta seguinte."
+      },
+      "mensagem_pronta": "Você tinha chamado sobre PMERJ. A turma que você procura é pra noite ou sábado?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 34,
+      "data_entrada": "2026-09-09",
+      "nome": "Andressa (sem nome) - PMERJ 3360",
+      "whatsapp_raw": "(21) 99228-3360",
+      "e164": "5521992283360",
+      "jid": "5521992283360@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "PMERJ",
+      "etapa": "Novo Lead",
+      "responsavel": "Clara",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Clicou no anúncio. Sem resposta.",
+      "analise": {
+        "prioridade": "P2",
+        "intencao": "frio",
+        "concurso": "PMERJ",
+        "motivo_parada": "Só clique; sem resposta."
+      },
+      "mensagem_pronta": "Retomando: você chegou a definir qual concurso quer? Se for PMERJ, te passo a turma certa. Quer uma aula experimental pra testar?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 35,
+      "data_entrada": "2026-09-09",
+      "nome": "Andressa (sem nome) - sem info clique",
+      "whatsapp_raw": "n/a",
+      "e164": null,
+      "jid": null,
+      "origem": "Meta Ads",
+      "turma": "PMERJ",
+      "etapa": "Novo Lead",
+      "responsavel": "Ronan",
+      "ultima_interacao": "2026-09-09",
+      "observacao": "Só registro de clique no anúncio. Sem interação real.",
+      "analise": {
+        "prioridade": "P3",
+        "intencao": "frio",
+        "concurso": "PMERJ",
+        "motivo_parada": "Sem interação real (só registro de clique); sem telefone."
+      },
+      "mensagem_pronta": "Você chamou sobre PMERJ. Se ainda estiver avaliando, posso te passar as próximas opções de turma e uma aula experimental.",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "sem_numero"
+      }
+    },
+    {
+      "id": 36,
+      "data_entrada": "2026-09-10",
+      "nome": "Andressa (sem nome) - Marinha",
+      "whatsapp_raw": "(21) 99838-0012",
+      "e164": "5521998380012",
+      "jid": "5521998380012@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "Marinha (não atendido)",
+      "etapa": "Novo Lead",
+      "responsavel": "Clara",
+      "ultima_interacao": "2026-09-10",
+      "observacao": "Perguntou sobre prova e inscrição marinha. Equipe respondeu com mensagem de voz e ofereceu aula experimental. Sem resposta do lead. Retomar com informação sobre inscrição de marinha (se houver) ou redirecionar para concurso disponível.",
+      "analise": {
+        "prioridade": "P2",
+        "intencao": "frio",
+        "concurso": "Marinha",
+        "motivo_parada": "Concurso Marinha não atendido; equipe respondeu com áudio; sem resposta do lead."
+      },
+      "mensagem_pronta": "Sobre Marinha: deixa eu confirmar com a equipe se atendemos esse concurso e te retorno. Enquanto isso, o que acha de conhecer a preparação com uma aula experimental?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 37,
+      "data_entrada": "2026-09-10",
+      "nome": "Leticia Bombeiro",
+      "whatsapp_raw": "n/a",
+      "e164": null,
+      "jid": null,
+      "origem": "Meta Ads",
+      "turma": "Bombeiro (não atendido)",
+      "etapa": "Novo Lead",
+      "responsavel": "Ronan",
+      "ultima_interacao": "2026-09-10",
+      "observacao": "Perguntou 'tem curso de bombeiro?'. Equipe ofereceu atendimento. Lead não respondeu sobre nome/concurso. Verificar disponibilidade de curso de bombeiro ou redirecionar para preparação de concursos afins.",
+      "analise": {
+        "prioridade": "P2",
+        "intencao": "frio",
+        "concurso": "Bombeiro",
+        "motivo_parada": "Curso Bombeiro não confirmado; sem telefone."
+      },
+      "mensagem_pronta": "Sobre Bombeiro: vou confirmar com a equipe se atendemos e te retorno. Quer conhecer uma aula experimental de preparação enquanto isso?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "sem_numero"
+      }
+    },
+    {
+      "id": 38,
+      "data_entrada": "2026-09-11",
+      "nome": "Flavio GCM",
+      "whatsapp_raw": "(21) 97492-7884",
+      "e164": "5521974927884",
+      "jid": "5521974927884@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "GCM Maricá / São Gonçalo",
+      "etapa": "Novo Lead",
+      "responsavel": "Clara",
+      "ultima_interacao": "2026-09-11",
+      "observacao": "Perguntou informações. Equipe ofereceu GCM Maricá e São Gonçalo a partir de 14/09 e 19/09. Pediu nome e área. Sem resposta.",
+      "analise": {
+        "prioridade": "P1",
+        "intencao": "frio",
+        "concurso": "GCM Maricá / São Gonçalo",
+        "motivo_parada": "Equipe ofereceu turmas a partir de 14/09 e 19/09; pediu nome; sem resposta."
+      },
+      "mensagem_pronta": "Flávio, a turma de GCM Maricá abriu (14/09) e São Gonçalo inicia dia 19/09. Qual delas você quer conhecer? Se quiser, te separo uma aula experimental.",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 39,
+      "data_entrada": "2026-09-11",
+      "nome": "Andressa (sem nome) - PMERJ 9657",
+      "whatsapp_raw": "(21) 97927-9657",
+      "e164": "5521979279657",
+      "jid": "5521979279657@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "PMERJ",
+      "etapa": "Novo Lead",
+      "responsavel": "Ronan",
+      "ultima_interacao": "2026-09-11",
+      "observacao": "Clicou no anúncio PMERJ. Equipe enviou mensagem genérica de clique. Sem resposta do lead.",
+      "analise": {
+        "prioridade": "P2",
+        "intencao": "frio",
+        "concurso": "PMERJ",
+        "motivo_parada": "Mensagem genérica de clique PMERJ; sem resposta."
+      },
+      "mensagem_pronta": "Você tinha chamado sobre PMERJ. A turma que você procura é pra noite ou sábado?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 40,
+      "data_entrada": "2026-09-11",
+      "nome": "Andressa (sem nome) - GCM 9716",
+      "whatsapp_raw": "(21) 98537-9716",
+      "e164": "5521985379716",
+      "jid": "5521985379716@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "GCM Maricá",
+      "etapa": "Novo Lead",
+      "responsavel": "Clara",
+      "ultima_interacao": "2026-09-11",
+      "observacao": "Perguntou informações. Equipe ofereceu GCM Maricá e São Gonçalo. Pediu nome e área. Sem resposta.",
+      "analise": {
+        "prioridade": "P2",
+        "intencao": "frio",
+        "concurso": "GCM Maricá",
+        "motivo_parada": "Pedido de nome/área; sem resposta."
+      },
+      "mensagem_pronta": "Você chamou sobre GCM Maricá. A turma acabou de abrir — prefere manhã, noite ou sábado? Quer uma aula experimental?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 41,
+      "data_entrada": "2026-09-11",
+      "nome": "Andressa (sem nome) - PMERJ 3534",
+      "whatsapp_raw": "(21) 98858-3534",
+      "e164": "5521988583534",
+      "jid": "5521988583534@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "PMERJ",
+      "etapa": "Novo Lead",
+      "responsavel": "Ronan",
+      "ultima_interacao": "2026-09-11",
+      "observacao": "Equipe ofereceu atendimento. Pediu nome, dúvida e concurso. Sem resposta do lead.",
+      "analise": {
+        "prioridade": "P2",
+        "intencao": "frio",
+        "concurso": "PMERJ",
+        "motivo_parada": "Pedido de nome/dúvida/concurso; sem resposta."
+      },
+      "mensagem_pronta": "Retomando: você chegou a definir qual concurso quer? Se for PMERJ, te passo a turma certa. Quer uma aula experimental pra testar?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    },
+    {
+      "id": 42,
+      "data_entrada": "2026-08-03",
+      "nome": "Lead de Mesquita - 97960-7938",
+      "whatsapp_raw": "(21) 97960-7938",
+      "e164": "5521979607938",
+      "jid": "5521979607938@s.whatsapp.net",
+      "origem": "Meta Ads",
+      "turma": "GCM São Gonçalo presencial",
+      "etapa": "Novo Lead",
+      "responsavel": "Clara",
+      "ultima_interacao": "2026-09-14",
+      "observacao": "Caso de atenção especial. Contato original em 03/08: perguntou por GCM São Gonçalo presencial. Recusou PMERJ como alternativa ('não quero não... assim que abrir, entro em contato'). Deixou nome e bairro (Mesquita - Centro). Voltou sozinha em 02/09 perguntando se já havia previsão de turma - e recebeu apenas mensagem padrão de boas-vindas. É a lead mais engajada entre as frias e a única que voltou por iniciativa própria. Ação: responder com previsão real de turma.",
+      "analise": {
+        "prioridade": "P0",
+        "intencao": "quente",
+        "concurso": "GCM São Gonçalo presencial",
+        "motivo_parada": "Voltou espontaneamente perguntando previsão da turma; recebeu resposta genérica; turma São Gonçalo abre 19/09."
+      },
+      "mensagem_pronta": "Voltando à sua pergunta: sim, a turma de GCM de São Gonçalo está abrindo — a previsão é iniciar dia 19/09. Como você já tinha deixado o interesse salvo, quer que eu já te reserve uma aula experimental na turma presencial?",
+      "envio": {
+        "previsto": "2026-09-15",
+        "status": "pronto"
+      }
+    }
+  ]
+}

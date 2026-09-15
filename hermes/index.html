@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HERMES</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #05050a;
+    --surface: rgba(12,12,22,.74);
+    --surface-strong: rgba(18,18,32,.84);
+    --line: rgba(0,255,200,.12);
+    --text: #e6e9ee;
+    --muted: #8a94a6;
+    --accent: #00ffc8;
+    --accent-2: #ff2d7b;
+    --positive: #7ec8e3;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --shadow-glass: 0 28px 80px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06);
+    --glass-border: 1px solid rgba(0,255,200,.16);
+    --glass-bg: rgba(12,12,22,.74);
+    --glass-blur: blur(18px);
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --sidebar-w: 72px;
+    --sidebar-expanded: 220px;
+    --motion-fast: 0.2s;
+    --motion-med: 0.5s;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-body);
+    background:
+      radial-gradient(ellipse 60% 50% at 10% 20%, rgba(0,255,200,.07) 0%, transparent 60%),
+      radial-gradient(ellipse 55% 45% at 90% 70%, rgba(255,45,123,.05) 0%, transparent 55%),
+      var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: var(--sidebar-w);
+    background: rgba(8,8,14,.86);
+    border-right: 1px solid rgba(0,255,200,.14);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    padding: 22px 0;
+    transition: width var(--motion-med) var(--ease-out), border-color var(--motion-med), box-shadow var(--motion-med);
+    overflow: hidden;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  .sidebar:hover { width: var(--sidebar-expanded); border-color: rgba(0,255,200,.26); box-shadow: 0 0 40px rgba(0,255,200,.06); }
+  .sidebar-logo {
+    width: 32px;
+    height: 32px;
+    margin: 0 0 22px 18px;
+    flex-shrink: 0;
+    background: linear-gradient(135deg,#00ffc8,#00c2ff);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 11px;
+    color: #000;
+    box-shadow: 0 0 28px rgba(0,255,200,.40);
+  }
+  .sidebar-nav { display: flex; flex-direction: column; gap: 3px; padding: 0 10px; overflow-y: auto; }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 11px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    white-space: nowrap;
+    text-decoration: none;
+    color: var(--muted);
+    transition: background var(--motion-fast), color var(--motion-fast), box-shadow var(--motion-fast), border-color var(--motion-fast);
+    border: 1px solid transparent;
+  }
+  .nav-item:hover, .nav-item.active { background: rgba(0,255,200,.08); color: var(--accent); border-color: rgba(0,255,200,.20); box-shadow: 0 0 22px rgba(0,255,200,.06); }
+  .nav-item.active { color: var(--positive); }
+  .nav-num { font-family: var(--font-mono); font-size: 9px; flex-shrink: 0; width: 16px; }
+  .nav-label { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; opacity: 0; transition: opacity var(--motion-fast); }
+  .sidebar:hover .nav-label { opacity: 1; }
+  .sidebar-status { margin-top: auto; padding: 14px 10px 0; display: flex; align-items: center; gap: 8px; }
+  .status-dot-live { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 16px var(--accent); animation: pulse-dot 2s ease-in-out infinite; flex-shrink: 0; }
+  @keyframes pulse-dot { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .5; transform: scale(.8); } }
+
+  .main-content { margin-left: var(--sidebar-w); min-height: 100vh; }
+  .command-header {
+    position: relative;
+    min-height: 320px;
+    background:
+      radial-gradient(ellipse 70% 55% at 20% 30%, rgba(0,255,200,.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 70%, rgba(255,45,123,.07) 0%, transparent 60%),
+      linear-gradient(180deg,#0c0c16,#05050a 72%);
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 44px;
+    border-bottom: 1px solid rgba(0,255,200,.12);
+  }
+  .grid-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: .65;
+    background-image:
+      linear-gradient(rgba(0,255,200,.10) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,200,.10) 1px, transparent 1px);
+    background-size: 46px 46px;
+    mask-image: radial-gradient(ellipse 70% 90% at 60% 40%, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 90% at 60% 40%, black 30%, transparent 75%);
+  }
+  .corner-brackets span { position: absolute; width: 18px; height: 18px; border: 1px solid rgba(0,255,200,.30); }
+  .cb-tl { top: 18px; left: 18px; border-right: none; border-bottom: none; }
+  .cb-tr { top: 18px; right: 18px; border-left: none; border-bottom: none; }
+  .header-content { position: relative; z-index: 10; padding: 0 48px; width: 100%; max-width: 880px; }
+  .header-eyebrow { font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--accent); letter-spacing: .22em; text-transform: uppercase; margin-bottom: 14px; text-shadow: 0 0 26px rgba(0,255,200,.35); }
+  .header-title { font-family: var(--font-display); font-size: clamp(28px, 4.2vw, 48px); font-weight: 700; color: #fff; letter-spacing: -.03em; line-height: 1.04; margin-bottom: 12px; filter: drop-shadow(0 0 20px rgba(0,255,200,.14)); }
+  .header-title em { color: var(--accent); font-style: normal; text-shadow: 0 0 32px rgba(0,255,200,.35); }
+  .header-subtitle { font-size: 13px; font-weight: 400; color: #c5cdd8; line-height: 1.6; max-width: 540px; margin-bottom: 22px; }
+  .header-meta { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+  .status-badge { display: flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; }
+  .status-badge-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 16px var(--accent); animation: pulse-dot 2s ease-in-out infinite; }
+  .period-badge { font-family: var(--font-mono); font-size: 10px; color: #a6afbf; letter-spacing: .08em; border-left: 1px solid rgba(255,255,255,.12); padding-left: 22px; }
+
+  .page-body { padding: 48px 48px 90px; max-width: 1160px; }
+  .section { margin-bottom: 40px; scroll-margin-top: 20px; }
+  .section-title { font-family: var(--font-display); font-size: 18px; font-weight: 600; letter-spacing: -.01em; margin-bottom: 14px; }
+  .section-lede { font-size: 13px; color: #c5cdd8; line-height: 1.7; max-width: 720px; margin-bottom: 18px; }
+
+  .quick-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .qcard {
+    background: rgba(12,12,22,.74);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(0,255,200,.18);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 110px;
+    box-shadow: var(--shadow-glass);
+    transition: transform var(--motion-fast), border-color var(--motion-fast), box-shadow var(--motion-fast);
+  }
+  .qcard:hover { transform: translateY(-2px); border-color: rgba(0,255,200,.34); box-shadow: 0 30px 90px rgba(0,0,0,.50), 0 0 32px rgba(0,255,200,.10), inset 0 1px 0 rgba(255,255,255,.08); }
+  .qcard h3 { margin: 0; font-size: 14px; font-weight: 600; }
+  .qcard p { margin: 0; color: var(--muted); font-size: 12px; }
+  .qcard .open { margin-top: auto; align-self: flex-start; font-family: var(--font-mono); font-size: 10px; color: var(--accent); border: 1px solid rgba(0,255,200,.24); padding: 5px 10px; border-radius: 999px; box-shadow: 0 0 18px rgba(0,255,200,.10); }
+
+  .team-table { width: 100%; border-collapse: collapse; background: rgba(12,12,22,.74); border: 1px solid rgba(0,255,200,.10); border-radius: var(--radius-lg); overflow: hidden; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+  .team-table th, .team-table td { padding: 10px 12px; text-align: left; font-size: 12px; border-bottom: 1px solid rgba(255,255,255,.04); }
+  .team-table th { color: var(--muted); font-weight: 600; background: rgba(255,255,255,.02); font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+  .team-table tr:last-child td { border-bottom: none; }
+  .status { width: 8px; height: 8px; border-radius: 50%; display: inline-block; background: var(--accent); box-shadow: 0 0 14px var(--accent); }
+
+  footer { margin-top: 26px; color: var(--muted); font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em; }
+
+  @media (max-width: 900px) {
+    .quick-grid { grid-template-columns: 1fr 1fr; }
+    .page-body { padding: 36px 22px 80px; }
+    .header-content { padding: 0 22px; }
+  }
+  @media (max-width: 640px) {
+    .sidebar { display: none; }
+    .main-content { margin-left: 0; }
+    .quick-grid { grid-template-columns: 1fr; }
+    .header-title { font-size: 30px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">H</div>
+  <div class="sidebar-nav">
+    <a class="nav-item active" href="#visao"><span class="nav-num">00</span><span class="nav-label">Visão</span></a>
+    <a class="nav-item" href="#acessos"><span class="nav-num">01</span><span class="nav-label">Acessos</span></a>
+    <a class="nav-item" href="#equipe"><span class="nav-num">02</span><span class="nav-label">Equipe</span></a>
+    <a class="nav-item" href="#repositorio"><span class="nav-num">03</span><span class="nav-label">Repo</span></a>
+  </div>
+  <div class="sidebar-status"><div class="status-dot-live"></div><span class="nav-label" style="opacity:1;color:var(--muted)">ONLINE</span></div>
+</nav>
+
+<div class="main-content">
+  <header class="command-header">
+    <div class="atm-gradient"></div>
+    <div class="grid-overlay"></div>
+    <div class="corner-brackets"><span class="cb-tl"></span><span class="cb-tr"></span></div>
+    <div class="header-content">
+      <div class="header-eyebrow">HERMES // Operating System</div>
+      <h1 class="header-title">Sistema <em>HERMES</em></h1>
+      <p class="header-subtitle">Um ponto de entrada para o ecossistema: equipe, dashboards, documentação e repositório oficial.</p>
+      <div class="header-meta">
+        <div class="status-badge"><div class="status-badge-dot"></div>System Online</div>
+        <div class="period-badge">v1.0 — 2026</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-body">
+
+    <section class="section" id="visao">
+      <div class="section-title">Visão geral</div>
+      <p class="section-lede">Navegue pelos módulos principais. Cada card abre um destino real do ecossistema.</p>
+      <div class="quick-grid">
+        <a class="qcard" href="dashboards/index.html"><h3>Dashboard da Equipe</h3><p>Status e acessos úteis.</p><span class="open">Abrir →</span></a>
+        <a class="qcard" href="github-map/index.html"><h3>GitHub Map</h3><p>Mapa navegável do repositório.</p><span class="open">Abrir →</span></a>
+        <a class="qcard" href="agents/atlas/README.md"><h3>Atlas</h3><p>Chief of Staff.</p><span class="open">Abrir →</span></a>
+        <a class="qcard" href="agents/hermes/README.md"><h3>Hermes</h3><p>Master / Orquestração.</p><span class="open">Abrir →</span></a>
+        <a class="qcard" href="docs/arquitetura-ecossistema-2026-09-04.md"><h3>Arquitetura</h3><p>Documento oficial.</p><span class="open">Abrir →</span></a>
+        <a class="qcard" href="https://github.com/flavio-guedes/hermes" target="_blank" rel="noopener"><h3>Repositório</h3><p>Código e histórico.</p><span class="open">Abrir →</span></a>
+      </div>
+    </section>
+
+    <section class="section" id="equipe">
+      <div class="section-title">Equipe</div>
+      <p class="section-lede">Agentes oficiais e função principal.</p>
+      <table class="team-table">
+        <thead><tr><th>Agente</th><th>Função</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Atlas</td><td>Chief of Staff / Interface com Flávio</td><td><span class="status"></span> Disponível</td></tr>
+          <tr><td>Hermes</td><td>Master / Orquestração</td><td><span class="status"></span> Disponível</td></tr>
+          <tr><td>Oracle</td><td>Research / Skills</td><td><span class="status"></span> Disponível</td></tr>
+          <tr><td>Nexus</td><td>Frontend / Painéis</td><td><span class="status"></span> Disponível</td></tr>
+          <tr><td>Forge</td><td>Arquitetura / Refatoração</td><td><span class="status"></span> Disponível</td></tr>
+          <tr><td>Vector</td><td>Dados / Métricas</td><td><span class="status"></span> Disponível</td></tr>
+          <tr><td>Aegis</td><td>QA / Regressão</td><td><span class="status"></span> Disponível</td></tr>
+          <tr><td>Sentinel</td><td>Segurança</td><td><span class="status"></span> Disponível</td></tr>
+          <tr><td>Vanguard</td><td>UI / Visual</td><td><span class="status"></span> Disponível</td></tr>
+          <tr><td>Strategos</td><td>Roadmap / Estratégia</td><td><span class="status"></span> Disponível</td></tr>
+          <tr><td>Muse</td><td>Conteúdo / UX Writing</td><td><span class="status"></span> Disponível</td></tr>
+          <tr><td>Pulse</td><td>Marketing / Growth</td><td><span class="status"></span> Disponível</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section" id="repositorio">
+      <div class="section-title">Repositório</div>
+      <p class="section-lede">O repositório oficial concentra a arquitetura, a equipe, as skills, os projetos e os outputs.</p>
+      <div class="quick-grid">
+        <a class="qcard" href="https://github.com/flavio-guedes/hermes" target="_blank" rel="noopener"><h3>GitHub</h3><p>Código e issues.</p><span class="open">Abrir →</span></a>
+        <a class="qcard" href="https://flavio-guedes.github.io/hermes/" target="_blank" rel="noopener"><h3>Página oficial</h3><p>Site do ecossistema.</p><span class="open">Abrir →</span></a>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>HERMES — Um sistema. Uma equipe. Um repositório.</footer>
+</div>
+
+<script>
+const navItems = document.querySelectorAll('.nav-item');
+const sections = document.querySelectorAll('.section');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      const id = '#' + entry.target.id;
+      navItems.forEach((item) => item.classList.toggle('active', item.getAttribute('href') === id));
+    }
+  });
+}, { threshold: 0.3, rootMargin: '-10% 0px -70% 0px' });
+sections.forEach((s) => observer.observe(s));
+</script>
+</body>
+</html>

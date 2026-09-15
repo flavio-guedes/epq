@@ -1,0 +1,130 @@
+linha_aba,id_lead,coluna,acao,valor
+3,1,K,REPLACE,15/09/2026
+3,1,L,APPEND,FOLLOW-UP 15/09 (P0): Objeção real (filho no ESPCEX no dia do aulão) — negociável; precisa de alternativa à aula presencial.
+3,1,O,REPLACE,P0
+4,2,K,REPLACE,15/09/2026
+4,2,L,APPEND,FOLLOW-UP 15/09 (P0): Aguardando resolução de situação no trabalho antes de fechar; pediu prazo e retornar espontaneamente.
+4,2,O,REPLACE,P0
+5,3,K,REPLACE,15/09/2026
+5,3,L,APPEND,FOLLOW-UP 15/09 (P1): Recebeu valores e parou — possível objeção de preço não declarada; reengajar com aula experimental.
+5,3,O,REPLACE,P1
+6,4,K,REPLACE,15/09/2026
+6,4,L,APPEND,FOLLOW-UP 15/09 (P1): Recebeu tabela combo e parou — não confirmou aulão; reengajar com tour da turma aberta.
+6,4,O,REPLACE,P1
+7,5,F,FIX,PMERG→PMERJ
+7,5,K,REPLACE,15/09/2026
+7,5,L,APPEND,"FOLLOW-UP 15/09 (P0): Perguntas concretas (inscrição, requisitos, edital, valores) nunca respondidas — atendimento falhou."
+7,5,O,REPLACE,P0
+8,6,K,REPLACE,15/09/2026
+8,6,L,APPEND,FOLLOW-UP 15/09 (P0): Erro de digitação 'PMERG' + lead não percebeu conversa ativa; retomar com PMERJ e perguntar turno.
+8,6,O,REPLACE,P0
+9,7,K,REPLACE,15/09/2026
+9,7,L,APPEND,FOLLOW-UP 15/09 (P1): Dúvida de legitimidade do concurso; precisa de reforço de credibilidade + prova prática.
+9,7,O,REPLACE,P1
+10,8,K,REPLACE,15/09/2026
+10,8,L,APPEND,FOLLOW-UP 15/09 (P1): Recebeu turmas e parou sem escolher turno; fechar a escolha de turno.
+10,8,O,REPLACE,P1
+11,9,K,REPLACE,15/09/2026
+11,9,L,APPEND,FOLLOW-UP 15/09 (P1): Confirmou GCM noturno mas não confirmou aulão; aulão passou — usar turma aberta como gatilho.
+11,9,O,REPLACE,P1
+12,10,K,REPLACE,15/09/2026
+12,10,L,APPEND,"FOLLOW-UP 15/09 (P1): Recebeu valores, disse 'Entendi'; repouso médico — sem pressa, reservar aula na próxima semana."
+12,10,O,REPLACE,P1
+13,11,K,REPLACE,15/09/2026
+13,11,L,APPEND,FOLLOW-UP 15/09 (P1): Sem telefone; prioridade difusa (vários concursos); definir o concurso-alvo.
+13,11,O,REPLACE,P1
+14,12,K,REPLACE,15/09/2026
+14,12,L,APPEND,FOLLOW-UP 15/09 (P0): Equipe desviou conversa para GCM; nunca recebeu oferta real de PMERJ — corrigir rota.
+14,12,O,REPLACE,P0
+15,13,K,REPLACE,15/09/2026
+15,13,L,APPEND,FOLLOW-UP 15/09 (P1): Sem telefone; aguardando disponibilidade da aula experimental.
+15,13,O,REPLACE,P1
+16,14,K,REPLACE,15/09/2026
+16,14,L,APPEND,"FOLLOW-UP 15/09 (P1): Sem telefone; aguardando horário concreto (noite definido, horário não)."
+16,14,O,REPLACE,P1
+17,15,K,REPLACE,15/09/2026
+17,15,L,APPEND,FOLLOW-UP 15/09 (P0): Sem telefone; resposta tardia + genérica da equipe; sem data de abertura.
+17,15,O,REPLACE,P0
+18,16,K,REPLACE,15/09/2026
+18,16,L,APPEND,FOLLOW-UP 15/09 (P0): Pergunta direta (unidade Nilópolis) sem resposta — decidir continuidade.
+18,16,O,REPLACE,P0
+19,17,K,REPLACE,15/09/2026
+19,17,L,APPEND,FOLLOW-UP 15/09 (P1): Equipe perguntou turno e lead não respondeu; retomar turno.
+19,17,O,REPLACE,P1
+20,18,K,REPLACE,15/09/2026
+20,18,L,APPEND,FOLLOW-UP 15/09 (P1): Equipe pediu nome; sem resposta.
+20,18,O,REPLACE,P1
+21,19,F,FIX,PMERG→PMERJ
+21,19,K,REPLACE,15/09/2026
+21,19,L,APPEND,FOLLOW-UP 15/09 (P1): Equipe pediu nome/área; sem resposta.
+21,19,O,REPLACE,P1
+22,20,K,REPLACE,15/09/2026
+22,20,L,APPEND,FOLLOW-UP 15/09 (P0): Erro de digitação 'PMERG'; sem follow-up posterior.
+22,20,O,REPLACE,P0
+23,21,K,REPLACE,não agendar (frio)
+23,21,L,APPEND,FOLLOW-UP 15/09 (P2): Só clique + pedido de nome; sem resposta.
+23,21,O,REPLACE,P2
+24,22,K,REPLACE,não agendar (frio)
+24,22,L,APPEND,FOLLOW-UP 15/09 (P2): Clique PMERJ; sem resposta.
+24,22,O,REPLACE,P2
+25,23,K,REPLACE,não agendar (frio)
+25,23,L,APPEND,FOLLOW-UP 15/09 (P2): Pedido de nome; sem resposta.
+25,23,O,REPLACE,P2
+26,24,K,REPLACE,não agendar (frio)
+26,24,L,APPEND,FOLLOW-UP 15/09 (P2): Clique PMERJ; sem resposta.
+26,24,O,REPLACE,P2
+27,25,K,REPLACE,não agendar (frio)
+27,25,L,APPEND,FOLLOW-UP 15/09 (P2): Pedido de nome; sem resposta.
+27,25,O,REPLACE,P2
+28,26,K,REPLACE,não agendar (frio)
+28,26,L,APPEND,FOLLOW-UP 15/09 (P2): Resposta da equipe ~10h30 após lead; sem resposta seguinte.
+28,26,O,REPLACE,P2
+29,27,K,REPLACE,não agendar (frio)
+29,27,L,APPEND,FOLLOW-UP 15/09 (P2): Pedido de nome; sem resposta.
+29,27,O,REPLACE,P2
+30,28,K,REPLACE,não agendar (frio)
+30,28,L,APPEND,FOLLOW-UP 15/09 (P2): Pedido de nome; sem resposta.
+30,28,O,REPLACE,P2
+31,29,K,REPLACE,não agendar (frio)
+31,29,L,APPEND,FOLLOW-UP 15/09 (P2): Pedido de nome/concurso; sem resposta.
+31,29,O,REPLACE,P2
+32,30,K,REPLACE,não agendar (frio)
+32,30,L,APPEND,FOLLOW-UP 15/09 (P2): Pedido de nome; sem resposta.
+32,30,O,REPLACE,P2
+33,31,K,REPLACE,não agendar (frio)
+33,31,L,APPEND,FOLLOW-UP 15/09 (P2): Pedido de nome/concurso; sem resposta.
+33,31,O,REPLACE,P2
+34,32,K,REPLACE,não agendar (frio)
+34,32,L,APPEND,FOLLOW-UP 15/09 (P2): Só clique; sem resposta.
+34,32,O,REPLACE,P2
+35,33,K,REPLACE,não agendar (frio)
+35,33,L,APPEND,FOLLOW-UP 15/09 (P2): Resposta da equipe ~11h após lead; sem resposta seguinte.
+35,33,O,REPLACE,P2
+36,34,K,REPLACE,não agendar (frio)
+36,34,L,APPEND,FOLLOW-UP 15/09 (P2): Só clique; sem resposta.
+36,34,O,REPLACE,P2
+37,35,K,REPLACE,não agendar (frio)
+37,35,L,APPEND,FOLLOW-UP 15/09 (P3): Sem interação real (só registro de clique); sem telefone.
+37,35,O,REPLACE,P3
+38,36,K,REPLACE,não agendar (frio)
+38,36,L,APPEND,FOLLOW-UP 15/09 (P2): Concurso Marinha não atendido; equipe respondeu com áudio; sem resposta do lead.
+38,36,O,REPLACE,P2
+39,37,K,REPLACE,não agendar (frio)
+39,37,L,APPEND,FOLLOW-UP 15/09 (P2): Curso Bombeiro não confirmado; sem telefone.
+39,37,O,REPLACE,P2
+40,38,K,REPLACE,15/09/2026
+40,38,L,APPEND,FOLLOW-UP 15/09 (P1): Equipe ofereceu turmas a partir de 14/09 e 19/09; pediu nome; sem resposta.
+40,38,O,REPLACE,P1
+41,39,K,REPLACE,não agendar (frio)
+41,39,L,APPEND,FOLLOW-UP 15/09 (P2): Mensagem genérica de clique PMERJ; sem resposta.
+41,39,O,REPLACE,P2
+42,40,K,REPLACE,não agendar (frio)
+42,40,L,APPEND,FOLLOW-UP 15/09 (P2): Pedido de nome/área; sem resposta.
+42,40,O,REPLACE,P2
+43,41,K,REPLACE,não agendar (frio)
+43,41,L,APPEND,FOLLOW-UP 15/09 (P2): Pedido de nome/dúvida/concurso; sem resposta.
+43,41,L,APPEND,Voltou espontaneamente em 02/09 pedindo previsão — responder com turma São Gonçalo 19/09 e reservar aula experimental.
+43,41,O,REPLACE,P2
+44,42,K,REPLACE,15/09/2026
+44,42,L,APPEND,FOLLOW-UP 15/09 (P0): Voltou espontaneamente perguntando previsão da turma; recebeu resposta genérica; turma São Gonçalo abre 19/09.
+44,42,O,REPLACE,P0
