@@ -1049,6 +1049,7 @@ body {
 /* ══════════════════════════════════════════
    2-COL GRID HELPER
 ══════════════════════════════════════════ */
+.three-col { display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px; }
 .two-col { display: grid; grid-template-columns: 1fr 320px; gap: 16px; }
 
 /* ══════════════════════════════════════════
@@ -1502,13 +1503,71 @@ body {
    PROJETO ABAS (Lucas Gesta / EPQ)
 ══════════════════════════════════════════ */
 .lg-proj-aba,
-.epq-proj-aba {
+.epq-proj-aba,
+.auto-aba {
   display: none;
 }
 .lg-proj-aba.active,
-.epq-proj-aba.active {
+.epq-proj-aba.active,
+.auto-aba.active {
   display: block;
+  animation: rise .25s ease;
 }
+
+/* abas de painel */
+.auto-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.auto-tab {
+  padding: 7px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.12s;
+  border: none;
+  background: transparent;
+  font-family: var(--font);
+  white-space: nowrap;
+}
+.auto-tab:hover { color: var(--ink-1); background: var(--surface); }
+.auto-tab.active {
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-weight: 600;
+  box-shadow: 0 0 0 1px var(--accent-b) inset;
+}
+
+.lg-tab,
+.epq-tab {
+  padding: 7px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.12s;
+  border: none;
+  background: transparent;
+  font-family: var(--font);
+  white-space: nowrap;
+}
+.lg-tab:hover,
+.epq-tab:hover { color: var(--ink-1); background: var(--surface); }
+.lg-tab.active,
+.epq-tab.active {
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* abas de campanha Lucas Gesta */
+.lg-campaign-aba { display: none; }
+.lg-campaign-aba.active { display: block; }
 
 </style>
 </head>
@@ -1887,8 +1946,7 @@ function getStats() {
       <button class="nav-tab"         onclick="showView('matrix')">Visão dos Agentes</button>
       <button class="nav-tab"         onclick="showView('automacoes')">Automações</button>
       <button class="nav-tab"         onclick="showView('epq')">EPQ</button>
-      <button class="nav-tab"         onclick="showView('mercurio')">Mercúrio</button>
-      <button class="nav-tab"         onclick="showView('lucas-gesta-campaign')">★ CAMPANHAS</button>
+      <button class="nav-tab" onclick="showView('mercurio')">Mercúrio</button>
     </div>
 
     <div class="topbar-right">
@@ -1958,7 +2016,7 @@ function getStats() {
     </div>
 
     <div class="sidebar-section">
-      <div class="sidebar-label">Sistemas &amp; Conexões</div>
+      <div class="sidebar-label">Sistemas</div>
       <div class="sidebar-item" onclick="showView('credentials')" title="Acessos e autorizações disponíveis">
         <span class="si-icon">⚿</span><span class="si-text">Acessos configurados</span>
       </div>
@@ -1971,21 +2029,6 @@ function getStats() {
       <div class="sidebar-item" onclick="showView('sessions')" title="Atividades abertas agora">
         <span class="si-icon">◐</span><span class="si-text">Atividades em execução</span>
       </div>
-      <div class="sidebar-item" onclick="showView('plugins')" title="Extensões e recursos disponíveis">
-        <span class="si-icon">◫</span><span class="si-text">Ferramentas (plugins)</span>
-      </div>
-      <div class="sidebar-item" onclick="showView('tasks')" title="Quadro de tarefas">
-        <span class="si-icon">▦</span><span class="si-text">Kanban</span>
-      </div>
-      <div class="sidebar-item" onclick="showView('webhooks')" title="Conexões que avisam o Hermes quando algo acontece">
-        <span class="si-icon">↯</span><span class="si-text">Conexões automáticas</span>
-      </div>
-      <div class="sidebar-item" onclick="showView('mcp')" title="Ferramentas conectadas ao Hermes">
-        <span class="si-icon">◈</span><span class="si-text">Conexões com ferramentas</span>
-      </div>
-      <div class="sidebar-item" onclick="showView('services')" title="Programas de apoio em funcionamento neste computador">
-        <span class="si-icon">⚙</span><span class="si-text">Serviços do computador</span>
-      </div>
     </div>
 
     <div class="sidebar-section">
@@ -1997,33 +2040,19 @@ function getStats() {
       <div class="sidebar-item" onclick="showView('system')" title="Saúde, estrutura e configuração">
         <span class="si-icon">◦</span><span class="si-text">Sistema</span>
       </div>
-      <!-- RESUMO & LIÇÃO DO DIA -->
       <div class="sidebar-item" onclick="showView('resumo-dia'); event.preventDefault();" title="Resumo e lição do dia pelo Professor">
         <span class="si-icon">📖</span><span class="si-text">Resumo &amp; Lição</span>
       </div>
-      <!-- CONTINGÊNCIA -->
       <div class="sidebar-item" onclick="showView('contingencia')" title="Radar de saturação e panorama da operação">
         <span class="si-icon">⚡</span><span class="si-text">Contingência</span>
       </div>
     </div>
-  <!-- HUNTER_SIDEBAR -->
-    <div class="sidebar-section">
-      <div class="sidebar-label">Operação Hunter</div>
-      <div class="sidebar-item" onclick="showView('hunter')" title="Hunter · Concílios Ecumênicos">
-        <span class="si-icon">◉</span><span class="si-text">Hunter · Concílios</span>
-      </div>
-      <div class="sidebar-item" onclick="showView('lucas-gesta-campaign')" title="Campanha Lucas Gesta — meta 1 venda até 16h">
-        <span class="si-icon">★</span><span class="si-text">CAMPANHAS · Lucas Gesta</span>
-        <span class="sidebar-badge badge-amber" id="sb-campaign">1</span>
-      </div>
-    </div>
-<!-- /HUNTER_SIDEBAR -->
       <div class="sidebar-section">
       <div class="sidebar-label">Projetos</div>
-      <div class="sidebar-item" onclick="showView('lucas-gesta')" title="Lucas Gesta —Campanha, Projetos e Automações">
+      <div class="sidebar-item" onclick="showView('lucas-gesta-campaign')" title="Lucas Gesta — Campanha, Projetos e Automações">
         <span class="si-icon">◆</span><span class="si-text">Lucas Gesta</span>
       </div>
-      <div class="sidebar-item" onclick="showView('epq-projeto')" title="EPQ — Operação completa, campanhas e automações">
+      <div class="sidebar-item" onclick="showView('epq')" title="EPQ — Operação completa, campanhas e automações">
         <span class="si-icon">◆</span><span class="si-text">EPQ · Projetos</span>
       </div>
     </div>
@@ -2524,27 +2553,53 @@ function getStats() {
 
         <div class="stat-strip" id="auto-stats"></div>
 
-        <div style="display:flex;flex-direction:column;gap:14px;">
+        <!-- ABAS DE AUTOMAÇÕES -->
+        <div class="auto-tabs" id="auto-tabs">
+          <button class="auto-tab active" data-auto-tab="cron">Tarefas programadas</button>
+          <button class="auto-tab" data-auto-tab="webhooks">Webhooks</button>
+          <button class="auto-tab" data-auto-tab="mcp">MCP</button>
+          <button class="auto-tab" data-auto-tab="plugins">Plugins</button>
+          <button class="auto-tab" data-auto-tab="credentials">Acessos</button>
+          <button class="auto-tab" data-auto-tab="services">Serviços</button>
+        </div>
+
+        <!-- ABA: CRON -->
+        <div class="auto-aba active" id="auto-aba-cron">
           <div class="panel">
             <div class="panel-head"><span class="panel-title">Tarefas programadas</span></div>
             <div id="auto-cron"></div>
           </div>
+        </div>
+        <!-- ABA: WEBHOOKS -->
+        <div class="auto-aba" id="auto-aba-webhooks">
           <div class="panel">
             <div class="panel-head"><span class="panel-title">Conexões automáticas (webhooks)</span></div>
             <div id="auto-webhooks"></div>
           </div>
+        </div>
+        <!-- ABA: MCP -->
+        <div class="auto-aba" id="auto-aba-mcp">
           <div class="panel">
             <div class="panel-head"><span class="panel-title">Conexões com ferramentas (MCP)</span></div>
             <div id="auto-mcp"></div>
           </div>
+        </div>
+        <!-- ABA: PLUGINS -->
+        <div class="auto-aba" id="auto-aba-plugins">
           <div class="panel">
             <div class="panel-head"><span class="panel-title">Ferramentas conectadas</span></div>
             <div id="auto-plugins"></div>
           </div>
+        </div>
+        <!-- ABA: CREDENTIALS -->
+        <div class="auto-aba" id="auto-aba-credentials">
           <div class="panel">
             <div class="panel-head"><span class="panel-title">Acessos configurados</span></div>
             <div id="auto-credentials"></div>
           </div>
+        </div>
+        <!-- ABA: SERVICES -->
+        <div class="auto-aba" id="auto-aba-services">
           <div class="panel">
             <div class="panel-head"><span class="panel-title">Serviços do computador</span></div>
             <div id="auto-services"></div>
@@ -2961,9 +3016,17 @@ function getStats() {
         <div class="page-header" style="margin-bottom:14px;">
           <div class="page-title" style="font-size:18px;">LUCAS GESTA — Campanha em Execução</div>
           <div class="page-sub" id="lg-sub">Meta: 1 venda confirmada até 16h · Status: EM EXECUÇÃO · Iniciada: 15/09/2026 11:09 BRT</div>
-        </div>
 
+        <!-- ABAS DO PROJETO -->
+        <div class="lg-tabs" id="lg-campaign-tabs" style="margin-bottom:14px;">
+          <button class="lg-tab active" data-lg-tab="campanha" onclick="lgCampTab(this,'campanha')">Campanha</button>
+          <button class="lg-tab" data-lg-tab="projeto" onclick="lgCampTab(this,'projeto')">Projeto Completo</button>
+          <button class="lg-tab" data-lg-tab="campanhas" onclick="lgCampTab(this,'campanhas')">Campanhas</button>
+          <button class="lg-tab" data-lg-tab="automacoes" onclick="lgCampTab(this,'automacoes')">Automações</button>
+          <button class="lg-tab" data-lg-tab="hunter" onclick="lgCampTab(this,'hunter')">Hunter</button>
+        </div>
         <!-- META + PROGRESSO -->
+        <div id="lg-aba-campanha" class="lg-campaign-aba" style="display:block;">
         <div class="panel" style="margin-bottom:14px;">
           <div class="panel-head"><span class="panel-title">Meta e Progresso</span></div>
           <div id="lg-meta-body" style="padding:14px 18px;font-size:13px;color:var(--ink-2);line-height:1.6;">
@@ -3311,24 +3374,185 @@ function getStats() {
               </div>
             </div>
         </div>
+        </div>
+
+        <!-- ABA: PROJETO COMPLETO -->
+        <div id="lg-aba-projeto" class="lg-campaign-aba" style="display:none;">
+          <div class="panel" style="margin-bottom:14px;">
+            <div class="panel-head"><span class="panel-title">Projeto Completo — Lucas Gesta</span><span class="panel-sub">Visão geral do projeto</span></div>
+            <div style="padding:14px 18px;display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--ink-2);line-height:1.6;">
+              <div><b style="color:var(--ink-1);">Produto:</b> Os Concílios Ecumênicos da Antiguidade — Lucas Gesta (Hotmart)</div>
+              <div><b style="color:var(--ink-1);">Status:</b> Campanha em execução · meta 1 venda até 16h</div>
+              <div><b style="color:var(--ink-1);">Agentes envolvidos:</b> Hunter, Atlas, Oracle, Mercúrio, Muse, Forge</div>
+              <div><b style="color:var(--ink-1);">Meta:</b> 1 venda confirmada até 16h · 4 leads qualificados · 4 ofertas prontas</div>
+              <div><b style="color:var(--ink-1);">Frentes em execução:</b> Prospecção (comunidades mapeadas) · Conteúdo/KIT (807 arquivos) · Integração WhatsApp (aguardando canal) · Checkout/Hotmart (webhook ativo)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ABA: CAMPANHAS -->
+        <div id="lg-aba-campanhas" class="lg-campaign-aba" style="display:none;">
+          <div class="panel" style="margin-bottom:14px;">
+            <div class="panel-head"><span class="panel-title">Campanhas — Lucas Gesta</span><span class="panel-sub">Campanha atual e histórico</span></div>
+            <div style="padding:14px 18px;font-size:13px;color:var(--ink-2);line-height:1.6;">
+              <div><b style="color:var(--ink-1);">Campanha ativa — 15/09/2026:</b> Hunter + Varredura Drive · 4 leads qualificados (2 P0 + 2 P1) · 4 ofertas prontas</div>
+              <div style="margin-top:8px;"><b style="color:var(--ink-1);">KIT DE CAMPANHA:</b> Engajamento | Autoridade | Prova Social | Curso | Objeções | Oferta | Follow-up | Conversão</div>
+              <div style="margin-top:8px;"><b style="color:var(--ink-3);">Ativos:</b> ~40 cards/artes Lucas Gesta · Playbook Atendimento v5 · Top 10 depoimentos · 41 arquivos de proposta</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ABA: AUTOMAÇÕES -->
+        <div id="lg-aba-automacoes" class="lg-campaign-aba" style="display:none;">
+          <div class="panel" style="margin-bottom:14px;">
+            <div class="panel-head"><span class="panel-title">Automações — Lucas Gesta</span><span class="panel-sub">O que está rodando</span></div>
+            <div style="padding:14px 18px;font-size:13px;color:var(--ink-2);line-height:1.6;">
+              <div><b style="color:var(--ink-1);">Hunter:</b> Pipeline de prospecção com intent scoring e spam risk control · STATUS: ativo</div>
+              <div><b style="color:var(--ink-1);">Mercúrio:</b> Fila de follow-up WhatsApp · STATUS: PAUSED/DRY_RUN · backend desconectado</div>
+              <div><b style="color:var(--ink-1);">WhatsApp (Baileys):</b> hermes send · janela 08:00–20:00 BRT · STATUS: autenticado · aguardando canal EPQ Atendimento</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ABA: HUNTER (prospecção) -->
+        <div id="lg-aba-hunter" class="lg-campaign-aba" style="display:none;">
+          <div class="panel" style="margin-bottom:14px;">
+            <div class="panel-head"><span class="panel-title">Hunter — Prospecção Lucas Gesta</span><span class="panel-sub">Operação de prospecção ativa</span></div>
+            <div style="padding:14px 18px;font-size:13px;color:var(--ink-2);line-height:1.6;">
+              <div><b style="color:var(--ink-1);">Operação:</b> Os Concílios Ecumênicos da Antiguidade · Lucas Gesta</div>
+              <div style="margin-top:6px;"><b style="color:var(--ink-1);">Modo:</b> OFFLINE — exibindo snapshot · Snapshot: 15/09/2026 09:43</div>
+              <div style="margin-top:6px;"><b style="color:var(--ink-1);">Spam Risk:</b> 2.5% / 60% · <b style="color:var(--ink-1);">Fase:</b> 16/17</div>
+              <div style="margin-top:6px;"><b style="color:var(--ink-1);">Pipeline:</b> 7 descobertas · 2 qualificadas · 1 abordagem · 0 vendas</div>
+              <div style="margin-top:8px;padding:10px 14px;background:var(--waiting-bg);border:1px solid var(--waiting-b);border-radius:6px;"><b style="color:var(--waiting);">⏳ Aguardando:</b> Primeiro contato ainda não iniciado — disparos aguardando autorização WhatsApp</div>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-bottom:14px;">
+            <div class="panel-head"><span class="panel-title">Frentes de Prospecção</span><span class="panel-sub">Evolução por frente</span></div>
+            <div style="padding:10px 18px;display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border-radius:6px;border:1px solid var(--border-l);">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--working);"></span>
+                <span><b style="color:var(--ink-1);">Prospecção:</b> 10 total · 10 hoje · ATIVO</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border-radius:6px;border:1px solid var(--border-l);">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--working);"></span>
+                <span><b style="color:var(--ink-1);">Conteúdo:</b> 3 total · 3 hoje · ATIVO</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border-radius:6px;border:1px solid var(--border-l);">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--working);"></span>
+                <span><b style="color:var(--ink-1);">Conversão:</b> 2 total · 2 hoje · ATIVO</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border-radius:6px;border:1px solid var(--border-l);">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--waiting);"></span>
+                <span><b style="color:var(--ink-1);">Conclusão:</b> 0 total · 0 hoje · PARADO</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border-radius:6px;border:1px solid var(--border-l);">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--waiting);"></span>
+                <span><b style="color:var(--ink-1);">Reputação:</b> 0 total · 0 hoje · PARADO</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-bottom:14px;">
+            <div class="panel-head"><span class="panel-title">Agentes e Sub-agentes</span><span class="panel-sub">Equipe de prospecção</span></div>
+            <div style="padding:10px 18px;font-size:12px;color:var(--ink-2);line-height:1.8;">
+              <div><b style="color:var(--ink-1);">HUNTER MAIN:</b> Orquestrador · 17 hoje · 17 total · 0 vitórias</div>
+              <div><b style="color:var(--ink-1);">DESCOBRIDOR:</b> Inteligência/Prospecção · 10 hoje · 10 total · 0 vitórias</div>
+              <div><b style="color:var(--ink-1);">QUALIFICADOR:</b> Classificação · 2 no pipeline · 2 vitórias</div>
+              <div><b style="color:var(--ink-1);">CONTENT GUARD:</b> Validação · 3 hoje · 3 total</div>
+              <div><b style="color:var(--ink-1);">RISK SENTINEL:</b> Proteção de reputação · risco 2.5/60 · monitorando</div>
+              <div><b style="color:var(--ink-1);">ABORDADOR:</b> Conversão · 2 hoje · 2 total</div>
+              <div><b style="color:var(--ink-1);">RELATOR:</b> Mensuração · ativo · painel/relatórios</div>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-bottom:14px;">
+            <div class="panel-head"><span class="panel-title">Leads Observados</span><span class="panel-sub">Lista de leads</span></div>
+            <div style="padding:10px 18px;font-size:12px;color:var(--ink-2);line-height:1.5;">
+              <div><b style="color:var(--ink-1);">Leads 1–4:</b> exemplos sintéticos de teste (Ana, Carlos, Pri, Rafael)</div>
+              <div style="margin-top:4px;"><b style="color:var(--ink-1);">Lead 5:</b> LOST (integração WhatsApp, número fictício)</div>
+              <div style="margin-top:4px;"><b style="color:var(--ink-1);">Leads 6–9:</b> pessoas reais observadas em fóruns públicos (IEVI) — intent 2, watchlist, sem abordagem</div>
+              <div style="margin-top:4px;"><b style="color:var(--ink-1);">Leads 10–11:</b> Reddit — intent 2, watchlist, sem abordagem</div>
+            </div>
+          </div>
+        </div>
 
       </div>
     </div>
 <!-- /LUCAS_GESTA_CAMPAIGN -->
-
-    <!-- ═══ LUCAS GESTA — PROJETO ══════════════════════════════════════════════ -->
-    <div id="lucas-gesta" class="view">
-      <div class="view-inner" style="max-width:1400px;">
-        <!-- ABA NAV -->
-        <div class="epq-filter">
-          <button class="fbtn active" onclick="lucasProjTab(this,'campanha')">Campanha</button>
-          <button class="fbtn" onclick="lucasProjTab(this,'projeto')">Projeto Completo</button>
-          <button class="fbtn" onclick="lucasProjTab(this,'campanhas')">Campanhas</button>
-          <button class="fbtn" onclick="lucasProjTab(this,'automacoes')">Automações</button>
+          <div id="lg-proj-aba-campanha" class="lg-proj-aba" style="display:none;"></div>
+              <div style="margin-top:6px;"><b style="color:var(--ink-1);">Pipeline:</b> 7 descobertas · 2 qualificadas · 1 abordagem · 0 vendas</div>
+              <div style="margin-top:6px;padding:10px 14px;background:var(--waiting-bg);border:1px solid var(--waiting-b);border-radius:6px;"><b style="color:var(--waiting);">⏳ Aguardando:</b> Primeiro contato ainda não iniciado — disparos aguardando autorização WhatsApp</div>
+            </div>
+          </div>
+          <div class="panel" style="margin-bottom:14px;">
+            <div class="panel-head"><span class="panel-title">Frentes de Prospecção</span><span class="panel-sub">Evolução por frente</span></div>
+            <div style="padding:10px 18px;display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border-radius:6px;border:1px solid var(--border-l);">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--working);"></span>
+                <span><b style="color:var(--ink-1);">Prospecção:</b> 10 total · 10 hoje · ATIVO</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border-radius:6px;border:1px solid var(--border-l);">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--working);"></span>
+                <span><b style="color:var(--ink-1);">Conteúdo:</b> 3 total · 3 hoje · ATIVO</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border-radius:6px;border:1px solid var(--border-l);">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--working);"></span>
+                <span><b style="color:var(--ink-1);">Conversão:</b> 2 total · 2 hoje · ATIVO</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border-radius:6px;border:1px solid var(--border-l);">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--waiting);"></span>
+                <span><b style="color:var(--ink-1);">Conclusão:</b> 0 total · 0 hoje · PARADO</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border-radius:6px;border:1px solid var(--border-l);">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--waiting);"></span>
+                <span><b style="color:var(--ink-1);">Reputação:</b> 0 total · 0 hoje · PARADO</span>
+              </div>
+            </div>
+          </div>
+          <div class="panel" style="margin-bottom:14px;">
+            <div class="panel-head"><span class="panel-title">Agentes e Sub-agentes</span><span class="panel-sub">Equipe de prospecção</span></div>
+            <div style="padding:10px 18px;display:flex;flex-direction:column;gap:6px;">
+              <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border-radius:6px;border:1px solid var(--border-l);">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--working);"></span>
+                <span><b style="color:var(--ink-1);">HUNTER MAIN:</b> Orquestrador · agente principal · 17 hoje · 17 total · 0 vitórias</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border-radius:6px;border:1px solid var(--border-l);">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--working);"></span>
+                <span><b style="color:var(--ink-1);">DESCOBRIDOR:</b> Inteligência/Prospecção · 10 hoje · 10 total · 0 vitórias</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border-radius:6px;border:1px solid var(--border-l);">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--working);"></span>
+                <span><b style="color:var(--ink-1);">QUALIFICADOR:</b> Classificação · 2 no pipeline · — total · 2 vitórias</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border-radius:6px;border:1px solid var(--border-l);">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--working);"></span>
+                <span><b style="color:var(--ink-1);">CONTENT GUARD:</b> Validação · 3 hoje · 3 total · 0 vitórias</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border-radius:6px;border:1px solid var(--border-l);">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--working);"></span>
+                <span><b style="color:var(--ink-1);">RISK SENTINEL:</b> Proteção de reputação · risco 2.5/60 · monitorando · sem pausas</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border-radius:6px;border:1px solid var(--border-l);">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--working);"></span>
+                <span><b style="color:var(--ink-1);">ABORDADOR:</b> Conversão · 2 hoje · 2 total · 0 vitórias</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--surface);border-radius:6px;border:1px solid var(--border-l);">
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--working);"></span>
+                <span><b style="color:var(--ink-1);">RELATOR:</b> Mensuração · ativo · painel/relatórios · — vitórias</span>
+              </div>
+            </div>
+          </div>
+          <div class="panel" style="margin-bottom:14px;">
+            <div class="panel-head"><span class="panel-title">Leads</span><span class="panel-sub">Lista de leads observados</span></div>
+            <div style="padding:10px 18px;font-size:12px;color:var(--ink-2);line-height:1.5;">
+              <div><b style="color:var(--ink-1);">Leads 1–4:</b> exemplos sintéticos de teste (Ana, Carlos, Pri, Rafael)</div>
+              <div style="margin-top:4px;"><b style="color:var(--ink-1);">Lead 5:</b> marcado LOST (integração WhatsApp, número fictício)</div>
+              <div style="margin-top:4px;"><b style="color:var(--ink-1);">Leads 6–9:</b> pessoas reais observadas em fóruns públicos (IEVI) — intent 2, watchlist, sem abordagem</div>
+              <div style="margin-top:4px;"><b style="color:var(--ink-1);">Leads 10–11:</b> Reddit — intent 2, watchlist, sem abordagem</div>
+            </div>
+          </div>
         </div>
-
-        <!-- ABA CAMPANHA -->
-        <div id="lg-proj-aba-campanha" class="lg-proj-aba" style="display:none;"></div>
 
         <!-- ABA PROJETO COMPLETO -->
         <div id="lg-proj-aba-projeto" class="lg-proj-aba" style="display:none;">
@@ -3555,10 +3779,143 @@ function getStats() {
     if(!leads.length){ el.innerHTML='<div style="padding:12px;color:var(--ink-3)">Nenhum lead registrado.</div>'; return; }
     el.innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:12px"><thead><tr style="color:var(--ink-3);text-align:left"><th style="padding:4px 5px">#</th><th>Nome</th><th>Plat.</th><th>Status</th><th>Intent</th><th>Tempo</th></tr></thead><tbody>`+
     leads.map(l=>{
-      const t=l.horas_no_status!=null?(l.horas_no_status<24?l.horas_no_status.toFixed(1)+'h':Math.round(l.horas_no_status/24)+'d'):'\u2014';
+      const t=l.horas_no_status!=null?(l.horas_no_status<24?l.horas_no_status.toFixed(1)+'h':Math.round(l.horas_no_status/24)+'d'):'—';
       const ic=l.intent_score>=4?'#3fb950':l.intent_score>=3?'#d29922':'var(--ink-3)';
-      return `<tr style="border-bottom:1px solid var(--border-l)"><td style="padding:4px 5px">#${l.id}</td><td>${esc(l.nome||'an\u00f4nimo')}</td><td style="color:var(--ink-3)">${esc(l.plataforma||'\u2014')}</td><td>${b(l.status)}</td><td style="color:${ic};font-weight:600">${l.intent_score}</td><td style="color:var(--ink-3)">${t}</td></tr>`;
+      return `<tr style="border-bottom:1px solid var(--border-l);cursor:pointer" onclick="openLeadModal(${l.id})"><td style="padding:4px 5px">#${l.id}</td><td>${esc(l.nome||'an\u00f4nimo')}</td><td style="color:var(--ink-3)">${esc(l.plataforma||'\u2014')}</td><td>${b(l.status)}</td><td style="color:${ic};font-weight:600">${l.intent_score}</td><td style="color:var(--ink-3)">${t}</td></tr>`;
     }).join('')+`</tbody></table>`;
+  }
+
+  // ══════════════════════════════════════════
+  // RENDER: LEAD DETAIL (modal)
+  // ══════════════════════════════════════════
+  function renderLeadDetail(l){
+    // usa o snapshot global injetado pelo IIFE hunter
+    const snapGlobal = (typeof snap !== 'undefined' ? snap : null);
+    const snapData = snapGlobal || {};
+    const scan = (snapData.scan_leads || []).find(s => s.id === l.id) || null;
+    const actions = (snapData.recent_actions || [])
+      .filter(a => a.lead_id === l.id)
+      .sort((x, y) => y.at.localeCompare(x.at));
+    const abordagens=actions.filter(a=>a.action==='APPROACH'||a.action==='APPROACH_DISPATCH');
+    const historico=actions.filter(a=>a.action!=='APPROACH'&&a.action!=='APPROACH_DISPATCH');
+
+    const telefone=scan?scan.telefone:(l.telefone||null);
+    const url_perfil=scan?scan.url_perfil:(l.url_perfil||null);
+    const origem=scan?scan.origem:(l.origem||null);
+
+    let html='';
+    //cabecalho
+    html+=`<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px">`;
+    html+=`<div><b style="font-size:18px">${esc(l.nome||'Lead sem nome')}</b>`;
+    html+=`<div style="font-size:12px;color:var(--ink-3);margin-top:2px">#${l.id} · ${esc(l.plataforma||'—')}</div>`;
+    html+=`</div>`;
+    html+=`<button class="modal-close" onclick="closeLeadModal()" style="margin-top:6px">✕</button>`;
+    html+=`</div>`;
+
+    //chip de status + intent
+    html+=`<div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">`;
+    html+=`${b(l.status)}`;
+    html+=`<span style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;background:${l.intent_score>=4?'rgba(63,232,154,.15)':l.intent_score>=3?'rgba(210,153,34,.15)':'rgba(47,129,247,.15)'};color:${l.intent_score>=4?'#3fb950':l.intent_score>=3?'#d29922':'#58a6ff'}">intent ${l.intent_score}</span>`;
+    if(l.abordagem) html+=`<span style="display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;background:rgba(183,148,246,.15);color:var(--review)">abordagem: ${esc(l.abordagem)}</span>`;
+    html+=`</div>`;
+
+    //campos de contato
+    html+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">`;
+    if(telefone){
+      html+=`<div style="background:var(--card);border:1px solid var(--border-l);border-radius:8px;padding:10px 12px"><div style="font-size:10px;color:var(--ink-3);margin-bottom:4px">CONTATO</div>`;
+      html+=`<div style="font-size:14px;font-weight:600;color:var(--ink-1)">${esc(telefone)}</div>`;
+      html+=`<div style="margin-top:6px"><a href="https://wa.me/${esc(telefone.replace(/[^0-9]/g,'')})" target="_blank" style="font-size:12px;color:var(--accent);text-decoration:none">abrir no WhatsApp →</a></div>`;
+      html+=`</div>`;
+    } else {
+      html+=`<div style="background:var(--card);border:1px solid var(--border-l);border-radius:8px;padding:10px 12px"><div style="font-size:10px;color:var(--ink-3);margin-bottom:4px">CONTATO</div>`;
+      html+=`<div style="font-size:13px;color:var(--ink-2)">sem telefone registrado</div>`;
+      html+=`</div>`;
+    }
+    if(url_perfil){
+      html+=`<div style="background:var(--card);border:1px solid var(--border-l);border-radius:8px;padding:10px 12px"><div style="font-size:10px;color:var(--ink-3);margin-bottom:4px">PERFIL</div>`;
+      html+=`<a href="${esc(url_perfil)}" target="_blank" style="font-size:12px;color:var(--accent);text-decoration:none">${esc(url_perfil)} →</a>`;
+      html+=`</div>`;
+    }
+    if(origem){
+      html+=`<div style="background:var(--card);border:1px solid var(--border-l);border-radius:8px;padding:10px 12px"><div style="font-size:10px;color:var(--ink-3);margin-bottom:4px">ORIGEM</div>`;
+      html+=`<div style="font-size:13px;color:var(--ink-2)">${esc(origem)}</div>`;
+      html+=`</div>`;
+    }
+    html+=`</div>`;
+
+    //contexto
+    if(l.contexto){
+      html+=`<div style="background:var(--card);border:1px solid var(--border-l);border-radius:8px;padding:10px 12px;margin-bottom:14px"><div style="font-size:10px;color:var(--ink-3);margin-bottom:4px">CONTEXTO / MOTIVAÇÃO</div>`;
+      html+=`<div style="font-size:13px;color:var(--ink-1);line-height:1.5">${esc(l.contexto)}</div>`;
+      html+=`</div>`;
+    }
+
+    //proxima acao
+    if(l.proxima_acao){
+      html+=`<div style="background:var(--waiting-bg);border:1px solid var(--waiting-b);border-radius:8px;padding:10px 12px;margin-bottom:14px"><div style="font-size:10px;color:var(--waiting);margin-bottom:4px;font-weight:600">PRÓXIMA AÇÃO</div>`;
+      html+=`<div style="font-size:13px;color:var(--ink-1)">${esc(l.proxima_acao)}</div>`;
+      html+=`</div>`;
+    }
+
+    //resultados / motivo de parada
+    if(l.resultado){
+      html+=`<div style="background:var(--card);border:1px solid var(--border-l);border-radius:8px;padding:10px 12px;margin-bottom:14px"><div style="font-size:10px;color:var(--ink-3);margin-bottom:4px">RESULTADO</div>`;
+      html+=`<div style="font-size:13px;color:var(--ink-1);line-height:1.5">${esc(l.resultado)}</div>`;
+      html+=`</div>`;
+    }
+
+    //abordagens
+    if(abordagens.length){
+      html+=`<div style="margin-bottom:14px"><div style="font-size:11px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">Abordagens (${abordagens.length})</div>`;
+      abordagens.forEach(a=>{
+        html+=`<div style="background:var(--card);border:1px solid var(--border-l);border-left:3px solid var(--working);border-radius:6px;padding:10px 12px;margin-bottom:6px">`;
+        html+=`<div style="display:flex;justify-content:space-between;margin-bottom:4px">`;
+        html+=`<span style="font-size:10px;color:var(--ink-3)">${esc(a.at)}</span>`;
+        html+=`<span style="font-size:10px;font-weight:600;color:var(--working)">${esc(a.action)}</span>`;
+        html+=`</div>`;
+        if(a.detail){
+          html+=`<div style="font-size:13px;color:var(--ink-1);line-height:1.5">${esc(a.detail)}</div>`;
+        }
+        if(a.verdict){
+          html+=`<div style="margin-top:4px"><span style="font-size:10px;font-weight:600;padding:1px 6px;border-radius:999px;background:${a.verdict==='AUTO_APPROVED'?'rgba(63,232,154,.15)':'rgba(242,184,79,.15)'};color:${a.verdict==='AUTO_APPROVED'?'#3fb950':'#f2b84f'}">${esc(a.verdict)}</span></div>`;
+        }
+        html+=`</div>`;
+      });
+      html+=`</div>`;
+    }
+
+    //historico de ações
+    if(historico.length){
+      html+=`<div><div style="font-size:11px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">Histórico de Ações (${historico.length})</div>`;
+      historico.forEach(a=>{
+        const acolor = a.action==='LOST'?'var(--blocked)':a.action==='HOLD'?'var(--waiting)':'var(--accent)';
+        html+=`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px solid var(--border-l);align-items:flex-start">`;
+        html+=`<span style="font-size:10px;color:var(--ink-3);flex:none;width:80px">${esc(a.at)}</span>`;
+        html+=`<span style="font-size:10px;font-weight:600;color:${acolor};flex:none;width:80px">${esc(a.action)}</span>`;
+        html+=`<span style="font-size:12px;color:var(--ink-1);flex:1;line-height:1.4">${esc(a.detail||'')}</span>`;
+        html+=`</div>`;
+      });
+      html+=`</div>`;
+    }
+
+    if(!abordagens.length && !historico.length){
+      html+=`<div style="padding:14px;text-align:center;color:var(--ink-3);font-size:13px;border:1px dashed var(--border)">Sem ações registradas para este lead.</div>`;
+    }
+
+    return html;
+  }
+
+  function openLeadModal(id){
+    const l=(snap.leads||[]).find(x=>x.id===id);
+    if(!l){ if(live) fetchLive(); else renderSnapshot(); return; }
+    const body=document.getElementById('lead-modal-body');
+    if(!body) return;
+    body.innerHTML=renderLeadDetail(l);
+    document.getElementById('lead-modal-overlay').classList.add('open');
+  }
+
+  function closeLeadModal(){
+    document.getElementById('lead-modal-overlay').classList.remove('open');
   }
 
   function renderActivity(d){
@@ -3706,6 +4063,18 @@ function getStats() {
     </div>
   </div>
 </div>
+
+<!-- MODAL LEAD ────────────────────────────── -->
+<div class="overlay" id="lead-modal-overlay">
+  <div class="modal">
+    <div class="modal-head" style="padding-bottom:6px">
+      <button class="modal-close" onclick="closeLeadModal()">✕</button>
+    </div>
+    <div class="modal-body" id="lead-modal-body" style="padding-top:6px"></div>
+  </div>
+</div>
+
+<!-- /MODAL LEAD -->
 
 <script>
 // ══════════════════════════════════════════
@@ -5186,6 +5555,36 @@ const RESUMO_DIA_TITLE = 'Resumo & Lição do Dia';
 const RESUMO_DIA_DATE = '15/09/2026';
 </script>
 <script>
+// ── TAB SWITCHING: AUTOMAÇÕES ─────────────────────────────────────
+function autoTabClick(btn) {
+  document.querySelectorAll('#auto-tabs .auto-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const aba = btn.getAttribute('data-auto-tab');
+  document.querySelectorAll('#view-automacoes .auto-aba').forEach(el => el.style.display = 'none');
+  const target = document.getElementById('auto-aba-' + aba);
+  if (target) target.style.display = 'block';
+}
+document.addEventListener('click', function(e) {
+  const tab = e.target.closest('.auto-tab');
+  if (tab) autoTabClick(tab);
+});
+
+// ── TAB SWITCHING: LUCAS GESTA CAMPANHA ────────────────────────────
+let lgCampTabCur = 'campanha';
+function lgCampTab(btn, aba) {
+  lgCampTabCur = aba;
+  const todas = document.querySelectorAll('#lucas-gesta-campaign .lg-campaign-aba');
+  todas.forEach(el => el.style.display = 'none');
+  const target = document.getElementById('lg-aba-' + aba);
+  if (target) target.style.display = 'block';
+  btn.parentElement.querySelectorAll('.lg-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+document.addEventListener('click', function(e) {
+  const tab = e.target.closest('#lg-campaign-tabs .lg-tab');
+  if (tab) lgCampTab(tab, tab.getAttribute('data-lg-tab'));
+});
+
 // ── TAB SWITCHING: LUCAS GESTA PROJETO ───────────────────────────────
 let lucasProjTabCur = 'campanha';
 function lucasProjTab(btn, aba) {
