@@ -1,0 +1,154 @@
+{
+  "_meta": {
+    "versao": "1.0.0",
+    "descricao": "High Ticket Score e Mapa de Micropolos — tier geográfico + econômico para prospecção de alto valor",
+    "criado_em": "2026-09-15",
+    "habilitado": true
+  },
+  "tier": {
+    "codigo": "10 - High_Ticket",
+    "listaV2": "10 - High_Ticket",
+    "label": "10 · High Ticket",
+    "categoria": "High Ticket",
+    "motivo_default": "Executivo/decisor de alta potencial em micropolo corporativo premium com capacidade comprovada de investimento."
+  },
+  "sub_tiers": [
+    { "codigo": "HT-SP-01", "micropolo": "Jardins / Jardim Paulista", "cidade": "São Paulo", "estado": "SP", "perfil": "Serviços premium, saúde, advocacia, luxo, executivos, família", "setores": ["servicos-premium", "saude-premium", "advocacia", "luxo", "consultoria", "executivos"] },
+    { "codigo": "HT-SP-02", "micropolo": "Faria Lima / Itaim Bibi", "cidade": "São Paulo", "estado": "SP", "perfil": "Financeiro, fintech, investimentos, tecnologia, consultoria, VC", "setores": ["financeiro", "fintech", "investimentos", "tecnologia", "consultoria", "venture-capital", "private-equity"] },
+    { "codigo": "HT-SP-03", "micropolo": "Vila Olímpia", "cidade": "São Paulo", "estado": "SP", "perfil": "Tecnologia, dados, e-commerce, multinacionais", "setores": ["tecnologia", "ecommerce", "dados", "multinacional", "saas"] },
+    { "codigo": "HT-SP-04", "micropolo": "JK / Vila Nova Conceição", "cidade": "São Paulo", "estado": "SP", "perfil": "Corporate, hotéis premium, serviços B2B, consultoria", "setores": ["corporate", "hotelaria-premium", "b2b", "consultoria"] },
+    { "codigo": "HT-SP-05", "micropolo": "Berrini", "cidade": "São Paulo", "estado": "SP", "perfil": "Corredor tecnológico/financeiro, escritórios, startups", "setores": ["tecnologia", "financeiro", "startups", "b2b"] },
+    { "codigo": "HT-SP-06", "micropolo": "Chucri Zaidan", "cidade": "São Paulo", "estado": "SP", "perfil": "Galpões corporativos, indústria, tecnologia, logística", "setores": ["indústria", "tecnologia", "logística", "b2b"] },
+    { "codigo": "HT-SP-07", "micropolo": "Paulista", "cidade": "São Paulo", "estado": "SP", "perfil": "Prestígio, serviços premium, profissionais liberais, consulados", "setores": ["servicos-premium", "profissionais-liberais", "luxo"] },
+    { "codigo": "HT-SP-08", "micropolo": "Pinheiros / Rebouças", "cidade": "São Paulo", "estado": "SP", "perfil": "Inovação, startups, coworkings premium, tecnologia, criativos", "setores": ["tecnologia", "startups", "inovacao", "criativos", "b2b"] },
+    { "codigo": "HT-SP-09", "micropolo": "Alphaville / Barueri", "cidade": "São Paulo", "estado": "SP", "perfil": "Moradores HR, executivos, empresas, parques corporate", "setores": ["corporate", "executivos", "tecnologia", "saude-premium"] },
+    { "codigo": "HT-SP-10", "micropolo": "Campinas / Cambuí", "cidade": "Campinas", "estado": "SP", "perfil": "Corporate tradicional, indústria, serviços premium", "setores": ["corporate", "indústria", "servicos-premium", "b2b"] },
+    { "codigo": "HT-SP-11", "micropolo": "Campinas / Polo Tecnológico", "cidade": "Campinas", "estado": "SP", "perfil": "Polo tecnológico, startups, pesquisa, inovação", "setores": ["tecnologia", "startups", "pesquisa", "inovacao", "saas"] },
+    { "codigo": "HT-SP-12", "micropolo": "São José dos Campos / Eixo Técnico-Industrial", "cidade": "São José dos Campos", "estado": "SP", "perfil": "Aeroespacial, tecnologia, engenharia, P&D, industria avançada", "setores": ["tecnologia", "engenharia", "aeroespacial", "rd", "industria-avançada"] },
+    { "codigo": "HT-MG-01", "micropolo": "Nova Lima / Vale do Sereno", "cidade": "Nova Lima", "estado": "MG", "perfil": "Sedes mineiras, corporações, fundos, executivos", "setores": ["corporate", "investimentos", "fundos", "executivos", "b2b"] },
+    { "codigo": "HT-MG-02", "micropolo": "Belo Horizonte / Savassi", "cidade": "Belo Horizonte", "estado": "MG", "perfil": "Services premium, tecnologia, criativos, negócios", "setores": ["tecnologia", "servicos-premium", "criativos", "b2b"] },
+    { "codigo": "HT-RJ-01", "micropolo": "Leblon / Ipanema", "cidade": "Rio de Janeiro", "estado": "RJ", "perfil": "Corporações, bancos, serviços premium, família, RI", "setores": ["corporate", "financeiro", "servicos-premium", "executivos"] },
+    { "codigo": "HT-RJ-02", "micropolo": "Botafogo / Praia de Botafogo", "cidade": "Rio de Janeiro", "estado": "RJ", "perfil": "Tecnologia, startup, inovação, serviços B2B, RI tech", "setores": ["tecnologia", "startups", "inovacao", "b2b"] },
+    { "codigo": "HT-RJ-03", "micropolo": "Barra da Tijuca / Olegário Maciel", "cidade": "Rio de Janeiro", "estado": "RJ", "perfil": "Corporate, shopping corporativo, hotéis, serviços premium", "setores": ["corporate", "hotelaria-premium", "b2b", "servicos-premium"] },
+    { "codigo": "HT-RJ-04", "micropolo": "Centro / Porto Maravilha", "cidade": "Rio de Janeiro", "estado": "RJ", "perfil": "Reconversão corporativa, tecnologia, startups, logística", "setores": ["tecnologia", "logística", "startups", "b2b"] },
+    { "codigo": "HT-RJ-05", "micropolo": "São Conrado", "cidade": "Rio de Janeiro", "estado": "RJ", "perfil": "Luxo, família, serviços premium, RI", "setores": ["luxo", "servicos-premium", "investimentos"] },
+    { "codigo": "HT-PR-01", "micropolo": "Curitiba / Batel", "cidade": "Curitiba", "estado": "PR", "perfil": "Corporate, serviços premium, tecnologia, negócios", "setores": ["corporate", "tecnologia", "servicos-premium", "b2b"] },
+    { "codigo": "HT-PR-02", "micropolo": "Curitiba / Centro Cívico", "cidade": "Curitiba", "estado": "PR", "perfil": "Governo, consultoria, advocacia, empresas de serviços", "setores": ["consultoria", "advocacia", "governo", "b2b"] },
+    { "codigo": "HT-RS-01", "micropolo": "Porto Alegre / Moinhos de Vento", "cidade": "Porto Alegre", "estado": "RS", "perfil": "Corporate, serviços premium, saúde, universidades, RI", "setores": ["corporate", "saude-premium", "servicos-premium", "tecnologia"] },
+    { "codigo": "HT-RS-02", "micropolo": "Porto Alegre / Praia de Belas", "cidade": "Porto Alegre", "estado": "RS", "perfil": "Corporate, serviços, tecnologia, startups", "setores": ["corporate", "tecnologia", "startups", "b2b"] },
+    { "codigo": "HT-SC-01", "micropolo": "Florianópolis / Eixo SC-401", "cidade": "Florianópolis", "estado": "SC", "perfil": "Tecnologia, startups, inovação, RI tech, servicios digital", "setores": ["tecnologia", "startups", "inovacao", "ri-tech"] },
+    { "codigo": "HT-SC-02", "micropolo": "Florianópolis / Centro", "cidade": "Florianópolis", "estado": "SC", "perfil": "Serviços premium, corporativo, comércio especializado", "setores": ["servicos-premium", "corporate", "b2b"] },
+    { "codigo": "HT-PE-01", "micropolo": "Recife / Boa Viagem", "cidade": "Recife", "estado": "PE", "perfil": "Corporate, serviços premium, tecnologia, comércio", "setores": ["corporate", "tecnologia", "servicos-premium", "b2b"] },
+    { "codigo": "HT-PE-02", "micropolo": "Recife / Ilha do Leite", "cidade": "Recife", "estado": "PE", "perfil": "Governo, universidades, serviços, corporativo", "setores": ["governo", "servicos-premium", "universidades", "b2b"] },
+    { "codigo": "HT-BA-01", "micropolo": "Salvador / Caminho das Árvores", "cidade": "Salvador", "estado": "BA", "perfil": "Corporate, serviços premium, tecnologia, comércio", "setores": ["corporate", "tecnologia", "servicos-premium", "b2b"] },
+    { "codigo": "HT-BA-02", "micropolo": "Salvador / Itaigara", "cidade": "Salvador", "estado": "BA", "perfil": "Corporativo, serviços, comércio de classe, RI", "setores": ["corporate", "servicos-premium", "comércio", "ri"] },
+    { "codigo": "HT-CE-01", "micropolo": "Fortaleza / Aldeota", "cidade": "Fortaleza", "estado": "CE", "perfil": "Corporate, serviços premium, tecnologia, bancos", "setores": ["corporate", "tecnologia", "financeiro", "servicos-premium"] },
+    { "codigo": "HT-DF-01", "micropolo": "Brasília / Asa Sul", "cidade": "Brasília", "estado": "DF", "perfil": "Governo, consultoria, advocacia, corporate, RI", "setores": ["governo", "consultoria", "advocacia", "corporate", "ri"] },
+    { "codigo": "HT-DF-02", "micropolo": "Brasília / Lago Sul", "cidade": "Brasília", "estado": "DF", "perfil": "Corporativo, serviços premium, família, executivos", "setores": ["corporate", "servicos-premium", "executivos", "luxo"] },
+    { "codigo": "HT-GO-01", "micropolo": "Goiânia / Setor Bueno", "cidade": "Goiânia", "estado": "GO", "perfil": "Corporate, serviços, comércio de classe, tecnologia", "setores": ["corporate", "servicos-premium", "tecnologia", "b2b"] }
+  ],
+  "score_brasil": {
+    "desc": "High Ticket Score 0–100",
+    "criterios": [
+      { "nome": "potencial_economico", "max": 30, "desc": "Potencial econômico da empresa/lead" },
+      { "nome": "cargo_poder_decisao", "max": 20, "desc": "Cargo / poder de decisão" },
+      { "nome": "segmento", "max": 15, "desc": "Segmento prioritário" },
+      { "nome": "localizacao_micropolo", "max": 15, "desc": "Localização / micropolo" },
+      { "nome": "porte_empresa", "max": 10, "desc": "Porte da empresa" },
+      { "nome": "sinais_intencao", "max": 10, "desc": "Sinais de intenção ou necessidade" }
+    ]
+  },
+  "score_classificacoes": [
+    { "min": 90, "max": 100, "classe": "HT-A", "label": "PRIORIDADE MÁXIMA", "cor": "#33c17a" },
+    { "min": 75, "max": 89, "classe": "HT-B", "label": "ALTA PRIORIDADE", "cor": "#4f9dff" },
+    { "min": 60, "max": 74, "classe": "HT-C", "label": "POTENCIAL", "cor": "#e8b339" },
+    { "min": 40, "max": 59, "classe": "HT-D", "label": "OBSERVAÇÃO", "cor": "#9599a8" },
+    { "min": 0, "max": 39, "classe": "FORA", "label": "FORA DO HIGH TICKET", "cor": "#5c6070" }
+  ],
+  "cargo_prioritario": [
+    "CEO", "Founder", "Co-Founder", "Sócio", "Partner", "Managing Partner",
+    "Diretor", "Diretora", "Head", "VP", "C-Level",
+    "CMO", "CCO", "CRO", "COO", "CTO", "CIO", "CFO",
+    "Diretor Comercial", "Diretor de Marketing", "Head de Marketing",
+    "Head de Growth", "Head de Vendas", "Head de Produto",
+    "Head de Digital", "Head de Tecnologia",
+    "Gerente Geral", "Gerente Comercial", "Gerente de Marketing",
+    "Gerente de Growth", "Business Development",
+    "Investidor", "Private Equity", "Venture Capital", "Family Office"
+  ],
+  "segmento_prioritario": [
+    "tecnologia", "fintech", "bancos", "investimentos", "private-equity",
+    "venture-capital", "seguros", "saude-premium", "medicina",
+    "estetica-premium", "odontologia-premium", "advocacia-empresarial",
+    "consultoria", "contabilidade-empresarial", "imobiliario",
+    "real-estate", "arquitetura", "engenharia", "construção",
+    "educacao-premium", "saas", "industria", "energia",
+    "logistica", "agronegocio", "ecommerce", "marketing",
+    "publicidade", "eventos-corporativos", "servicos-b2b",
+    "vendas-consultivas", "alto-ltv"
+  ],
+  "micropolo_prioridade": {
+    "desc": "Níveis de prioridade por micropolo baseados em concentração econômica",
+    "niveis": [
+      { "label": "MUITO ALTA", "micropolos": ["HT-SP-02", "HT-SP-03", "HT-SP-08", "HT-SP-11", "HT-SP-12", "HT-RJ-02", "HT-SC-01", "HT-MG-01"] },
+      { "label": "ALTA", "micropolos": ["HT-SP-01", "HT-SP-04", "HT-SP-05", "HT-SP-09", "HT-SP-10", "HT-RJ-01", "HT-RJ-03", "HT-PR-01", "HT-RS-01", "HT-DF-01", "HT-DF-02", "HT-CE-01"] },
+      { "label": "MÉDIA", "micropolos": ["HT-SP-06", "HT-SP-07", "HT-MG-02", "HT-RJ-04", "HT-RJ-05", "HT-PR-02", "HT-RS-02", "HT-SC-02", "HT-PE-01", "HT-BA-01", "HT-BA-02", "HT-PE-02", "HT-GO-01", "HT-SP-12"] }
+    ]
+  },
+  "cruzamento_exemplo": {
+    "micropolo": "Faria Lima / Itaim Bibi",
+    "cidade": "São Paulo",
+    "estado": "SP",
+    "setor": "Fintech",
+    "empresa": "empresa X",
+    "cargo": "Head de Marketing",
+    "pessoa": "pessoa Y",
+    "canal": "LinkedIn/WhatsApp/e-mail",
+    "score": 91,
+    "classe": "HT-A"
+  },
+  "regra_descoberta": {
+    "criterio_principal": "CONCENTRAÇÃO DE POTENCIAL COMERCIAL",
+    "nao_criar_se": "Apenas bairro nobre sem massa crítica econômica",
+    "passos": [
+      "Identificar região com concentração relevante",
+      "Identificar município",
+      "Identificar bairro/eixo",
+      "Estimar perfil econômico",
+      "Identificar setores predominantes",
+      "Identificar empresas relevantes",
+      "Identificar cargos relevantes",
+      "Criar novo sub-tier se houver massa crítica"
+    ]
+  },
+  "campos_crm": [
+    "tier", "subtier", "micropolo", "cidade", "estado", "bairro",
+    "empresa", "segmento", "porte_empresa", "cargo", "nivel_decisao",
+    "high_ticket_score", "prioridade", "origem", "fonte",
+    "linkedin", "website", "whatsapp", "email", "status",
+    "responsavel", "ultima_interacao", "proxima_acao", "observacoes",
+    "motivo_high_ticket"
+  ],
+  "fila_prioridade_ordenacao": [
+    "Score",
+    "Poder de decisão",
+    "Potencial econômico",
+    "Micropolo",
+    "Sinal de intenção",
+    "Recência"
+  ],
+  "filtros": [
+    "Todos High Ticket",
+    "HT-A", "HT-B", "HT-C",
+    "São Paulo", "Rio de Janeiro", "Minas Gerais", "Paraná",
+    "Santa Catarina", "Rio Grande do Sul", "Pernambuco", "Bahia",
+    "Ceará", "Distrito Federal", "Outros estados"
+  ],
+  "governanca": {
+    "nao_apagar_dados": true,
+    "nao_sobrescrever_sem_historico": true,
+    "nao_alterar_tiers_sem_registro": true,
+    "classificacao_explicavel": true,
+    "campo_motivo": "motivo_high_ticket"
+  }
+}

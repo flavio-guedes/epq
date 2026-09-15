@@ -196,12 +196,34 @@ select.status-sel{background:var(--panel2); border:1px solid var(--border); colo
 .crm-card .tags{display:flex; gap:5px; margin-top:6px; flex-wrap:wrap;}
 .crm-tag{font-size:9.5px; padding:2px 6px; border-radius:5px; font-weight:700; text-transform:uppercase; letter-spacing:.3px; background:rgba(79,157,255,.14); color:var(--accent2); border:1px solid rgba(79,157,255,.3);}
 .crm-tag.lost{background:rgba(232,84,107,.14); color:var(--danger); border-color:rgba(232,84,107,.35);}
+.badge-score-ht{font-size:9px;padding:2px 6px;border-radius:5px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;background:rgba(109,91,255,.14);color:#b3a8ff;border:1px solid rgba(109,91,255,.3);}
+.crm-tag-score-ht{font-size:9px;padding:2px 6px;border-radius:5px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;background:rgba(109,91,255,.14);color:#b3a8ff;border:1px solid rgba(109,91,255,.3);}
 .crm-card-actions{display:flex; gap:5px; margin-top:9px; flex-wrap:wrap;}
 .crm-mini-btn{background:var(--panel); border:1px solid var(--border); color:var(--text-dim); font-size:10.5px; font-weight:700; padding:5px 8px; border-radius:6px; cursor:pointer; font-family:inherit;}
 .crm-mini-btn:hover{color:var(--text); border-color:#3a3f52;}
 .crm-mini-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; border:none;}
 .crm-mini-btn:disabled{opacity:.35; cursor:not-allowed;}
 .crm-empty{color:var(--text-faint); font-size:12px; text-align:center; padding:24px 8px;}
+.mapa-ht-state{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;margin-bottom:16px;}
+.mapa-ht-state-title{display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border-soft);}
+.mapa-ht-state-title .dot{width:8px;height:8px;border-radius:50%;}
+.mapa-ht-state-title .lbl{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+.mapa-ht-state-title .cnt{font-size:12px;color:var(--text-dim);margin-left:auto;}
+.mapa-ht-micropolo{background:var(--panel2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:.12s;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.mapa-ht-micropolo:hover{border-color:var(--accent);background:linear-gradient(180deg,rgba(109,91,255,.05),var(--panel2));}
+.mapa-ht-mp-name{font-weight:600;font-size:13px;color:var(--text);}
+.mapa-ht-mp-meta{font-size:11px;color:var(--text-dim);display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.mapa-ht-mp-meta .k{color:var(--text-faint);text-transform:uppercase;font-size:9.5px;letter-spacing:.5px;font-weight:600;}
+.mapa-ht-mp-detail{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin-top:14px;display:none;}
+.mapa-ht-mp-detail.open{display:block;}
+.mapa-ht-mp-detail h3{font-size:14px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.mapa-ht-mp-detail .row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border-soft);font-size:12px;}
+.mapa-ht-mp-detail .row:last-child{border-bottom:none;}
+.mapa-ht-mp-detail .row .k{color:var(--text-dim);text-transform:uppercase;font-size:10px;letter-spacing:.5px;font-weight:600;}
+.mapa-ht-mp-detail .row .v{color:var(--text);font-weight:600;text-align:right;word-break:break-word;}
+.mapa-ht-mp-detail .seg-list{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+.mapa-ht-mp-detail .seg-chip{font-size:9.5px;padding:2px 7px;border-radius:5px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;background:rgba(79,157,255,.10);color:#6ba9f6;border:1px solid rgba(79,157,255,.25);}
+.mapa-ht-export-area{width:100%;max-height:240px;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:11px;color:var(--text-dim);font-family:ui-monospace,monospace;white-space:pre-wrap;overflow:auto;margin-top:10px;}
 .crm-add-box{display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; align-items:center;}
 .crm-add-box select, .crm-add-box input[type=text]{background:var(--panel); border:1px solid var(--border); color:var(--text); border-radius:8px; padding:9px 11px; font-size:12.5px; font-family:inherit;}
 .crm-add-box input[type=text]{flex:1; min-width:220px;}
@@ -216,12 +238,158 @@ select.status-sel{background:var(--panel2); border:1px solid var(--border); colo
 .crm-card .crm-mini-btn.li:hover{background:rgba(10,102,194,.25)}
 .contact .c-actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
 
+/* ===== feed de atividades em tempo real ===== */
+.activity-bar{position:fixed; bottom:0; left:0; right:0; background:rgba(15,16,22,.95); backdrop-filter:blur(14px); border-top:1px solid var(--border); padding:10px 18px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; z-index:60; font-size:12px;}
+.activity-bar .live-badge{display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:20px; background:rgba(232,84,107,.18); color:var(--danger); font-weight:700; font-size:10.5px; letter-spacing:.5px; text-transform:uppercase; border:1px solid rgba(232,84,107,.4); cursor:pointer; user-select:none;}
+.activity-bar .live-badge.paused{background:rgba(109,91,255,.14); color:var(--accent2); border-color:rgba(109,91,255,.35);}
+.activity-bar .live-dot{width:7px; height:7px; border-radius:50%; background:var(--danger); box-shadow:0 0 8px var(--danger); animation:pulse-live 1.4s ease-in-out infinite;}
+.activity-bar .live-badge.paused .live-dot{background:var(--accent2); box-shadow:0 0 8px var(--accent2); animation:none;}
+@keyframes pulse-live{0%,100%{opacity:1; transform:scale(1);} 50%{opacity:.4; transform:scale(.85);}}
+.activity-bar .acount{margin-left:auto; color:var(--text-dim); font-size:11.5px;}
+.activity-bar .acount b{color:var(--text); font-size:13px; font-weight:700;}
+
+.feed-panel{background:rgba(10,11,15,.7); border:1px solid var(--border); border-radius:12px; margin:14px 0; max-height:280px; overflow:auto; padding:10px 12px;}
+.feed-panel::-webkit-scrollbar{width:6px;}
+.feed-panel::-webkit-scrollbar-track{background:transparent;}
+.feed-panel::-webkit-scrollbar-thumb{background:var(--border); border-radius:6px;}
+.feed-title{display:flex; align-items:center; gap:8px; margin-bottom:8px; font-size:11px; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-dim); font-weight:700;}
+.feed-title .fill{margin-left:auto; display:flex; gap:5px; align-items:center;}
+.feed-item{display:grid; grid-template-columns:44px 1fr auto; gap:10px; align-items:start; padding:7px 8px; border-radius:8px; margin-bottom:5px; background:var(--panel); border:1px solid var(--border-soft); font-size:11.5px; line-height:1.45; transition:.12s;}
+.feed-item:hover{border-color:var(--border); background:var(--panel2);}
+.feed-item .ts{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:10px; color:var(--text-faint); padding-top:1px;}
+.feed-item .body{min-width:0;}
+.feed-item .body .aw{font-weight:700; font-size:12px; color:var(--text); display:flex; align-items:center; gap:5px; flex-wrap:wrap;}
+.feed-item .body .detail{color:var(--text-dim); margin-top:2px;}
+.feed-item .body .detail b{color:var(--text); font-weight:600;}
+.feed-item .body .chng{margin-top:3px; font-size:10.5px; color:var(--text-faint); display:flex; align-items:center; gap:6px;}
+.feed-item .body .chng .arr{color:var(--accent2); font-weight:700;}
+.feed-item .body .chng .from{color:var(--text-faint); text-decoration:line-through;}
+.feed-item .ag{font-size:9.5px; padding:2px 6px; border-radius:4px; font-weight:700; text-transform:uppercase; letter-spacing:.3px; white-space:nowrap;}
+.feed-item .ag.hunter{background:rgba(79,157,255,.14); color:#6ba9f6; border:1px solid rgba(79,157,255,.3);}
+.feed-item .ag.qualifier{background:rgba(109,91,255,.14); color:#b3a8ff; border:1px solid rgba(109,91,255,.3);}
+.feed-item .ag.outreach{background:rgba(232,179,57,.14); color:#f0c45a; border:1px solid rgba(232,179,57,.35);}
+.feed-item .ag.mercurio{background:rgba(51,193,122,.14); color:#5ddb8e; border:1px solid rgba(51,193,122,.3);}
+.feed-item .ag.hermes{background:rgba(232,84,107,.14); color:#f07a8a; border:1px solid rgba(232,84,107,.3);}
+.feed-item.error{border-color:rgba(232,84,107,.35); background:rgba(232,84,107,.06);}
+.feed-item.new-activity{animation:feed-flash .8s ease-out;}
+@keyframes feed-flash{0%{background:rgba(109,91,255,.18); border-color:var(--accent);} 100%{background:var(--panel); border-color:var(--border-soft);}}
+.feed-item .meta-tag{color:var(--text-faint); font-size:10px;}
+
+/* status Hermes operacional */
+.hermes-status-full{display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding:12px 16px; border-radius:12px; margin-bottom:16px; font-size:13px;}
+.hermes-status-full.online{background:linear-gradient(135deg, rgba(51,193,122,.10), rgba(109,91,255,.05)); border:1px solid rgba(51,193,122,.3);}
+.hermes-status-full.syncing{background:linear-gradient(135deg, rgba(232,179,57,.10), rgba(109,91,255,.05)); border:1px solid rgba(232,179,57,.3);}
+.hermes-status-full.offline{background:linear-gradient(135deg, rgba(232,84,107,.06), rgba(15,16,22,.2)); border:1px solid rgba(232,84,107,.2);}
+.hermes-status-full.error{background:linear-gradient(135deg, rgba(232,84,107,.12), rgba(15,16,22,.3)); border:1px solid rgba(232,84,107,.35);}
+.hermes-status-full.nodata{background:var(--panel2); border:1px solid var(--border);}
+.hermes-status-full .hdot{width:11px; height:11px; border-radius:50%; box-shadow:0 0 10px currentColor;}
+.hermes-status-full.online .hdot{background:var(--ok); color:var(--ok);}
+.hermes-status-full.syncing .hdot{background:var(--warn); color:var(--warn); animation:pulse-live 1.4s ease-in-out infinite;}
+.hermes-status-full.offline .hdot{background:var(--danger); color:var(--danger);}
+.hermes-status-full.error .hdot{background:var(--danger); color:var(--danger);}
+.hermes-status-full.nodata .hdot{background:var(--text-faint); color:var(--text-faint);}
+.hermes-status-full .hlbl{font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:.5px;}
+.hermes-status-full .hmetrics{display:flex; gap:16px; flex-wrap:wrap; margin-top:6px; font-size:11.5px; color:var(--text-dim);}
+.hermes-status-full .hmetrics b{color:var(--text); font-weight:700;}
+
+/* métricas AGORA */
+.now-panel{background:linear-gradient(135deg, rgba(109,91,255,.12), rgba(79,157,255,.06)); border:1px solid rgba(109,91,255,.3); border-radius:12px; padding:16px 18px; margin:16px 0;}
+.now-panel .now-title{font-size:11px; text-transform:uppercase; letter-spacing:1.5px; color:var(--accent2); font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px;}
+.now-panel .now-title .pulse{width:7px; height:7px; border-radius:50%; background:var(--accent); box-shadow:0 0 8px var(--accent); animation:pulse-live 1.4s ease-in-out infinite;}
+.now-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:10px;}
+.now-card{background:var(--panel); border:1px solid var(--border); border-radius:9px; padding:12px 14px; min-height:80px;}
+.now-card .nv{font-size:22px; font-weight:800; color:var(--text); letter-spacing:-.3px;}
+.now-card .nl{font-size:10.5px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.6px; margin-top:4px; font-weight:600;}
+.now-card.warn .nv{color:var(--warn);}
+.now-card.danger .nv{color:var(--danger);}
+.now-card.ok .nv{color:var(--ok);}
+.now-card.accent .nv{color:var(--accent2);}
+
+/* métricas gerais */
+.metrics-panel{display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:10px; margin:18px 0;}
+.metric-card{background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:14px 14px 12px; text-align:center;}
+.metric-card .mv{font-size:26px; font-weight:800; letter-spacing:-.5px;}
+.metric-card .ml{font-size:10px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.8px; margin-top:4px; font-weight:600;}
+.metric-card.accent{border-color:var(--accent); box-shadow:0 0 0 1px rgba(109,91,255,.15) inset;}
+.metric-card.accent .mv{color:var(--accent2);}
+.metric-card .mrate{font-size:10.5px; color:var(--text-faint); margin-top:4px;}
+
+/* filtros avançados */
+.adv-filters{background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin:14px 0;}
+.adv-filters .af-title{font-size:11px; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-dim); font-weight:700; margin-bottom:10px;}
+.adv-filters .af-row{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+.adv-filters select, .adv-filters input[type=text]{background:var(--panel2); border:1px solid var(--border); color:var(--text); border-radius:7px; padding:7px 10px; font-size:12px; font-family:inherit;}
+.adv-filters select:focus, .adv-filters input[type=text]:focus{outline:none; border-color:var(--accent);}
+.adv-filters .af-label{font-size:11px; color:var(--text-faint); font-weight:600; min-width:90px;}
+
+/* modal de lead */
+.lead-modal-bg{display:none; position:fixed; inset:0; background:rgba(5,6,10,.75); backdrop-filter:blur(4px); z-index:200; align-items:center; justify-content:center; overflow:auto; padding:30px 14px;}
+.lead-modal-bg.open{display:flex;}
+.lead-modal{background:var(--bg2); border:1px solid var(--border); border-radius:16px; max-width:680px; width:100%; max-height:88vh; overflow:auto; padding:26px 28px; position:relative;}
+.lead-modal h2{font-size:20px; font-weight:800; margin-bottom:2px; display:flex; align-items:center; gap:10px;}
+.lead-modal .lead-sub{color:var(--text-dim); font-size:13px; margin-bottom:18px;}
+.lead-modal .lm-section{margin-bottom:18px;}
+.lead-modal .lm-title{font-size:11px; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-faint); font-weight:700; margin-bottom:8px; display:flex; align-items:center; gap:6px;}
+.lead-modal .lm-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px 14px;}
+.lead-modal .lm-field .lf-label{font-size:10.5px; color:var(--text-faint); text-transform:uppercase; letter-spacing:.5px; margin-bottom:2px;}
+.lead-modal .lm-field .lf-val{font-size:13px; color:var(--text); word-break:break-word;}
+.lead-modal .lm-full{grid-column:1/-1;}
+.lead-modal .timeline{position:relative; padding-left:24px;}
+.lead-modal .timeline::before{content:""; position:absolute; left:7px; top:4px; bottom:4px; width:2px; background:var(--border);}
+.lead-modal .tl-item{position:relative; padding:0 0 14px 12px;}
+.lead-modal .tl-item:last-child{padding-bottom:0;}
+.lead-modal .tl-item::before{content:""; position:absolute; left:4px; top:5px; width:9px; height:9px; border-radius:50%; background:var(--accent); border:2px solid var(--bg2);}
+.lead-modal .tl-item.future::before{background:var(--text-faint); border-color:var(--bg2); opacity:.5;}
+.lead-modal .tl-item.done::before{background:var(--ok);}
+.lead-modal .tl-item .tl-ts{font-size:10px; color:var(--text-faint); font-family:ui-monospace,monospace; margin-bottom:2px;}
+.lead-modal .tl-item .tl-title{font-size:13px; font-weight:600; color:var(--text);}
+.lead-modal .tl-item .tl-det{color:var(--text-dim); font-size:11.5px; margin-top:2px;}
+.lead-modal .stage-badge{display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:20px; font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.4px;}
+.lead-modal .stage-badge .arr{color:var(--accent2); font-size:14px;}
+.lead-modal .modal-actions-lg{display:flex; gap:8px; flex-wrap:wrap; margin-top:18px; padding-top:14px; border-top:1px solid var(--border);}
+.lead-modal .close-x-lg{position:absolute; top:14px; right:18px; background:none; border:none; color:var(--text-faint); font-size:22px; cursor:pointer; line-height:1;}
+
+/* painel de agentes ativos */
+.agents-panel{display:flex; flex-wrap:wrap; gap:8px; margin:14px 0;}
+.agent-chip{display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:20px; font-size:11.5px; font-weight:600; border:1px solid var(--border); background:var(--panel); color:var(--text-dim);}
+.agent-chip .act-count{background:var(--accent); color:#fff; font-size:10px; padding:1px 6px; border-radius:10px; font-weight:700;}
+.agent-chip.active{border-color:var(--accent); color:var(--text); background:rgba(109,91,255,.08);}
+.agent-chip.hunter.active{border-color:#4f9dff; background:rgba(79,157,255,.10);}
+.agent-chip.qualifier.active{border-color:#6d5bff; background:rgba(109,91,255,.12);}
+.agent-chip.outreach.active{border-color:#e8b339; background:rgba(232,179,57,.10);}
+.agent-chip.mercurio.active{border-color:#33c17a; background:rgba(51,193,122,.10);}
+.agent-chip.hermes-agent.active{border-color:#e8546b; background:rgba(232,84,107,.10);}
+
+/* painel de movimentação recente */
+.moves-panel{background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin:14px 0;}
+.moves-panel .mv-title{font-size:11px; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-dim); font-weight:700; margin-bottom:8px;}
+.moves-list{font-size:11.5px;}
+.moves-list .move-row{display:flex; align-items:center; gap:8px; padding:4px 0; border-bottom:1px solid var(--border-soft);}
+.moves-list .move-row:last-child{border-bottom:none;}
+.moves-list .move-from{color:var(--text-faint); text-decoration:line-through; font-size:10.5px;}
+.moves-list .move-to{color:var(--ok); font-weight:700;}
+.moves-list .move-arrow{color:var(--accent2); font-weight:700;}
+.moves-list .move-meta{margin-left:auto; color:var(--text-faint); font-size:10px;}
+
+/* modo técnico toggle */
+.tech-toggle{display:flex; align-items:center; gap:8px; font-size:11px; color:var(--text-dim); cursor:pointer; user-select:none; padding:4px 8px; border-radius:6px; border:1px solid var(--border-soft);}
+.tech-toggle input{accent-color:var(--accent);}
+.tech-toggle:hover{border-color:var(--border);}
+
+/* logs operacionais */
+.log-panel{background:#0a0b0f; border:1px solid var(--border); border-radius:10px; padding:12px 14px; margin:14px 0; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11px; max-height:240px; overflow:auto;}
+.log-panel .log-entry{padding:3px 0; color:var(--text-dim); border-bottom:1px solid var(--border-soft);}
+.log-panel .log-entry.error{color:var(--danger);}
+.log-panel .log-entry .log-ts{color:var(--text-faint);}
+.log-panel .log-entry .log-agnt{color:var(--accent2);}
+.log-panel .log-entry .log-evt{color:var(--text);}
 </style>
 </head>
 <body>
 <div class="top-tabs">
   <button class="top-tab active" id="tabBtnProspeccao">📋 Prospecção</button>
   <button class="top-tab" id="tabBtnCrm">🧩 CRM · Funil</button>
+  <button class="top-tab" id="tabBtnMapaHT">🗺️ Mapa High Ticket</button>
 </div>
 <div class="wrap view-pane active" id="viewProspeccao">
   <header class="top">
@@ -232,6 +400,7 @@ select.status-sel{background:var(--panel2); border:1px solid var(--border); colo
 
   <div class="cards-grid" id="statsGrid"></div>
 
+  <div id="htStats" class="cards-grid" style="margin-top:10px;"></div>
   <div class="insight" id="insightBox"></div>
 
   <div class="global-actions">
@@ -260,6 +429,29 @@ select.status-sel{background:var(--panel2); border:1px solid var(--border); colo
       <option value="Baixa">⚪ Baixa</option>
     </select>
     <button class="btn btn-ghost btn-sm" id="btnClearFilters">Limpar filtros</button>
+    <span class="tech-toggle" id="htToggle">
+      <input type="checkbox" id="htFiltersEnabled"> <label for="htFiltersEnabled" style="cursor:pointer;">🔍 Filtros High Ticket (estado / score)</label>
+    </span>
+  </div>
+  <div class="adv-filters" id="htFiltersPanel" style="display:none;">
+    <div class="af-title">🔍 Filtros High Ticket</div>
+    <div class="af-row">
+      <span class="af-label">Estado:</span>
+      <select class="filter" id="htStateFilter">
+        <option value="">Todos os estados</option>
+      </select>
+      <span class="af-label">Classificação:</span>
+      <select class="filter" id="htClassFilter">
+        <option value="">Todas as classificações</option>
+        <option value="HT-A">HT-A — Prioridade Máxima</option>
+        <option value="HT-B">HT-B — Alta Prioridade</option>
+        <option value="HT-C">HT-C — Potencial</option>
+        <option value="HT-D">HT-D — Observação</option>
+        <option value="FORA">Fora do High Ticket</option>
+      </select>
+      <span class="af-label">Score mín.:</span>
+      <input type="number" id="htScoreMin" min="0" max="100" placeholder="0" style="width:70px;">
+    </div>
   </div>
 
   <div class="bulk-row">
@@ -323,6 +515,28 @@ select.status-sel{background:var(--panel2); border:1px solid var(--border); colo
     </div>
     <button class="btn btn-primary" id="mSendEmail" style="width:100%; margin-top:8px; padding:12px;">✉️ Enviar e-mail agora</button>
     <div class="hint" id="mSendHint" style="margin-top:8px; margin-bottom:0;">Abre seu cliente de e-mail padrão com CCO, assunto e mensagem preenchidos.</div>
+  </div>
+</div>
+
+<div class="view-pane" id="viewMapaHT">
+  <header class="top">
+    <div class="eyebrow">High Ticket · Micropolos</div>
+    <h1><span class="dot"></span>Mapa de Concentração High Ticket</h1>
+    <div class="subtitle">Concentração de leads por estado, cidade e micropolo. Clique no micropolo para detalhes.</div>
+  </header>
+
+  <div id="mapaHTContainer" style="margin-top:18px;">
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;align-items:center;">
+      <select class="filter" id="mapaHTStateFilter" style="flex:0 0 auto;min-width:130px;">
+        <option value="">Todos os estados</option>
+      </select>
+      <span style="font-size:12px;color:var(--text-dim);">Leads: <strong id="mapaHTTotalLeads">0</strong></span>
+      <span style="font-size:12px;color:var(--text-dim);">Micropolos: <strong id="mapaHTTotalMicropolos">0</strong></span>
+      <span style="font-size:12px;color:var(--text-dim);">Empresas: <strong id="mapaHTTotalEmpresas">0</strong></span>
+      <span style="font-size:12px;color:var(--text-dim);">Decisores: <strong id="mapaHTTotalDecisores">0</strong></span>
+      <button class="btn btn-ghost btn-sm" id="mapaHTExport" style="margin-left:auto;">📋 Exportar lista</button>
+    </div>
+    <div id="mapaHTList"></div>
   </div>
 </div>
 
@@ -448,7 +662,16 @@ const MESSAGE_BUILDERS = {
   "07 - Comercial": c => `${greet(c.nome)}\n\nEstou mapeando oportunidades de projeto na área de ${c.cargo || 'atuação de vocês'}${c.empresa ? ` na ${c.empresa}` : ''}, e acredito que pode haver um encaixe interessante.\n\nPosso compartilhar mais detalhes em uma conversa rápida, sem compromisso.\n\nAbraço,\nFlávio Guedes`,
   "08 - Baixa_Relevancia": c => `${greet(c.nome)}\n\nTudo bem? Só passando para reativar o contato — se algo fizer sentido no futuro, fico à disposição.\n\nAbraço,\nFlávio Guedes`,
   "09 - Meta_Ads_Cadastro": c => `${greet(c.nome)}\n\nVi seu interesse em receber mais informações sobre o ${c.empresa || "empreendimento"}. Queria enviar os detalhes do projeto e as condições atuais.\n\nPosso te passar por aqui?\n\nAbraço,\nFlávio Guedes`,
-  "10 - High_Ticket": c => `${greet(c.nome)}\n\nVi o potencial da ${empresaRef(c)} e acredito que existe uma oportunidade de elevar ainda mais o posicionamento da marca.\n\nTrabalho com estratégia, criação e produto para negócios de alto valor — posso compartilhar como faço isso em conversa rápida.\n\nTopa 15 minutos?\n\nAbraço,\nFlávio Guedes`,
+  "10 - High_Ticket": c => {
+    const micropolo = (c.micropolo || c.subtierHT || c.subtier || '').trim();
+    const empresa = c.empresa || 'sua empresa';
+    const cargo = c.cargo || c.subtipo || '';
+    let context = `Vi o potencial da ${empresa}`;
+    if (micropolo) context = `Vi que ${empresa} está em ${micropolo}`;
+    if (cargo) context += ` e vejo no ${cargo} uma oportunidade relevante`;
+    context += '.';
+    return `${greet(c.nome)}\n\n${context}\n\nTrabalho com estratégia, criação e produto para negócios de alto valor — posso compartilhar como faço isso em conversa rápida.\n\nTopa 15 minutos?\n\nAbraço,\nFlávio Guedes`;
+  },
 };
 const SUBJECT_OPTIONS = {
   "01 - Vaga_Contratacao": ["Uma conexão profissional","Uma ideia rápida","Conexão sobre oportunidades"],
@@ -460,12 +683,19 @@ const SUBJECT_OPTIONS = {
   "07 - Comercial": ["Possível projeto — [Empresa]","Uma oportunidade comercial","Vale uma conversa rápida?"],
   "08 - Baixa_Relevancia": ["Reativando contato","Só um oi!"],
   "09 - Meta_Ads_Cadastro": ["Informações — [Empresa]","Detalhes do [Empresa]","Condições — [Empresa]"],
-  "10 - High_Ticket": ["Alto valor — [Empresa]","Estratégia — [Empresa]","Posicionamento — [Empresa]"],
+  "10 - High_Ticket": c => {
+    const micropolo = (c.micropolo || c.subtierHT || c.subtier || '').trim();
+    if (micropolo) return [`Alto valor — ${micropolo}`, `Estratégia — ${c.empresa || 'sua empresa'}`, `Posicionamento — ${c.empresa || 'sua empresa'}`];
+    return [`Alto valor — ${c.empresa || 'você'}`, `Estratégia — ${c.empresa || 'você'}`, `Posicionamento — ${c.empresa || 'você'}`];
+  },
 };
 function buildMessage(c){ if(c.mensagemPersonalizada) return c.mensagemPersonalizada; const f = MESSAGE_BUILDERS[c.listaV2] || MESSAGE_BUILDERS["08 - Baixa_Relevancia"]; return f(c); }
 function subjectOptions(c){
-  const opts = (SUBJECT_OPTIONS[c.listaV2] || ["Possível conversa — [Empresa]"]).map(s=>s.replace('[Empresa]', c.empresa || 'você'));
-  return opts;
+  const raw = SUBJECT_OPTIONS[c.listaV2];
+  let opts;
+  if (typeof raw === 'function') opts = raw(c);
+  else opts = raw || ["Possível conversa — [Empresa]"];
+  return (Array.isArray(opts) ? opts : [opts]).map(s=>String(s).replace('[Empresa]', c.empresa || 'você'));
 }
 
 /* ===== portfólio ===== */
@@ -480,11 +710,33 @@ function recommendPortfolio(c){
 
 /* ===== filtragem ===== */
 function filteredContacts(){
+  const htOn = document.getElementById('htFiltersEnabled')?.checked || false;
+  const htState = document.getElementById('htStateFilter')?.value || '';
+  const htClass = document.getElementById('htClassFilter')?.value || '';
+  const htScoreMin = parseInt(document.getElementById('htScoreMin')?.value || '0', 10);
   return CONTACTS.filter(c=>{
     if(activeTier && c.listaV2 !== activeTier) return false;
     if(activeSubtipo && c.subtipo !== activeSubtipo) return false;
     if(statusFilter && getStatus(c) !== statusFilter) return false;
     if(prioFilter && c.prioridade !== prioFilter) return false;
+
+    // Filtros High Ticket
+    if(htOn && c.listaV2 === '10 - High_Ticket'){
+      if(htState){
+        const cEstado = (c.estado || '').toUpperCase();
+        if(!cEstado.includes(htState.toUpperCase())) return false;
+      }
+      if(htClass){
+        const cC = (c.high_ticket_classe || '');
+        if(htClass !== 'FORA' && cC !== htClass) return false;
+        if(htClass === 'FORA' && (cC === 'HT-A' || cC === 'HT-B' || cC === 'HT-C' || cC === 'HT-D')) return false;
+      }
+      if(htScoreMin > 0){
+        const cScore = parseInt(c.high_ticket_score || '0', 10);
+        if(cScore < htScoreMin) return false;
+      }
+    }
+
     if(searchTerm){
       const s = searchTerm.toLowerCase();
       const hay = `${c.nome} ${c.empresa} ${c.cargo} ${c.email}`.toLowerCase();
@@ -533,6 +785,44 @@ function renderStats(){
     <div class="stat-card danger"><div class="val">${s.perdidos.toLocaleString('pt-BR')}</div><div class="lbl">Perdidos</div></div>
   `;
   document.getElementById('totalEmailsCount').textContent = s.total.toLocaleString('pt-BR');
+
+  // Stats específicas do High Ticket
+  renderHtStats();
+}
+
+function renderHtStats(){
+  const htContacts = CONTACTS.filter(c => c.listaV2 === '10 - High_Ticket');
+  if(htContacts.length === 0) return;
+  const container = document.getElementById('htStats');
+  if(!container) return;
+
+  const classes = { 'HT-A': 0, 'HT-B': 0, 'HT-C': 0, 'HT-D': 0 };
+  const estados = {};
+  const micropolos = {};
+  htContacts.forEach(c=>{
+    const cls = c.high_ticket_classe || '';
+    if(classes[cls] !== undefined) classes[cls]++;
+    const st = (c.estado || '—');
+    estados[st] = (estados[st] || 0) + 1;
+    const mp = (c.micropolo || c.subtierHT || '—');
+    micropolos[mp] = (micropolos[mp] || 0) + 1;
+  });
+
+  const total = htContacts.length;
+  const decisores = htContacts.filter(c => {
+    const cargo = (c.cargo || c.subtipo || '').toLowerCase();
+    return /ceo|founder|co-?founder|sócio|partner|managingpartner|diretor|diretora|head|vp|c-?level|cmo|cco|cro|coo|cto|cio|cfo|gerente geral|business development|investidor|private equity|venture capital|family office/i.test(cargo);
+  }).length;
+
+  container.innerHTML = `
+    <div class="stat-card accent"><div class="val">${total}</div><div class="lbl">Leads High Ticket</div></div>
+    <div class="stat-card ok"><div class="val">${classes['HT-A']||0}</div><div class="lbl">HT-A</div></div>
+    <div class="stat-card" style="border-color:rgba(79,157,255,.3);box-shadow:0 0 0 1px rgba(79,157,255,.15) inset;"><div class="val" style="color:var(--accent2);">${classes['HT-B']||0}</div><div class="lbl">HT-B</div></div>
+    <div class="stat-card warn"><div class="val">${classes['HT-C']||0}</div><div class="lbl">HT-C</div></div>
+    <div class="stat-card"><div class="val">${classes['HT-D']||0}</div><div class="lbl">HT-D</div></div>
+    <div class="stat-card"><div class="val">${Object.keys(micropolos).length}</div><div class="lbl">Micropolos</div></div>
+    <div class="stat-card"><div class="val">${Object.keys(estados).length}</div><div class="lbl">Estados</div></div>
+  `;
 }
 
 /* ===== insight ===== */
@@ -590,23 +880,39 @@ function renderTierNav(){
   });
 }
 
-/* ===== subtipos ===== */
-function renderSubtypes(){
+/* ===== subtipos / sub-tiers ===== */
+function renderSubtypes() {
   const title = document.getElementById('subtypeTitle');
   const chips = document.getElementById('subtypeChips');
-  const pool = activeTier ? CONTACTS.filter(c=>c.listaV2===activeTier) : CONTACTS;
+  const pool = activeTier ? CONTACTS.filter(c => c.listaV2 === activeTier) : CONTACTS;
+
+  const isHT = activeTier === '10 - High_Ticket';
+  const getSubKey = c => {
+    if (isHT) {
+      const st = (c.subtierHT || c.subtier || c.subtipo || '').trim();
+      return st || 'SEM SUBTIER';
+    }
+    return c.subtipo || 'SEM SUBTIPO';
+  };
+
   const counts = {};
-  pool.forEach(c=>{ counts[c.subtipo]=(counts[c.subtipo]||0)+1; });
-  const entries = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
-  if(entries.length===0){ title.style.display='none'; chips.innerHTML=''; return; }
-  title.style.display='block';
+  pool.forEach(c => {
+    const k = getSubKey(c);
+    counts[k] = (counts[k] || 0) + 1;
+  });
+  const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  if (entries.length === 0) { title.style.display = 'none'; chips.innerHTML = ''; return; }
+  title.style.display = 'block';
+  title.textContent = isHT ? 'Micropolos / Sub-Tiers HT' : 'Subtipos';
+
   let html = `<button class="chip ${!activeSubtipo?'active':''}" data-s="">Todos<span class="n">${pool.length}</span></button>`;
-  entries.forEach(([s,n])=>{
-    html += `<button class="chip ${activeSubtipo===s?'active':''}" data-s="${s}">${s}<span class="n">${n}</span></button>`;
+  entries.forEach(([s, n]) => {
+    const label = isHT ? (HT.subTierLabel(s) || s) : s;
+    html += `<button class="chip ${activeSubtipo===s?'active':''}" data-s="${esc(s)}">${esc(label)}<span class="n">${n}</span></button>`;
   });
   chips.innerHTML = html;
-  chips.querySelectorAll('.chip').forEach(btn=>{
-    btn.onclick = ()=>{ activeSubtipo = btn.dataset.s || null; page=1; render(); };
+  chips.querySelectorAll('.chip').forEach(btn => {
+    btn.onclick = () => { activeSubtipo = btn.dataset.s || null; page = 1; render(); };
   });
 }
 
@@ -616,7 +922,41 @@ function renderStatusFilterOptions(){
   const cur = sel.value;
   sel.innerHTML = '<option value="">Status: Todos</option>' + STATUS_OPTIONS.map(s=>`<option value="${s}">${s}</option>`).join('');
   sel.value = cur;
+}  sel.value = cur;
 }
+
+/* ---- filtros High Ticket ---- */
+const HT_ESTADOS = ['SP','RJ','MG','PR','RS','SC','PE','BA','CE','DF','GO'];
+function populateHtFilters(){
+  const stateSel = document.getElementById('htStateFilter');
+  if(stateSel){
+    stateSel.innerHTML = '<option value="">Todos os estados</option>' +
+      HT_ESTADOS.map(s=>`<option value="${s}">${s}</option>`).join('');
+  }
+  const mapaStateSel = document.getElementById('mapaHTStateFilter');
+  if(mapaStateSel){
+    mapaStateSel.innerHTML = '<option value="">Todos os estados</option>' +
+      HT_ESTADOS.map(s=>`<option value="${s}">${s}</option>`).join('');
+  }
+  const classSel = document.getElementById('htClassFilter');
+  if(classSel){
+    // já vem populado no HTML
+  }
+  const scoreMin = document.getElementById('htScoreMin');
+  if(scoreMin) scoreMin.value = '';
+}
+function toggleHtFilters(show){
+  const panel = document.getElementById('htFiltersPanel');
+  if(panel) panel.style.display = show ? 'block' : 'none';
+}
+document.getElementById('htFiltersEnabled').addEventListener('change', function(e){
+  toggleHtFilters(e.target.checked);
+  page = 1; renderList();
+});
+document.getElementById('htStateFilter').addEventListener('change', ()=>{ page=1; renderList(); });
+document.getElementById('htClassFilter').addEventListener('change', ()=>{ page=1; renderList(); });
+document.getElementById('htScoreMin').addEventListener('input', ()=>{ page=1; renderList(); });
+
 const PRIO_EMOJI = {"Alta":"🔥","Média":"🟡","Média-Baixa":"🟡","Baixa":"⚪"};
 
 /* ---- helpers WhatsApp / LinkedIn ---- */
@@ -651,6 +991,7 @@ function renderList(){
             ${c.mensagemPersonalizada ? '<span class="badge badge-personalizada" title="Mensagem personalizada já preparada para este contato">✨ Personalizada</span>' : ''}
           </div>
           <div class="c-empresa">${esc(c.empresa || '—')} ${c.cargo ? ' · '+esc(c.cargo) : ''}</div>
+          ${c.listaV2 === '10 - High_Ticket' && c.high_ticket_score ? `<div style="font-size:11px;color:var(--text-faint);margin-top:3px;"><span class="badge badge-score-ht" style="background:rgba(109,91,255,.14);color:#b3a8ff;border:1px solid rgba(109,91,255,.3);">HT ${esc(c.high_ticket_score)} · ${esc(c.high_ticket_classe || '')}</span> ${c.micropolo ? '· '+esc(c.micropolo) : ''}</div>` : ''}
           <div class="c-email">${esc(c.email)}</div>
         </div>
         <div class="c-side">
@@ -993,6 +1334,7 @@ document.getElementById('importFile').onchange = (e)=>{
 function render(){
   renderStatusFilterOptions();
   renderStats();
+  populateHtFilters();
   renderInsight();
   renderTierNav();
   renderSubtypes();
@@ -1220,6 +1562,8 @@ function renderCrmCard(entry){
       <div class="tags">
         <span class="crm-tag">${c.tierLabel || c.listaV2 || ''}</span>
         ${c.prioridade ? `<span class="crm-tag">${c.prioridade==='Alta'?'🔥':'🟡'} ${c.prioridade}</span>` : ''}
+        ${c.listaV2 === '10 - High_Ticket' && c.high_ticket_score ? `<span class="crm-tag crm-tag-score-ht" style="background:rgba(109,91,255,.14);color:#b3a8ff;border-color:rgba(109,91,255,.3);">HT ${esc(c.high_ticket_score)} · ${esc(c.high_ticket_classe || '')}</span>` : ''}
+        ${c.micropolo ? `<span class="crm-tag" style="background:rgba(79,157,255,.10);color:#6ba9f6;border-color:rgba(79,157,255,.25);">${esc(c.micropolo)}</span>` : ''}
         <span class="crm-tag" style="background:rgba(178,168,255,.14); color:#b3a8ff; border-color:rgba(178,168,255,.3);">${PORTFOLIOS[portfolioKey].label}</span>
       </div>
       <div class="crm-card-actions">
@@ -1495,18 +1839,243 @@ document.getElementById('hermesAuto').onchange = (e)=>setHermesAuto(e.target.che
 /* ---- alternar abas ---- */
 function switchTab(tab){
   const isCrm = tab==='crm';
-  document.getElementById('viewProspeccao').classList.toggle('active', !isCrm);
+  const isMapa = tab==='mapaht';
+  document.getElementById('viewProspeccao').classList.toggle('active', tab==='prospeccao');
   document.getElementById('viewCrm').classList.toggle('active', isCrm);
-  document.getElementById('tabBtnProspeccao').classList.toggle('active', !isCrm);
+  document.getElementById('viewMapaHT').classList.toggle('active', isMapa);
+  document.getElementById('tabBtnProspeccao').classList.toggle('active', !isCrm && !isMapa);
   document.getElementById('tabBtnCrm').classList.toggle('active', isCrm);
+  document.getElementById('tabBtnMapaHT').classList.toggle('active', isMapa);
   if(isCrm) renderCrmPanel();
+  if(isMapa) renderMapaHT();
 }
 document.getElementById('tabBtnProspeccao').onclick = ()=>switchTab('prospeccao');
 document.getElementById('tabBtnCrm').onclick = ()=>switchTab('crm');
+document.getElementById('tabBtnMapaHT').onclick = ()=>switchTab('mapaht');
+
+renderCrmPanel();
+
+
+/* ===== MAPA HIGH TICKET ===== */
+function renderMapaHT(){
+  const container = document.getElementById('mapaHTList');
+  if(!container) return;
+  const stateFilter = document.getElementById('mapaHTStateFilter')?.value || '';
+
+  // Agrupa por estado -> micropolo
+  const htLeads = CONTACTS.filter(c => c.listaV2 === '10 - High_Ticket');
+  let totalLeads = htLeads.length;
+  const decisoresCnt = htLeads.filter(c => {
+    const cargo = (c.cargo || c.subtipo || '').toLowerCase();
+    return /ceo|founder|co-?founder|sócio|partner|managingpartner|diretor|diretora|head|vp|c-?level|cmo|cco|cro|coo|cto|cio|cfo|gerente geral|business development|investidor|private equity|venture capital|family office/i.test(cargo);
+  }).length;
+
+  // empresas únicas
+  const empresasSet = new Set(htLeads.map(c => c.empresa).filter(Boolean));
+  const empresasCnt = empresasSet.size;
+
+  // micropolos mapeados
+  const micropolosMap = {};
+  htLeads.forEach(c => {
+    const st = (c.estado || '—').toUpperCase();
+    const mp = (c.micropolo || c.subtierHT || c.subtier || 'SEM MICROPOLO').trim();
+    if(!micropolosMap[st]) micropolosMap[st] = {};
+    if(!micropolosMap[st][mp]) micropolosMap[st][mp] = { leads: 0, empresas: new Set(), decisores: 0, scores: [] };
+    micropolosMap[st][mp].leads++;
+    const emp = c.empresa || '';
+    if(emp) micropolosMap[st][mp].empresas.add(emp);
+    const cargo = (c.cargo || c.subtipo || '').toLowerCase();
+    if(/ceo|founder|co-?founder|sócio|partner|managingpartner|diretor|diretora|head|vp|c-?level|cmo|cco|cro|coo|cto|cio|cfo|gerente geral|business development|investidor|private equity|venture capital|family office/i.test(cargo)){
+      micropolosMap[st][mp].decisores++;
+    }
+    const sc = parseInt(c.high_ticket_score || '0', 10);
+    if(sc > 0) micropolosMap[st][mp].scores.push(sc);
+  });
+  const micrompalosCnt = Object.keys(micropolosMap).reduce((acc, st) => acc + Object.keys(micropolosMap[st]).length, 0);
+
+  document.getElementById('mapaHTTotalLeads').textContent = totalLeads;
+  document.getElementById('mapaHTTotalMicropolos').textContent = micrompalosCnt;
+  document.getElementById('mapaHTTotalEmpresas').textContent = empresasCnt;
+  document.getElementById('mapaHTTotalDecisores').textContent = decisoresCnt;
+
+  if(stateFilter){
+    const st = stateFilter.toUpperCase();
+    if(!micropolosMap[st]){ container.innerHTML = '<div class="empty-state">Nenhum micropolo encontrado para ' + stateFilter + '.</div>'; return; }
+    container.innerHTML = renderMapaHTState(st, micropolosMap[st]);
+    return;
+  }
+
+  const statesOrder = ['SP','RJ','MG','PR','RS','SC','PE','BA','CE','DF','GO'];
+  const htmlParts = [];
+  for(const st of statesOrder){
+    if(!micropolosMap[st]) continue;
+    htmlParts.push(renderMapaHTState(st, micropolosMap[st]));
+  }
+  // Estados restantes
+  const remaining = Object.keys(micropolosMap).filter(s => !statesOrder.includes(s));
+  for(const st of remaining.sort()){ htmlParts.push(renderMapaHTState(st, micropolosMap[st])); }
+  container.innerHTML = htmlParts.join('') || '<div class="empty-state">Nenhum lead High Ticket registrado.</div>';
+}
+
+function renderMapaHTState(estado, micropolos){
+  const totalLeads = Object.values(micropolos).reduce((a, m) => a + m.leads, 0);
+  const totalEmpresas = new Set();
+  Object.values(micropolos).forEach(m => m.empresas.forEach(e => totalEmpresas.add(e)));
+  const totalDecisores = Object.values(micropolos).reduce((a, m) => a + m.decisores, 0);
+  const estadosLabels = {
+    'SP':'São Paulo','RJ':'Rio de Janeiro','MG':'Minas Gerais','PR':'Paraná',
+    'RS':'Rio Grande do Sul','SC':'Santa Catarina','PE':'Pernambuco','BA':'Bahia',
+    'CE':'Ceará','DF':'Distrito Federal','GO':'Goiás'
+  };
+  const label = estadosLabels[estado] || estado;
+  const dotColor = estado === 'SP' ? '#6d5bff' : estado === 'RJ' ? '#4f9dff' : estado === 'MG' ? '#e8b339' : '#9599a8';
+  let html = `<div class="mapa-ht-state">
+    <div class="mapa-ht-state-title">
+      <span class="dot" style="background:${dotColor};box-shadow:0 0 8px ${dotColor};"></span>
+      <span class="lbl">${label}</span>
+      <span class="cnt">${totalLeads} leads · ${micropolos.size} micropolos · ${totalEmpresas.size} empresas · ${totalDecisores} decisores</span>
+    </div>`;
+  for(const [mp, data] of Object.entries(micropolos).sort((a,b)=>b[1].leads-a[1].leads)){
+    const avgScore = data.scores.length > 0 ? Math.round(data.scores.reduce((a,b)=>a+b,0)/data.scores.length) : '—';
+    const mpLabel = HT && HT.subTierLabel(mp) ? HT.subTierLabel(mp) : mp;
+    html += `<div class="mapa-ht-micropolo" data-mp="${esc(mp)}" data-estado="${esc(estado)}">
+      <div>
+        <div class="mapa-ht-mp-name">${esc(mpLabel)}</div>
+        <div class="mapa-ht-mp-meta">
+          <span><span class="k">Leads</span> <strong>${data.leads}</strong></span>
+          <span><span class="k">Empresas</span> <strong>${data.empresas.size}</strong></span>
+          <span><span class="k">Decisores</span> <strong>${data.decisores}</strong></span>
+          <span><span class="k">Score médio</span> <strong>${avgScore}</strong></span>
+        </div>
+      </div>
+      <span style="font-size:10px;color:var(--text-faint);cursor:pointer;" class="mapa-ht-toggle-detail">▾</span>
+    </div>`;
+  }
+  html += '</div>';
+  container.innerHTML = html || '<div class="empty-state">Sem dados.</div>';
+
+  // Click handlers dos micropolos
+  container.querySelectorAll('.mapa-ht-micropolo').forEach(el => {
+    el.addEventListener('click', function(){
+      const mp = this.dataset.mp;
+      const estado = this.dataset.estado;
+      toggleMapaHTDetail(this, mp, estado);
+    });
+  });
+  container.querySelectorAll('.mapa-ht-toggle-detail').forEach(el => {
+    el.addEventListener('click', function(e){
+      e.stopPropagation();
+      const mp = this.closest('.mapa-ht-micropolo').dataset.mp;
+      const estado = this.closest('.mapa-ht-micropolo').dataset.estado;
+      toggleMapaHTDetail(this.closest('.mapa-ht-micropolo'), mp, estado);
+    });
+  });
+}
+
+function toggleMapaHTDetail(micropoloEl, mp, estado){
+  // Fecha todos os detalhes abertos
+  document.querySelectorAll('.mapa-ht-mp-detail.open').forEach(d => d.classList.remove('open'));
+  document.querySelectorAll('.mapa-ht-toggle-detail').forEach(t => t.textContent = '▾');
+
+  const detail = document.createElement('div');
+  detail.className = 'mapa-ht-mp-detail open';
+  const mpLabel = HT && HT.subTierLabel(mp) ? HT.subTierLabel(mp) : mp;
+  const mpInfo = HT && HT.micropoloInfo(mp);
+  const setores = mpInfo ? mpInfo.setores.join(', ') : '—';
+  const perfil = mpInfo ? mpInfo.perfil : '—';
+
+  // Contagem real dessa micro-região
+  const htLeads = CONTACTS.filter(c => c.listaV2 === '10 - High_Ticket' &&
+    (c.micropolo || c.subtierHT || c.subtier || '').trim() === mp);
+  const decisores = htLeads.filter(c => {
+    const cargo = (c.cargo || c.subtipo || '').toLowerCase();
+    return /ceo|founder|co-?founder|sócio|partner|managingpartner|diretor|diretora|head|vp|c-?level|cmo|cco|cro|coo|cto|cio|cfo|gerente geral|business development|investidor|private equity|venture capital|family office/i.test(cargo);
+  }).length;
+  const scores = htLeads.map(c => parseInt(c.high_ticket_score || '0', 10)).filter(s => s > 0);
+  const avgScore = scores.length > 0 ? Math.round(scores.reduce((a,b)=>a+b,0)/scores.length) : '—';
+  const maxScore = scores.length > 0 ? Math.max(...scores) : '—';
+  const empresas = [...new Set(htLeads.map(c => c.empresa).filter(Boolean))];
+  const abordados = htLeads.filter(c => {
+    const status = c.status || getStatus(c);
+    return status === 'Enviado' || status === 'Retorno OK' || status === 'Ganho';
+  }).length;
+  const naoAbordados = htLeads.length - abordados;
+
+  detail.innerHTML = `<h3>${esc(mpLabel)}</h3>
+    <div class="row"><span class="k">Micropolo</span><span class="v">${esc(mpLabel)}</span></div>
+    <div class="row"><span class="k">Estado</span><span class="v">${esc(estado)}</span></div>
+    <div class="row"><span class="k">Perfil</span><span class="v">${esc(perfil)}</span></div>
+    <div class="row"><span class="k">Setores</span><span class="v"><span class="seg-list">${setores.split(',').map(s=>`<span class="seg-chip">${esc(s.trim())}</span>`).join(' ')}</span></span></div>
+    <div class="row"><span class="k">Total de leads</span><span class="v">${htLeads.length}</span></div>
+    <div class="row"><span class="k">Decisores</span><span class="v">${decisores}</span></div>
+    <div class="row"><span class="k">Empresas</span><span class="v">${empresas.length} <span style="font-size:10px;color:var(--text-faint);">(${empresas.join(', ') || '—'})</span></span></div>
+    <div class="row"><span class="k">Score médio</span><span class="v">${avgScore}</span></div>
+    <div class="row"><span class="k">Score máximo</span><span class="v">${maxScore}</span></div>
+    <div class="row"><span class="k">Já abordados</span><span class="v">${abordados}</span></div>
+    <div class="row"><span class="k">Ainda não abordados</span><span class="v">${naoAbordados}</span></div>
+    <div class="row"><span class="k">Clique para fechar</span><span class="v" style="cursor:pointer;color:var(--accent2);">Fechar ✕</span></div>
+  `;
+  detail.querySelector('.row:last-child .v').addEventListener('click', ()=>{ detail.remove(); });
+  micropoloEl.appendChild(detail);
+
+  // Toggle icon
+  const toggle = micropoloEl.querySelector('.mapa-ht-toggle-detail');
+  if(toggle) toggle.textContent = '▴';
+}
+
+document.getElementById('mapaHTStateFilter').addEventListener('change', ()=>renderMapaHT());
+document.getElementById('mapaHTExport').addEventListener('click', ()=>{
+  const htLeads = CONTACTS.filter(c => c.listaV2 === '10 - High_Ticket');
+  const lines = htLeads.map(c => {
+    const score = c.high_ticket_score || '';
+    const cls = c.high_ticket_classe || '';
+    const mp = c.micropolo || c.subtierHT || c.subtier || '';
+    return `${c.nome}	${c.empresa || ''}	${c.cargo || c.subtipo || ''}	${c.email}	${c.estado || ''}	${mp}	${score}	${cls}	${c.linkedin || ''}`.replace(/	+/g, '	');
+  });
+  const header = 'Nome	Empresa	Cargo	Email	Estado	Micropolo	Score	Classificação	LinkedIn';
+  const blob = new Blob([header + '
+' + lines.join('
+')], {type:'text/plain;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `high_ticket_leads_${new Date().toISOString().slice(0,10)}.tsv`;
+  a.click(); URL.revokeObjectURL(url);
+  showToast('Lista exportada.');
+});
+/* ===== HIGH TICKET — carregado dinamicamente ===== */
+(function loadHT(){
+  // Tenta carregar config e engine do High Ticket
+  let htCfg = null;
+  try {
+    const r = localStorage.getItem('ht_config_v1');
+    if(r) htCfg = JSON.parse(r);
+  } catch(e) { /* ignora */ }
+  if(!htCfg){
+    // fallback: o servidor deve servir high_ticket_config.json na mesma pasta
+    fetch('high_ticket_config.json').then(r=>r.json()).then(cfg=>{
+      localStorage.setItem('ht_config_v1', JSON.stringify(cfg));
+      htCfg = cfg;
+      if(window.HT && htCfg) window.HT.cfg = cfg;
+      renderTierNav();
+      renderSubtypes();
+      renderList();
+      renderStats();
+    }).catch(()=>{});
+  }
+  // Carrega a engine de scoring
+  const script = document.createElement('script');
+  script.src = 'high_ticket.js';
+  script.onload = ()=>{
+    if(htCfg) window.HT.cfg = htCfg;
+    renderTierNav();
+    renderSubtypes();
+    renderList();
+    renderStats();
+  };
+  script.onerror = ()=>{ console.warn('[HT] high_ticket.js nao carregou'); };
+  document.head.appendChild(script);
+})();
 
 renderCrmPanel();
 
 </script>
-
-</body>
-</html>
