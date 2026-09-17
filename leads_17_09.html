@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panorama de Leads — CRM EPQ · 17/09/2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<style>
+:root{
+  --bg-0:#04081a; --bg-1:#081128; --card:rgba(16,29,61,.72);
+  --card-solid:#0d1834; --border:rgba(92,155,255,.16); --border-strong:rgba(92,155,255,.35);
+  --blue:#2f6bff; --blue-light:#5c9bff; --ice:#eef4ff; --text:#cdd8f2; --dim:#8794ba;
+  --green:#3ddc97; --amber:#f5b942; --red:#ff6b6b; --grey:#5c6a92;
+  --radius:16px;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:
+    radial-gradient(circle at 12% -5%, rgba(47,107,255,.20), transparent 42%),
+    radial-gradient(circle at 92% 4%, rgba(47,107,255,.12), transparent 38%),
+    linear-gradient(180deg,var(--bg-0),var(--bg-1) 45%,var(--bg-0));
+  color:var(--text); font-family:'Inter',system-ui,sans-serif; line-height:1.55;
+  padding-bottom:40px; overflow-x:hidden;
+}
+.wrap{max-width:1180px; margin:0 auto; padding:40px 24px 60px;}
+.muted{color:var(--dim);}
+.tag{font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--blue-light); margin-bottom:6px; display:inline-block;}
+h1{font-family:'Sora',sans-serif; font-size:42px; font-weight:800; line-height:1.1;
+  margin-bottom:8px; background:linear-gradient(135deg,#fff 40%,var(--blue-light));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;}
+h1 em{font-size:.55em; font-weight:400; -webkit-text-fill-color:var(--dim); margin-left:8px;
+  background:none; color:var(--dim); vertical-align:super;}
+.section{padding:28px 0; border-top:1px solid var(--border);}
+.section:first-of-type{border-top:none; padding-top:8px;}
+.kpis{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; margin:20px 0 8px;}
+.kpi{background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+  padding:18px 20px; backdrop-filter:blur(6px);}
+.kpi .n{font-family:'Sora',sans-serif; font-size:36px; font-weight:700; line-height:1;
+  color:var(--ice);}
+.kpi .n.green{color:var(--green);}
+.kpi .n.amber{color:var(--amber);}
+.kpi .n.red{color:var(--red);}
+.kpi .l{margin-top:6px; font-size:13px; color:var(--dim); font-weight:500;}
+.kpi.amber{background:rgba(245,185,66,.06); border-color:rgba(245,185,66,.2);}
+.kpi.red{background:rgba(255,107,107,.06); border-color:rgba(255,107,107,.2);}
+.kpi.green{background:rgba(61,220,151,.06); border-color:rgba(61,220,151,.2);}
+.lead{max-width:680px; color:#aebadd; font-size:15px; margin:6px 0 16px;}
+.note{background:rgba(255,107,107,.06); border-left:3px solid var(--red);
+  padding:12px 16px; border-radius:0 10px 10px 0; margin:14px 0; font-size:14px;}
+.note.green{background:rgba(61,220,151,.06); border-left-color:var(--green);}
+.note.amber{background:rgba(245,185,66,.06); border-left-color:var(--amber);}
+table{width:100%; border-collapse:collapse; font-size:14px;}
+thead th{text-align:left; padding:10px 8px; color:var(--dim); font-weight:600;
+  font-size:11px; letter-spacing:.08em; text-transform:uppercase; border-bottom:1px solid var(--border);}
+tbody td{padding:8px; border-bottom:1px solid var(--border); vertical-align:top;}
+tbody tr:hover{background:rgba(47,107,255,.04);}
+.name{font-weight:600; color:var(--ice);}
+.badge{display:inline-block; padding:2px 8px; border-radius:20px; font-size:11px;
+  font-weight:700; letter-spacing:.04em;}
+.badge.gcm{background:rgba(47,107,255,.15); color:#7cb4ff;}
+.badge.pmerj{background:rgba(245,185,66,.12); color:#f5d342;}
+.badge.inss{background:rgba(61,220,151,.12); color:#6ee7b8;}
+.badge.cnu{background:rgba(156,136,255,.12); color:#b8a9ff;}
+.muted{font-size:12px; color:var(--dim);}
+.action-box{background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+  padding:18px 20px; margin:12px 0;}
+.action-box .l-name{font-weight:700; color:var(--ice); margin-bottom:4px;}
+.action-box .l-meta{font-size:12px; color:var(--dim); margin-bottom:8px;}
+.action-box .l-msg{font-size:14px; line-height:1.5; color:#c8d6f0; background:rgba(0,0,0,.25);
+  padding:12px 14px; border-radius:10px; margin-top:8px; border:1px solid var(--border);}
+.tag-card{background:var(--card-solid); border:1px solid var(--border); border-radius:var(--radius);
+  padding:16px 20px; margin:10px 0;}
+.tag-card .title{font-weight:700; margin-bottom:4px; font-size:14px;}
+.tag-card .desc{font-size:13px; color:var(--dim); line-height:1.5;}
+.tag-card.reveal{border-color:var(--border-strong);}
+.tag-card.problem-card{border-left:3px solid var(--red);}
+.tag-card.special{border-left:3px solid var(--amber); background:rgba(245,185,66,.04);}
+.dot{display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; vertical-align:middle;}
+.dot.red{background:var(--red);}
+.dot.amber{background:var(--amber);}
+.dot.grey{background:var(--grey);}
+.group-title{display:flex; align-items:center; gap:8px; margin:16px 0 10px; font-size:13px;
+  color:var(--dim); font-weight:600; letter-spacing:.06em; text-transform:uppercase;}
+.group-title h3{font-size:15px; color:var(--ice); font-weight:700; text-transform:none;
+  letter-spacing:0; margin:0;}
+.footer{margin-top:32px; padding-top:18px; border-top:1px solid var(--border);
+  font-size:12px; color:var(--dim); text-align:center;}
+.closer{margin-top:24px; padding:20px; background:var(--card); border:1px solid var(--border);
+  border-radius:var(--radius); text-align:center;}
+.closer .big{font-family:'Sora',sans-serif; font-size:20px; font-weight:700; color:var(--ice);
+  margin-bottom:6px;}
+.closer .sub{font-size:13px; color:var(--dim);}
+@media(max-width:640px){
+  .kpis{grid-template-columns:1fr 1fr;}
+  h1{font-size:30px;}
+  .wrap{padding:24px 16px 40px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="tag">Painel de Leads · EPQ</div>
+  <h1>Panorama de Leads — CRM EPQ <em>17/09/2026</em></h1>
+  <p class="lead">Atualização diária da base de leads em espera. Sem novos exports de conversas hoje (17/09) — dados consolidados do relatório anterior (15/09) com 42 leads, sem inventação.
+
+  <div class="kpis">
+    <div class="kpi green"><div class="n green">9</div><div class="l">P0 · urgente responder</div></div>
+    <div class="kpi amber"><div class="n amber">13</div><div class="l">P1 · recebeu proposta</div></div>
+    <div class="kpi red"><div class="n red">20</div><div class="l">P2/P3 · novos/frios</div></div>
+    <div class="kpi"><div class="n">42</div><div class="l">total na base</div></div>
+  </div>
+
+  <div class="section">
+    <div class="note green">
+      🟢 <b>2 leads</b> na fila P0 têm ação imediata hoje: Flávio Luiz (GCM Maricá combo — negociar alternativa ao aulão de sábado, filho no ESPCEX) e Lead de Mesquita (GCM São Gonçalo — turma abre 19/09, voltou por iniciativa própria, precisa de aula experimental reservada).
+    </div>
+
+    <div class="section">
+      <div class="group-title"><span class="dot red"></span><h3>Fila P0 — responder agora</h3><span>9 leads · pergunta direta sem resposta / lead quente sem follow-up</span></div>
+      <table>
+        <thead><tr><th>Lead</th><th>Concurso</th><th>Contato</th><th>Motivo da parada</th><th>Próxima ação</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="name">Flávio Luiz dos Santos</td>
+            <td><span class="badge gcm">GCM Maricá combo</span></td>
+            <td class="muted">(21) 99971-9474 · Andressa · 10/09</td>
+            <td>Objeção real (filho no ESPCEX no dia do aulão) — negociável</td>
+            <td>Oferecer aula experimental online ou outra data; não deixar o lead na mão</td>
+          </tr>
+          <tr>
+            <td class="name">Ramon Cerqueira</td>
+            <td><span class="badge gcm">GCM Maricá</span></td>
+            <td class="muted">(21) 96660-4178 · Andressa · 11/09</td>
+            <td>Aguardando resolução no trabalho; pediu prazo</td>
+            <td>Dar follow-up: "conseguiu resolver a situação?"</td>
+          </tr>
+          <tr>
+            <td class="name">Lead PRF (sem nome)</td>
+            <td><span class="badge pmerj">PRF Agente Adm.</span></td>
+            <td class="muted">(21) 98055-5629 · Clara · 09/09</td>
+            <td>Perguntas de inscrição/requisitos/edital/valor nunca respondidas</td>
+            <td>Responder diretamente e oferecer aula experimental de PRF em paralelo</td>
+          </tr>
+          <tr>
+            <td class="name">Andressa (sem nome) - PMERJ</td>
+            <td><span class="badge pmerj">PMERJ</span></td>
+            <td class="muted">(21) 98294-6742 · Andressa · 09/09</td>
+            <td>Erro de digitação 'PMERG'; não percebeu conversa ativa</td>
+            <td>Retomar com PMERJ real + perguntar turno (noite/sábado)</td>
+          </tr>
+          <tr>
+            <td class="name">Raquel PMERJ</td>
+            <td><span class="badge pmerj">PMERJ</span></td>
+            <td class="muted">(21) 98762-5333 · Andressa · 11/09</td>
+            <td>Equipe desviou para GCM; nunca recebeu oferta real de PMERJ</td>
+            <td>Corrigir rota — oferecer turma PMERJ noturna (5x R$300 Pix / R$330 cartão)</td>
+          </tr>
+          <tr>
+            <td class="name">Andreia Moreira CNU</td>
+            <td><span class="badge cnu">CNU Queimados</span></td>
+            <td class="muted">sem nº · Andressa · 14/09</td>
+            <td>Sem telefone; resposta tardia (~44h) + genérica; sem data de abertura</td>
+            <td>Confirmar data de abertura do edital e oferecer aula experimental</td>
+          </tr>
+          <tr>
+            <td class="name">Walber Nunes</td>
+            <td><span class="badge pmerj">PMERJ</span></td>
+            <td class="muted">(21) 96768-8448 · Andressa · 09/09</td>
+            <td>Pergunta direta ("Só tem em Nilópolis?") sem resposta</td>
+            <td>Responder Unidade Nilópolis + perguntar bairro para avaliar melhor opção</td>
+          </tr>
+          <tr>
+            <td class="name">Gustavo</td>
+            <td><span class="badge pmerj">PMERJ</span></td>
+            <td class="muted">(21) 96429-4767 · Ronan · 09/09</td>
+            <td>Erro de digitação 'PMERG'; sem follow-up posterior</td>
+            <td>Retomar: "você buscava PMERJ — prefere noite ou sábado?"</td>
+          </tr>
+          <tr>
+            <td class="name">Lead de Mesquita - 97960-7938</td>
+            <td><span class="badge gcm">GCM São Gonçalo</span></td>
+            <td class="muted">(21) 97960-7938 · Clara · 14/09</td>
+            <td>Voltou espontaneamente; recebeu resposta genérica</td>
+            <td>Turma abre 19/09 — reservar aula experimental na turma presencial</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="group-title"><span class="dot amber"></span><h3>Fila P1 — reengajar</h3><span>13 leads · viram preço/detalhes e pararam</span></div>
+      <table>
+        <thead><tr><th>Lead</th><th>Concurso</th><th>Próxima ação</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Brenda</td><td><span class="badge inss">INSS</span></td><td>Recebeu valores e parou — reengajar com aula experimental</td></tr>
+          <tr><td class="name">Guilherme</td><td><span class="badge gcm">GCM Maricá/São Gonçalo</span></td><td>Recebeu combo e parou — oferecer turma aberta + aula experimental</td></tr>
+          <tr><td class="name">Douglas</td><td><span class="badge gcm">GCM Maricá</span></td><td>Dúvida de legitimidade — reforçar credibilidade + aula experimental</td></tr>
+          <tr><td class="name">Marcelo</td><td><span class="badge gcm">GCM Queimados</span></td><td>Recebeu turmas — fechar escolha de turno (manhã/noite/sábado)</td></tr>
+          <tr><td class="name">Andressa (sem nome) - GCM noturno</td><td><span class="badge gcm">GCM Maricá noturno</span></td><td>Confirmou GCM noturno mas não aulão — aulão passou, usar turma aberta</td></tr>
+          <tr><td class="name">Elen PMERJ</td><td><span class="badge pmerj">PMERJ noturno</span></td><td>Repouso médico — sem pressa, reservar aula para próxima semana</td></tr>
+          <tr><td class="name">Mateus PMERJ</td><td><span class="badge pmerj">Múltiplos</span></td><td>Sem nº; vários concursos — definir concurso-alvo primeiro</td></tr>
+          <tr><td class="name">Bergdias GCM - Gutemberg</td><td><span class="badge gcm">GCM Maricá</span></td><td>Sem nº; aguardando horário da aula — pedir confirmação de turno</td></tr>
+          <tr><td class="name">Karen Ribeiro GCM</td><td><span class="badge gcm">GCM Maricá</span></td><td>Sem nº; noite confirmado, horário não — fechar horário 19h?</td></tr>
+          <tr><td class="name">Lead noturno (sem nome)</td><td><span class="badge pmerj">PMERJ</span></td><td>Equipe perguntou turno; lead não respondeu — retomar turno</td></tr>
+          <tr><td class="name">Andressa (sem nome) - PMERJ 1</td><td><span class="badge pmerj">PMERJ</span></td><td>Equipe pediu nome; sem resposta — retomar com msg direta</td></tr>
+          <tr><td class="name">Andressa (sem nome) - GCM</td><td><span class="badge gcm">GCM Maricá/São Gonçalo</span></td><td>Equipe pediu nome/área; sem resposta — turma GCM Maricá abriu 14/09</td></tr>
+          <tr><td class="name">Flavio GCM</td><td><span class="badge gcm">GCM Maricá/São Gonçalo</span></td><td>Equipe ofereceu turmas 14/09 e 19/09; pediu nome; sem resposta</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="group-title"><span class="dot grey"></span><h3>Fila P2/P3 — 1º contato para recuperação</h3><span>20 leads · clique ou sem resposta · priorizar P2 com potencial</span></div>
+      <div class="note amber">
+        <b>Foco P2 de hoje:</b> Lead Marinha (99838-0012) e Leticia Bombeiro — concursos não confirmados pela equipe. Validar e retornar antes de qualquer nova abordagem. Demais P2s seguem mensagem padrão de reengajamento.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 style="font-family:'Sora'; font-size:22px; font-weight:700; margin-bottom:14px; color:var(--ice);">Padrão do dia — insight para o atendimento</h2>
+      <div class="tag-card problem-card">
+        <div class="title">❌ Pergunta direta nunca respondida — terceiro padrão recorrente</div>
+        <div class="desc">
+          O Lead PRF (98055-5629) e Walber Nunes (96768-8448) têm perguntas concretas (inscrição/requisitos vs. unidade Nilópolis) sem resposta há 8 dias. No relatório de 12/09 o mesmo padrão apareceu em outro lead. Isso não é "lead frio" — é atendimento que deixa pergunta explícita no ar e ignora. Ação: responder diretamente, sem enunciado, com oferta de aula experimental em paralelo.
+        </div>
+      </div>
+      <div class="tag-card problem-card">
+        <div class="title">⚠️ Oferta errada para o interesse declarado — recorrente</div>
+        <div class="desc">
+          Raquel PMERJ (98762-5333) pediu PMERJ explicitamente e recebeu oferta de GCM — erro de rota que já apareceu em mais de um lead neste período. Ação: antes de oferecer, confirmar concurso. Se for PMERJ, oferecer turma PMERJ real (5x R$300 Pix / R$330 cartão + material e camisa à parte).
+        </div>
+      </div>
+      <div class="tag-card special">
+        <div class="title">⭐ Lead voltou por iniciativa própria — e recebeu resposta genérica</div>
+        <div class="desc">
+          Lead de Mesquita (97960-7938) chamou em 03/08 pelo GCM São Gonçalo, recusou PMERJ, deixou nome e bairro. Voltou sozinho em 02/09 perguntando previsão da turma — recebeu só mensagem padrão. Turma abre 19/09. Isso é lead quente que o atendimento não reconheceu. Ação: reservar aula experimental hoje, antes de 19/09.
+        </div>
+      </div>
+    </div>
+
+    <div class="closer">
+      <div class="big">Próximos passos — 17/09</div>
+      <div class="sub">
+        1. Flávio Luiz (GCM combo) — oferecer alternativa ao aulão de sábado<br>
+        2. Lead de Mesquita (GCM São Gonçalo) — reservar aula experimental para 19/09<br>
+        3. Raquel PMERJ — corrigir rota, oferecer PMERJ real<br>
+        4. Lead PRF 98055-5629 — responder perguntas + aula experimental em paralelo<br>
+        5. Validar Marinha e Bombeiro com a equipe antes de novo contato
+      </div>
+    </div>
+
+    <div class="footer">
+      Base de leads atualizada em 17/09/2026 · sem novos exports de conversas hoje · dados consolidados do relatório anterior (15/09)<br>
+      Classificação mantida de P0/P1/P2/P3 · sem inventação de dados
+    </div>
+  </div>
+</div>
+</body>
+</html>
