@@ -4,6 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bolsão EPQ — Bolsas de até 50% | 03/10/2026, Nilópolis-RJ</title>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1107258288300678');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1107258288300678&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@85..110,500..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -553,7 +570,7 @@ table.leads tr:last-child td{border-bottom:none;}
   /* =====================================================================
    * Integração Google Apps Script: ver COMO-INTEGRAR.md
    * ===================================================================== */
-  var FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbyfok0Va8VhiVJMfDgnng0-lXLppTf8FwAKXMT4Vq_zDB5DFvVwzGavSQMmYhqqU8szFw/exec"; // <- cole aqui a URL do Formspree (ou outro endpoint) quando tiver
+  var FORM_ENDPOINT = "https://wide-kiwis-reply.loca.lt"; // endpoint publico via localtunnel (verificar URL abaixo)
 
   var STORAGE_KEY = "bolsao_epq_leads";
 
@@ -596,12 +613,14 @@ table.leads tr:last-child td{border-bottom:none;}
         method: "POST",
         headers: {"Content-Type":"application/json","Accept":"application/json"},
         body: JSON.stringify(data)
-      }).catch(function(){ /* falha de rede não bloqueia a confirmação local */ });
+      }).catch(function(){ /* falha de rede não bloqueia o redirect */ });
     }
 
-    msg.textContent = "Inscrição confirmada! Em breve você recebe os detalhes por WhatsApp e e-mail.";
-    msg.className = "form-msg ok";
-    form.reset();
+    // 3) redireciona ao WhatsApp do Flávio para o lead conversar com você
+    window.location.href = 'https://wa.me/5521999719474?text=' + encodeURIComponent(
+      'Olá, meu nome é '+esc(data.nome)+' e acabei de me inscrever no Bolsão EPQ '+
+      '('+esc(data.turma)+'). Me chama no WhatsApp que eu respondo: '+data.whatsapp+'.'
+    );
   });
 
   // ---------- Painel admin (?admin=1) ----------
