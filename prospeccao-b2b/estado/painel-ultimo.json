@@ -1,0 +1,50 @@
+{
+  "data": "2026-09-21T18:35:08.355371",
+  "fila_caminho": "/Users/mac/HermesWorkspace/prospeccao-b2b/fila-centralizada.json",
+  "b2b_total": 11,
+  "epq_total": 42,
+  "b2b_grupos": {
+    "1-respondeu-oportunidade": {
+      "titulo": "1. Respondeu / Oportunidade",
+      "count": 0
+    },
+    "2-quente": {
+      "titulo": "2. Quente",
+      "count": 2
+    },
+    "3-morno": {
+      "titulo": "3. Morno",
+      "count": 8
+    },
+    "4-frio": {
+      "titulo": "4. Frio",
+      "count": 0
+    },
+    "5-sem-contexto-validar": {
+      "titulo": "5. Sem contexto / Precisa validar",
+      "count": 1
+    }
+  },
+  "epq_grupos": {
+    "1-respondeu-oportunidade": {
+      "titulo": "1. Respondeu / Oportunidade",
+      "count": 0
+    },
+    "2-quente": {
+      "titulo": "2. Quente",
+      "count": 4
+    },
+    "3-morno": {
+      "titulo": "3. Morno",
+      "count": 14
+    },
+    "4-frio": {
+      "titulo": "4. Frio",
+      "count": 24
+    },
+    "5-sem-contexto-validar": {
+      "titulo": "5. Sem contexto / Precisa validar",
+      "count": 0
+    }
+  }
+}

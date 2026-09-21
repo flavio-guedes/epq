@@ -1,44 +1,51 @@
 {
+  "projeto": "PROSPECCAO B2B FLAVIO — captacao de clientes para gestao de marketing, trafego e CRM",
+  "endpoint_bridge": "http://localhost:3000/send",
+  "endpoint_preview": "localhost:3000/send (Baileys bridge local)",
+  "config": {
+    "provider": "nous",
+    "model": "upstage/solar-pro4:free",
+    "batch_size": 5,
+    "janela_ideal": [
+      "09:00-12:00",
+      "14:00-17:00"
+    ],
+    "intervalo_envio_s": 600,
+    "max_tentativas": 5,
+    "cadencia_dias": 2
+  },
   "lista_ativa": {
     "id": "01-ZN-MEIER-I",
-    "nome": "01 - Zona Norte / Méier I",
+    "nome": "01 - Zona Norte / Méier I (LISTA ATIVA — DEFINIDA PARA FRENTE)",
     "regiao": "Zona Norte",
     "bairro": "Méier",
-    "segmento": "Educacional",
-    "subsegmento": "Preparatórios Militares",
+    "segmento": "Preparatórios Militares — GCM/PMERJ/PRF (PROJETO EPQ)",
     "estado": "READY",
     "leads_total": 11,
-    "leads_validados": 8,
-    "leads_pendentes": 3,
-    "leads_enviados": 0,
-    "leads_respondeu": 0,
-    "leads_sem_resposta": 0,
-    "followups": 0,
+    "validados": 2,
+    "enviados": 5,
+    "pendentes": 9,
+    "quentes": 2,
+    "mornos": 9,
+    "frios": 0,
     "oportunidades": 0,
-    "reunioes": 0,
-    "propostas": 0,
     "ganhos": 0,
     "perdas": 0,
-    "created_at": "2026-09-21T10:00:00Z",
-    "updated_at": "2026-09-21T10:00:00Z"
+    "historico": [],
+    "proxima_acao": "VALIDAR 9 pendentes → preparar mensagens → ENVIAR 1 a 1, 10min de intervalo (cada lead é 1 disparo, intervalo entre leads)",
+    "arquivo_leads": "/Users/mac/HermesWorkspace/prospeccao-b2b/leads/leads_mei_lier_I.json",
+    "proxima_lista": "02 - Zona Norte / Cachambi I"
   },
-  "historico_listas": [
+  "proximas_listas": [
     {
-      "id": "00-PILOTO",
-      "nome": "00 - Piloto / Leads Identificados",
-      "status": "COMPLETED",
-      "data_encerramento": "2026-09-21"
+      "id": "02-ZN-CACHAMBI-I",
+      "nome": "02 - Zona Norte / Cachambi I (A SER DEFINIDA)",
+      "regiao": "Zona Norte",
+      "bairro": "Cachambi",
+      "estado": "PENDENTE DEFINICAO",
+      "leads_total_previsto": null,
+      "observacao": "Aguarda definicao de segmento e quantidade de leads"
     }
   ],
-  "config": {
-    "janela_envio": ["09:30-11:30", "14:00-17:30"],
-    "janela_ideal": ["10:00-11:30", "14:30-16:30"],
-    "avoid_hours": ["before 09:00", "12:00-13:00", "after 18:00"],
-    "avoid_days": ["domingo", "feriados"],
-    "saturday_allowed": false,
-    "batch_size": 5,
-    "rate_limit_retry": "backoff",
-    "provider": "nous",
-    "model": "upstage/solar-pro4:free"
-  }
+  "historico_listas": []
 }
