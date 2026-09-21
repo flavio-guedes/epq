@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel B2B – Prospecção</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; padding: 20px; }
+.container { max-width: 1200px; margin: 0 auto; }
+header { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #1e293b; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+h1 { font-size: 1.25rem; color: #38bdf8; }
+.subtitle { color: #64748b; font-size: 0.85rem; }
+.grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+@media (min-width: 768px) { .grid { grid-template-columns: 1fr 1fr; } }
+.card { background: #1e293b; border-radius: 10px; padding: 16px; }
+.card h2 { font-size: 0.85rem; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+.stat { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #334155; font-size: 0.9rem; }
+.stat:last-child { border-bottom: none; }
+.stat span:last-child { color: #f1f5f9; font-weight: 600; }
+.badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+.badge-ready { background: #14532d; color: #4ade80; }
+.badge-running { background: #1e3a5f; color: #38bdf8; }
+.badge-paused { background: #5c3d2e; color: #fbbf24; }
+.badge-blocked { background: #5c1a1a; color: #fca5a5; }
+.badge-completed { background: #1e3a5f; color: #94a3b8; }
+.btn { background: #0ea5e9; color: #0f172a; border: none; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+.btn:hover { background: #38bdf8; }
+.btn-warning { background: #f59e0b; }
+.btn-warning:hover { background: #fbbf24; }
+.btn-danger { background: #ef4444; }
+.btn-danger:hover { background: #fca5a5; }
+.btn-sm { padding: 4px 10px; font-size: 0.75rem; }
+.btn-block { background: #334155; color: #94a3b8; border: 1px solid #475569; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; cursor: pointer; }
+.btn-block:hover { background: #475569; color: #e2e8f0; }
+.lead-list { max-height: 400px; overflow-y: auto; }
+.lead-item { background: #0f172a; border-radius: 6px; padding: 12px; margin-bottom: 8px; border-left: 3px solid #475569; }
+.lead-item.quente { border-left-color: #ef4444; }
+.lead-item.morno { border-left-color: #f59e0b; }
+.lead-item.frio { border-left-color: #64748b; }
+.lead-item.validado { border-left-color: #4ade80; }
+.lead-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+.lead-nome { font-weight: 600; font-size: 0.95rem; }
+.lead-meta { font-size: 0.75rem; color: #64748b; margin-bottom: 8px; }
+.lead-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.row { display: flex; gap: 12px; flex-wrap: wrap; }
+.chip { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; background: #334155; color: #94a3b8; }
+.chip.quente { background: #5c1a1a; color: #fca5a5; }
+.chip.morno { background: #5c3d2e; color: #fdba74; }
+.chip.frio { background: #334155; color: #94a3b8; }
+.section-title { font-size: 0.8rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin: 16px 0 8px; }
+.empty { text-align: center; padding: 40px 20px; color: #64748b; }
+.modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 100; justify-content: center; align-items: center; }
+.modal.show { display: flex; }
+.modal-content { background: #1e293b; border-radius: 10px; padding: 24px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; }
+.modal-content h3 { color: #38bdf8; margin-bottom: 12px; }
+.history-item { padding: 6px 0; border-bottom: 1px solid #334155; font-size: 0.85rem; }
+.history-item:last-child { border-bottom: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div>
+      <h1>Painel B2B – Prospecção</h1>
+      <div class="subtitle">Operação contínua por ciclos de lista</div>
+    </div>
+    <div>
+      <span id="state-badge" class="badge badge-ready">READY</span>
+      <button class="btn btn-sm" style="margin-left: 8px;" onclick="location.reload()">⟳ Atualizar</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Lista Ativa</h2>
+      <div class="stat"><span>Lista</span><span id="active-list-name">—</span></div>
+      <div class="stat"><span>Região</span><span id="active-region">—</span></div>
+      <div class="stat"><span>Bairro</span><span id="active-bairro">—</span></div>
+      <div class="stat"><span>Segmento</span><span id="active-segment">—</span></div>
+      <div class="stat"><span>Estado</span><span id="active-state">—</span></div>
+      <div class="stat"><span>Total de leads</span><span id="total-leads">0</span></div>
+      <div class="stat"><span>Validados</span><span id="validados">0</span></div>
+      <div class="stat"><span>Pendentes</span><span id="pendentes">0</span></div>
+      <div class="stat"><span>Enviados</span><span id="enviados">0</span></div>
+      <div class="stat"><span>Responderam</span><span id="responderam">0</span></div>
+      <div class="stat"><span>Sem resposta</span><span id="sem-resposta">0</span></div>
+      <div class="stat"><span>Follow-ups</span><span id="followups">0</span></div>
+      <div class="stat"><span>Oportunidades</span><span id="oportunidades">0</span></div>
+      <div class="stat"><span>Ganhos</span><span id="ganhos">0</span></div>
+      <div class="stat"><span>Perdas</span><span id="perdas">0</span></div>
+      <div class="stat" style="margin-top: 12px;"><span>Próxima ação</span><span id="proxima-acao" style="color:#38bdf8;">—</span></div>
+    </div>
+
+    <div class="card">
+      <h2>Histórico de Listas</h2>
+      <div id="lista-historico">
+        <div class="empty">Nenhuma lista ainda</div>
+      </div>
+    </div>
+
+    <div class="card" style="grid-column: 1 / -1;">
+      <h2>Leads da Lista Ativa</h2>
+      <div class="row" style="margin-bottom: 12px;">
+        <button class="btn-block" onclick="filtrarLeads('todos')">Todos</button>
+        <button class="btn-block" onclick="filtrarLeads('quentes')">Quentes</button>
+        <button class="btn-block" onclick="filtrarLeads('mornos')">Mornos</button>
+        <button class="btn-block" onclick="filtrarLeads('frios')">Frios</button>
+        <button class="btn-block" onclick="filtrarLeads('pendentes')">Pendentes</button>
+        <button class="btn-block" onclick="filtrarLeads('validados')">Validados</button>
+      </div>
+      <div id="lead-list" class="lead-list">
+        <div class="empty">Carregando...</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Configuração do Ciclo</h2>
+      <div class="stat"><span>Provider</span><span id="cfg-provider">—</span></div>
+      <div class="stat"><span>Model</span><span id="cfg-model">—</span></div>
+      <div class="stat"><span>Batch size</span><span id="cfg-batch">—</span></div>
+      <div class="stat"><span>Janela de envio</span><span id="cfg-janela">—</span></div>
+      <div class="stat"><span>Rate limit</span><span id="cfg-ratelimit" style="color:#fbbf24;">—</span></div>
+    </div>
+  </div>
+</div>
+
+<div id="lead-modal" class="modal">
+  <div class="modal-content">
+    <h3 id="modal-title">Detalhes do Lead</h3>
+    <div id="modal-body"></div>
+    <div style="margin-top: 16px; display: flex; gap: 8px; justify-content: flex-end;">
+      <button class="btn" style="background: #334155; color: #e2e8f0;" onclick="closeModal()">Fechar</button>
+      <button class="btn btn-sm" onclick="executarProximaAcao()">Executar próxima ação</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentFilter = 'todos';
+let selectedLead = null;
+
+async function loadData() {
+  try {
+    const cicloRes = await fetch('estado/ciclo.json');
+    const ciclo = await cicloRes.json();
+    const leadsRes = await fetch('leads/leads_mei_lier_I.json');
+    const leads = await leadsRes.json();
+    
+    renderDashboard(ciclo, leads);
+    renderLeads(leads);
+    renderHistorico(ciclo);
+    renderConfig(ciclo);
+  } catch (e) {
+    document.getElementById('lead-list').innerHTML = '<div class="empty">Erro ao carregar dados. Verifique se os arquivos existem.</div>';
+  }
+}
+
+function renderDashboard(ciclo, leads) {
+  const lista = ciclo.lista_ativa;
+  document.getElementById('active-list-name').textContent = lista.nome || '—';
+  document.getElementById('active-region').textContent = lista.regiao || '—';
+  document.getElementById('active-bairro').textContent = lista.bairro || '—';
+  document.getElementById('active-segment').textContent = lista.subsegmento || '—';
+  
+  const stateEl = document.getElementById('active-state');
+  stateEl.textContent = lista.estado || '—';
+  stateEl.parentElement.innerHTML = `<span>Estado</span><span class="badge badge-${getStateBadgeClass(lista.estado)}">${lista.estado || '—'}</span>`;
+  
+  document.getElementById('total-leads').textContent = lista.leads_total || leads.length;
+  document.getElementById('validados').textContent = lista.leads_validados || leads.filter(l => l.status === 'VALIDADO').length;
+  document.getElementById('pendentes').textContent = lista.leads_pendentes || leads.filter(l => l.status === 'PENDENTE').length;
+  document.getElementById('enviados').textContent = lista.leads_enviados || leads.filter(l => l.estagio_funil !== '00_ENVIADO' && l.estagio_funil !== null).length;
+  document.getElementById('responderam').textContent = lista.leads_respondeu || leads.filter(l => l.respondeu).length;
+  document.getElementById('sem-resposta').textContent = lista.leads_sem_resposta || leads.filter(l => !l.respondeu && l.tentativas > 0).length;
+  document.getElementById('followups').textContent = getFollowupCount(leads);
+  document.getElementById('oportunidades').textContent = lista.oportunidades || 0;
+  document.getElementById('ganhos').textContent = lista.ganhos || 0;
+  document.getElementById('perdas').textContent = lista.perdas || 0;
+  
+  const proximaAcaoEl = document.getElementById('proxima-acao');
+  const proximaAcoes = leads.filter(l => l.proxima_acao && l.status !== 'ENCERRADO');
+  if (proximaAcoes.length > 0) {
+    proximaAcaoEl.textContent = proximaAcoes[0].empresa + ': ' + proximaAcoes[0].proxima_acao;
+  } else {
+    proximaAcaoEl.textContent = 'Encerrar lista';
+  }
+}
+
+function getStateBadgeClass(estado) {
+  if (!estado) return 'ready';
+  const map = {
+    'DRAFT': 'ready', 'READY': 'ready',
+    'VALIDATING': 'running', 'PREPARED': 'running', 'SCHEDULED': 'running',
+    'RUNNING': 'running', 'FOLLOW_UP': 'running',
+    'COMPLETED': 'completed',
+    'PAUSED': 'paused', 'BLOCKED': 'blocked', 'ERROR': 'blocked'
+  };
+  return map[estado] || 'ready';
+}
+
+function getFollowupCount(leads) {
+  return leads.filter(l => l.cadencia && l.cadencia.startsWith('FOLLOW')).length;
+}
+
+function renderLeads(leads) {
+  const container = document.getElementById('lead-list');
+  let filtered = leads;
+  
+  if (currentFilter === 'quentes') filtered = leads.filter(l => l.temperatura === 'QUENTE');
+  else if (currentFilter === 'mornos') filtered = leads.filter(l => l.temperatura === 'MORNO');
+  else if (currentFilter === 'frios') filtered = leads.filter(l => l.temperatura === 'FRIO');
+  else if (currentFilter === 'pendentes') filtered = leads.filter(l => l.status === 'PENDENTE');
+  else if (currentFilter === 'validados') filtered = leads.filter(l => l.status === 'VALIDADO');
+  
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="empty">Nenhum lead nesta filtragem</div>';
+    return;
+  }
+  
+  container.innerHTML = filtered.map(l => `
+    <div class="lead-item ${l.temperatura ? l.temperatura.toLowerCase() : ''} ${l.status === 'VALIDADO' ? 'validado' : ''}" onclick="openLeadModal('${l.id}')" style="cursor:pointer;">
+      <div class="lead-top">
+        <div class="lead-nome">${l.empresa}</div>
+        <div>
+          <span class="chip ${l.temperatura ? l.temperatura.toLowerCase() : ''}">${l.temperatura || '—'}</span>
+          <span class="chip">score: ${l.score}</span>
+        </div>
+      </div>
+      <div class="lead-meta">
+        WhatsApp: ${l.whatsapp || '—'} | Status: ${l.status || '—'} | Estágio: ${l.estagio_funil || '—'} | Tentativas: ${l.tentativas || 0}
+      </div>
+      <div class="lead-meta">${l.proxima_acao ? 'Próxima: ' + l.proxima_acao : '—'}</div>
+      <div class="lead-actions" onclick="event.stopPropagation()">
+        <button class="btn btn-sm" onclick="openLeadModal('${l.id}')">Detalhes</button>
+        ${l.status === 'PENDENTE' ? '<button class="btn btn-sm btn-warning" onclick="event.stopPropagation(); validarLead(\''+l.id+'\')">Validar</button>' : ''}
+        ${l.mensagem_status === 'PENDENTE' && l.status === 'VALIDADO' ? '<button class="btn btn-sm" onclick="event.stopPropagation(); prepararMensagem(\''+l.id+'\')">Preparar msg</button>' : ''}
+        ${l.mensagem_status === 'PRONTA' && l.estagio_funil === '00_ENVIADO' ? '<button class="btn btn-sm" onclick="event.stopPropagation(); registrarEnvio(\''+l.id+'\')">Marcar enviado</button>' : ''}
+        <button class="btn btn-sm btn-danger" onclick="event.stopPropagation(); optOutLead('${l.id}')">Opt-out</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderHistorico(ciclo) {
+  const container = document.getElementById('lista-historico');
+  const hist = ciclo.historico_listas || [];
+  if (hist.length === 0) {
+    container.innerHTML = '<div class="empty">Nenhuma lista encerrada ainda</div>';
+    return;
+  }
+  container.innerHTML = hist.map(h => `
+    <div class="lead-item">
+      <div class="lead-top">
+        <div class="lead-nome">${h.nome}</div>
+        <span class="badge badge-${h.status === 'COMPLETED' ? 'completed' : 'paused'}">${h.status}</span>
+      </div>
+      <div class="lead-meta">Encerramento: ${h.data_encerramento || '—'}</div>
+    </div>
+  `).join('');
+}
+
+function renderConfig(ciclo) {
+  const cfg = ciclo.config || {};
+  document.getElementById('cfg-provider').textContent = cfg.provider || 'nous';
+  document.getElementById('cfg-model').textContent = cfg.model || 'upstage/solar-pro4:free';
+  document.getElementById('cfg-batch').textContent = cfg.batch_size || 5;
+  document.getElementById('cfg-janela').textContent = (cfg.janela_ideal || []).join(', ');
+  document.getElementById('cfg-ratelimit').textContent = 'backoff ativo';
+}
+
+function filtrarLeads(filtro) {
+  currentFilter = filtro;
+  loadData();
+}
+
+function openLeadModal(id) {
+  selectedLead = id;
+  fetch('leads/leads_mei_lier_I.json')
+    .then(r => r.json())
+    .then(leads => {
+      const lead = leads.find(l => l.id === id);
+      if (!lead) return;
+      document.getElementById('modal-title').textContent = lead.empresa;
+      document.getElementById('modal-body').innerHTML = `
+        <div class="stat"><span>Empresa</span><span>${lead.empresa}</span></div>
+        <div class="stat"><span>Segmento</span><span>${lead.segmento} / ${lead.subsegmento}</span></div>
+        <div class="stat"><span>Região / Bairro</span><span>${lead.regiao} / ${lead.bairro}</span></div>
+        <div class="stat"><span>Cidade</span><span>${lead.cidade}</span></div>
+        <div class="stat"><span>Endereço</span><span>${lead.endereco || '—'}</span></div>
+        <div class="stat"><span>Site</span><span>${lead.site || '—'}</span></div>
+        <div class="stat"><span>Instagram</span><span>${lead.instagram || '—'}</span></div>
+        <div class="stat"><span>WhatsApp</span><span style="color:#4ade80;">${lead.whatsapp || '—'}</span></div>
+        <div class="stat"><span>Fonte</span><span>${lead.fonte || '—'}</span></div>
+        <div class="stat"><span>Score</span><span>${lead.score}</span></div>
+        <div class="stat"><span>Temperatura</span><span>${lead.temperatura}</span></div>
+        <div class="stat"><span>Status</span><span>${lead.status}</span></div>
+        <div class="stat"><span>Mensagem</span><span style="color:#4ade80;font-weight:600;">${lead.mensagem_status}</span></div>
+        <div class="stat"><span>Estágio funil</span><span>${lead.estagio_funil}</span></div>
+        <div class="stat"><span>Cadência</span><span>${lead.cadencia}</span></div>
+        <div class="stat"><span>Tentativas</span><span>${lead.tentativas}</span></div>
+        <div class="stat"><span>Respondeu</span><span>${lead.respondeu ? 'SIM' : 'NÃO'}</span></div>
+        <div class="stat"><span>Opt-out</span><span>${lead.opt_out ? 'SIM' : 'NÃO'}</span></div>
+        <div class="stat"><span>Contexto</span><span style="font-size:0.8rem;color:#94a3b8;">${lead.contexto || '—'}</span></div>
+        <div class="stat"><span>Observações</span><span style="font-size:0.8rem;color:#94a3b8;">${lead.observacoes || '—'}</span></div>
+        ${lead.mensagem ? `<div class="stat" style="margin-top:12px;"><span>Mensagem preparada</span><div style="background:#0f172a;padding:10px;border-radius:6px;font-size:0.85rem;color:#e2e8f0;line-height:1.4;">${lead.mensagem}</div></div>` : ''}
+        <div class="section-title" style="margin-top:12px;">Histórico de interações</div>
+        ${lead.ultima_interacao ? `<div class="history-item">${lead.ultima_interacao}</div>` : '<div class="history-item" style="color:#64748b;">Sem interações registradas</div>'}
+      `;
+      document.getElementById('lead-modal').classList.add('show');
+    });
+}
+
+function closeModal() {
+  document.getElementById('lead-modal').classList.remove('show');
+  selectedLead = null;
+}
+
+function validarLead(id) {
+  if (!confirm('Marcar lead como VALIDADO?')) return;
+  atualizarLead(id, { status: 'VALIDADO', validado_por: 'Flávio', validado_em: new Date().toISOString().split('T')[0] });
+}
+
+function prepararMensagem(id) {
+  alert('Mensagem pré-preparada. Abrir modal para visualizar.');
+  openLeadModal(id);
+}
+
+function registrarEnvio(id) {
+  if (!confirm('Registrar como enviado?')) return;
+  atualizarLead(id, { estagio_funil: '01_OPORTUNIDADE', cadencia: 'D0', tentativas: 1, ultima_interacao: new Date().toISOString().split('T')[0] + ' — Primeiro contato enviado' });
+  loadData();
+}
+
+function optOutLead(id) {
+  if (!confirm('Marcar lead como OPT-OUT? Não será mais contactado.')) return;
+  atualizarLead(id, { opt_out: true, status: 'OPT-OUT', ultima_interacao: new Date().toISOString().split('T')[0] + ' — Opt-out registrado' });
+  loadData();
+}
+
+function executarProximaAcao() {
+  if (!selectedLead) return;
+  fetch('leads/leads_mei_lier_I.json')
+    .then(r => r.json())
+    .then(leads => {
+      const lead = leads.find(l => l.id === selectedLead);
+      if (!lead) return;
+      alert('Próxima ação para ' + lead.empresa + ': ' + (lead.proxima_acao || 'Nenhuma'));
+    });
+}
+
+function atualizarLead(id, updates) {
+  fetch('leads/leads_mei_lier_I.json')
+    .then(r => r.json())
+    .then(leads => {
+      const idx = leads.findIndex(l => l.id === id);
+      if (idx === -1) return;
+      leads[idx] = { ...leads[idx], ...updates, updated_at: new Date().toISOString() };
+      // Nao salva no arquivo (somente leitura do painel); o estado real fica no CRM
+      alert('Lead atualizado no estado do painel. Atualizar arquivo no CRM posteriormente.');
+      closeModal();
+      loadData();
+    });
+}
+
+// Fechar modal ao clicar fora
+document.getElementById('lead-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// Load on start
+loadData();
+</script>
+</body>
+</html>

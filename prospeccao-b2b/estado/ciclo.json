@@ -1,0 +1,44 @@
+{
+  "lista_ativa": {
+    "id": "01-ZN-MEIER-I",
+    "nome": "01 - Zona Norte / Méier I",
+    "regiao": "Zona Norte",
+    "bairro": "Méier",
+    "segmento": "Educacional",
+    "subsegmento": "Preparatórios Militares",
+    "estado": "READY",
+    "leads_total": 11,
+    "leads_validados": 8,
+    "leads_pendentes": 3,
+    "leads_enviados": 0,
+    "leads_respondeu": 0,
+    "leads_sem_resposta": 0,
+    "followups": 0,
+    "oportunidades": 0,
+    "reunioes": 0,
+    "propostas": 0,
+    "ganhos": 0,
+    "perdas": 0,
+    "created_at": "2026-09-21T10:00:00Z",
+    "updated_at": "2026-09-21T10:00:00Z"
+  },
+  "historico_listas": [
+    {
+      "id": "00-PILOTO",
+      "nome": "00 - Piloto / Leads Identificados",
+      "status": "COMPLETED",
+      "data_encerramento": "2026-09-21"
+    }
+  ],
+  "config": {
+    "janela_envio": ["09:30-11:30", "14:00-17:30"],
+    "janela_ideal": ["10:00-11:30", "14:30-16:30"],
+    "avoid_hours": ["before 09:00", "12:00-13:00", "after 18:00"],
+    "avoid_days": ["domingo", "feriados"],
+    "saturday_allowed": false,
+    "batch_size": 5,
+    "rate_limit_retry": "backoff",
+    "provider": "nous",
+    "model": "upstage/solar-pro4:free"
+  }
+}
