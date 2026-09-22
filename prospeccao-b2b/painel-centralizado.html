@@ -713,7 +713,7 @@ function salvarMensagemEditada() {
   const modalBody = document.querySelector('#modalPublicoMensagem .modal-body');
   const editArea = modalBody.querySelector('#msgEditArea');
   if (editArea) {
-    const registro = publicoData.find(r => r.id ===ultimoIdMensagem);
+    const registro = publicoData.find(r => r.id === ultimoIdMensagem);
     if (registro) {
       registro.mensagem = editArea.value;
       registro.mensagem_tipo = registro.mensagem_tipo || 'customizado';
