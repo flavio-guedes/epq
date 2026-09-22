@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "projeto": "PROSPECCAO PUBLICA — Negocios e Profissionais do Rio de Janeiro",
+    "descricao": "Base de negocios e profissionais do Rio de Janeiro, organizada por regiao > bloco > bairro. Focalizacao: captacao B2B separate de EPQ.",
+    "criado_em": "2026-09-21T23:30:00",
+    "versao": "1.0.0",
+    "separacao_obrigatoria": "PROSPECCAO PUBLICA jamais misturado com EPQ (Preparatorios Militares) ou B2B FLAVIO (Marketing/Tráfego/CRM)"
+  },
+  "fontes": {
+    "b2b_groups_data": "/Users/mac/HermesWorkspace/b2b-groups/data/data.js",
+    "b2b_groups_js": "/Users/mac/HermesWorkspace/b2b-groups/js/data.js",
+    "b2b_groups_seed_inline": "/Users/mac/HermesWorkspace/b2b-groups/js/seed-inline.js",
+    "modelo_mensagens": "/Users/mac/HermesWorkspace/automacoes/templates.json",
+    "origem_dados": "b2b-groups — grupos WhatsApp com negocios e profissionais do RJ"
+  },
+  "estrutura_regioes": {
+    "Zona Norte": {
+      "blocos": ["Méier", "Cachambi", "Tijuca", "Vila Isabel", "Maracanã", "São Cristóvão", "Mangueira", "Benfica", "Andaraí", "Praça da Bandeira", "Pilares", "Del Castilho", "Engenho Novo", "Engenho de Dentro", "Todos os Santos", "Ilha do Governador"],
+      "prioridade_expansao": 1
+    },
+    "RJ Capital": {
+      "blocos": ["Centro", "Santa Teresa", "Lapa", "Cidade Nova", "Santo Cristo", "Gamboa", "Caju", "Saúde", "Praça XV", "Bastos", "Laranjeiras", "Ipanema", "Leblon", "Copacabana", "Botafogo", "Flamengo", "Urca", "Catete", "Glória", "Lapa"],
+      "prioridade_expansao": 2
+    },
+    "Zona Sul": {
+      "blocos": ["Copacabana", "Ipanema", "Leblon", "Lagoa", "São Conrado", "Barra da Tijuca", "Recreio dos Bandeirantes", "Joá", "Prainha"],
+      "prioridade_expansao": 3
+    },
+    "Zona Oeste": {
+      "blocos": ["Tijuca", "Vila Mariana", "São Conrado", "Barra", "Recreio"],
+      "prioridade_expansao": 4
+    },
+    "Baixada Fluminense": {
+      "blocos": ["Duque de Caxias", "Nova Iguaçu", "Belford Roxo", "São João de Meriti", "Mesquita", "Magé", "Japeri", "Itaboraí", "Maricá", "Niterói", "São Gonçalo", "Itaboraí"],
+      "prioridade_expansao": 5
+    }
+  },
+  "status_validos": [
+    "NOVO",
+    "QUALIFICADO",
+    "MENSAGEM_PRONTA",
+    "REVISAO",
+    "APROVADO",
+    "AGUARDANDO_ENVIO",
+    "PAUSADO",
+    "INVALIDO"
+  ],
+  "status_inicial": "NOVO",
+  "regras": {
+    "nao_enviar": true,
+    "nao_abrir_whatsapp": true,
+    "nao_misturar_com_epq": true,
+    "nao_misturar_com_b2b_flavio": true,
+    "rascunho_marcacao": "RASCUNHO — NÃO ENVIADA"
+  }
+}

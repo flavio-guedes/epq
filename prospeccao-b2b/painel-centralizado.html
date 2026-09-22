@@ -98,7 +98,59 @@
   .no-data { padding: 16px; text-align: center; color: var(--dim); font-size: 12px; }
   .loading { padding: 20px; text-align: center; color: var(--dim); }
   code { background: var(--bg3); padding: 2px 6px; border-radius: 4px; font-size: 12px; }
-</style>
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; padding: 12px 16px; }
+  .kpi-card { background: var(--bg3); border-radius: 8px; padding: 10px 12px; text-align: center; border: 1px solid var(--border); }
+  .kpi-val { font-size: 22px; font-weight: 700; color: var(--text); }
+  .kpi-label { font-size: 10px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+  .kpi-card.accent .kpi-val { color: var(--blue); }
+  .kpi-card.warn .kpi-val { color: var(--warn); }
+  .kpi-card.ok .kpi-val { color: var(--green); }
+  .publico-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .publico-table th { text-align: left; padding: 8px 12px; background: var(--bg3); color: var(--dim); font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+  .publico-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .publico-table tr:hover { background: rgba(109,91,255,0.04); }
+  .publico-table .nome { font-weight: 600; color: var(--text); }
+  .publico-table .telefone-cell { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--blue); }
+  .publico-table .telefone-cell.invalid { color: var(--dim); text-decoration: line-through; }
+  .publico-table .status-badge { font-size: 10px; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+  .status-badge.novo { background: rgba(109,91,255,0.15); color: var(--blue); }
+  .status-badge.qualificado { background: rgba(255,165,0,0.15); color: #ffa500; }
+  .status-badge.mensagem_pronta { background: rgba(34,197,94,0.15); color: var(--green); }
+  .status-badge.revisao { background: rgba(245,158,11,0.15); color: var(--warn); }
+  .status-badge.aprovado { background: rgba(34,197,94,0.2); color: var(--green); }
+  .status-badge.aguardando_envio { background: rgba(107,114,128,0.15); color: #9ca3af; }
+  .status-badge.pausado { background: rgba(107,114,128,0.12); color: #9ca3af; }
+  .status-badge.invalido { background: rgba(239,68,68,0.1); color: var(--red); }
+  .publico-filters { padding: 10px 16px; background: var(--bg3); border-bottom: 1px solid var(--border); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .filter-group { display: flex; align-items: center; gap: 4px; }
+  .filter-group label { font-size: 10px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.5px; }
+  .filter-select { background: var(--bg2); border: 1px solid var(--border); color: var(--text); padding: 4px 8px; border-radius: 4px; font-size: 11px; }
+  .filter-select:focus { outline: none; border-color: var(--accent); }
+  .filter-count { font-size: 11px; color: var(--dim); margin-left: auto; }
+  .publico-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+  .btn-xs { padding: 4px 10px; font-size: 10px; border-radius: 4px; }
+  .btn-edit { background: rgba(109,91,255,0.1); border-color: rgba(109,91,255,0.3); color: var(--blue); }
+  .btn-approve { background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.3); color: var(--green); }
+  .btn-pause { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.3); color: var(--warn); }
+  .btn-skip { background: rgba(107,114,128,0.1); border-color: rgba(107,114,128,0.3); color: #9ca3af; }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.active { display: flex; }
+  .modal { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; max-width: 550px; width: 100%; max-height: 80vh; overflow-y: auto; }
+  .modal-header { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .modal-header h3 { font-size: 14px; font-weight: 700; }
+  .modal-body { padding: 16px; }
+  .modal-footer { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; justify-content: flex-end; }
+  .draft-warning { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 6px; padding: 8px 12px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--red); font-weight: 600; }
+  .draft-warning::before { content: '⚠'; }
+  .msg-text { background: var(--bg3); border-radius: 6px; padding: 12px; font-size: 13px; white-space: pre-wrap; line-height: 1.6; border: 1px solid var(--border); color: var(--text); }
+  .msg-edit-area { width: 100%; min-height: 100px; background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; color: var(--text); padding: 10px; font-size: 13px; resize: vertical; font-family: inherit; }
+  .msg-edit-area:focus { outline: none; border-color: var(--accent); }
+  .regiao-tag { font-size: 10px; color: var(--dim); }
+  .publico-empty { padding: 24px; text-align: center; color: var(--dim); font-size: 13px; }
+  .toast { position: fixed; bottom: 20px; right: 20px; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; font-size: 12px; color: var(--text); z-index: 200; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+  .toast.success { border-color: var(--green); color: var(--green); }
+  .toast.warn { border-color: var(--warn); color: var(--warn); }
 </head>
 <body>
 <div class="wrap">
@@ -136,12 +188,92 @@
   <div id="b2b"><div class="loading">Carregando B2B Flávio...</div></div>
   <div id="epq"><div class="loading">Carregando EPQ...</div></div>
 
+  <!-- SEÇÃO PROSPECÇÃO PÚBLICA — totalmente separada de EPQ/B2B -->
+  <div id="publico" class="section" style="border-left: 3px solid var(--blue);">
+    <div class="section-header">
+      <h2>📢 PROSPECÇÃO PÚBLICA — Negócios e Profissionais do Rio de Janeiro</h2>
+      <span class="badge info" style="font-size:10px;">SEPARADO DE EPQ/B2B</span>
+    </div>
+    <div id="publico-dashboard" class="kpi-grid">
+      <div class="kpi-card accent"><div class="kpi-val" id="pub-total">—</div><div class="kpi-label">Total Negócios</div></div>
+      <div class="kpi-card"><div class="kpi-val" id="pub-tel-encontrados">—</div><div class="kpi-label">Telefones Encontrados</div></div>
+      <div class="kpi-card ok"><div class="kpi-val" id="pub-tel-validos">—</div><div class="kpi-label">Telefones Válidos</div></div>
+      <div class="kpi-card warn"><div class="kpi-val" id="pub-duplicados">—</div><div class="kpi-label">Duplicados</div></div>
+      <div class="kpi-card warn"><div class="kpi-val" id="pub-invalidos">—</div><div class="kpi-label">Inválidos</div></div>
+      <div class="kpi-card ok"><div class="kpi-val" id="pub-msgs-prontas">—</div><div class="kpi-label">Mensagens Prontas</div></div>
+      <div class="kpi-card"><div class="kpi-val" id="pub-em-revisao">—</div><div class="kpi-label">Em Revisão</div></div>
+      <div class="kpi-card"><div class="kpi-val" id="pub-aprovados">—</div><div class="kpi-label">Aprovados</div></div>
+      <div class="kpi-card"><div class="kpi-val" id="pub-pausados">—</div><div class="kpi-label">Pausados</div></div>
+    </div>
+    <div class="publico-filters">
+      <div class="filter-group"><label>Região</label><select id="filter-regiao" class="filter-select" onchange="aplicarFiltrosPublico()"><option value="">Todas</option></select></div>
+      <div class="filter-group"><label>Bloco</label><select id="filter-bloco" class="filter-select" onchange="aplicarFiltrosPublico()"><option value="">Todos</option></select></div>
+      <div class="filter-group"><label>Bairro</label><select id="filter-bairro" class="filter-select" onchange="aplicarFiltrosPublico()"><option value="">Todos</option></select></div>
+      <div class="filter-group"><label>Segmento</label><select id="filter-segmento" class="filter-select" onchange="aplicarFiltrosPublico()"><option value="">Todos</option></select></div>
+      <div class="filter-group"><label>Status</label><select id="filter-status" class="filter-select" onchange="aplicarFiltrosPublico()">
+        <option value="">Todos</option>
+        <option value="NOVO">NOVO</option>
+        <option value="QUALIFICADO">QUALIFICADO</option>
+        <option value="MENSAGEM_PRONTA">MENSAGEM_PRONTA</option>
+        <option value="REVISAO">REVISAO</option>
+        <option value="APROVADO">APROVADO</option>
+        <option value="AGUARDANDO_ENVIO">AGUARDANDO_ENVIO</option>
+        <option value="PAUSADO">PAUSADO</option>
+        <option value="INVALIDO">INVALIDO</option>
+      </select></div>
+      <div class="filter-group"><label style="display:flex;align-items:center;gap:4px;"><input type="checkbox" id="filter-tel-valido" onchange="aplicarFiltrosPublico()"> Tel. válido</label></div>
+      <div class="filter-group"><label style="display:flex;align-items:center;gap:4px;"><input type="checkbox" id="filter-msg-pronta" onchange="aplicarFiltrosPublico()"> Msg. pronta</label></div>
+      <span class="filter-count" id="filter-count"></span>
+    </div>
+    <div id="publico-tabela-wrap" style="overflow-x:auto;">
+      <table class="publico-table">
+        <thead><tr>
+          <th style="width:25%;">Negócio</th>
+          <th style="width:10%;">Região</th>
+          <th style="width:10%;">Bloco</th>
+          <th style="width:10%;">Bairro</th>
+          <th style="width:12%;">Segmento</th>
+          <th style="width:13%;">Telefone</th>
+          <th style="width:10%;">Status</th>
+          <th style="width:10%;">Mensagem</th>
+        </tr>
+      </thead>
+      <tbody id="publico-tbody"><tr><td colspan="8" class="publico-empty">Carregando dados de prospection pública...</td></tr></tbody>
+      </table>
+    </div>
+    <div class="status-bar" id="publico-status-bar">
+      <span>🎯 <strong id="pub-status-msg">Aguardando sincronização...</strong></span>
+      <span style="margin-left:auto;">Base: <code>b2b-groups</code> · Modelo: <code>automacoes/templates.json</code></span>
+    </div>
+  </div>
+
   <footer>
     <span>B2B Flávio: captação clientes marketing/tráfego/CRM · <code>http://localhost:3000/send</code></span>
     <span>EPQ: plano estático · Sem script ativo · 42 leads</span>
     <span>Dados do arquivo <code>fila-centralizada.json</code> · WhatsApp BLOQUEADO</span>
   </footer>
 </div>
+
+  <!-- MODAL PROSPECÇÃO PÚBLICA — mensagem individual -->
+  <div id="modalPublicoMensagem" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>📩 Carregando...</h3>
+        <button class="btn btn-xs" onclick="fecharModalMensagem()" style="padding:4px 10px;font-size:16px;">✕</button>
+      </div>
+      <div class="modal-body">
+        <!-- conteúdo injetado dinamicamente -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-xs btn-edit" onclick="editarMensagem()">✏️ Editar</button>
+        <button class="btn btn-xs btn-approve" onclick="salvarMensagemEditada()">💾 Salvar</button>
+        <button class="btn btn-xs btn-approve" onclick="aprovarPublico(ultimoIdMensagem)">✅ Aprovar</button>
+        <button class="btn btn-xs btn-pause" onclick="pausarPublico(ultimoIdMensagem)">⏸ Pausar</button>
+        <button class="btn btn-xs btn-skip" onclick="pularPublico(ultimoIdMensagem)">⏭ Pular</button>
+        <button class="btn btn-xs" onclick="fecharModalMensagem()" style="margin-left:auto;">Fechar</button>
+      </div>
+    </div>
+  </div>
 
 <script>
 const BASE = window.location.origin;
@@ -323,8 +455,388 @@ function imprimirResumo() {
   alert('Resumo copiado para área de transferência!');
 }
 
+// ============================================================
+// MÓDULO PROSPECÇÃO PÚBLICA
+// ============================================================
+
+let publicoData = [];
+let publicoFiltros = {};
+
+function statusClassPublico(status) {
+  if (!status) return 'novo';
+  const s = status.toLowerCase().replace(/\s+/g, '_');
+  if (s === 'novo') return 'novo';
+  if (s === 'qualificado') return 'qualificado';
+  if (s === 'mensagem_pronta' || s === 'mensagem pronta') return 'mensagem_pronta';
+  if (s === 'revisao' || s === 'revisar') return 'revisao';
+  if (s === 'aprovado') return 'aprovado';
+  if (s === 'aguardando_envio' || s === 'aguardando envio') return 'aguardando_envio';
+  if (s === 'pausado') return 'pausado';
+  if (s === 'invalido' || s === 'invalido') return 'invalido';
+  return 'novo';
+}
+
+function statusLabelPublico(status) {
+  if (!status) return 'NOVO';
+  return status;
+}
+
+function formatarTelefoneDisplay(tel) {
+  if (!tel) return '—';
+  // E.164: +5521999719474 → (21) 99971-9474
+  const d = tel.replace(/\D/g, '');
+  if (d.length === 11 && d.startsWith('21')) {
+    return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`;
+  }
+  if (d.length === 10 && d.startsWith('21')) {
+    return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`;
+  }
+  return tel;
+}
+
+function aplicarFiltrosPublico() {
+  const filtroRegiao = document.getElementById('filter-regiao').value;
+  const filtroBloco = document.getElementById('filter-bloco').value;
+  const filtroBairro = document.getElementById('filter-bairro').value;
+  const filtroSegmento = document.getElementById('filter-segmento').value;
+  const filtroStatus = document.getElementById('filter-status').value;
+  const telValido = document.getElementById('filter-tel-valido').checked;
+  const msgPronta = document.getElementById('filter-msg-pronta').checked;
+  
+  publicoFiltros = { filtroRegiao, filtroBloco, filtroBairro, filtroSegmento, filtroStatus, telValido, msgPronta };
+  
+  renderTabelaPublico(publicoData);
+}
+
+function renderTabelaPublico(dados) {
+  const tbody = document.getElementById('publico-tbody');
+  
+  let filtrados = dados;
+  
+  if (publicoFiltros.filtroRegiao) {
+    filtrados = filtrados.filter(r => r.regiao === publicoFiltros.filtroRegiao);
+  }
+  if (publicoFiltros.filtroBloco) {
+    filtrados = filtrados.filter(r => (r.bloco || '').toLowerCase() === publicoFiltros.filtroBloco.toLowerCase());
+  }
+  if (publicoFiltros.filtroBairro) {
+    filtrados = filtrados.filter(r => (r.bairro || '').toLowerCase() === publicoFiltros.filtroBairro.toLowerCase());
+  }
+  if (publicoFiltros.filtroSegmento) {
+    filtrados = filtrados.filter(r => r.segmento === publicoFiltros.filtroSegmento);
+  }
+  if (publicoFiltros.filtroStatus) {
+    filtrados = filtrados.filter(r => r.status === publicoFiltros.filtroStatus);
+  }
+  if (publicoFiltros.telValido) {
+    filtrados = filtrados.filter(r => r.telefone_normalizado);
+  }
+  if (publicoFiltros.msgPronta) {
+    filtrados = filtrados.filter(r => r.mensagem && r.mensagem.trim());
+  }
+  
+  const countEl = document.getElementById('filter-count');
+  countEl.textContent = `Mostrando ${filtrados.length} de ${dados.length} registros`;
+  
+  if (filtrados.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" class="publico-empty">Nenhum negócio encontrado com os filtros atuais</td></tr>`;
+    return;
+  }
+  
+  tbody.innerHTML = filtrados.map(r => {
+    const telDisplay = formatarTelefoneDisplay(r.telefone_normalizado || r.telefone);
+    const telClass = r.telefone_normalizado ? 'telefone-cell' : 'telefone-cell invalid';
+    const statusCls = statusClassPublico(r.status);
+    const statusLbl = statusLabelPublico(r.status);
+    const msgStatus = r.mensagem && r.mensagem.trim() ? '✓ pronta' : '—';
+    const msgAction = r.mensagem && r.mensagem.trim() ? 'Ver' : 'Gerar';
+    
+    return `
+      <tr>
+        <td><div class="nome">${r.nome_negocio || '—'}</div>
+            <div style="font-size:10px;color:var(--dim);">${r.id}</div></td>
+        <td>${r.regiao || '—'}</td>
+        <td>${r.bloco || '—'}</td>
+        <td>${r.bairro || '—'}</td>
+        <td>${r.segmento || '—'}</td>
+        <td><div class="telefone-cell ${telClass}">${telDisplay}</div></td>
+        <td><span class="status-badge ${statusCls}">${statusLbl}</span></td>
+        <td>
+          <div class="publico-actions">
+            ${r.mensagem && r.mensagem.trim() 
+              ? `<button class="btn btn-xs btn-edit" onclick="abrirModalMensagem('${r.id}')">👁 ${msgAction}</button>`
+              : `<button class="btn btn-xs btn-edit" onclick="abrirModalMensagem('${r.id}')">📝 ${msgAction}</button>`
+            }
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function renderDashboardPublico(dados) {
+  const total = dados.length;
+  const telEncontrados = dados.filter(r => r.telefone).length;
+  const telValidos = dados.filter(r => r.telefone_normalizado).length;
+  const duplicados = dados.filter(r => r.status === 'INVALIDO' && (r.observacoes || '').includes('DUPLICADO')).length;
+  const invalidos = dados.filter(r => r.status === 'INVALIDO' && !r.telefone_normalizado && r.telefone).length;
+  const msgsProntas = dados.filter(r => r.mensagem && r.mensagem.trim()).length;
+  const emRevisao = dados.filter(r => r.status === 'REVISAO' || r.status === 'REVISAR').length;
+  const aprovados = dados.filter(r => r.status === 'APROVADO').length;
+  const pausados = dados.filter(r => r.status === 'PAUSADO').length;
+  
+  document.getElementById('pub-total').textContent = total;
+  document.getElementById('pub-tel-encontrados').textContent = telEncontrados;
+  document.getElementById('pub-tel-validos').textContent = telValidos;
+  document.getElementById('pub-duplicados').textContent = duplicados;
+  document.getElementById('pub-invalidos').textContent = invalidos;
+  document.getElementById('pub-msgs-prontas').textContent = msgsProntas;
+  document.getElementById('pub-em-revisao').textContent = emRevisao;
+  document.getElementById('pub-aprovados').textContent = aprovados;
+  document.getElementById('pub-pausados').textContent = pausados;
+  
+  // Preencher filtros dinâmicos
+  const regioes = [...new Set(dados.map(r => r.regiao).filter(Boolean))].sort();
+  const blocos = [...new Set(dados.map(r => r.bloco).filter(Boolean))].sort();
+  const bairros = [...new Set(dados.map(r => r.bairro).filter(Boolean))].sort();
+  const segmentos = [...new Set(dados.map(r => r.segmento).filter(Boolean))].sort();
+  
+  const selRegiao = document.getElementById('filter-regiao');
+  selRegiao.innerHTML = '<option value="">Todas</option>' + regioes.map(r => `<option value="${r}">${r}</option>`).join('');
+  
+  const selBloco = document.getElementById('filter-bloco');
+  selBloco.innerHTML = '<option value="">Todos</option>' + blocos.map(b => `<option value="${b}">${b}</option>`).join('');
+  
+  const selBairro = document.getElementById('filter-bairro');
+  selBairro.innerHTML = '<option value="">Todos</option>' + bairros.map(b => `<option value="${b}">${b}</option>`).join('');
+  
+  const selSegmento = document.getElementById('filter-segmento');
+  selSegmento.innerHTML = '<option value="">Todos</option>' + segmentos.map(s => `<option value="${s}">${s}</option>`).join('');
+}
+
+function carregarPublico() {
+  const msgEl = document.getElementById('pub-status-msg');
+  msgEl.textContent = '⏳ Carregando dados da base pública...';
+  msgEl.style.color = 'var(--warn)';
+  
+  Promise.all([
+    fetch('publico/fila-publica.json?' + Date.now()).then(r => r.ok ? r.json() : null).catch(() => null),
+    fetch('publico/amostra-20.json?' + Date.now()).then(r => r.ok ? r.json() : null).catch(() => null)
+  ]).then(([dadosCompletos, amostra]) => {
+    if (dadosCompletos && dadosCompletos.registros) {
+      publicoData = dadosCompletos.registros;
+      renderDashboardPublico(publicoData);
+      renderTabelaPublico(publicoData);
+      msgEl.textContent = `✅ Carregados ${publicoData.length} negócios · Base: b2b-groups · Tel. válidos: ${publicoData.filter(r => r.telefone_normalizado).length}`;
+      msgEl.style.color = 'var(--green)';
+    } else if (amostra && amostra.registros) {
+      publicoData = amostra.registros;
+      renderDashboardPublico(publicoData);
+      renderTabelaPublico(publicoData);
+      msgEl.textContent = `⚠ Base completa não disponível via HTTP. Usando amostra de ${amostra.meta?.total_na_amostra || amostra.registros.length} registros. Use: python3 publico/processar-publico.py`;
+      msgEl.style.color = 'var(--blue)';
+    } else {
+      // Fallback: tentar carregar via fetch do JSON completo do servidor
+      msgEl.textContent = '⚠ Falha ao carregar. Verifique se o servidor HTTP está ativo (port 8080)';
+      msgEl.style.color = 'var(--red)';
+      console.error('Falha ao carregar dados públicos');
+    }
+  }).catch(e => {
+    msgEl.textContent = '⚠ Erro ao carregar: ' + e.message;
+    msgEl.style.color = 'var(--red)';
+  });
+}
+
+function abrirModalMensagem(idRegistro) {
+  const registro = publicoData.find(r => r.id === idRegistro);
+  if (!registro) {
+    showToast('Registro não encontrado', 'warn');
+    return;
+  }
+  
+  const overlay = document.getElementById('modalPublicoMensagem');
+  const corpoModal = overlay.querySelector('.modal-body');
+  const tituloModal = overlay.querySelector('.modal-header h3');
+  
+  const telDisplay = formatarTelefoneDisplay(registro.telefone_normalizado || registro.telefone);
+  
+  tituloModal.textContent = `📩 ${registro.nome_negocio || 'Sem nome'}`;
+  
+  const msgJaExiste = registro.mensagem && registro.mensagem.trim();
+  
+  corpoModal.innerHTML = `
+    <div class="draft-warning">RASCUNHO — NÃO ENVIADA</div>
+    <div style="font-size:12px;color:var(--dim);margin-bottom:12px;">
+      <strong style="color:var(--text);">ID:</strong> ${registro.id}<br>
+      <strong style="color:var(--text);">Telefone:</strong> <span style="color:var(--blue);font-family:monospace;">${telDisplay}</span><br>
+      <strong style="color:var(--text);">Segmento:</strong> ${registro.segmento || '—'}<br>
+      <strong style="color:var(--text);">Região:</strong> ${registro.regiao || '—'} · ${registro.bloco || '—'} · ${registro.bairro || '—'}<br>
+      <strong style="color:var(--text);">Status atual:</strong> 
+        <span class="status-badge ${statusClassPublico(registro.status)}">${statusLabelPublico(registro.status)}</span><br>
+      <strong style="color:var(--text);">Origem:</strong> ${registro.arquivo_origem || '—'}
+    </div>
+    <div style="margin-bottom:12px;">
+      <label style="font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:0.5px;">Mensagem (${registro.mensagem_tipo || '—'})</label>
+      ${msgJaExiste 
+        ? `<div class="msg-text" id="msgVisualizar">${registro.mensagem.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+           <button class="btn btn-xs btn-edit" style="margin-top:8px;" onclick="editarMensagem()">✏️ Editar mensagem</button>`
+        : `<textarea class="msg-edit-area" id="msgEditArea" placeholder="Clique abaixo para gerar rascunho com modelo..."></textarea>
+           <button class="btn btn-xs btn-edit" style="margin-top:8px;" onclick="gerarRascunho()">🤖 Gerar rascunho</button>`
+      }
+    </div>
+    <div style="font-size:10px;color:var(--dim);margin-bottom:12px;padding:8px;background:var(--bg3);border-radius:4px;">
+      <strong>Campos do registro:</strong><br>
+      ${Object.entries(registro).filter(([k]) => !['id','nome_negocio','telefone','telefone_normalizado','regiao','bloco','bairro','segmento','origem','arquivo_origem','status','mensagem','mensagem_tipo','data_processamento','observacoes'].includes(k))
+        .map(([k,v]) => `<span style="color:var(--text);">${k}:</span> <span style="color:var(--dim);">${typeof v === 'string' ? v : JSON.stringify(v)}</span><br>`)
+        .join('')}
+    </div>
+  `;
+  
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  
+  if (!msgJaExiste) {
+    document.getElementById('msgEditArea').value = '';
+  }
+}
+
+function editarMensagem() {
+  const modalBody = document.querySelector('#modalPublicoMensagem .modal-body');
+  const visualizar = modalBody.querySelector('#msgVisualizar');
+  if (visualizar) {
+    visualizar.outerHTML = `<textarea class="msg-edit-area" id="msgEditArea">${visualizar.textContent}</textarea>`;
+    document.getElementById('msgEditArea').focus();
+  }
+}
+
+function salvarMensagemEditada() {
+  const modalBody = document.querySelector('#modalPublicoMensagem .modal-body');
+  const editArea = modalBody.querySelector('#msgEditArea');
+  if (editArea) {
+    const registro = publicoData.find(r => r.id ===ultimoIdMensagem);
+    if (registro) {
+      registro.mensagem = editArea.value;
+      registro.mensagem_tipo = registro.mensagem_tipo || 'customizado';
+      // Atualizar status para MENSAGEM_PRONTA
+      registro.status = 'MENSAGEM_PRONTA';
+      renderDashboardPublico(publicoData);
+      renderTabelaPublico(publicoData);
+      showToast('✅ Mensagem salva · Status: MENSAGEM_PRONTA', 'success');
+    }
+  }
+}
+
+let ultimoIdMensagem = null;
+
+function gerarRascunho() {
+  const editArea = document.querySelector('#modalPublicoMensagem .modal-body #msgEditArea');
+  if (!editArea) return;
+  
+  const modalOverlay = document.getElementById('modalPublicoMensagem');
+  const header = modalOverlay.querySelector('.modal-header h3');
+  const nomeNegocio = header.textContent.replace('📩 ', '');
+  
+  // Usar template do modelo ou criar rascunho padrão
+  const rascunho = `Olá, ${nomeNegocio}!
+  
+Me chamo Flávio Guedes e trabalho com marketing, tráfego e CRM.
+Estou entrando em contato porque acredito que tem uma oportunidade de contribuição conjunta.
+Se fizer sentido para vocês, posso compartilhar um pouco do que estou desenvolvendo.
+  
+Um abraço,
+Flávio Guedes
+flavio-guedes.github.io/portfolio/`;
+  
+  editArea.value = rascunho;
+  editArea.focus();
+  
+  // Marcar status como MENSAGEM_PRONTA
+  const id = ultimoIdMensagem;
+  const registro = publicoData.find(r => r.id === id);
+  if (registro) {
+    registro.mensagem = rascunho;
+    registro.mensagem_tipo = 'outreach';
+    registro.status = 'MENSAGEM_PRONTA';
+  }
+}
+
+function fecharModalMensagem() {
+  const overlay = document.getElementById('modalPublicoMensagem');
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+  ultimoIdMensagem = null;
+}
+
+function aprovarPublico(idRegistro) {
+  const registro = publicoData.find(r => r.id === idRegistro);
+  if (!registro) return;
+  registro.status = 'APROVADO';
+  renderDashboardPublico(publicoData);
+  renderTabelaPublico(publicoData);
+  showToast(`✅ ${registro.nome_negocio || idRegistro} → APROVADO`, 'success');
+}
+
+function pausarPublico(idRegistro) {
+  const registro = publicoData.find(r => r.id === idRegistro);
+  if (!registro) return;
+  registro.status = registro.status === 'PAUSADO' ? 'NOVO' : 'PAUSADO';
+  const label = registro.status === 'PAUSADO' ? 'PAUSADO' : 'RETOMADO';
+  renderDashboardPublico(publicoData);
+  renderTabelaPublico(publicoData);
+  showToast(`${registro.nome_negocio || idRegistro} → ${label}`, 'warn');
+}
+
+function pularPublico(idRegistro) {
+  const registro = publicoData.find(r => r.id === idRegistro);
+  if (!registro) return;
+  registro.status = 'QUALIFICADO';
+  renderDashboardPublico(publicoData);
+  renderTabelaPublico(publicoData);
+  showToast(`⏭ ${registro.nome_negocio || idRegistro} → QUALIFICADO (pulado)`, 'success');
+}
+
+function showToast(msg, tipo='success') {
+  let toast = document.getElementById('toastPublico');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'toastPublico';
+    toast.className = 'toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.className = 'toast show ' + tipo;
+  setTimeout(() => { toast.className = 'toast'; }, 2500);
+}
+
+// ============================================================
+// INICIALIZAÇÃO
+// ============================================================
+
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('dataAtual').textContent = dataHoje();
+  
+  // Carregar módulos
+  carregarPublico();
+  
+  // Fechar modal com ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const modal = document.getElementById('modalPublicoMensagem');
+      if (modal && modal.classList.contains('active')) {
+        fecharModalMensagem();
+      }
+    }
+  });
+  
+  // Fechar modal clicando fora
+  document.addEventListener('click', (e) => {
+    const modal = document.getElementById('modalPublicoMensagem');
+    if (modal && modal.classList.contains('active')) {
+      if (e.target === modal) {
+        fecharModalMensagem();
+      }
+    }
+  });
 });
 </script>
 </body>
