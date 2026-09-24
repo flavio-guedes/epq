@@ -239,6 +239,49 @@ section{padding:96px 0;}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;}
 .faq-a p{color:var(--text-dim);font-size:14.8px;padding-bottom:22px;max-width:640px;}
 
+/* ---------- TURMAS ---------- */
+.turmas{background:var(--bg);border-top:1px solid var(--line);}
+.turmas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:12px;}
+.turma{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:32px 28px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.turma::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(245,197,66,.05),transparent 60%);
+  pointer-events:none;
+}
+.turma-status{
+  display:inline-block;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:1.6px;
+  color:var(--gold-1);
+  background:rgba(245,197,66,.12);
+  border:1px solid rgba(245,197,66,.3);
+  padding:5px 12px;
+  border-radius:999px;
+  margin-bottom:20px;
+}
+.turma-name{
+  font-family:'Archivo','Inter',sans-serif;
+  font-size:clamp(22px,2.4vw,30px);
+  font-weight:900;
+  font-stretch:88%;
+  letter-spacing:-.8px;
+  margin-bottom:12px;
+}
+.turma-date{
+  font-size:15px;
+  color:var(--text-dim);
+  font-weight:500;
+}
+
 /* ---------- FOOTER ---------- */
 footer{padding:56px 0 36px;border-top:1px solid var(--line);}
 .footer-grid{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:32px;}
@@ -274,6 +317,8 @@ table.leads tr:last-child td{border-bottom:none;}
   .hero-form{max-width:100%;}
   .row2{grid-template-columns:1fr;}
   .footer-grid{flex-direction:column;}
+  .turmas-grid{grid-template-columns:1fr;gap:16px;}
+  .turma{padding:26px 20px;}
 }
 @media (max-width:560px){
   .logo .l1{font-size:14px;letter-spacing:2.5px;}
@@ -449,6 +494,33 @@ table.leads tr:last-child td{border-bottom:none;}
         <div class="cta-num gold-text">100%</div>
         <div class="cta-num-lbl">de bolsa para quem se destacar na prova</div>
         <a href="#inscricao" class="btn btn-gold" style="margin-top:22px;">Inscreva-se gratuitamente</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="turmas" id="turmas">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Turmas em andamento</div>
+      <h2>As três turmas já estão abertas</h2>
+      <p>Pré militar, Pré vestibular e Pré técnico seguem com vagas para o dia 17/10.</p>
+    </div>
+    <div class="turmas-grid">
+      <div class="turma">
+        <div class="turma-status">EM ANDAMENTO</div>
+        <div class="turma-name">Pré militar</div>
+        <div class="turma-date">17/10</div>
+      </div>
+      <div class="turma">
+        <div class="turma-status">EM ANDAMENTO</div>
+        <div class="turma-name">Pré vestibular</div>
+        <div class="turma-date">17/10</div>
+      </div>
+      <div class="turma">
+        <div class="turma-status">EM ANDAMENTO</div>
+        <div class="turma-name">Pré técnico</div>
+        <div class="turma-date">17/10</div>
       </div>
     </div>
   </div>
