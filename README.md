@@ -5,7 +5,7 @@
 Esta pasta contém a Landing Page do **Bolsão EPQ 2026**, evento de prova de bolsas de estudo do EPQ para concursos de segurança pública.
 
 - **Evento:** Bolsão EPQ 2026 — prova de bolsas
-- **Data:** 03/10/2026
+- **Data:** 17/10
 - **Local:** Nilópolis – RJ
 - **Arquivo principal:** `bolsao.html`
 
