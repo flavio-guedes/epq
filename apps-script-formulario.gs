@@ -16,7 +16,7 @@
 // ============================================================
 // CONFIGURAÇÃO — preencha manualmente com o ID da planilha
 // ============================================================
-var SPREADSHEET_ID = ""; // <-- substituir pelo ID da planilha Google
+var SPREADSHEET_ID = "1QRv76expN7cfa4qwMcu-BylQDj1uJxUj_Ba0d3136fc"; // Bolsão EPQ 2026 — Inscrições
 var SHEET_NAME = "Inscricoes";
 
 

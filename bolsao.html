@@ -390,6 +390,18 @@ table.leads tr:last-child td{border-bottom:none;}
               <input type="tel" id="whatsapp" name="whatsapp" placeholder="(21) 90000-0000" required>
             </div>
           </div>
+          <div class="field">
+            <label for="escolaridade">Grau de escolaridade</label>
+            <select id="escolaridade" name="escolaridade">
+              <option value="" disabled selected>Selecione uma opção</option>
+              <option value="Fundamental incompleto">Ensino fundamental incompleto</option>
+              <option value="Fundamental completo">Ensino fundamental completo</option>
+              <option value="Médio incompleto">Ensino médio incompleto</option>
+              <option value="Médio completo">Ensino médio completo</option>
+              <option value="Superior incompleto">Ensino superior incompleto</option>
+              <option value="Superior completo">Ensino superior completo</option>
+            </select>
+          </div>
           <button type="submit" class="btn btn-gold form-submit">Confirmar inscrição</button>
           <div class="form-msg" id="form-msg"></div>
           <div class="consent">Ao se inscrever, você concorda em receber contato do EPQ sobre o Bolsão.</div>
@@ -487,7 +499,8 @@ table.leads tr:last-child td{border-bottom:none;}
         <ul class="insc-list">
           <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg> Inscrição gratuita, sem compromisso</li>
           <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg> Confirmação por WhatsApp e e-mail</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg> Local e horário enviados 48h antes</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg> Local e horário: 09:00 às 13:00, 48h antes</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg> Nilópolis-RJ e Vilar dos Teles</li>
         </ul>
       </div>
       <div class="cta-band-action">
@@ -569,6 +582,8 @@ table.leads tr:last-child td{border-bottom:none;}
           <h5>Evento</h5>
           <span>17/10</span>
           <span>Nilópolis – RJ</span>
+          <span>Vilar dos Teles – RJ</span>
+          <span>Rua Jacatirão 17, centro</span>
         </div>
         <div class="footer-col">
           <h5>Contato</h5>
@@ -664,6 +679,7 @@ table.leads tr:last-child td{border-bottom:none;}
       nome: document.getElementById('nome').value.trim(),
       email: document.getElementById('email').value.trim(),
       whatsapp: document.getElementById('whatsapp').value.trim(),
+      escolaridade: document.getElementById('escolaridade').value.trim(),
       data_envio: new Date().toISOString()
     };
 
@@ -687,11 +703,15 @@ table.leads tr:last-child td{border-bottom:none;}
       }).catch(function(){ /* falha de rede não bloqueia o redirect */ });
     }
 
-    // 3) redireciona ao WhatsApp do Flávio para o lead conversar com você
-    window.location.href = 'https://wa.me/5521999719474?text=' + encodeURIComponent(
-      'Olá, meu nome é '+esc(data.nome)+' e acabei de me inscrever no Bolsão EPQ '+
-      '('+esc(data.turma)+'). Me chama no WhatsApp que eu respondo: '+data.whatsapp+'.'
-    );
+    // 3) mostra mensagem de confirmação e depois redireciona ao WhatsApp
+    msg.textContent = 'Sua inscrição para a prova ' + esc(data.turma) + ' está confirmada. Te aguardamos no horário previsto com caneta e documento de identificação.';
+    msg.className = 'form-msg ok';
+    setTimeout(function(){
+      window.location.href = 'https://wa.me/5521999719474?text=' + encodeURIComponent(
+        'Olá, meu nome é '+esc(data.nome)+' e acabei de me inscrever no Bolsão EPQ '+
+        '('+esc(data.turma)+'). Me chama no WhatsApp que eu respondo: '+data.whatsapp+'.'
+      );
+    }, 3500);
   });
 
   // ---------- Painel admin (?admin=1) ----------
@@ -711,10 +731,11 @@ table.leads tr:last-child td{border-bottom:none;}
     var rows = leads.map(function(l){
       var d = new Date(l.data_envio);
       var dataFmt = isNaN(d) ? l.data_envio : d.toLocaleString('pt-BR');
-      return '<tr><td>'+esc(l.nome)+'</td><td>'+esc(l.email)+'</td><td>'+esc(l.whatsapp)+'</td><td>'+esc(l.turma)+'</td><td>'+esc(dataFmt)+'</td></tr>';
+      var escolaridade = esc(l.escolaridade);
+      return '<tr><td>'+esc(l.nome)+'</td><td>'+esc(l.email)+'</td><td>'+esc(l.whatsapp)+'</td><td>'+esc(l.turma)+'</td><td>'+escolaridade+'</td><td>'+esc(dataFmt)+'</td></tr>';
     }).join('');
     content.innerHTML =
-      '<table class="leads"><thead><tr><th>Nome</th><th>E-mail</th><th>WhatsApp</th><th>Turma</th><th>Data</th></tr></thead><tbody>'+rows+'</tbody></table>';
+      '<table class="leads"><thead><tr><th>Nome</th><th>E-mail</th><th>WhatsApp</th><th>Turma</th><th>Escolaridade</th><th>Data</th></tr></thead><tbody>'+rows+'</tbody></table>';
   }
   function esc(s){
     return String(s || "").replace(/[&<>"]/g, function(c){
