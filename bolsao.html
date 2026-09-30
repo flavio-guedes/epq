@@ -110,7 +110,68 @@ nav a:hover{color:var(--text);}
   padding:7px 15px;border-radius:999px;margin-bottom:18px;
 }
 .badge b{color:#fff;}
-.hero h1{font-size:clamp(46px,6.6vw,86px);font-weight:900;font-stretch:88%;letter-spacing:-2.2px;max-width:680px;}
+    .event-highlights{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:18px 0 22px;
+      max-width:680px;
+    }
+    .eh-item{
+      flex:1 1 160px;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      background:linear-gradient(180deg, rgba(245,197,66,.12), rgba(245,197,66,.04));
+      border:1px solid rgba(245,197,66,.4);
+      border-radius:12px;
+      padding:12px 14px;
+      min-width:0;
+    }
+    .eh-ico{
+      flex:none;
+      width:34px;
+      height:34px;
+      border-radius:8px;
+      background:rgba(245,197,66,.16);
+      border:1px solid rgba(245,197,66,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--gold-1);
+    }
+    .eh-label{
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:1.4px;
+      color:var(--gold-1);
+      text-transform:uppercase;
+      margin-bottom:2px;
+    }
+    .eh-value{
+      font-family:'Archivo','Inter',sans-serif;
+      font-weight:800;
+      font-size:clamp(17px,1.4vw,20px);
+      color:#fff;
+      line-height:1.1;
+      letter-spacing:-.3px;
+    }
+    .eh-small{
+      display:block;
+      font-family:'Inter',sans-serif;
+      font-weight:500;
+      font-size:12.5px;
+      color:var(--text-dim);
+      margin-top:3px;
+      letter-spacing:0;
+    }
+    .eh-sep{
+      color:rgba(255,255,255,.35);
+      margin:0 3px;
+      font-weight:500;
+    }
+
+    .hero h1{font-size:clamp(46px,6.6vw,86px);font-weight:900;font-stretch:88%;letter-spacing:-2.2px;max-width:680px;}
 .hero .sub{
   font-family:'Archivo','Inter',sans-serif;font-weight:600;font-size:clamp(14px,1.3vw,17px);
   letter-spacing:2.6px;color:var(--text-dim);margin-top:14px;
@@ -358,6 +419,39 @@ table.leads tr:last-child td{border-bottom:none;}
 <section class="hero" id="inscricao">
   <div class="hero-inner">
     <div class="badge">📍 <b>17/10</b> &nbsp;·&nbsp; Nilópolis – RJ</div>
+
+    <!-- destaque data / horário / locais -->
+    <div class="event-highlights">
+      <div class="eh-item eh-date">
+        <div class="eh-ico">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        </div>
+        <div>
+          <div class="eh-label">Data</div>
+          <div class="eh-value">17/10 <span class="eh-small">(sábado)</span></div>
+        </div>
+      </div>
+      <div class="eh-item eh-time">
+        <div class="eh-ico">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div>
+          <div class="eh-label">Horário</div>
+          <div class="eh-value">09h às 13h</div>
+        </div>
+      </div>
+      <div class="eh-item eh-loc">
+        <div class="eh-ico">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div>
+          <div class="eh-label">Dois locais</div>
+          <div class="eh-value">Nilópolis–RJ <span class="eh-sep">·</span> Vilar dos Teles–RJ</div>
+          <div class="eh-small">Rua Jacatirão 17, centro — Nilópolis</div>
+        </div>
+      </div>
+    </div>
+
     <h1>Bolsas de até<br><span class="gold-text">100%</span></h1>
     <div class="sub">PROVA · CONHECIMENTO · OPORTUNIDADE</div>
     <p class="lead">Participe do Bolsão EPQ e conquiste sua bolsa para estudar com quem entende de aprovação em concursos de segurança pública.</p>
