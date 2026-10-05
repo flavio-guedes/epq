@@ -750,7 +750,7 @@ table.leads tr:last-child td{border-bottom:none;}
   /* =====================================================================
    * Integração Google Apps Script: ver COMO-INTEGRAR.md
    * ===================================================================== */
-  var FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbzBolsaoEPQ2026/exec";
+  var FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbxizWwS6HkcJ2cyTiRJmCZ4JSok58Bc3kEgmu_H8gg7QkdiuOk0Jl8zgqSTiM2qYwLmDw/exec";
 
   var STORAGE_KEY = "bolsao_epq_leads";
 
@@ -792,7 +792,7 @@ table.leads tr:last-child td{border-bottom:none;}
     if(FORM_ENDPOINT){
       fetch(FORM_ENDPOINT, {
         method: "POST",
-        headers: {"Content-Type":"application/json","Accept":"application/json"},
+        mode: "no-cors", headers: {"Content-Type":"text/plain"},
         body: JSON.stringify(data)
       }).catch(function(){ /* falha de rede não bloqueia o redirect */ });
     }
