@@ -790,11 +790,11 @@ table.leads tr:last-child td{border-bottom:none;}
 
     // 2) tenta enviar pro endpoint remoto, se configurado
     if(FORM_ENDPOINT){
-      fetch(FORM_ENDPOINT, {
+      var _f=document.createElement("form");_f.method="POST";_f.action=FORM_ENDPOINT;_f.target="_hf";_f.style.display="none";for(var _k in data){var _i=document.createElement("input");_i.type="hidden";_i.name=_k;_i.value=data[_k];_f.appendChild(_i);}document.body.appendChild(_f);_f.submit();if(false){fetch(FORM_ENDPOINT, {
         method: "POST",
         mode: "no-cors", headers: {"Content-Type":"text/plain"},
         body: JSON.stringify(data)
-      }).catch(function(){ /* falha de rede não bloqueia o redirect */ });
+      }).catch(function(){});}
     }
 
     // 3) mostra mensagem de confirmação e depois redireciona ao WhatsApp
